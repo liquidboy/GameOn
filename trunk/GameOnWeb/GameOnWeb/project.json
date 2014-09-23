@@ -1,0 +1,11 @@
+﻿{
+    "dependencies": {
+        "Microsoft.AspNet.Server.IIS": "1.0.0-alpha3",
+        "Microsoft.AspNet.Mvc": "6.0.0-alpha3",
+        "AzureLib": ""
+    },
+    "frameworks" : {
+        "net451" : { },
+        "k10" : { }
+    }
+}
