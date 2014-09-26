@@ -1,10 +1,8 @@
-﻿///<reference path="../scripts/typings/angularjs/angular.d.ts" />
-///<reference path="../scripts/typings/angularjs/angular-route.d.ts" />
-var UserNotifications;
+﻿var UserNotifications;
 (function (UserNotifications) {
     var Controller = (function () {
         function Controller($scope) {
-            $scope.statusText = "Hello from TypeScript + AngularJS";
+            $scope["statusText"] = "UserNotifications.Controller";
         }
         return Controller;
     })();
