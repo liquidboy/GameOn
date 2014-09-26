@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_root", "_root", "{B3B9B9D3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneWindows", "OneWindows\OneWindows.csproj", "{A94C0C63-F827-4F11-965F-B1E2713210DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOn", "GameOn\GameOn.csproj", "{3DC9E5D0-9460-4985-91D5-EF6C7BAF3D63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{A94C0C63-F827-4F11-965F-B1E2713210DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A94C0C63-F827-4F11-965F-B1E2713210DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A94C0C63-F827-4F11-965F-B1E2713210DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC9E5D0-9460-4985-91D5-EF6C7BAF3D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC9E5D0-9460-4985-91D5-EF6C7BAF3D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC9E5D0-9460-4985-91D5-EF6C7BAF3D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC9E5D0-9460-4985-91D5-EF6C7BAF3D63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
