@@ -1,4 +1,5 @@
-﻿var OneWindowsApp;
+﻿//http://www.slideshare.net/3x14159265/typescript-angularjs-32029652
+var OneWindowsApp;
 (function (OneWindowsApp) {
     'use strict';
 
@@ -11,7 +12,4 @@
             $routeProvider.when('/home', { templateUrl: 'partials/home.html' }).otherwise({ redirectTo: '/home' });
         }]);
 })(OneWindowsApp || (OneWindowsApp = {}));
-//var app = angular.module("modernFxApp", ['ngRoute']);
-//app.controller("unc", ["$scope", UserNotifications.Controller]);
-////app.factory("debounce", ["$timeout", debounceFactory]);
 //# sourceMappingURL=OneWindowsApp.js.map

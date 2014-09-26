@@ -1,5 +1,5 @@
 ﻿
-
+//http://www.slideshare.net/3x14159265/typescript-angularjs-32029652
 module OneWindowsApp {
     'use strict';
       
@@ -15,7 +15,3 @@ module OneWindowsApp {
 
 }
 
-
-//var app = angular.module("modernFxApp", ['ngRoute']);
-//app.controller("unc", ["$scope", UserNotifications.Controller]);
-////app.factory("debounce", ["$timeout", debounceFactory]);
