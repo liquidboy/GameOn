@@ -1,11 +1,14 @@
-﻿module ModernFx {
-    export interface IScope {
-        statusText: string;
-    } 
+﻿///<reference path="../scripts/typings/angularjs/angular.d.ts" /> 
+///<reference path="../scripts/typings/angularjs/angular-route.d.ts" />
+
+
+
+module ModernFxApp {
+
      
-    export class BootUp {
-        constructor($scope: IScope) {
-            $scope.statusText = "Hello from TypeScript + AngularJS";
-        }
-    }
 }
+
+
+var app = angular.module("modernFxApp", ['ngRoute']);
+app.controller("unc", ["$scope", UserNotifications.Controller]);
+//app.factory("debounce", ["$timeout", debounceFactory]);

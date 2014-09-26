@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Framework\BootUp.js" />
+    <Content Include="Framework\UserNotifications.js" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="Scripts\angular-animate.js" />
@@ -838,6 +839,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Framework\BootUp.ts" />
+    <TypeScriptCompile Include="Framework\UserNotifications.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
