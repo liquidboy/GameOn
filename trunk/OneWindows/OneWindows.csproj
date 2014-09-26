@@ -59,10 +59,12 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Controllers\UserNotifications.js" />
-    <Content Include="Framework\BootUp.js" />
+    <Content Include="apps\OneWindowsApp.js" />
+    <Content Include="controllers\UserNotifications.js" />
+    <Content Include="directives\scafold.js" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
+    <Content Include="partials\home.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-cookies.js" />
@@ -832,14 +834,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Index.html" />
+    <Content Include="services\scafold.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Controllers\UserNotifications.ts" />
-    <TypeScriptCompile Include="Framework\BootUp.ts" />
+    <TypeScriptCompile Include="controllers\UserNotifications.ts" />
+    <TypeScriptCompile Include="apps\OneWindowsApp.ts" />
+    <TypeScriptCompile Include="directives\scafold.ts" />
+    <TypeScriptCompile Include="models\scafold.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -849,6 +854,7 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="services\scafold.ts" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
