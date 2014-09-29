@@ -12,7 +12,8 @@
 </head>
 <body>
     <div ng-controller="ResourceMngrCtrl">
-        <div class="menu-container"><cst-top-menu ng-show="isAuthenticated" /></div>
+        <div class="menu-container"><cst-top-menu ng-hide="isAuthenticated" /></div>
+        root index ....
         <section id="main" style="height:90%;">
             <div data-ng-view ng-animate>
             </div>
@@ -39,7 +40,7 @@
     <!--<script src="/angularApp/directives/shared/modal.js"></script>-->
     <!--<script src="/angularApp/directives/shared/confirmmodal.js"></script>-->
     <script src="/angularApp/directives/shared/topmenu.js"></script>
-    <!--<script src="/angularApp/directives/shared/loadingoverlay.js"></script>-->
+    <script src="/angularApp/directives/shared/loadingoverlay.js"></script>
     <script src="/angularApp/services/shared/servicehelper.js"></script>
 
 

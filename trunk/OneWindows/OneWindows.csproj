@@ -59,7 +59,23 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="angularApp\controllers\DirectX12\directx12controller.js" />
+    <Content Include="angularApp\controllers\XAML\xamlcontroller.js" />
+    <Content Include="angularApp\controllers\WindowsStore\windowsstorecontroller.js" />
+    <Content Include="angularApp\controllers\Windows9\windows9controller.js" />
+    <Content Include="angularApp\controllers\OneCore\onecorecontroller.js" />
+    <Content Include="angularApp\controllers\ModernDesktop\moderndesktopcontroller.js" />
+    <Content Include="angularApp\controllers\Metro\metrocontroller.js" />
+    <Content Include="angularApp\controllers\DotNetNative\dotnetnativecontroller.js" />
     <Content Include="angularApp\OneWindowsApp.js" />
+    <Content Include="angularApp\views\DirectX12\DirectX12.html" />
+    <Content Include="angularApp\views\XAML\XAML.html" />
+    <Content Include="angularApp\views\DotNetNative\DotNetNative.html" />
+    <Content Include="angularApp\views\Metro\Metro.html" />
+    <Content Include="angularApp\views\ModernDesktop\ModernDesktop.html" />
+    <Content Include="angularApp\views\OneCore\OneCore.html" />
+    <Content Include="angularApp\views\Windows9\Windows9.html" />
+    <Content Include="angularApp\views\WindowsStore\WindowsStore.html" />
     <Content Include="Index.html" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />

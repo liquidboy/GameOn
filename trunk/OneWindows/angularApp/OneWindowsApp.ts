@@ -36,6 +36,14 @@ module OneWindowsApp {
             .when('/Register', { templateUrl: '/angularApp/views/shared/Register.html' })
             .when('/About', { templateUrl: '/angularApp/views/about/About.html' })
             .when('/Home', { templateUrl: '/angularApp/views/home/Home.html', controller: 'HomeCtrl' })
+            .when('/DotNetNative', { templateUrl: '/angularApp/views/DotNetNative/DotNetNative.html', controller: 'DotNetNativeCtrl' })
+            .when('/Metro', { templateUrl: '/angularApp/views/Metro/Metro.html', controller: 'MetroCtrl' })
+            .when('/ModernDesktop', { templateUrl: '/angularApp/views/ModernDesktop/ModernDesktop.html', controller: 'ModernDesktopCtrl' })
+            .when('/OneCore', { templateUrl: '/angularApp/views/OneCore/OneCore.html', controller: 'OneCoreCtrl' })
+            .when('/Windows9', { templateUrl: '/angularApp/views/Windows9/Windows9.html', controller: 'Windows9Ctrl' })
+            .when('/WindowsStore', { templateUrl: '/angularApp/views/WindowsStore/WindowsStore.html', controller: 'WindowsStoreCtrl' })
+            .when('/DirectX12', { templateUrl: '/angularApp/views/DirectX12/DirectX12.html', controller: 'DirectX12Ctrl' })
+            .when('/XAML', { templateUrl: '/angularApp/views/XAML/XAML.html', controller: 'XAMLCtrl' })
             .when('/Error', { templateUrl: '/angularApp/views/shared/Error.html' })
             .otherwise({
                 redirectTo: '/Home'
@@ -53,6 +61,7 @@ module OneWindowsApp {
 
 
     localWindow.app = myapp;
+    localWindow.utilities = angular.module("custom-utilities", []);
 
     ////myapp.run(() => {
 
@@ -61,4 +70,4 @@ module OneWindowsApp {
 }
 
 
-//window.utilities = angular.module("custom-utilities", []);
+
