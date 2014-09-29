@@ -15,7 +15,7 @@
     <RootNamespace>OneWindows</RootNamespace>
     <AssemblyName>OneWindows</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -59,12 +59,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="apps\OneWindowsApp.js" />
-    <Content Include="controllers\UserNotifications.js" />
-    <Content Include="directives\scafold.js" />
+    <Content Include="angularApp\OneWindowsApp.js" />
+    <Content Include="Index.html" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
-    <Content Include="partials\home.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-cookies.js" />
@@ -86,6 +84,29 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="angularApp\controllers\home\homecontroller.js" />
+    <Content Include="angularApp\controllers\shared\resourcemngrcontroller.js" />
+    <Content Include="angularApp\directives\activities\ResourceActivityList.html" />
+    <Content Include="angularApp\directives\activities\resourceactivitylist.js" />
+    <Content Include="angularApp\directives\shared\confirmmodal.js" />
+    <Content Include="angularApp\directives\shared\datepicker.js" />
+    <Content Include="angularApp\directives\shared\externalurl.js" />
+    <Content Include="angularApp\directives\shared\itemdelete.js" />
+    <Content Include="angularApp\directives\shared\loadingoverlay.js" />
+    <Content Include="angularApp\directives\shared\modal.js" />
+    <Content Include="angularApp\directives\shared\topmenu.js" />
+    <Content Include="angularApp\helpers\authorizationinterceptor.js" />
+    <Content Include="angularApp\partials\confirm-modal.html" />
+    <Content Include="angularApp\partials\Loader.html" />
+    <Content Include="angularApp\partials\TopMenu.html" />
+    <Content Include="angularApp\services\shared\resourcemngrservice.js" />
+    <Content Include="angularApp\services\shared\servicehelper.js" />
+    <Content Include="angularApp\views\about\About.html" />
+    <Content Include="angularApp\views\home\Home.html" />
+    <Content Include="angularApp\views\shared\Error.html" />
+    <Content Include="angularApp\views\shared\Login.html" />
+    <Content Include="angularApp\views\shared\Register.html" />
+    <Content Include="Scripts\config.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-et.js" />
@@ -814,6 +835,9 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\version.json" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
@@ -825,6 +849,7 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -833,18 +858,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Index.html" />
-    <Content Include="services\scafold.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="controllers\UserNotifications.ts" />
-    <TypeScriptCompile Include="apps\OneWindowsApp.ts" />
-    <TypeScriptCompile Include="directives\scafold.ts" />
-    <TypeScriptCompile Include="models\scafold.ts" />
+    <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -854,7 +874,6 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="services\scafold.ts" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
@@ -873,7 +892,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50265</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/OneWindows/</IISUrl>
+          <IISUrl>http://localhost:50265/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
