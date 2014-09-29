@@ -1,6 +1,9 @@
 ﻿body {
   font-family: 'Segoe UI', Arial, Verdana;
 }
+.hidden {
+  display: none;
+}
 .ui.menu .item {
   background-color: whitesmoke;
   padding: 5px;
@@ -9,10 +12,29 @@
   line-height: 35px;
   color: black;
   cursor: pointer;
+  white-space: nowrap;
+}
+.ui.menu .item.ico-home {
+  background-image: url('/content/House-black.png');
+  background-size: 25px;
+  background-repeat: no-repeat;
+  padding-left: 25px;
+}
+.ui.menu .item.ico-user {
+  background-image: url('/content/User-Male-black.png');
+  background-size: 25px;
+  background-repeat: no-repeat;
+  padding-left: 25px;
 }
 .ui.menu .item.active {
   background-color: black;
   color: white;
+}
+.ui.menu .item.active.ico-home {
+  background-image: url('/content/House-white.png');
+}
+.ui.menu .item.active.ico-user {
+  background-image: url('/content/User-Male-white.png');
 }
 .ui.menu .item:hover {
   background-color: #e8e8e8;
@@ -21,4 +43,7 @@
   background-color: black;
   color: white;
   cursor: default;
+}
+.ui.menu .right {
+  float: right;
 }

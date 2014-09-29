@@ -2,6 +2,8 @@
     font-family:'Segoe UI', Arial, Verdana;
 }
 
+.hidden{display:none;}
+
 .ui{
     &.menu{
         .item{
@@ -12,6 +14,7 @@
             line-height:35px;
             color:black;
             cursor:pointer;
+            white-space:nowrap;
 
             &.active{
                 background-color:black;
@@ -27,6 +30,10 @@
                 color:white;
                 cursor:default;
             }
+        }
+
+        .right{
+            float:right;
         }
     }
 }

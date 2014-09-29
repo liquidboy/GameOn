@@ -76,6 +76,10 @@
     <Content Include="angularApp\views\OneCore\OneCore.html" />
     <Content Include="angularApp\views\Windows9\Windows9.html" />
     <Content Include="angularApp\views\WindowsStore\WindowsStore.html" />
+    <Content Include="content\House-black.png" />
+    <Content Include="content\House-white.png" />
+    <Content Include="content\User-Male-black.png" />
+    <Content Include="content\User-Male-white.png" />
     <Content Include="Index.html" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />

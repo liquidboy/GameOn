@@ -1,6 +1,9 @@
 ﻿body {
   font-family: 'Segoe UI', Arial, Verdana;
 }
+.hidden {
+  display: none;
+}
 .ui.menu .item {
   background-color: whitesmoke;
   padding: 5px;
@@ -9,6 +12,7 @@
   line-height: 35px;
   color: black;
   cursor: pointer;
+  white-space: nowrap;
 }
 .ui.menu .item.active {
   background-color: black;
@@ -21,4 +25,7 @@
   background-color: black;
   color: white;
   cursor: default;
+}
+.ui.menu .right {
+  float: right;
 }

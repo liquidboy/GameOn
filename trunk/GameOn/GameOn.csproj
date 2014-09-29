@@ -92,6 +92,10 @@
     <Content Include="angularApp\views\shared\Login.html" />
     <Content Include="angularApp\views\shared\Register.html" />
     <Content Include="angularApp\views\XAML\XAML.html" />
+    <Content Include="content\House-black.png" />
+    <Content Include="content\House-white.png" />
+    <Content Include="content\User-Male-black.png" />
+    <Content Include="content\User-Male-white.png" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\game-on.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
