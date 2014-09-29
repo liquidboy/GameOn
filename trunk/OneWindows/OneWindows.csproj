@@ -866,6 +866,10 @@
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
+    <Content Include="Themes\Default.css">
+      <DependentUpon>Default.less</DependentUpon>
+    </Content>
+    <Content Include="Themes\Default.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -874,6 +878,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Themes\Default.min.css">
+      <DependentUpon>Default.css</DependentUpon>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

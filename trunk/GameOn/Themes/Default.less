@@ -1,0 +1,32 @@
+﻿body {
+    font-family:'Segoe UI', Arial, Verdana;
+}
+
+.ui{
+    &.menu{
+        .item{
+            background-color:whitesmoke;
+            padding:5px;
+            font-size:small;
+            text-decoration:none;
+            line-height:35px;
+            color:black;
+            cursor:pointer;
+
+            &.active{
+                background-color:black;
+                color:white;
+            }
+        }
+
+        .item:hover{
+            background-color:#e8e8e8;
+
+            &.active{
+                background-color:black;
+                color:white;
+                cursor:default;
+            }
+        }
+    }
+}

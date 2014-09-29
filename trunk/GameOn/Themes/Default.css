@@ -1,0 +1,24 @@
+﻿body {
+  font-family: 'Segoe UI', Arial, Verdana;
+}
+.ui.menu .item {
+  background-color: whitesmoke;
+  padding: 5px;
+  font-size: small;
+  text-decoration: none;
+  line-height: 35px;
+  color: black;
+  cursor: pointer;
+}
+.ui.menu .item.active {
+  background-color: black;
+  color: white;
+}
+.ui.menu .item:hover {
+  background-color: #e8e8e8;
+}
+.ui.menu .item:hover.active {
+  background-color: black;
+  color: white;
+  cursor: default;
+}
