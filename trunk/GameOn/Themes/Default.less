@@ -16,15 +16,39 @@
             cursor:pointer;
             white-space:nowrap;
 
+
+
+            &.ico-home{
+                background-image:url('/content/House-black.png');
+                background-size: 25px;
+                background-repeat:no-repeat;
+
+                padding-left:25px;
+            }
+            &.ico-user{
+                background-image:url('/content/User-Male-black.png');
+                background-size: 25px;
+                background-repeat:no-repeat;
+
+                padding-left:25px;
+            }
+
             &.active{
                 background-color:black;
-                color:white;
+                color:white; 
+
+                &.ico-home{
+                    background-image:url('/content/House-white.png');
+                }
+                &.ico-user{
+                    background-image:url('/content/User-Male-white.png');
+                }
             }
         }
 
         .item:hover{
             background-color:#e8e8e8;
-
+            
             &.active{
                 background-color:black;
                 color:white;
