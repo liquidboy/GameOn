@@ -1,10 +1,51 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!doctype html>
+<html data-ng-app="gameOnApp" data-ng-app1="resourceManagerApp">
 <head>
-    <title>Game On</title>
-    <script type="text/javascript" src="Scripts/angular.js"></script>
+    <meta charset="utf-8">
+    <title>GAME ON</title>
+    <base href="/" />
+    <!--<link rel="stylesheet" href="Content/themes/semantic/semantic.min.css" />
+    <link rel="stylesheet" href="Content/themes/ng-table/ng-table.css" />
+    <link rel="stylesheet" href="Content/themes/Site.css" />
+    <link rel="stylesheet" href="Content/themes/smoothness/jquery-ui.min.css" />
+    <link rel="stylesheet" href="Content/themes/select2/select2.min.css" />-->
 </head>
 <body>
+    <div ng-controller="ResourceMngrCtrl">
+        <div class="menu-container"><cst-top-menu ng-hide="isAuthenticated" /></div>
+        root index ....
+        <section id="main" style="height:90%;">
+            <div data-ng-view ng-animate>
+            </div>
+        </section>
+        <cst-loading-overlay class="hide"></cst-loading-overlay>
+    </div>
+    <script src="/Scripts/jquery-2.1.1.js"></script>
+    <!--<script src="/Scripts/libs/jquery-ui-1.10.3.min.js"></script>-->
+    <!--<script src="/Scripts/libs/select2/select2.min.js"></script>-->
+    <script src="/Scripts/angular.js"></script>
+    <script src="/Scripts/angular-resource.js"></script>
+    <script src="/Scripts/angular-route.js"></script>
+    <script src="/Scripts/angular-animate.js"></script>
+    <!--<script src="/Scripts/angular-ui/select2.min.js"></script>-->
+    <!--<script src="/Scripts/libs/semantic/semantic.min.js"></script>-->
+    <!--<script src="/Scripts/libs/ng-table/ng-table.min.js"></script>-->
+    <script src="/Scripts/config.js"></script>
+    <!--<script src="/Scripts/app/ngscripts.js"></script>-->
+    <!--<script src="/angularApp/app.js"></script>-->
+    <script src="/angularApp/gameOnApp.js"></script>
+    <script src="/angularApp/controllers/shared/resourcemngrcontroller.js"></script>
+    <script src="/angularApp/services/shared/resourcemngrservice.js"></script>
+    <!--<script src="/angularApp/directives/shared/datepicker.js"></script>-->
+    <!--<script src="/angularApp/directives/shared/modal.js"></script>-->
+    <!--<script src="/angularApp/directives/shared/confirmmodal.js"></script>-->
+    <script src="/angularApp/directives/shared/topmenu.js"></script>
+    <script src="/angularApp/directives/shared/loadingoverlay.js"></script>
+    <script src="/angularApp/services/shared/servicehelper.js"></script>
 
+
+
+    <script src="/angularApp/controllers/home/homecontroller.js"></script>
+    <script src="/angularApp/helpers/authorizationinterceptor.js"></script>
 </body>
 </html>
