@@ -6,7 +6,7 @@
 //http://stackoverflow.com/questions/12614072/how-do-i-configure-iis-for-url-rewriting-an-angularjs-application-in-html5-mode
 //https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-configure-your-server-to-work-with-html5mode
 
-/// <reference path="controllers/Windows9/windows9controller.ts"/>
+/// <reference path="controllers/Windows10/windows10controller.ts"/>
 
 module OneWindowsApp {
     //'use strict';
@@ -45,7 +45,7 @@ module OneWindowsApp {
             .when('/Metro', { templateUrl: '/angularApp/views/Metro/Metro.html', controller: 'MetroCtrl' })
             .when('/ModernDesktop', { templateUrl: '/angularApp/views/ModernDesktop/ModernDesktop.html', controller: 'ModernDesktopCtrl' })
             .when('/OneCore', { templateUrl: '/angularApp/views/OneCore/OneCore.html', controller: 'OneCoreCtrl' })
-            .when('/Windows9', { templateUrl: '/angularApp/views/Windows9/Windows9.html', controller: 'Windows9Ctrl' })
+            .when('/Windows10', { templateUrl: '/angularApp/views/Windows10/Windows10.html', controller: 'Windows10Ctrl' })
             .when('/WindowsStore', { templateUrl: '/angularApp/views/WindowsStore/WindowsStore.html', controller: 'WindowsStoreCtrl' })
             .when('/DirectX12', { templateUrl: '/angularApp/views/DirectX12/DirectX12.html', controller: 'DirectX12Ctrl' })
             .when('/XAML', { templateUrl: '/angularApp/views/XAML/XAML.html', controller: 'XAMLCtrl' })
@@ -56,7 +56,7 @@ module OneWindowsApp {
             .when('/Metro/ShowPost/:postId', { templateUrl: '/angularApp/views/Metro/ShowPost.html', controller: 'MetroPostCtrl' })
             .when('/ModernDesktop/ShowPost/:postId', { templateUrl: '/angularApp/views/ModernDesktop/ShowPost.html', controller: 'ModernDesktopPostCtrl' })
             .when('/OneCore/ShowPost/:postId', { templateUrl: '/angularApp/views/OneCore/ShowPost.html', controller: 'OneCorePostCtrl' })
-            .when('/Windows9/ShowPost/:postId', { templateUrl: '/angularApp/views/Windows9/ShowPost.html', controller: 'Windows9PostCtrl' })
+            .when('/Windows10/ShowPost/:postId', { templateUrl: '/angularApp/views/Windows10/ShowPost.html', controller: 'Windows10PostCtrl' })
             .when('/WindowsStore/ShowPost/:postId', { templateUrl: '/angularApp/views/WindowsStore/ShowPost.html', controller: 'WindowsStorePostCtrl' })
             .when('/DirectX12/ShowPost/:postId', { templateUrl: '/angularApp/views/DirectX12/ShowPost.html', controller: 'DirectX12PostCtrl' })
             .when('/XAML/ShowPost/:postId', { templateUrl: '/angularApp/views/XAML/ShowPost.html', controller: 'XAMLPostCtrl' })

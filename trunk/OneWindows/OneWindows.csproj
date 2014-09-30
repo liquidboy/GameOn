@@ -65,14 +65,14 @@
     <Content Include="angularApp\controllers\Metro\metropostcontroller.js" />
     <Content Include="angularApp\controllers\ModernDesktop\moderndesktoppostcontroller.js" />
     <Content Include="angularApp\controllers\OneCore\onecorepostcontroller.js" />
-    <Content Include="angularApp\controllers\Windows9\windows9postcontroller.js" />
+    <Content Include="angularApp\controllers\Windows10\windows10postcontroller.js" />
+    <Content Include="angularApp\controllers\Windows10\windows10controller.js">
+      <DependentUpon>windows10controller.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\WindowsStore\windowsstorepostcontroller.js" />
     <Content Include="angularApp\controllers\XAML\xamlpostcontroller.js" />
     <Content Include="angularApp\controllers\XAML\xamlcontroller.js" />
     <Content Include="angularApp\controllers\WindowsStore\windowsstorecontroller.js" />
-    <Content Include="angularApp\controllers\Windows9\windows9controller.js">
-      <DependentUpon>windows9controller.ts</DependentUpon>
-    </Content>
     <Content Include="angularApp\controllers\OneCore\onecorecontroller.js" />
     <Content Include="angularApp\controllers\ModernDesktop\moderndesktopcontroller.js" />
     <Content Include="angularApp\controllers\Metro\metrocontroller.js" />
@@ -87,7 +87,7 @@
     <Content Include="angularApp\views\Metro\ShowPost.html" />
     <Content Include="angularApp\views\ModernDesktop\ShowPost.html" />
     <Content Include="angularApp\views\OneCore\ShowPost.html" />
-    <Content Include="angularApp\views\Windows9\ShowPost.html" />
+    <Content Include="angularApp\views\Windows10\ShowPost.html" />
     <Content Include="angularApp\views\WindowsStore\ShowPost.html" />
     <Content Include="angularApp\views\XAML\ShowPost.html" />
     <Content Include="angularApp\views\XAML\XAML.html" />
@@ -95,7 +95,7 @@
     <Content Include="angularApp\views\Metro\Metro.html" />
     <Content Include="angularApp\views\ModernDesktop\ModernDesktop.html" />
     <Content Include="angularApp\views\OneCore\OneCore.html" />
-    <Content Include="angularApp\views\Windows9\Windows9.html" />
+    <Content Include="angularApp\views\Windows10\Windows10.html" />
     <Content Include="angularApp\views\WindowsStore\WindowsStore.html" />
     <Content Include="content\House-black.png" />
     <Content Include="content\House-white.png" />
@@ -106,8 +106,8 @@
     <Content Include="angularApp\OneWindowsApp.js.map">
       <DependentUpon>OneWindowsApp.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\Windows9\windows9controller.js.map">
-      <DependentUpon>windows9controller.ts</DependentUpon>
+    <Content Include="angularApp\controllers\Windows10\windows10controller.js.map">
+      <DependentUpon>windows10controller.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="Scripts\angular-animate.js" />
@@ -918,7 +918,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="angularApp\controllers\Windows9\windows9controller.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Windows10\windows10controller.ts" />
     <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
