@@ -5,6 +5,9 @@
 //http://geekswithblogs.net/shaunxu/archive/2014/06/10/host-angularjs-html5mode-in-asp.net-vnext.aspx
 //http://stackoverflow.com/questions/12614072/how-do-i-configure-iis-for-url-rewriting-an-angularjs-application-in-html5-mode
 //https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-configure-your-server-to-work-with-html5mode
+
+/// <reference path="controllers/Windows9/windows9controller.ts"/>
+
 module OneWindowsApp {
     //'use strict';
 
@@ -16,7 +19,7 @@ module OneWindowsApp {
     ////alert(1);
     var localWindow :any = window;
     var myapp: ng.IModule = angular.module('oneWindowsApp', ['ngRoute', 'ngResource', 'ngAnimate']);
-    //myapp.controller("unc", ["$scope", UserNotifications.Controller]);
+    //myapp.controller("Windows9Ctrl", ["$scope", Windows9Ctrl]);
     //myapp.service("service", ScafoldServices.Shared.prototype.injection());
     //myapp.service("directive", ScafoldDirectives.Shared.prototype.injection());
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider : ng.IHttpProvider, $provide : any) {

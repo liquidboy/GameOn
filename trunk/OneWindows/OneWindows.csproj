@@ -70,12 +70,16 @@
     <Content Include="angularApp\controllers\XAML\xamlpostcontroller.js" />
     <Content Include="angularApp\controllers\XAML\xamlcontroller.js" />
     <Content Include="angularApp\controllers\WindowsStore\windowsstorecontroller.js" />
-    <Content Include="angularApp\controllers\Windows9\windows9controller.js" />
+    <Content Include="angularApp\controllers\Windows9\windows9controller.js">
+      <DependentUpon>windows9controller.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\OneCore\onecorecontroller.js" />
     <Content Include="angularApp\controllers\ModernDesktop\moderndesktopcontroller.js" />
     <Content Include="angularApp\controllers\Metro\metrocontroller.js" />
     <Content Include="angularApp\controllers\DotNetNative\dotnetnativecontroller.js" />
-    <Content Include="angularApp\OneWindowsApp.js" />
+    <Content Include="angularApp\OneWindowsApp.js">
+      <DependentUpon>OneWindowsApp.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\services\shared\resourceservice.js" />
     <Content Include="angularApp\views\DirectX12\ShowPost.html" />
     <Content Include="angularApp\views\DirectX12\DirectX12.html" />
@@ -99,6 +103,12 @@
     <Content Include="content\User-Male-white.png" />
     <Content Include="Index.html" />
     <Content Include="packages.config" />
+    <Content Include="angularApp\OneWindowsApp.js.map">
+      <DependentUpon>OneWindowsApp.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\Windows9\windows9controller.js.map">
+      <DependentUpon>windows9controller.ts</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
@@ -908,6 +918,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="angularApp\controllers\Windows9\windows9controller.ts" />
     <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
