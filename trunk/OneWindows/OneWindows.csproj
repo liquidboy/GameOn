@@ -59,7 +59,15 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="angularApp\controllers\DirectX12\directx12postcontroller.js" />
     <Content Include="angularApp\controllers\DirectX12\directx12controller.js" />
+    <Content Include="angularApp\controllers\DotNetNative\dotnetnativepostcontroller.js" />
+    <Content Include="angularApp\controllers\Metro\metropostcontroller.js" />
+    <Content Include="angularApp\controllers\ModernDesktop\moderndesktoppostcontroller.js" />
+    <Content Include="angularApp\controllers\OneCore\onecorepostcontroller.js" />
+    <Content Include="angularApp\controllers\Windows9\windows9postcontroller.js" />
+    <Content Include="angularApp\controllers\WindowsStore\windowsstorepostcontroller.js" />
+    <Content Include="angularApp\controllers\XAML\xamlpostcontroller.js" />
     <Content Include="angularApp\controllers\XAML\xamlcontroller.js" />
     <Content Include="angularApp\controllers\WindowsStore\windowsstorecontroller.js" />
     <Content Include="angularApp\controllers\Windows9\windows9controller.js" />
@@ -68,7 +76,15 @@
     <Content Include="angularApp\controllers\Metro\metrocontroller.js" />
     <Content Include="angularApp\controllers\DotNetNative\dotnetnativecontroller.js" />
     <Content Include="angularApp\OneWindowsApp.js" />
+    <Content Include="angularApp\views\DirectX12\ShowPost.html" />
     <Content Include="angularApp\views\DirectX12\DirectX12.html" />
+    <Content Include="angularApp\views\DotNetNative\ShowPost.html" />
+    <Content Include="angularApp\views\Metro\ShowPost.html" />
+    <Content Include="angularApp\views\ModernDesktop\ShowPost.html" />
+    <Content Include="angularApp\views\OneCore\ShowPost.html" />
+    <Content Include="angularApp\views\Windows9\ShowPost.html" />
+    <Content Include="angularApp\views\WindowsStore\ShowPost.html" />
+    <Content Include="angularApp\views\XAML\ShowPost.html" />
     <Content Include="angularApp\views\XAML\XAML.html" />
     <Content Include="angularApp\views\DotNetNative\DotNetNative.html" />
     <Content Include="angularApp\views\Metro\Metro.html" />
@@ -902,7 +918,9 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="posts\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
