@@ -1,9 +1,9 @@
-﻿app.controller('Windows9PostCtrl', ['$scope', 'resourceSvc', function ($scope, resourceSvc) {
+﻿app.controller('Windows9PostCtrl', ['$scope', '$routeParams', 'resourceSvc', function ($scope, $routeParams, resourceSvc) {
     init();
     function init() {
         loadResources();
     }
     function loadResources() {
-        //$scope.resources = resourceSvc.getTopFiveResources();
+        $scope.postId = $routeParams.postId;
     }
 }]);

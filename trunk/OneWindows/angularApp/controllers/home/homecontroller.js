@@ -4,6 +4,6 @@
         loadResources();
     }
     function loadResources() {
-        $scope.resources = resourceSvc.getTopFiveResources();
+        //$scope.resources = resourceSvc.getTopFiveResources();
     }
 }]);

@@ -81,6 +81,7 @@
     <Content Include="angularApp\partials\Loader.html" />
     <Content Include="angularApp\partials\TopMenu.html" />
     <Content Include="angularApp\services\shared\resourcemngrservice.js" />
+    <Content Include="angularApp\services\shared\resourceservice.js" />
     <Content Include="angularApp\services\shared\servicehelper.js" />
     <Content Include="angularApp\views\about\About.html" />
     <Content Include="angularApp\views\DirectX12\DirectX12.html" />

@@ -76,6 +76,7 @@
     <Content Include="angularApp\controllers\Metro\metrocontroller.js" />
     <Content Include="angularApp\controllers\DotNetNative\dotnetnativecontroller.js" />
     <Content Include="angularApp\OneWindowsApp.js" />
+    <Content Include="angularApp\services\shared\resourceservice.js" />
     <Content Include="angularApp\views\DirectX12\ShowPost.html" />
     <Content Include="angularApp\views\DirectX12\DirectX12.html" />
     <Content Include="angularApp\views\DotNetNative\ShowPost.html" />
