@@ -110,6 +110,7 @@
       <DependentUpon>windows10controller.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
+    <Content Include="random\Windows81vsWindows10-packages.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-cookies.js" />
