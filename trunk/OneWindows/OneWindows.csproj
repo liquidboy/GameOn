@@ -111,6 +111,9 @@
     <Content Include="angularApp\controllers\Windows10\windows10controller.js.map">
       <DependentUpon>windows10controller.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\shared\topmenu.js.map">
+      <DependentUpon>topmenu.ts</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
     <Content Include="Scripts\angular-animate.js" />
@@ -144,7 +147,9 @@
     <Content Include="angularApp\directives\shared\itemdelete.js" />
     <Content Include="angularApp\directives\shared\loadingoverlay.js" />
     <Content Include="angularApp\directives\shared\modal.js" />
-    <Content Include="angularApp\directives\shared\topmenu.js" />
+    <Content Include="angularApp\directives\shared\topmenu.js">
+      <DependentUpon>topmenu.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\helpers\authorizationinterceptor.js" />
     <Content Include="angularApp\partials\confirm-modal.html" />
     <Content Include="angularApp\partials\Loader.html" />
@@ -922,6 +927,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\controllers\Windows10\windows10controller.ts" />
+    <TypeScriptCompile Include="angularApp\directives\shared\topmenu.ts" />
     <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />

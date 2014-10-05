@@ -1,23 +1,34 @@
-﻿//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+﻿
+
+//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
 //http://www.slideshare.net/3x14159265/typescript-angularjs-32029652
-var TopMenuModule;
-(function (TopMenuModule) {
+
+module TopMenuModule {
     'use strict';
-    var TopMenuDirective = (function () {
-        function TopMenuDirective() {
+    export class TopMenuDirective implements ng.IDirective {
+
+        public injection(): Array<any> {
+            return [
+                () => {return new TopMenuDirective()}
+            ];
+        }
+
+        public templateUrl: string;
+        public restrict: string;
+        public replace: boolean;
+
+        constructor() {
+
+
             this.restrict = 'E';
             this.replace = true;
             this.templateUrl = '/angularApp/partials/TopMenu.html';
-        }
-        TopMenuDirective.prototype.injection = function () {
-            return [
-                function () {
-                    return new TopMenuDirective();
-                }
-            ];
-        };
+                
 
-        TopMenuDirective.prototype.link = function ($scope, element, attributes) {
+        }
+
+        public link($scope: ng.IScope, element: JQuery, attributes: ng.IAttributes): void {
+
             var menuItems = element.find("a");
             menuItems.on('click', function () {
                 menuItems.removeClass('active');
@@ -31,13 +42,15 @@ var TopMenuModule;
             $scope.$on('logOn', function () {
                 //$scope.isAuthenticated = true;
             });
-        };
-        return TopMenuDirective;
-    })();
-    TopMenuModule.TopMenuDirective = TopMenuDirective;
-})(TopMenuModule || (TopMenuModule = {}));
 
+        }
+
+    }
+}
+ 
 window["app"].directive("cstTopMenu", TopMenuModule.TopMenuDirective.prototype.injection());
+
+
 //used to be like this before TS came along :)
 //app.directive('cstTopMenu', function () {
 //    return {
@@ -59,4 +72,3 @@ window["app"].directive("cstTopMenu", TopMenuModule.TopMenuDirective.prototype.i
 //        }
 //    };
 //});
-//# sourceMappingURL=topmenu.js.map
