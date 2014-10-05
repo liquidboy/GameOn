@@ -1,9 +1,18 @@
-﻿app.controller('ModernDesktopCtrl', ['$scope', 'resourceSvc', function ($scope, resourceSvc) {
-    init();
-    function init() {
-        loadResources();
+﻿//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+var ModernDesktopCtrl = (function () {
+    function ModernDesktopCtrl($scope, resourceSvc) {
+        this.$scope = $scope;
+        this.resourceSvc = resourceSvc;
+        this.init();
     }
-    function loadResources() {
-        //$scope.resources = resourceSvc.getTopFiveResources();
-    }
-}]);
+    ModernDesktopCtrl.prototype.init = function () {
+        this.loadResources();
+    };
+
+    ModernDesktopCtrl.prototype.loadResources = function () {
+        //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
+    };
+    return ModernDesktopCtrl;
+})();
+window["app"].controller("ModernDesktopCtrl", ["$scope", "resourceSvc", ModernDesktopCtrl]);
+//# sourceMappingURL=ModernDesktopController.js.map

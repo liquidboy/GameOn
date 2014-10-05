@@ -73,11 +73,21 @@
     </Content>
     <Content Include="angularApp\controllers\WindowsStore\windowsstorepostcontroller.js" />
     <Content Include="angularApp\controllers\XAML\xamlpostcontroller.js" />
-    <Content Include="angularApp\controllers\XAML\xamlcontroller.js" />
-    <Content Include="angularApp\controllers\WindowsStore\windowsstorecontroller.js" />
-    <Content Include="angularApp\controllers\OneCore\onecorecontroller.js" />
-    <Content Include="angularApp\controllers\ModernDesktop\moderndesktopcontroller.js" />
-    <Content Include="angularApp\controllers\Metro\metrocontroller.js" />
+    <Content Include="angularApp\controllers\XAML\xamlcontroller.js">
+      <DependentUpon>XAMLController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\WindowsStore\windowsstorecontroller.js">
+      <DependentUpon>WindowsStoreController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\OneCore\onecorecontroller.js">
+      <DependentUpon>OneCoreController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\ModernDesktop\moderndesktopcontroller.js">
+      <DependentUpon>ModernDesktopController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\Metro\metrocontroller.js">
+      <DependentUpon>MetroController.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\DotNetNative\dotnetnativecontroller.js">
       <DependentUpon>DotNetNativeController.ts</DependentUpon>
     </Content>
@@ -131,6 +141,21 @@
     </Content>
     <Content Include="angularApp\controllers\home\HomeController.js.map">
       <DependentUpon>HomeController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\Metro\MetroController.js.map">
+      <DependentUpon>MetroController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\ModernDesktop\ModernDesktopController.js.map">
+      <DependentUpon>ModernDesktopController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\OneCore\OneCoreController.js.map">
+      <DependentUpon>OneCoreController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\WindowsStore\WindowsStoreController.js.map">
+      <DependentUpon>WindowsStoreController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\XAML\XAMLController.js.map">
+      <DependentUpon>XAMLController.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
@@ -949,7 +974,12 @@
     <TypeScriptCompile Include="angularApp\controllers\DirectX12\DirectX12controller.ts" />
     <TypeScriptCompile Include="angularApp\controllers\DotNetNative\DotNetNativeController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home\HomeController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Metro\MetroController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\ModernDesktop\ModernDesktopController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\OneCore\OneCoreController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Windows10\windows10controller.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\WindowsStore\WindowsStoreController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\XAML\XAMLController.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\headerstrip.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\topmenu.ts" />
     <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />
