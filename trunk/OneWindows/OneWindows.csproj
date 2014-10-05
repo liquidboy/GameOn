@@ -78,7 +78,9 @@
     <Content Include="angularApp\controllers\OneCore\onecorecontroller.js" />
     <Content Include="angularApp\controllers\ModernDesktop\moderndesktopcontroller.js" />
     <Content Include="angularApp\controllers\Metro\metrocontroller.js" />
-    <Content Include="angularApp\controllers\DotNetNative\dotnetnativecontroller.js" />
+    <Content Include="angularApp\controllers\DotNetNative\dotnetnativecontroller.js">
+      <DependentUpon>DotNetNativeController.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\shared\headerstrip.js">
       <DependentUpon>headerstrip.ts</DependentUpon>
     </Content>
@@ -124,6 +126,12 @@
     <Content Include="angularApp\controllers\DirectX12\DirectX12controller.js.map">
       <DependentUpon>DirectX12controller.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\DotNetNative\DotNetNativeController.js.map">
+      <DependentUpon>DotNetNativeController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\home\HomeController.js.map">
+      <DependentUpon>HomeController.ts</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
     <Content Include="Scripts\angular-animate.js" />
@@ -147,7 +155,9 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
-    <Content Include="angularApp\controllers\home\homecontroller.js" />
+    <Content Include="angularApp\controllers\home\homecontroller.js">
+      <DependentUpon>HomeController.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\shared\resourcemngrcontroller.js" />
     <Content Include="angularApp\directives\activities\ResourceActivityList.html" />
     <Content Include="angularApp\directives\activities\resourceactivitylist.js" />
@@ -937,6 +947,8 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\controllers\DirectX12\DirectX12controller.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\DotNetNative\DotNetNativeController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\home\HomeController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Windows10\windows10controller.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\headerstrip.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\topmenu.ts" />
