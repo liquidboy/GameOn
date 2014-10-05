@@ -6,44 +6,53 @@
   display: none;
 }
 .header-strip-container {
-  background-color: #3d3d3d;
-  color: #f2f2f2;
-  height: 30px;
+  overflow: hidden;
+  background-color: #2c2c2c;
+  color: #d8d8d8;
+  min-height: 30px;
   width: 100%;
+  padding-bottom: 5px;
 }
 .header-strip-container .ui.hstrip {
-  font-size: 14px;
+  font-size: small;
   padding: 5px;
 }
 .header-strip-container .ui.hstrip div {
+  float: right;
+  margin-left: 10px;
+}
+.menu-container {
   float: left;
-  margin-right: 20px;
+  width: 100%;
 }
 .menu-container .ui {
-  background-color: #257ad7;
-  height: 28px;
+  background-color: #0c61be;
+  min-height: 31px;
+  overflow: hidden;
 }
 .menu-container .ui.menu .item {
-  background-color: #257ad7;
+  background-color: #0c61be;
   padding: 5px;
-  font-size: small;
+  font-size: medium;
   text-decoration: none;
   color: white;
   cursor: pointer;
   white-space: nowrap;
   float: left;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 .menu-container .ui.menu .item.ico-home {
   background-image: url('/content/House-white.png');
-  background-size: 25px;
+  background-size: 30px;
   background-repeat: no-repeat;
-  padding-left: 25px;
+  padding-left: 20px;
 }
 .menu-container .ui.menu .item.ico-user {
   background-image: url('/content/User-Male-white.png');
-  background-size: 25px;
+  background-size: 30px;
   background-repeat: no-repeat;
-  padding-left: 25px;
+  padding-left: 30px;
 }
 .menu-container .ui.menu .item.active {
   background-color: white;
@@ -56,7 +65,7 @@
   background-image: url('/content/User-Male-black.png');
 }
 .menu-container .ui.menu .item:hover {
-  background-color: #1f65b1;
+  background-color: #175394;
 }
 .menu-container .ui.menu .item:hover.active {
   background-color: white;
@@ -65,4 +74,8 @@
 }
 .menu-container .ui.menu .right {
   float: right;
+}
+#main {
+  float: left;
+  width: 100%;
 }
