@@ -79,19 +79,23 @@
   float: left;
   width: 100%;
 }
+.section-header {
+  margin-top: 20px;
+}
 .section-header.centered {
   margin-left: auto ;
   margin-right: auto ;
 }
+.section-header.left {
+  margin-left: 20px;
+}
 .section-header .title-1 {
-  width: 230px ;
   margin-left: auto ;
   margin-right: auto ;
   font-family: 'Lobster', cursive;
   font-size: xx-large;
 }
 .section-header .title-2 {
-  width: 130px ;
   margin-left: auto ;
   margin-right: auto ;
   font-family: 'Lobster', cursive;
@@ -106,14 +110,12 @@
   padding: 0;
 }
 .section-header .subtitle-1 {
-  width: 145px ;
   margin-left: auto ;
   margin-right: auto ;
   font-family: 'Arimo', sans-serif;
   font-size: large;
 }
 .section-header .subtitle-2 {
-  width: 180px ;
   margin-left: auto ;
   margin-right: auto ;
   font-family: 'Arimo', sans-serif;
