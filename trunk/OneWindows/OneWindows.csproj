@@ -77,7 +77,9 @@
     <Content Include="angularApp\controllers\ModernDesktop\moderndesktopcontroller.js" />
     <Content Include="angularApp\controllers\Metro\metrocontroller.js" />
     <Content Include="angularApp\controllers\DotNetNative\dotnetnativecontroller.js" />
-    <Content Include="angularApp\directives\shared\headerstrip.js" />
+    <Content Include="angularApp\directives\shared\headerstrip.js">
+      <DependentUpon>headerstrip.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\OneWindowsApp.js">
       <DependentUpon>OneWindowsApp.ts</DependentUpon>
     </Content>
@@ -113,6 +115,9 @@
     </Content>
     <Content Include="angularApp\directives\shared\topmenu.js.map">
       <DependentUpon>topmenu.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\shared\headerstrip.js.map">
+      <DependentUpon>headerstrip.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
@@ -927,6 +932,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\controllers\Windows10\windows10controller.ts" />
+    <TypeScriptCompile Include="angularApp\directives\shared\headerstrip.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\topmenu.ts" />
     <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />

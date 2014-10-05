@@ -1,32 +1,50 @@
-﻿var HeaderStripModule;
-(function (HeaderStripModule) {
+﻿
+module HeaderStripModule {
     'use strict';
-    var HeaderStripDirective = (function () {
-        function HeaderStripDirective() {
+    export class HeaderStripDirective implements ng.IDirective {
+
+        public injection(): Array<any> {
+            return [
+                () => { return new HeaderStripDirective(); }
+            ];
+        }
+
+        public templateUrl: string;
+        public restrict: string;
+        public replace: boolean; 
+
+        constructor() {
+
+
             this.restrict = 'E';
             this.replace = true;
             this.templateUrl = '/angularApp/partials/HeaderStrip.html';
-        }
-        HeaderStripDirective.prototype.injection = function () {
-            return [
-                function () {
-                    return new HeaderStripDirective();
-                }
-            ];
-        };
 
-        HeaderStripDirective.prototype.link = function ($scope, element, attributes) {
+
+        }
+
+        public link($scope: ng.IScope, element: JQuery, attributes: ng.IAttributes): void {
+
             var menuItems = element.find("div");
-        };
-        return HeaderStripDirective;
-    })();
-    HeaderStripModule.HeaderStripDirective = HeaderStripDirective;
-})(HeaderStripModule || (HeaderStripModule = {}));
+            
+        }
+
+    }
+}
 
 window["app"].directive("cstHeaderStrip", HeaderStripModule.HeaderStripDirective.prototype.injection());
+
+
+
+
+
+
+
+
+
 //app.directive('cstHeaderStrip', function () {
 //    return {
-//        restrict: 'E',
+//        restrict: 'E', 
 //        replace: true,
 //        templateUrl: '/angularApp/partials/HeaderStrip.html',
 //        link: function (scope, element, attrs) {
@@ -35,7 +53,8 @@ window["app"].directive("cstHeaderStrip", HeaderStripModule.HeaderStripDirective
 //            //    menuItems.removeClass('active');
 //            //    $(this).addClass('active');
 //            //});
+
+
 //        }
 //    };
-//});
-//# sourceMappingURL=headerstrip.js.map
+//}); 
