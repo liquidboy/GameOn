@@ -79,3 +79,43 @@
   float: left;
   width: 100%;
 }
+.section-header.centered {
+  margin-left: auto ;
+  margin-right: auto ;
+}
+.section-header .title-1 {
+  width: 230px ;
+  margin-left: auto ;
+  margin-right: auto ;
+  font-family: 'Lobster', cursive;
+  font-size: xx-large;
+}
+.section-header .title-2 {
+  width: 130px ;
+  margin-left: auto ;
+  margin-right: auto ;
+  font-family: 'Lobster', cursive;
+  font-size: large;
+}
+.section-header hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 0;
+  padding: 0;
+}
+.section-header .subtitle-1 {
+  width: 145px ;
+  margin-left: auto ;
+  margin-right: auto ;
+  font-family: 'Arimo', sans-serif;
+  font-size: large;
+}
+.section-header .subtitle-2 {
+  width: 180px ;
+  margin-left: auto ;
+  margin-right: auto ;
+  font-family: 'Arimo', sans-serif;
+  font-size: xx-large;
+}
