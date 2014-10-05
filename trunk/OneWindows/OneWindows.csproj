@@ -60,7 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="angularApp\controllers\DirectX12\directx12postcontroller.js" />
-    <Content Include="angularApp\controllers\DirectX12\directx12controller.js" />
+    <Content Include="angularApp\controllers\DirectX12\directx12controller.js">
+      <DependentUpon>DirectX12controller.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\DotNetNative\dotnetnativepostcontroller.js" />
     <Content Include="angularApp\controllers\Metro\metropostcontroller.js" />
     <Content Include="angularApp\controllers\ModernDesktop\moderndesktoppostcontroller.js" />
@@ -118,6 +120,9 @@
     </Content>
     <Content Include="angularApp\directives\shared\headerstrip.js.map">
       <DependentUpon>headerstrip.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\DirectX12\DirectX12controller.js.map">
+      <DependentUpon>DirectX12controller.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
@@ -931,6 +936,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="angularApp\controllers\DirectX12\DirectX12controller.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Windows10\windows10controller.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\headerstrip.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\topmenu.ts" />
