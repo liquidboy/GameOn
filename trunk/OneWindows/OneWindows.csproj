@@ -77,9 +77,11 @@
     <Content Include="angularApp\controllers\ModernDesktop\moderndesktopcontroller.js" />
     <Content Include="angularApp\controllers\Metro\metrocontroller.js" />
     <Content Include="angularApp\controllers\DotNetNative\dotnetnativecontroller.js" />
+    <Content Include="angularApp\directives\shared\headerstrip.js" />
     <Content Include="angularApp\OneWindowsApp.js">
       <DependentUpon>OneWindowsApp.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\partials\HeaderStrip.html" />
     <Content Include="angularApp\services\shared\resourceservice.js" />
     <Content Include="angularApp\views\DirectX12\ShowPost.html" />
     <Content Include="angularApp\views\DirectX12\DirectX12.html" />

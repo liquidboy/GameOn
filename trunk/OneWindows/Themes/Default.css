@@ -1,49 +1,68 @@
 ﻿body {
   font-family: 'Segoe UI', Arial, Verdana;
+  margin: 0px;
 }
 .hidden {
   display: none;
 }
-.ui.menu .item {
-  background-color: whitesmoke;
+.header-strip-container {
+  background-color: #3d3d3d;
+  color: #f2f2f2;
+  height: 30px;
+  width: 100%;
+}
+.header-strip-container .ui.hstrip {
+  font-size: 14px;
+  padding: 5px;
+}
+.header-strip-container .ui.hstrip div {
+  float: left;
+  margin-right: 20px;
+}
+.menu-container .ui {
+  background-color: #257ad7;
+  height: 28px;
+}
+.menu-container .ui.menu .item {
+  background-color: #257ad7;
   padding: 5px;
   font-size: small;
   text-decoration: none;
-  line-height: 35px;
-  color: black;
+  color: white;
   cursor: pointer;
   white-space: nowrap;
+  float: left;
 }
-.ui.menu .item.ico-home {
-  background-image: url('/content/House-black.png');
-  background-size: 25px;
-  background-repeat: no-repeat;
-  padding-left: 25px;
-}
-.ui.menu .item.ico-user {
-  background-image: url('/content/User-Male-black.png');
-  background-size: 25px;
-  background-repeat: no-repeat;
-  padding-left: 25px;
-}
-.ui.menu .item.active {
-  background-color: black;
-  color: white;
-}
-.ui.menu .item.active.ico-home {
+.menu-container .ui.menu .item.ico-home {
   background-image: url('/content/House-white.png');
+  background-size: 25px;
+  background-repeat: no-repeat;
+  padding-left: 25px;
 }
-.ui.menu .item.active.ico-user {
+.menu-container .ui.menu .item.ico-user {
   background-image: url('/content/User-Male-white.png');
+  background-size: 25px;
+  background-repeat: no-repeat;
+  padding-left: 25px;
 }
-.ui.menu .item:hover {
-  background-color: #e8e8e8;
+.menu-container .ui.menu .item.active {
+  background-color: white;
+  color: black;
 }
-.ui.menu .item:hover.active {
-  background-color: black;
-  color: white;
+.menu-container .ui.menu .item.active.ico-home {
+  background-image: url('/content/House-black.png');
+}
+.menu-container .ui.menu .item.active.ico-user {
+  background-image: url('/content/User-Male-black.png');
+}
+.menu-container .ui.menu .item:hover {
+  background-color: #1f65b1;
+}
+.menu-container .ui.menu .item:hover.active {
+  background-color: white;
+  color: black;
   cursor: default;
 }
-.ui.menu .right {
+.menu-container .ui.menu .right {
   float: right;
 }

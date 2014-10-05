@@ -12,6 +12,7 @@
 </head>
 <body>
     <div ng-controller="ResourceMngrCtrl">
+        <div class="header-strip-container"><cst-header-strip /></div>
         <div class="menu-container"><cst-top-menu ng-hide="isAuthenticated" /></div>
         <section id="main" style="height:90%;">
             <div data-ng-view ng-animate>
@@ -19,6 +20,9 @@
         </section>
         <cst-loading-overlay class="hide"></cst-loading-overlay>
     </div>
+    
+    
+
     <script src="/Scripts/jquery-2.1.1.js"></script>
     <!--<script src="/Scripts/libs/jquery-ui-1.10.3.min.js"></script>-->
     <!--<script src="/Scripts/libs/select2/select2.min.js"></script>-->
@@ -42,6 +46,7 @@
     <!--<script src="/angularApp/directives/shared/modal.js"></script>-->
     <!--<script src="/angularApp/directives/shared/confirmmodal.js"></script>-->
     <script src="/angularApp/directives/shared/topmenu.js"></script>
+    <script src="/angularApp/directives/shared/headerstrip.js"></script>
     <script src="/angularApp/directives/shared/loadingoverlay.js"></script>
     <script src="/angularApp/services/shared/servicehelper.js"></script>
 
