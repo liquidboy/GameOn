@@ -197,6 +197,9 @@
     <Content Include="angularApp\controllers\XAML\XAMLPostController.js.map">
       <DependentUpon>XAMLPostController.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\services\shared\ServiceHelper.js.map">
+      <DependentUpon>ServiceHelper.ts</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
     <Content Include="Scripts\angular-animate.js" />
@@ -240,7 +243,9 @@
     <Content Include="angularApp\partials\Loader.html" />
     <Content Include="angularApp\partials\TopMenu.html" />
     <Content Include="angularApp\services\shared\resourcemngrservice.js" />
-    <Content Include="angularApp\services\shared\servicehelper.js" />
+    <Content Include="angularApp\services\shared\servicehelper.js">
+      <DependentUpon>ServiceHelper.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\views\about\About.html" />
     <Content Include="angularApp\views\home\Home.html" />
     <Content Include="angularApp\views\shared\Error.html" />
@@ -1031,6 +1036,7 @@
     <TypeScriptCompile Include="angularApp\directives\shared\headerstrip.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\topmenu.ts" />
     <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />
+    <TypeScriptCompile Include="angularApp\services\shared\ServiceHelper.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />

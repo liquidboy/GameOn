@@ -34,6 +34,12 @@ var OneWindowsApp;
     myapp.controller("WindowsStoreCtrl", ["$scope", "resourceSvc", Application.Controllers.WindowsStoreCtrl]);
     myapp.controller("XAMLCtrl", ["$scope", "resourceSvc", Application.Controllers.XAMLCtrl]);
 
+    //SERVICES
+    myapp.factory("serviceHelperSvc", [
+        "$http", "$location", function ($http, $location) {
+            return new Application.Services.ServiceHelperSvc($http, $location);
+        }]);
+
     myapp.config([
         '$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {
             //    //$locationProvider.html5Mode(true).hashPrefix('!');

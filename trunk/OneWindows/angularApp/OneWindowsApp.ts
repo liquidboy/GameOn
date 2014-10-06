@@ -43,6 +43,14 @@ module OneWindowsApp {
 
 
 
+    //SERVICES
+    myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location)
+        => new Application.Services.ServiceHelperSvc($http, $location)]);
+
+
+
+
+
 
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider : ng.IHttpProvider, $provide : any) {
     //    //$locationProvider.html5Mode(true).hashPrefix('!');
