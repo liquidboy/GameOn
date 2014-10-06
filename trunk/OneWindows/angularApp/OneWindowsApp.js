@@ -46,4 +46,6 @@ var OneWindowsApp;
     localWindow.app = myapp;
     localWindow.utilities = angular.module("custom-utilities", []);
 })(OneWindowsApp || (OneWindowsApp = {}));
+///http://sirarsalih.com/2014/01/28/when-two-forces-meet-angularjs-typescript/
+///http://stackoverflow.com/questions/24056458/how-can-i-define-an-angularjs-factory-using-typescript-class-that-has-constructo
 //# sourceMappingURL=OneWindowsApp.js.map
