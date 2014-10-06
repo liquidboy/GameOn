@@ -1,5 +1,5 @@
 ﻿
-module HeaderStripModule {
+module Application.Directives {
     'use strict';
     export class HeaderStripDirective implements ng.IDirective {
 
@@ -32,7 +32,7 @@ module HeaderStripModule {
     }
 }
 
-window["app"].directive("cstHeaderStrip", HeaderStripModule.HeaderStripDirective.prototype.injection());
+//window["app"].directive("cstHeaderStrip", Application.Directives.HeaderStripDirective.prototype.injection());
 
 
 

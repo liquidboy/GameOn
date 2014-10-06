@@ -1,18 +1,22 @@
 ﻿//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
-class ModernDesktopCtrl {
-    constructor(public $scope: ng.IScope, public resourceSvc: any) {
-        this.init();
-    }
 
-    private init() {
-        this.loadResources();
-    }
+module Application.Controllers {
+    export class ModernDesktopCtrl {
+        constructor(public $scope: ng.IScope, public resourceSvc: any) {
+            this.init();
+        }
 
-    private loadResources() {
+        private init() {
+            this.loadResources();
+        }
 
-        //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
+        private loadResources() {
+
+            //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
+        }
     }
 }
-window["app"].controller("ModernDesktopCtrl", ["$scope", "resourceSvc", ModernDesktopCtrl]);
+
+//window["app"].controller("ModernDesktopCtrl", ["$scope", "resourceSvc", Application.Controllers.ModernDesktopCtrl]);
 
   

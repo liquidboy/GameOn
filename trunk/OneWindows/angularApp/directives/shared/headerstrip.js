@@ -1,29 +1,31 @@
-﻿var HeaderStripModule;
-(function (HeaderStripModule) {
-    'use strict';
-    var HeaderStripDirective = (function () {
-        function HeaderStripDirective() {
-            this.restrict = 'E';
-            this.replace = true;
-            this.templateUrl = '/angularApp/partials/HeaderStrip.html';
-        }
-        HeaderStripDirective.prototype.injection = function () {
-            return [
-                function () {
-                    return new HeaderStripDirective();
-                }
-            ];
-        };
+﻿var Application;
+(function (Application) {
+    (function (Directives) {
+        'use strict';
+        var HeaderStripDirective = (function () {
+            function HeaderStripDirective() {
+                this.restrict = 'E';
+                this.replace = true;
+                this.templateUrl = '/angularApp/partials/HeaderStrip.html';
+            }
+            HeaderStripDirective.prototype.injection = function () {
+                return [
+                    function () {
+                        return new HeaderStripDirective();
+                    }
+                ];
+            };
 
-        HeaderStripDirective.prototype.link = function ($scope, element, attributes) {
-            var menuItems = element.find("div");
-        };
-        return HeaderStripDirective;
-    })();
-    HeaderStripModule.HeaderStripDirective = HeaderStripDirective;
-})(HeaderStripModule || (HeaderStripModule = {}));
-
-window["app"].directive("cstHeaderStrip", HeaderStripModule.HeaderStripDirective.prototype.injection());
+            HeaderStripDirective.prototype.link = function ($scope, element, attributes) {
+                var menuItems = element.find("div");
+            };
+            return HeaderStripDirective;
+        })();
+        Directives.HeaderStripDirective = HeaderStripDirective;
+    })(Application.Directives || (Application.Directives = {}));
+    var Directives = Application.Directives;
+})(Application || (Application = {}));
+//window["app"].directive("cstHeaderStrip", Application.Directives.HeaderStripDirective.prototype.injection());
 //app.directive('cstHeaderStrip', function () {
 //    return {
 //        restrict: 'E',

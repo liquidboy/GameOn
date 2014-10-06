@@ -1,16 +1,19 @@
 ﻿//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
-class HomeCtrl {
-    constructor(public $scope: ng.IScope, public resourceSvc: any) {
-        this.init();
-    }
-     
-    private init() {
-        this.loadResources();
-    }
+module Application.Controllers {
+    export class HomeCtrl {
+        constructor(public $scope: ng.IScope, public resourceSvc: any) {
+            this.init();
+        }
 
-    private loadResources() {
+        private init() {
+            this.loadResources();
+        }
 
-        //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
+        private loadResources() {
+
+            //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
+        }
     }
 }
-window["app"].controller("HomeCtrl", ["$scope", "resourceSvc", HomeCtrl]);
+
+//window["app"].controller("HomeCtrl", ["$scope", "resourceSvc", Application.Controllers.HomeCtrl]);

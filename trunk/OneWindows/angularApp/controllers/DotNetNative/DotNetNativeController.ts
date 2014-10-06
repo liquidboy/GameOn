@@ -1,17 +1,21 @@
 ﻿//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
-class DotNetNativeCtrl {
-    constructor(public $scope: ng.IScope, public resourceSvc: any) {
-        this.init();
-    }
 
-    private init() {
-        this.loadResources();
-    }
+module Application.Controllers {
+    export class DotNetNativeCtrl {
+        constructor(public $scope: ng.IScope, public resourceSvc: any) {
+            this.init();
+        }
 
-    private loadResources() {
+        private init() {
+            this.loadResources();
+        }
 
-        //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
+        private loadResources() {
+
+            //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
+        }
     }
 }
-window["app"].controller("DotNetNativeCtrl", ["$scope", "resourceSvc", DotNetNativeCtrl]);
+
+//window["app"].controller("DotNetNativeCtrl", ["$scope", "resourceSvc", Application.Controllers.DotNetNativeCtrl]);
 

@@ -3,7 +3,7 @@
 //http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
 //http://www.slideshare.net/3x14159265/typescript-angularjs-32029652
 
-module TopMenuModule {
+module Application.Directives {
     'use strict';
     export class TopMenuDirective implements ng.IDirective {
 
@@ -48,7 +48,7 @@ module TopMenuModule {
     }
 }
  
-window["app"].directive("cstTopMenu", TopMenuModule.TopMenuDirective.prototype.injection());
+//window["app"].directive("cstTopMenu", Application.Directives.TopMenuDirective.prototype.injection());
 
 
 //used to be like this before TS came along :)

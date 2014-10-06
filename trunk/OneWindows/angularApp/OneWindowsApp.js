@@ -17,9 +17,23 @@ var OneWindowsApp;
     var localWindow = window;
     var myapp = angular.module('oneWindowsApp', ['ngRoute', 'ngResource', 'ngAnimate']);
 
-    //myapp.controller("Windows9Ctrl", ["$scope", Windows9Ctrl]);
     //myapp.service("service", ScafoldServices.Shared.prototype.injection());
     //myapp.service("directive", ScafoldDirectives.Shared.prototype.injection());
+    //WIRE UP DIRECTIVES
+    myapp.directive("cstTopMenu", Application.Directives.TopMenuDirective.prototype.injection());
+    myapp.directive("cstHeaderStrip", Application.Directives.HeaderStripDirective.prototype.injection());
+
+    //WIRE UP CONTROLLERS
+    myapp.controller("DirectX12Ctrl", ["$scope", "resourceSvc", Application.Controllers.DirectX12Ctrl]);
+    myapp.controller("DotNetNativeCtrl", ["$scope", "resourceSvc", Application.Controllers.DotNetNativeCtrl]);
+    myapp.controller("HomeCtrl", ["$scope", "resourceSvc", Application.Controllers.HomeCtrl]);
+    myapp.controller("MetroCtrl", ["$scope", "resourceSvc", Application.Controllers.MetroCtrl]);
+    myapp.controller("ModernDesktopCtrl", ["$scope", "resourceSvc", Application.Controllers.ModernDesktopCtrl]);
+    myapp.controller("OneCoreCtrl", ["$scope", "resourceSvc", Application.Controllers.OneCoreCtrl]);
+    myapp.controller("Windows10Ctrl", ["$scope", "resourceSvc", Application.Controllers.Windows10Ctrl]);
+    myapp.controller("WindowsStoreCtrl", ["$scope", "resourceSvc", Application.Controllers.WindowsStoreCtrl]);
+    myapp.controller("XAMLCtrl", ["$scope", "resourceSvc", Application.Controllers.XAMLCtrl]);
+
     myapp.config([
         '$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {
             //    //$locationProvider.html5Mode(true).hashPrefix('!');
