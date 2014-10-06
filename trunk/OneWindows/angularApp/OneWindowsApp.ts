@@ -46,7 +46,8 @@ module OneWindowsApp {
     //SERVICES
     myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location)
         => new Application.Services.ServiceHelperSvc($http, $location)]);
-
+    myapp.factory("resourceSvc", ["$http", "serviceHelperSvc", ($http, $serviceHelperSvc)
+        => new Application.Services.ResourceSvc($http, $serviceHelperSvc)]);
 
 
 

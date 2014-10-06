@@ -2,12 +2,14 @@
 (function (Application) {
     //http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
     (function (Controllers) {
-        //import Services = Application.Services;
         var HomeCtrl = (function () {
             function HomeCtrl($scope, resourceSvc) {
                 this.$scope = $scope;
                 this.resourceSvc = resourceSvc;
-                this.init();
+                //this.init();
+                this.resourceSvc.something(function (data) {
+                    //alert(data.result);
+                });
             }
             HomeCtrl.prototype.init = function () {
                 this.loadResources();

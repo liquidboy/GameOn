@@ -39,6 +39,10 @@ var OneWindowsApp;
         "$http", "$location", function ($http, $location) {
             return new Application.Services.ServiceHelperSvc($http, $location);
         }]);
+    myapp.factory("resourceSvc", [
+        "$http", "serviceHelperSvc", function ($http, $serviceHelperSvc) {
+            return new Application.Services.ResourceSvc($http, $serviceHelperSvc);
+        }]);
 
     myapp.config([
         '$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {

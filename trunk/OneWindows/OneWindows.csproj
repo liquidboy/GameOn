@@ -114,7 +114,9 @@
       <DependentUpon>OneWindowsApp.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\partials\HeaderStrip.html" />
-    <Content Include="angularApp\services\shared\resourceservice.js" />
+    <Content Include="angularApp\services\shared\resourceservice.js">
+      <DependentUpon>ResourceService.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\views\DirectX12\ShowPost.html" />
     <Content Include="angularApp\views\DirectX12\DirectX12.html" />
     <Content Include="angularApp\views\DotNetNative\ShowPost.html" />
@@ -199,6 +201,9 @@
     </Content>
     <Content Include="angularApp\services\shared\ServiceHelper.js.map">
       <DependentUpon>ServiceHelper.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\shared\ResourceService.js.map">
+      <DependentUpon>ResourceService.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
@@ -1036,6 +1041,7 @@
     <TypeScriptCompile Include="angularApp\directives\shared\headerstrip.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\topmenu.ts" />
     <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />
+    <TypeScriptCompile Include="angularApp\services\shared\ResourceService.ts" />
     <TypeScriptCompile Include="angularApp\services\shared\ServiceHelper.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
