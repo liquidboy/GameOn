@@ -114,6 +114,9 @@
       <DependentUpon>OneWindowsApp.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\partials\HeaderStrip.html" />
+    <Content Include="angularApp\services\DataService.js">
+      <DependentUpon>DataService.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\services\shared\resourceservice.js">
       <DependentUpon>ResourceService.ts</DependentUpon>
     </Content>
@@ -204,6 +207,9 @@
     </Content>
     <Content Include="angularApp\services\shared\ResourceService.js.map">
       <DependentUpon>ResourceService.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\DataService.js.map">
+      <DependentUpon>DataService.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
@@ -1041,6 +1047,7 @@
     <TypeScriptCompile Include="angularApp\directives\shared\headerstrip.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\topmenu.ts" />
     <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />
+    <TypeScriptCompile Include="angularApp\services\DataService.ts" />
     <TypeScriptCompile Include="angularApp\services\shared\ResourceService.ts" />
     <TypeScriptCompile Include="angularApp\services\shared\ServiceHelper.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />

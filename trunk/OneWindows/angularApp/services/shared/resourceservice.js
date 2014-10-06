@@ -1,23 +1,6 @@
-﻿//app.factory('resourceSvc', ['$http', 'serviceHelperSvc', 'userProfileSvc', function ($http, serviceHelper, userProfileSvc) {
-var Application;
+﻿var Application;
 (function (Application) {
-    //    var Token = serviceHelper.AuthorizationToken;
-    //    var Account = serviceHelper.Account;
-    //    var buildFormData = function (formData) {
-    //        var dataString = '';
-    //        for (var prop in formData) {
-    //            if (formData.hasOwnProperty(prop)) {
-    //                dataString += (prop + '=' + formData[prop] + '&');
-    //            }
-    //        }
-    //        return dataString.slice(0, dataString.length - 1);
-    //    };
-    //    return {
-    //        something: function (param) {
-    //            return {};
-    //        }
-    //    };
-    //}]);
+    ///http://weblogs.asp.net/dwahlin/using-an-angularjs-factory-to-interact-with-a-restful-service
     (function (Services) {
         var ResourceSvc = (function () {
             function ResourceSvc($http, $serviceHelper) {
