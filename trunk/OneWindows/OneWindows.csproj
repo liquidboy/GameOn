@@ -59,20 +59,36 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="angularApp\controllers\DirectX12\directx12postcontroller.js" />
+    <Content Include="angularApp\controllers\DirectX12\directx12postcontroller.js">
+      <DependentUpon>DirectX12PostController.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\DirectX12\directx12controller.js">
       <DependentUpon>DirectX12controller.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\DotNetNative\dotnetnativepostcontroller.js" />
-    <Content Include="angularApp\controllers\Metro\metropostcontroller.js" />
-    <Content Include="angularApp\controllers\ModernDesktop\moderndesktoppostcontroller.js" />
-    <Content Include="angularApp\controllers\OneCore\onecorepostcontroller.js" />
-    <Content Include="angularApp\controllers\Windows10\windows10postcontroller.js" />
+    <Content Include="angularApp\controllers\DotNetNative\dotnetnativepostcontroller.js">
+      <DependentUpon>DotNetNativePostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\Metro\metropostcontroller.js">
+      <DependentUpon>MetroPostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\ModernDesktop\moderndesktoppostcontroller.js">
+      <DependentUpon>ModernDesktopPostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\OneCore\onecorepostcontroller.js">
+      <DependentUpon>OneCorePostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\Windows10\windows10postcontroller.js">
+      <DependentUpon>Windows10PostController.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\Windows10\windows10controller.js">
       <DependentUpon>windows10controller.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\WindowsStore\windowsstorepostcontroller.js" />
-    <Content Include="angularApp\controllers\XAML\xamlpostcontroller.js" />
+    <Content Include="angularApp\controllers\WindowsStore\windowsstorepostcontroller.js">
+      <DependentUpon>WindowsStorePostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\XAML\xamlpostcontroller.js">
+      <DependentUpon>XAMLPostController.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\XAML\xamlcontroller.js">
       <DependentUpon>XAMLController.ts</DependentUpon>
     </Content>
@@ -156,6 +172,30 @@
     </Content>
     <Content Include="angularApp\controllers\XAML\XAMLController.js.map">
       <DependentUpon>XAMLController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\DirectX12\DirectX12PostController.js.map">
+      <DependentUpon>DirectX12PostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\DotNetNative\DotNetNativePostController.js.map">
+      <DependentUpon>DotNetNativePostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\Metro\MetroPostController.js.map">
+      <DependentUpon>MetroPostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\ModernDesktop\ModernDesktopPostController.js.map">
+      <DependentUpon>ModernDesktopPostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\OneCore\OneCorePostController.js.map">
+      <DependentUpon>OneCorePostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\Windows10\Windows10PostController.js.map">
+      <DependentUpon>Windows10PostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\WindowsStore\WindowsStorePostController.js.map">
+      <DependentUpon>WindowsStorePostController.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\XAML\XAMLPostController.js.map">
+      <DependentUpon>XAMLPostController.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
@@ -972,14 +1012,22 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\controllers\DirectX12\DirectX12controller.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\DirectX12\DirectX12PostController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\DotNetNative\DotNetNativeController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\DotNetNative\DotNetNativePostController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home\HomeController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Metro\MetroController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Metro\MetroPostController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\ModernDesktop\ModernDesktopController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\ModernDesktop\ModernDesktopPostController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\OneCore\OneCoreController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\OneCore\OneCorePostController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Windows10\windows10controller.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Windows10\Windows10PostController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\WindowsStore\WindowsStoreController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\WindowsStore\WindowsStorePostController.ts" />
     <TypeScriptCompile Include="angularApp\controllers\XAML\XAMLController.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\XAML\XAMLPostController.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\headerstrip.ts" />
     <TypeScriptCompile Include="angularApp\directives\shared\topmenu.ts" />
     <TypeScriptCompile Include="angularApp\OneWindowsApp.ts" />

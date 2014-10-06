@@ -1,9 +1,25 @@
-﻿app.controller('DotNetNativePostCtrl', ['$scope', 'resourceSvc', function ($scope, resourceSvc) {
-    init();
-    function init() {
-        loadResources();
-    }
-    function loadResources() {
-        //$scope.resources = resourceSvc.getTopFiveResources();
-    }
-}]);
+﻿//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+var Application;
+(function (Application) {
+    (function (Controllers) {
+        var DotNetNativePostCtrl = (function () {
+            function DotNetNativePostCtrl($scope, resourceSvc) {
+                this.$scope = $scope;
+                this.resourceSvc = resourceSvc;
+                this.init();
+            }
+            DotNetNativePostCtrl.prototype.init = function () {
+                this.loadResources();
+            };
+
+            DotNetNativePostCtrl.prototype.loadResources = function () {
+                //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
+            };
+            return DotNetNativePostCtrl;
+        })();
+        Controllers.DotNetNativePostCtrl = DotNetNativePostCtrl;
+    })(Application.Controllers || (Application.Controllers = {}));
+    var Controllers = Application.Controllers;
+})(Application || (Application = {}));
+//window["app"].controller("DotNetNativeCtrl", ["$scope", "resourceSvc", Application.Controllers.DotNetNativeCtrl]);
+//# sourceMappingURL=DotNetNativePostController.js.map
