@@ -1,5 +1,6 @@
 ﻿var Application;
 (function (Application) {
+    ///http://weblogs.asp.net/dwahlin/using-an-angularjs-factory-to-interact-with-a-restful-service
     (function (Services) {
         var DataSvc = (function () {
             function DataSvc($http, $serviceHelper) {

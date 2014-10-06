@@ -24,6 +24,15 @@ module OneWindowsApp {
     //myapp.service("directive", ScafoldDirectives.Shared.prototype.injection());
 
 
+    //SERVICES
+    myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location)
+        => new Application.Services.ServiceHelperSvc($http, $location)]);
+    myapp.factory("resourceSvc", ["$http", "serviceHelperSvc", ($http, $serviceHelperSvc)
+        => new Application.Services.ResourceSvc($http, $serviceHelperSvc)]);
+    myapp.factory("dataSvc", ["$http", "serviceHelperSvc", ($http, $serviceHelperSvc)
+        => new Application.Services.DataSvc($http, $serviceHelperSvc)]);
+
+
     //WIRE UP DIRECTIVES
     myapp.directive("cstTopMenu", Application.Directives.TopMenuDirective.prototype.injection());
     myapp.directive("cstHeaderStrip", Application.Directives.HeaderStripDirective.prototype.injection());
@@ -33,7 +42,7 @@ module OneWindowsApp {
     //WIRE UP CONTROLLERS
     myapp.controller("DirectX12Ctrl", ["$scope", "resourceSvc", Application.Controllers.DirectX12Ctrl]);
     myapp.controller("DotNetNativeCtrl", ["$scope", "resourceSvc", Application.Controllers.DotNetNativeCtrl]);
-    myapp.controller("HomeCtrl", ["$scope", "resourceSvc", Application.Controllers.HomeCtrl]);
+    myapp.controller("HomeCtrl", ["$scope", "resourceSvc","dataSvc", Application.Controllers.HomeCtrl]);
     myapp.controller("MetroCtrl", ["$scope", "resourceSvc", Application.Controllers.MetroCtrl]);
     myapp.controller("ModernDesktopCtrl", ["$scope", "resourceSvc", Application.Controllers.ModernDesktopCtrl]);
     myapp.controller("OneCoreCtrl", ["$scope", "resourceSvc", Application.Controllers.OneCoreCtrl]);
@@ -43,11 +52,6 @@ module OneWindowsApp {
 
 
 
-    //SERVICES
-    myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location)
-        => new Application.Services.ServiceHelperSvc($http, $location)]);
-    myapp.factory("resourceSvc", ["$http", "serviceHelperSvc", ($http, $serviceHelperSvc)
-        => new Application.Services.ResourceSvc($http, $serviceHelperSvc)]);
 
 
 

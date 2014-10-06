@@ -4,7 +4,7 @@ module Application.Controllers {
     import Services = Application.Services;
 
     export class HomeCtrl {
-        constructor(public $scope: ng.IScope, public resourceSvc: Services.IResource) {
+        constructor(public $scope: ng.IScope, public resourceSvc: Services.IResource, public dataSvc: Services.IData) {
             //this.init();
 
             this.resourceSvc.something(function (data) {

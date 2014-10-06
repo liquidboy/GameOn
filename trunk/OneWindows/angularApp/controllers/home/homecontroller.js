@@ -3,9 +3,10 @@
     //http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
     (function (Controllers) {
         var HomeCtrl = (function () {
-            function HomeCtrl($scope, resourceSvc) {
+            function HomeCtrl($scope, resourceSvc, dataSvc) {
                 this.$scope = $scope;
                 this.resourceSvc = resourceSvc;
+                this.dataSvc = dataSvc;
                 //this.init();
                 this.resourceSvc.something(function (data) {
                     //alert(data.result);

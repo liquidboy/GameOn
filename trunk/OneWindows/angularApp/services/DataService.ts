@@ -1,5 +1,5 @@
 ﻿
-
+///http://weblogs.asp.net/dwahlin/using-an-angularjs-factory-to-interact-with-a-restful-service
 module Application.Services {
 
     export interface IData {
