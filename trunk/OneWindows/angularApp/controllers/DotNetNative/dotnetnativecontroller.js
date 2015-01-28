@@ -1,6 +1,7 @@
-﻿//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
 var Application;
 (function (Application) {
+    var Controllers;
     (function (Controllers) {
         var DotNetNativeCtrl = (function () {
             function DotNetNativeCtrl($scope, resourceSvc) {
@@ -11,15 +12,12 @@ var Application;
             DotNetNativeCtrl.prototype.init = function () {
                 this.loadResources();
             };
-
             DotNetNativeCtrl.prototype.loadResources = function () {
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return DotNetNativeCtrl;
         })();
         Controllers.DotNetNativeCtrl = DotNetNativeCtrl;
-    })(Application.Controllers || (Application.Controllers = {}));
-    var Controllers = Application.Controllers;
+    })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//window["app"].controller("DotNetNativeCtrl", ["$scope", "resourceSvc", Application.Controllers.DotNetNativeCtrl]);
 //# sourceMappingURL=DotNetNativeController.js.map

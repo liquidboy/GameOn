@@ -40,16 +40,38 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Azure.Batch">
+      <HintPath>..\packages\Azure.Batch.1.1.0\lib\net45\Microsoft.Azure.Batch.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.ServiceBus, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.2\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.2\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceBus, Version=2.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WindowsAzure.ServiceBus.2.4.4.0\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
+      <HintPath>..\packages\WindowsAzure.ServiceBus.2.5.3.0\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAzure.Storage.4.3.2-preview\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Spatial, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.6.2\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -224,27 +246,6 @@
     </Content>
     <None Include="Properties\PublishProfiles\onewindows.pubxml" />
     <Content Include="random\Windows81vsWindows10-packages.html" />
-    <Content Include="Scripts\angular-animate.js" />
-    <Content Include="Scripts\angular-animate.min.js" />
-    <Content Include="Scripts\angular-cookies.js" />
-    <Content Include="Scripts\angular-cookies.min.js" />
-    <Content Include="Scripts\angular-csp.css" />
-    <Content Include="Scripts\angular-loader.js" />
-    <Content Include="Scripts\angular-loader.min.js" />
-    <Content Include="Scripts\angular-messages.js" />
-    <Content Include="Scripts\angular-messages.min.js" />
-    <Content Include="Scripts\angular-mocks.js" />
-    <Content Include="Scripts\angular-resource.js" />
-    <Content Include="Scripts\angular-resource.min.js" />
-    <Content Include="Scripts\angular-route.js" />
-    <Content Include="Scripts\angular-route.min.js" />
-    <Content Include="Scripts\angular-sanitize.js" />
-    <Content Include="Scripts\angular-sanitize.min.js" />
-    <Content Include="Scripts\angular-scenario.js" />
-    <Content Include="Scripts\angular-touch.js" />
-    <Content Include="Scripts\angular-touch.min.js" />
-    <Content Include="Scripts\angular.js" />
-    <Content Include="Scripts\angular.min.js" />
     <Content Include="angularApp\controllers\home\homecontroller.js">
       <DependentUpon>HomeController.ts</DependentUpon>
     </Content>
@@ -273,7 +274,42 @@
     <Content Include="angularApp\views\shared\Error.html" />
     <Content Include="angularApp\views\shared\Login.html" />
     <Content Include="angularApp\views\shared\Register.html" />
+    <Content Include="Scripts\angular-animate.js" />
+    <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-aria.js" />
+    <Content Include="Scripts\angular-aria.min.js" />
+    <Content Include="Scripts\angular-cookies.js" />
+    <Content Include="Scripts\angular-cookies.min.js" />
+    <Content Include="Scripts\angular-csp.css" />
+    <Content Include="Scripts\angular-loader.js" />
+    <Content Include="Scripts\angular-loader.min.js" />
+    <Content Include="Scripts\angular-messages.js" />
+    <Content Include="Scripts\angular-messages.min.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-resource.js" />
+    <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
+    <Content Include="Scripts\angular-scenario.js" />
+    <Content Include="Scripts\angular-touch.js" />
+    <Content Include="Scripts\angular-touch.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\config.js" />
+    <Content Include="Scripts\errors.json" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Scripts\angular-messages.min.js.map" />
+    <Content Include="Scripts\angular-loader.min.js.map" />
+    <Content Include="Scripts\angular-cookies.min.js.map" />
+    <Content Include="Scripts\angular-aria.min.js.map" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-et.js" />
@@ -337,6 +373,8 @@
     <Content Include="Scripts\i18n\angular-locale_bez.js" />
     <Content Include="Scripts\i18n\angular-locale_bg-bg.js" />
     <Content Include="Scripts\i18n\angular-locale_bg.js" />
+    <Content Include="Scripts\i18n\angular-locale_bm-latn-ml.js" />
+    <Content Include="Scripts\i18n\angular-locale_bm-latn.js" />
     <Content Include="Scripts\i18n\angular-locale_bm-ml.js" />
     <Content Include="Scripts\i18n\angular-locale_bm.js" />
     <Content Include="Scripts\i18n\angular-locale_bn-bd.js" />
@@ -392,6 +430,8 @@
     <Content Include="Scripts\i18n\angular-locale_de.js" />
     <Content Include="Scripts\i18n\angular-locale_dje-ne.js" />
     <Content Include="Scripts\i18n\angular-locale_dje.js" />
+    <Content Include="Scripts\i18n\angular-locale_dsb-de.js" />
+    <Content Include="Scripts\i18n\angular-locale_dsb.js" />
     <Content Include="Scripts\i18n\angular-locale_dua-cm.js" />
     <Content Include="Scripts\i18n\angular-locale_dua.js" />
     <Content Include="Scripts\i18n\angular-locale_dyo-sn.js" />
@@ -425,8 +465,6 @@
     <Content Include="Scripts\i18n\angular-locale_en-cx.js" />
     <Content Include="Scripts\i18n\angular-locale_en-dg.js" />
     <Content Include="Scripts\i18n\angular-locale_en-dm.js" />
-    <Content Include="Scripts\i18n\angular-locale_en-dsrt-us.js" />
-    <Content Include="Scripts\i18n\angular-locale_en-dsrt.js" />
     <Content Include="Scripts\i18n\angular-locale_en-er.js" />
     <Content Include="Scripts\i18n\angular-locale_en-fj.js" />
     <Content Include="Scripts\i18n\angular-locale_en-fk.js" />
@@ -462,6 +500,7 @@
     <Content Include="Scripts\i18n\angular-locale_en-mt.js" />
     <Content Include="Scripts\i18n\angular-locale_en-mu.js" />
     <Content Include="Scripts\i18n\angular-locale_en-mw.js" />
+    <Content Include="Scripts\i18n\angular-locale_en-my.js" />
     <Content Include="Scripts\i18n\angular-locale_en-na.js" />
     <Content Include="Scripts\i18n\angular-locale_en-nf.js" />
     <Content Include="Scripts\i18n\angular-locale_en-ng.js" />
@@ -609,6 +648,7 @@
     <Content Include="Scripts\i18n\angular-locale_gl-es.js" />
     <Content Include="Scripts\i18n\angular-locale_gl.js" />
     <Content Include="Scripts\i18n\angular-locale_gsw-ch.js" />
+    <Content Include="Scripts\i18n\angular-locale_gsw-fr.js" />
     <Content Include="Scripts\i18n\angular-locale_gsw-li.js" />
     <Content Include="Scripts\i18n\angular-locale_gsw.js" />
     <Content Include="Scripts\i18n\angular-locale_gu-in.js" />
@@ -631,6 +671,8 @@
     <Content Include="Scripts\i18n\angular-locale_hr-ba.js" />
     <Content Include="Scripts\i18n\angular-locale_hr-hr.js" />
     <Content Include="Scripts\i18n\angular-locale_hr.js" />
+    <Content Include="Scripts\i18n\angular-locale_hsb-de.js" />
+    <Content Include="Scripts\i18n\angular-locale_hsb.js" />
     <Content Include="Scripts\i18n\angular-locale_hu-hu.js" />
     <Content Include="Scripts\i18n\angular-locale_hu.js" />
     <Content Include="Scripts\i18n\angular-locale_hy-am.js" />
@@ -705,6 +747,8 @@
     <Content Include="Scripts\i18n\angular-locale_ky.js" />
     <Content Include="Scripts\i18n\angular-locale_lag-tz.js" />
     <Content Include="Scripts\i18n\angular-locale_lag.js" />
+    <Content Include="Scripts\i18n\angular-locale_lb-lu.js" />
+    <Content Include="Scripts\i18n\angular-locale_lb.js" />
     <Content Include="Scripts\i18n\angular-locale_lg-ug.js" />
     <Content Include="Scripts\i18n\angular-locale_lg.js" />
     <Content Include="Scripts\i18n\angular-locale_lkt-us.js" />
@@ -748,12 +792,10 @@
     <Content Include="Scripts\i18n\angular-locale_mn.js" />
     <Content Include="Scripts\i18n\angular-locale_mr-in.js" />
     <Content Include="Scripts\i18n\angular-locale_mr.js" />
-    <Content Include="Scripts\i18n\angular-locale_ms-bn.js" />
     <Content Include="Scripts\i18n\angular-locale_ms-latn-bn.js" />
     <Content Include="Scripts\i18n\angular-locale_ms-latn-my.js" />
     <Content Include="Scripts\i18n\angular-locale_ms-latn-sg.js" />
     <Content Include="Scripts\i18n\angular-locale_ms-latn.js" />
-    <Content Include="Scripts\i18n\angular-locale_ms-my.js" />
     <Content Include="Scripts\i18n\angular-locale_ms.js" />
     <Content Include="Scripts\i18n\angular-locale_mt-mt.js" />
     <Content Include="Scripts\i18n\angular-locale_mt.js" />
@@ -822,6 +864,10 @@
     <Content Include="Scripts\i18n\angular-locale_pt-st.js" />
     <Content Include="Scripts\i18n\angular-locale_pt-tl.js" />
     <Content Include="Scripts\i18n\angular-locale_pt.js" />
+    <Content Include="Scripts\i18n\angular-locale_qu-bo.js" />
+    <Content Include="Scripts\i18n\angular-locale_qu-ec.js" />
+    <Content Include="Scripts\i18n\angular-locale_qu-pe.js" />
+    <Content Include="Scripts\i18n\angular-locale_qu.js" />
     <Content Include="Scripts\i18n\angular-locale_rm-ch.js" />
     <Content Include="Scripts\i18n\angular-locale_rm.js" />
     <Content Include="Scripts\i18n\angular-locale_rn-bi.js" />
@@ -850,6 +896,7 @@
     <Content Include="Scripts\i18n\angular-locale_sbp.js" />
     <Content Include="Scripts\i18n\angular-locale_se-fi.js" />
     <Content Include="Scripts\i18n\angular-locale_se-no.js" />
+    <Content Include="Scripts\i18n\angular-locale_se-se.js" />
     <Content Include="Scripts\i18n\angular-locale_se.js" />
     <Content Include="Scripts\i18n\angular-locale_seh-mz.js" />
     <Content Include="Scripts\i18n\angular-locale_seh.js" />
@@ -868,6 +915,8 @@
     <Content Include="Scripts\i18n\angular-locale_sk.js" />
     <Content Include="Scripts\i18n\angular-locale_sl-si.js" />
     <Content Include="Scripts\i18n\angular-locale_sl.js" />
+    <Content Include="Scripts\i18n\angular-locale_smn-fi.js" />
+    <Content Include="Scripts\i18n\angular-locale_smn.js" />
     <Content Include="Scripts\i18n\angular-locale_sn-zw.js" />
     <Content Include="Scripts\i18n\angular-locale_sn.js" />
     <Content Include="Scripts\i18n\angular-locale_so-dj.js" />
@@ -982,6 +1031,8 @@
     <Content Include="Scripts\i18n\angular-locale_xog.js" />
     <Content Include="Scripts\i18n\angular-locale_yav-cm.js" />
     <Content Include="Scripts\i18n\angular-locale_yav.js" />
+    <Content Include="Scripts\i18n\angular-locale_yi-001.js" />
+    <Content Include="Scripts\i18n\angular-locale_yi.js" />
     <Content Include="Scripts\i18n\angular-locale_yo-bj.js" />
     <Content Include="Scripts\i18n\angular-locale_yo-ng.js" />
     <Content Include="Scripts\i18n\angular-locale_yo.js" />
@@ -1002,25 +1053,14 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
-    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
-    <Content Include="Scripts\version.json" />
-    <Content Include="Scripts\errors.json" />
-    <Content Include="Scripts\angular-touch.min.js.map" />
-    <Content Include="Scripts\angular-sanitize.min.js.map" />
-    <Content Include="Scripts\angular-route.min.js.map" />
-    <Content Include="Scripts\angular-resource.min.js.map" />
-    <Content Include="Scripts\angular-messages.min.js.map" />
-    <Content Include="Scripts\angular-loader.min.js.map" />
-    <Content Include="Scripts\angular-cookies.min.js.map" />
-    <Content Include="Scripts\angular-animate.min.js.map" />
-    <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Themes\Default.css">
       <DependentUpon>Default.less</DependentUpon>
     </Content>
     <Content Include="Themes\Default.less" />
+    <Content Include="Scripts\version.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1069,7 +1109,6 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>

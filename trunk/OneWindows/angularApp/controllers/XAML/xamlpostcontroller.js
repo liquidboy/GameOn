@@ -1,6 +1,7 @@
-﻿var Application;
+//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+var Application;
 (function (Application) {
-    //http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+    var Controllers;
     (function (Controllers) {
         var XAMLPostCtrl = (function () {
             function XAMLPostCtrl($scope, resourceSvc) {
@@ -11,15 +12,12 @@
             XAMLPostCtrl.prototype.init = function () {
                 this.loadResources();
             };
-
             XAMLPostCtrl.prototype.loadResources = function () {
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return XAMLPostCtrl;
         })();
         Controllers.XAMLPostCtrl = XAMLPostCtrl;
-    })(Application.Controllers || (Application.Controllers = {}));
-    var Controllers = Application.Controllers;
+    })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//window["app"].controller("XAMLCtrl", ["$scope", "resourceSvc", Application.Controllers.XAMLCtrl]);
 //# sourceMappingURL=XAMLPostController.js.map

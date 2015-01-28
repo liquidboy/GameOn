@@ -1,6 +1,7 @@
-﻿var Application;
+//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+var Application;
 (function (Application) {
-    //http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+    var Controllers;
     (function (Controllers) {
         var Windows10Ctrl = (function () {
             function Windows10Ctrl($scope, resourceSvc) {
@@ -11,15 +12,12 @@
             Windows10Ctrl.prototype.init = function () {
                 this.loadResources();
             };
-
             Windows10Ctrl.prototype.loadResources = function () {
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return Windows10Ctrl;
         })();
         Controllers.Windows10Ctrl = Windows10Ctrl;
-    })(Application.Controllers || (Application.Controllers = {}));
-    var Controllers = Application.Controllers;
+    })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//window["app"].controller("Windows10Ctrl", ["$scope", "resourceSvc", Application.Controllers.Windows10Ctrl]);
 //# sourceMappingURL=windows10controller.js.map

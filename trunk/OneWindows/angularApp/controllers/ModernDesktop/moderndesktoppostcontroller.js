@@ -1,6 +1,7 @@
-﻿//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
 var Application;
 (function (Application) {
+    var Controllers;
     (function (Controllers) {
         var ModernDesktopPostCtrl = (function () {
             function ModernDesktopPostCtrl($scope, resourceSvc) {
@@ -11,15 +12,12 @@ var Application;
             ModernDesktopPostCtrl.prototype.init = function () {
                 this.loadResources();
             };
-
             ModernDesktopPostCtrl.prototype.loadResources = function () {
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return ModernDesktopPostCtrl;
         })();
         Controllers.ModernDesktopPostCtrl = ModernDesktopPostCtrl;
-    })(Application.Controllers || (Application.Controllers = {}));
-    var Controllers = Application.Controllers;
+    })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//window["app"].controller("ModernDesktopCtrl", ["$scope", "resourceSvc", Application.Controllers.ModernDesktopCtrl]);
 //# sourceMappingURL=ModernDesktopPostController.js.map

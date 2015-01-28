@@ -1,6 +1,7 @@
-﻿var Application;
+//http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+var Application;
 (function (Application) {
-    //http://aboutcode.net/2013/10/20/typescript-angularjs-controller-classes.html
+    var Controllers;
     (function (Controllers) {
         var XAMLCtrl = (function () {
             function XAMLCtrl($scope, resourceSvc) {
@@ -11,15 +12,12 @@
             XAMLCtrl.prototype.init = function () {
                 this.loadResources();
             };
-
             XAMLCtrl.prototype.loadResources = function () {
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return XAMLCtrl;
         })();
         Controllers.XAMLCtrl = XAMLCtrl;
-    })(Application.Controllers || (Application.Controllers = {}));
-    var Controllers = Application.Controllers;
+    })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//window["app"].controller("XAMLCtrl", ["$scope", "resourceSvc", Application.Controllers.XAMLCtrl]);
 //# sourceMappingURL=XAMLController.js.map

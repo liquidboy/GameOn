@@ -1,4 +1,4 @@
-﻿//app.factory('serviceHelperSvc', ['$http', '$resource', function ($http, $resource) {
+//app.factory('serviceHelperSvc', ['$http', '$resource', function ($http, $resource) {
 //    var baseUrl = config.apiurl;
 //    var buildUrl = function (resourceUrl) {
 //        return baseUrl + resourceUrl;
@@ -26,9 +26,10 @@
 //                { resourceId: '@ResourceId', activityId: '@Id' })
 //    };
 //}]);
+///http://sirarsalih.com/2014/01/28/when-two-forces-meet-angularjs-typescript/
 var Application;
 (function (Application) {
-    ///http://sirarsalih.com/2014/01/28/when-two-forces-meet-angularjs-typescript/
+    var Services;
     (function (Services) {
         var ServiceHelperSvc = (function () {
             function ServiceHelperSvc($http, $location) {
@@ -42,7 +43,6 @@ var Application;
                     }
                 ];
             };
-
             ServiceHelperSvc.prototype.getAuthorizationToken = function (successCallback) {
                 this.http.get(this.location.absUrl()).success(function (data, status) {
                     successCallback(data);
@@ -53,7 +53,6 @@ var Application;
             return ServiceHelperSvc;
         })();
         Services.ServiceHelperSvc = ServiceHelperSvc;
-    })(Application.Services || (Application.Services = {}));
-    var Services = Application.Services;
+    })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=ServiceHelper.js.map

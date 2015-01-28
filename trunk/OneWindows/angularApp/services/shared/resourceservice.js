@@ -1,6 +1,7 @@
-﻿var Application;
+///http://weblogs.asp.net/dwahlin/using-an-angularjs-factory-to-interact-with-a-restful-service
+var Application;
 (function (Application) {
-    ///http://weblogs.asp.net/dwahlin/using-an-angularjs-factory-to-interact-with-a-restful-service
+    var Services;
     (function (Services) {
         var ResourceSvc = (function () {
             function ResourceSvc($http, $serviceHelper) {
@@ -14,14 +15,12 @@
                     }
                 ];
             };
-
             ResourceSvc.prototype.something = function (successCallback) {
                 successCallback({ result: "data returned from resource service" });
             };
             return ResourceSvc;
         })();
         Services.ResourceSvc = ResourceSvc;
-    })(Application.Services || (Application.Services = {}));
-    var Services = Application.Services;
+    })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=ResourceService.js.map
