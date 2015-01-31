@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "USoStupid", "USoStupid\USoS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatIAteAndDrank", "WhatIAteAndDrank\WhatIAteAndDrank.csproj", "{F55A01B3-9100-4CF1-9F34-5DC93DAF28DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libStorage", "libStorage\libStorage.csproj", "{0DE6099A-4F48-4DBA-AE4F-EE37E262935A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{F55A01B3-9100-4CF1-9F34-5DC93DAF28DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F55A01B3-9100-4CF1-9F34-5DC93DAF28DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F55A01B3-9100-4CF1-9F34-5DC93DAF28DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DE6099A-4F48-4DBA-AE4F-EE37E262935A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE6099A-4F48-4DBA-AE4F-EE37E262935A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE6099A-4F48-4DBA-AE4F-EE37E262935A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE6099A-4F48-4DBA-AE4F-EE37E262935A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
