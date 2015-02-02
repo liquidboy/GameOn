@@ -100,6 +100,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="angularApp\controllers\home\homecontroller.js" />
+    <Content Include="angularApp\services\shared\resourcemngrservice.js" />
+    <Content Include="angularApp\services\shared\resourceservice.js" />
+    <Content Include="angularApp\services\shared\servicehelper.js" />
+    <Content Include="angularApp\views\home\home.html" />
+    <Content Include="angularApp\views\shared\Error.html" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
@@ -126,6 +132,7 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\config.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-et.js" />
@@ -920,6 +927,7 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="angularApp\USoStupidApp.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />

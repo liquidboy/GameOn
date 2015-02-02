@@ -1,46 +1,81 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html data-ng-app="USoStupidApp">
 <head>
     <title>U So Stupid!</title>
     <style type="text/css">
-
-
-
         body {
-            background-color:#ffd800;
-            color:white;
-            font-family:Arial;
-            
+            background-color: white;
+            color: whitesmoke;
+            font-family: Arial;
         }
 
         .resized-full-area {
-            width:100%;
-            height:100%;
+            width: 100%;
+            height: 100%;
         }
 
 
         .Absolute-Center-headphones {
-          width: 150px;
-          height: 150px;
-          overflow: auto;
-          margin: auto;
-          position: absolute;
-          top: 0; left: 0; bottom: 0; right: 0;
+            width: 150px;
+            height: 150px;
+            overflow: auto;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
         }
 
         .Absolute-Center-onitsway {
-          width: 210px;
-          height: 40px;
-          overflow: auto;
-          margin: auto;
-          position: absolute;
-          top: 100px; left: 0; bottom: 0; right: 0;
+            width: 210px;
+            height: 40px;
+            overflow: auto;
+            margin: auto;
+            position: absolute;
+            top: 100px;
+            left: 0;
+            bottom: 0;
+            right: 0;
         }
     </style>
 </head>
 <body>
     <div class="Absolute-Center-headphones"><img src="/Content/CommingSoon/Headphone-01.png" /></div>
     <div class="Absolute-Center-onitsway"></div>
+
+
+    <div ng-controller="HomeCtrl">
+        homo
+    </div>
+    <script src="/Scripts/jquery-2.1.3.js"></script>
+    <!--<script src="/Scripts/libs/jquery-ui-1.10.3.min.js"></script>-->
+    <!--<script src="/Scripts/libs/select2/select2.min.js"></script>-->
+    <script src="/Scripts/angular.js"></script>
+    <script src="/Scripts/angular-resource.js"></script>
+    <script src="/Scripts/angular-route.js"></script>
+    <script src="/Scripts/angular-animate.js"></script>
+    <!--<script src="/Scripts/angular-ui/select2.min.js"></script>-->
+    <!--<script src="/Scripts/libs/semantic/semantic.min.js"></script>-->
+    <!--<script src="/Scripts/libs/ng-table/ng-table.min.js"></script>-->
+    <script src="/Scripts/config.js"></script>
+    <!--<script src="/Scripts/app/ngscripts.js"></script>-->
+    <!--<script src="/angularApp/app.js"></script>-->
+    <script src="/angularApp/USoStupidApp.js"></script>
+    <!--<script src="/angularApp/controllers/shared/resourcemngrcontroller.js"></script>-->
+    <script src="/angularApp/services/shared/resourcemngrservice.js"></script>
+    <script src="/angularApp/services/shared/resourceservice.js"></script>
+    <!--<script src="/angularApp/directives/shared/datepicker.js"></script>-->
+    <!--<script src="/angularApp/directives/shared/modal.js"></script>-->
+    <!--<script src="/angularApp/directives/shared/confirmmodal.js"></script>-->
+    <!--<script src="/angularApp/directives/shared/topmenu.js"></script>-->
+    <!--<script src="/angularApp/directives/shared/loadingoverlay.js"></script>-->
+    <script src="/angularApp/services/shared/servicehelper.js"></script>
+
+
+
+    <script src="/angularApp/controllers/home/homecontroller.js"></script>
+    <!--<script src="/angularApp/helpers/authorizationinterceptor.js"></script>-->
 
 </body>
 </html>
