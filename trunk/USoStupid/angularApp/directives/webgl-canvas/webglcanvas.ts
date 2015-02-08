@@ -25,9 +25,36 @@ module Application.Directives {
 
         public link($scope: ng.IScope, element: JQuery, attributes: ng.IAttributes): void {
 
-            //var menuItems = element.find("div");
+            var renderCanvas = element.find("canvas[id='render']");
 
         }
+
+
+
+        public hasWebGLSupportWithExtensions(extensions) {
+            var canvas = document.createElement('canvas');
+            var gl = null;
+            try {
+                gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            } catch (e) {
+                return false;
+            }
+            if (gl === null) {
+                return false;
+            }
+
+            for (var i = 0; i < extensions.length; ++i) {
+                if (gl.getExtension(extensions[i]) === null) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
+
+
 
     }
 }
