@@ -27,7 +27,7 @@ module USoStupidApp {
 
 
     //WIRE UP DIRECTIVES
-
+    myapp.directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.prototype.injection());
 
 
     //WIRE UP CONTROLLERS

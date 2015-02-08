@@ -104,6 +104,8 @@
       <DependentUpon>HomeController.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\controllers\shared\resourcemngrcontroller.js" />
+    <Content Include="angularApp\directives\WebGLCanvas.html" />
+    <Content Include="angularApp\directives\webglcanvas.js" />
     <Content Include="angularApp\services\DataService.js">
       <DependentUpon>DataService.ts</DependentUpon>
     </Content>
@@ -900,6 +902,7 @@
       <DependentUpon>HomeController.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\USoStupidApp.js.map" />
+    <Content Include="angularApp\directives\webglcanvas.js.map" />
     <None Include="Properties\PublishProfiles\USoStupid - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\USoStupid - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\USoStupid.pubxml" />
@@ -951,9 +954,11 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="ThirdParty\_lib\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\controllers\home\HomeController.ts" />
+    <TypeScriptCompile Include="angularApp\directives\webglcanvas.ts" />
     <TypeScriptCompile Include="angularApp\services\DataService.ts" />
     <TypeScriptCompile Include="angularApp\services\shared\ResourceService.ts" />
     <TypeScriptCompile Include="angularApp\services\shared\ServiceHelper.ts" />

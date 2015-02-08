@@ -17,6 +17,7 @@ var USoStupidApp;
     myapp.factory("resourceSvc", ["$http", "serviceHelperSvc", function ($http, $serviceHelperSvc) { return new Application.Services.ResourceSvc($http, $serviceHelperSvc); }]);
     myapp.factory("dataSvc", ["$http", "serviceHelperSvc", function ($http, $serviceHelperSvc) { return new Application.Services.DataSvc($http, $serviceHelperSvc); }]);
     //WIRE UP DIRECTIVES
+    myapp.directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.prototype.injection());
     //WIRE UP CONTROLLERS
     myapp.controller("HomeCtrl", ["$scope", "resourceSvc", "dataSvc", Application.Controllers.HomeCtrl]);
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {
