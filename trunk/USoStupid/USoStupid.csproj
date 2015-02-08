@@ -902,9 +902,11 @@
     <Content Include="angularApp\USoStupidApp.js.map" />
     <None Include="Properties\PublishProfiles\USoStupid - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\USoStupid - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\USoStupid.pubxml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
     <Content Include="Scripts\jquery-2.1.3.min.js" />
+    <Content Include="Themes\Default.css" />
     <Content Include="ThirdParty\Flow\flow.css" />
     <Content Include="ThirdParty\Flow\flow.js" />
     <Content Include="ThirdParty\Flow\index.html" />

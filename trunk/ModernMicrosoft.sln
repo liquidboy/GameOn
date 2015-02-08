@@ -39,6 +39,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "USoStupid", "USoStupid\USoS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatIAteAndDrank", "WhatIAteAndDrank\WhatIAteAndDrank.csproj", "{F55A01B3-9100-4CF1-9F34-5DC93DAF28DD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{937C7393-6E57-4B15-B4CE-3D44DFD6A3BC}"
+	ProjectSection(SolutionItems) = preProject
+		WE-browsers.xml = WE-browsers.xml
+		WebEssentials-Settings.json = WebEssentials-Settings.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
