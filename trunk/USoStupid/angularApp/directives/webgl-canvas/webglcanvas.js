@@ -7,7 +7,7 @@ var Application;
             function WebGLCanvasDirective() {
                 this.restrict = 'E';
                 this.replace = true;
-                this.templateUrl = '/angularApp/directives/WebGLCanvas.html';
+                this.templateUrl = '/angularApp/directives/webgl-canvas/WebGLCanvas.html';
             }
             WebGLCanvasDirective.prototype.injection = function () {
                 return [

@@ -18,7 +18,7 @@ module Application.Directives {
 
             this.restrict = 'E';
             this.replace = true;
-            this.templateUrl = '/angularApp/directives/WebGLCanvas.html';
+            this.templateUrl = '/angularApp/directives/webgl-canvas/WebGLCanvas.html';
 
 
         }
