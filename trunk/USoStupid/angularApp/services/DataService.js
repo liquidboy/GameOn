@@ -3,24 +3,26 @@ var Application;
 (function (Application) {
     var Services;
     (function (Services) {
-        var ResourceSvc = (function () {
-            function ResourceSvc($http, $serviceHelper) {
+        var DataSvc = (function () {
+            function DataSvc($http, $serviceHelper) {
+                this.urlBase = '/api/';
                 this.http = $http;
                 this.serviceHelper = $serviceHelper;
             }
-            ResourceSvc.prototype.injection = function () {
+            DataSvc.prototype.injection = function () {
                 return [
                     function () {
                         return [Services.ServiceHelperSvc];
                     }
                 ];
             };
-            ResourceSvc.prototype.something = function (successCallback) {
-                successCallback({ result: "data returned from resource service" });
+            DataSvc.prototype.getLatestPosts = function (batchSize, area, successCallback) {
+                var data = this.http.get(this.urlBase + 'posts/latest/' + area);
+                successCallback({ result: "data returned from data service of size " + batchSize });
             };
-            return ResourceSvc;
+            return DataSvc;
         })();
-        Services.ResourceSvc = ResourceSvc;
+        Services.DataSvc = DataSvc;
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=ResourceService.js.map
+//# sourceMappingURL=DataService.js.map

@@ -1,3 +1,4 @@
+/// <reference path="controllers/home/homecontroller.ts"/>
 var USoStupidApp;
 (function (USoStupidApp) {
     //'use strict';
@@ -9,9 +10,15 @@ var USoStupidApp;
     ////alert(1);
     var localWindow = window;
     var myapp = angular.module('USoStupidApp', ['ngRoute', 'ngResource', 'ngAnimate']);
-    //myapp.controller("unc", ["$scope", UserNotifications.Controller]);
     //myapp.service("service", ScafoldServices.Shared.prototype.injection());
     //myapp.service("directive", ScafoldDirectives.Shared.prototype.injection());
+    //SERVICES
+    myapp.factory("serviceHelperSvc", ["$http", "$location", function ($http, $location) { return new Application.Services.ServiceHelperSvc($http, $location); }]);
+    myapp.factory("resourceSvc", ["$http", "serviceHelperSvc", function ($http, $serviceHelperSvc) { return new Application.Services.ResourceSvc($http, $serviceHelperSvc); }]);
+    myapp.factory("dataSvc", ["$http", "serviceHelperSvc", function ($http, $serviceHelperSvc) { return new Application.Services.DataSvc($http, $serviceHelperSvc); }]);
+    //WIRE UP DIRECTIVES
+    //WIRE UP CONTROLLERS
+    myapp.controller("HomeCtrl", ["$scope", "resourceSvc", "dataSvc", Application.Controllers.HomeCtrl]);
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {
         //    //$locationProvider.html5Mode(true).hashPrefix('!');
         //    $locationProvider.html5Mode(true);
@@ -23,15 +30,15 @@ var USoStupidApp;
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
         //$httpProvider.defaults.useXDomain = true;
         $locationProvider.html5Mode(true);
-        $routeProvider.when('/Home', { templateUrl: '/angularApp/views/home/home.html', controller: 'HomeCtrl' }).when('/Error', { templateUrl: '/angularApp/views/shared/Error.html' }).otherwise({
+        $routeProvider.when('/Home', { templateUrl: '/angularApp/views/home/Home.html', controller: 'HomeCtrl' }).when('/Error', { templateUrl: '/angularApp/views/shared/Error.html' }).otherwise({
             redirectTo: '/Home'
         });
         //$httpProvider.interceptors.push('authorizationInterceptor');
         //$httpProvider.interceptors.push('httpInterceptor');
     }]);
-    //myapp.factory('userProfileSvc', () => {
-    //    return {};
-    //});
+    myapp.factory('userProfileSvc', function () {
+        return {};
+    });
     localWindow.app = myapp;
     localWindow.utilities = angular.module("custom-utilities", []);
 })(USoStupidApp || (USoStupidApp = {}));

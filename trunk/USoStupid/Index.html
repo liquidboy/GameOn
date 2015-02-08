@@ -2,6 +2,11 @@
 <html data-ng-app="USoStupidApp">
 <head>
     <title>U So Stupid!</title>
+    <base href="/" />
+
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+
     <style type="text/css">
         body {
             background-color: white;
@@ -46,7 +51,8 @@
 
 
     <div ng-controller="HomeCtrl">
-        homo
+        <div data-ng-view ng-animate>
+        </div>
     </div>
     <script src="/Scripts/jquery-2.1.3.js"></script>
     <!--<script src="/Scripts/libs/jquery-ui-1.10.3.min.js"></script>-->
@@ -55,27 +61,43 @@
     <script src="/Scripts/angular-resource.js"></script>
     <script src="/Scripts/angular-route.js"></script>
     <script src="/Scripts/angular-animate.js"></script>
-    <!--<script src="/Scripts/angular-ui/select2.min.js"></script>-->
-    <!--<script src="/Scripts/libs/semantic/semantic.min.js"></script>-->
-    <!--<script src="/Scripts/libs/ng-table/ng-table.min.js"></script>-->
+
     <script src="/Scripts/config.js"></script>
-    <!--<script src="/Scripts/app/ngscripts.js"></script>-->
-    <!--<script src="/angularApp/app.js"></script>-->
-    <script src="/angularApp/USoStupidApp.js"></script>
-    <!--<script src="/angularApp/controllers/shared/resourcemngrcontroller.js"></script>-->
-    <script src="/angularApp/services/shared/resourcemngrservice.js"></script>
-    <script src="/angularApp/services/shared/resourceservice.js"></script>
-    <!--<script src="/angularApp/directives/shared/datepicker.js"></script>-->
-    <!--<script src="/angularApp/directives/shared/modal.js"></script>-->
-    <!--<script src="/angularApp/directives/shared/confirmmodal.js"></script>-->
-    <!--<script src="/angularApp/directives/shared/topmenu.js"></script>-->
-    <!--<script src="/angularApp/directives/shared/loadingoverlay.js"></script>-->
+
+
+
+
+
+    <!-- SERVICES -->
     <script src="/angularApp/services/shared/servicehelper.js"></script>
+    <script src="/angularApp/services/shared/resourceservice.js"></script>
+    <script src="/angularApp/services/DataService.js"></script>
 
 
 
+    <!-- DIRECTIVES -->
+
+
+
+
+    <!-- CONTROLLERS -->
     <script src="/angularApp/controllers/home/homecontroller.js"></script>
-    <!--<script src="/angularApp/helpers/authorizationinterceptor.js"></script>-->
+    
+
+
+
+
+    <!-- BOOTSTRAP APP -->
+    <script src="/angularApp/USoStupidApp.js"></script>
+
+
+
+
+    <!--NEED TO REWRITE IN TS-->
+
+    <script src="/angularApp/controllers/shared/resourcemngrcontroller.js"></script>
+    <script src="/angularApp/services/shared/resourcemngrservice.js"></script>
+
 
 </body>
 </html>
