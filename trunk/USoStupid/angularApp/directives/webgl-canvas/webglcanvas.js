@@ -136,6 +136,74 @@ var Application;
                 var gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
                 gl.getExtension('OES_texture_float');
                 gl.clearColor(0.0, 0.0, 0.0, 0.0);
+                var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
+                var randomNumbers = [];
+                for (var i = 0; i < maxParticleCount; ++i) {
+                    randomNumbers[i] = Math.random();
+                }
+                var randomSpherePoints = [];
+                for (var i = 0; i < maxParticleCount; ++i) {
+                    var point = this.randomPointInSphere();
+                    randomSpherePoints.push(point);
+                }
+                var particleVertexBuffer;
+                var spawnTexture;
+                var particleVertexBuffers = []; //one for each quality level
+                var spawnTextures = []; //one for each quality level
+                for (var i = 0; i < this.QUALITY_LEVELS.length; ++i) {
+                    var width = this.QUALITY_LEVELS[i].resolution[0];
+                    var height = this.QUALITY_LEVELS[i].resolution[1];
+                    var count = width * height;
+                    particleVertexBuffers[i] = gl.createBuffer();
+                    var particleTextureCoordinates = new Float32Array(width * height * 2);
+                    for (var y = 0; y < height; ++y) {
+                        for (var x = 0; x < width; ++x) {
+                            particleTextureCoordinates[(y * width + x) * 2] = (x + 0.5) / width;
+                            particleTextureCoordinates[(y * width + x) * 2 + 1] = (y + 0.5) / height;
+                        }
+                    }
+                    gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffers[i]);
+                    gl.bufferData(gl.ARRAY_BUFFER, particleTextureCoordinates, gl.STATIC_DRAW);
+                    delete particleTextureCoordinates;
+                    var spawnData = new Float32Array(count * 4);
+                    for (var j = 0; j < count; ++j) {
+                        var position = randomSpherePoints[j];
+                        var positionX = position[0] * this.SPAWN_RADIUS;
+                        var positionY = position[1] * this.SPAWN_RADIUS;
+                        var positionZ = position[2] * this.SPAWN_RADIUS;
+                        var lifetime = this.BASE_LIFETIME + randomNumbers[j] * this.MAX_ADDITIONAL_LIFETIME;
+                        spawnData[j * 4] = positionX;
+                        spawnData[j * 4 + 1] = positionY;
+                        spawnData[j * 4 + 2] = positionZ;
+                        spawnData[j * 4 + 3] = lifetime;
+                    }
+                    spawnTextures[i] = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, width, height, spawnData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+                    delete spawnData;
+                }
+                var offsetData = new Float32Array(maxParticleCount * 4);
+                for (var i = 0; i < maxParticleCount; ++i) {
+                    var position = randomSpherePoints[i];
+                    var positionX = position[0] * this.OFFSET_RADIUS;
+                    var positionY = position[1] * this.OFFSET_RADIUS;
+                    var positionZ = position[2] * this.OFFSET_RADIUS;
+                    offsetData[i * 4] = positionX;
+                    offsetData[i * 4 + 1] = positionY;
+                    offsetData[i * 4 + 2] = positionZ;
+                    offsetData[i * 4 + 3] = 0.0;
+                }
+                var offsetTexture = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+                delete randomNumbers;
+                delete randomSpherePoints;
+                delete offsetData;
+                var particleCountWidth = 0;
+                var particleCountHeight = 0;
+                var particleCount = particleCountWidth * particleCountHeight;
+                var particleDiameter = 0.0;
+                var particleAlpha = 0.0;
+                var changingParticleCount = false;
+                var oldParticleDiameter;
+                var oldParticleCountWidth;
+                var oldParticleCountHeight;
             };
             FlowController.prototype.hasWebGLSupportWithExtensions = function (extensions) {
                 var canvas = document.createElement('canvas');

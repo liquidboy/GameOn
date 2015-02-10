@@ -49,6 +49,9 @@ module Application.Directives {
         initCanvas: (canvas: any) => void;
     }
 
+
+
+
     class FlowController {
 
         private MAX_DELTA_TIME = 0.2;
@@ -172,6 +175,17 @@ module Application.Directives {
         };
 
 
+
+
+       
+
+
+
+
+
+
+
+
         constructor(private $scope: IFlowScope,
             private $routeParams: any) {
 
@@ -185,6 +199,586 @@ module Application.Directives {
             var gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
             gl.getExtension('OES_texture_float');
             gl.clearColor(0.0, 0.0, 0.0, 0.0);
+
+
+
+            var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
+
+            var randomNumbers = [];
+            for (var i = 0; i < maxParticleCount; ++i) {
+                randomNumbers[i] = Math.random();
+            }
+
+            var randomSpherePoints = [];
+            for (var i = 0; i < maxParticleCount; ++i) {
+                var point = this.randomPointInSphere();
+                randomSpherePoints.push(point);
+            }
+
+            var particleVertexBuffer;
+            var spawnTexture;
+
+            var particleVertexBuffers = []; //one for each quality level
+            var spawnTextures = []; //one for each quality level
+
+            for (var i = 0; i < this.QUALITY_LEVELS.length; ++i) {
+                var width = this.QUALITY_LEVELS[i].resolution[0];
+                var height = this.QUALITY_LEVELS[i].resolution[1];
+
+                var count = width * height;
+
+                particleVertexBuffers[i] = gl.createBuffer();
+
+                var particleTextureCoordinates = new Float32Array(width * height * 2);
+                for (var y = 0; y < height; ++y) {
+                    for (var x = 0; x < width; ++x) {
+                        particleTextureCoordinates[(y * width + x) * 2] = (x + 0.5) / width;
+                        particleTextureCoordinates[(y * width + x) * 2 + 1] = (y + 0.5) / height;
+                    }
+                }
+
+                gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffers[i]);
+                gl.bufferData(gl.ARRAY_BUFFER, particleTextureCoordinates, gl.STATIC_DRAW);
+
+                delete particleTextureCoordinates;
+
+                var spawnData = new Float32Array(count * 4);
+                for (var j = 0; j < count; ++j) {
+                    var position = randomSpherePoints[j];
+
+                    var positionX = position[0] * this.SPAWN_RADIUS;
+                    var positionY = position[1] * this.SPAWN_RADIUS;
+                    var positionZ = position[2] * this.SPAWN_RADIUS;
+                    var lifetime = this.BASE_LIFETIME + randomNumbers[j] * this.MAX_ADDITIONAL_LIFETIME;
+
+                    spawnData[j * 4] = positionX;
+                    spawnData[j * 4 + 1] = positionY;
+                    spawnData[j * 4 + 2] = positionZ;
+                    spawnData[j * 4 + 3] = lifetime;
+                }
+
+                spawnTextures[i] = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, width, height, spawnData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+
+                delete spawnData;
+            }
+
+            var offsetData = new Float32Array(maxParticleCount * 4);
+            for (var i = 0; i < maxParticleCount; ++i) {
+                var position = randomSpherePoints[i];
+
+                var positionX = position[0] * this.OFFSET_RADIUS;
+                var positionY = position[1] * this.OFFSET_RADIUS;
+                var positionZ = position[2] * this.OFFSET_RADIUS;
+
+                offsetData[i * 4] = positionX;
+                offsetData[i * 4 + 1] = positionY;
+                offsetData[i * 4 + 2] = positionZ;
+                offsetData[i * 4 + 3] = 0.0;
+            }
+
+            var offsetTexture = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+
+            delete randomNumbers;
+            delete randomSpherePoints;
+            delete offsetData;
+
+            var particleCountWidth = 0;
+            var particleCountHeight = 0;
+            var particleCount = particleCountWidth * particleCountHeight;
+
+            var particleDiameter = 0.0;
+            var particleAlpha = 0.0;
+
+            var changingParticleCount = false;
+            var oldParticleDiameter;
+            var oldParticleCountWidth;
+            var oldParticleCountHeight;
+
+
+            var particleTextureA = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+            var particleTextureB = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+
+            //var camera = new Camera(canvas);
+
+            var projectionMatrix = this.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
+
+            var lightViewMatrix = new Float32Array(16);
+            this.makeLookAtMatrix(lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
+            var lightProjectionMatrix = this.makeOrthographicMatrix(new Float32Array(16), this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
+
+            var lightViewProjectionMatrix = new Float32Array(16);
+            this.premultiplyMatrix(lightViewProjectionMatrix, lightViewMatrix, lightProjectionMatrix);
+
+            var hue = 0;
+            var timeScale = this.INITIAL_SPEED;
+            var persistence = this.INITIAL_TURBULENCE;
+
+
+            //this.setHue = function (newHue) {
+            //    hue = newHue;
+            //};
+
+            //this.setTimeScale = function (newTimeScale) {
+            //    timeScale = newTimeScale;
+            //};
+
+            //this.setPersistence = function (newPersistence) {
+            //    persistence = newPersistence;
+            //};
+
+            //var resampleFramebuffer = gl.createFramebuffer();
+
+            //var qualityLevel = -1;
+
+            //this.changeQualityLevel = function (newLevel) {
+            //    qualityLevel = newLevel;
+
+            //    particleAlpha = QUALITY_LEVELS[qualityLevel].alpha;
+            //    changingParticleCount = true;
+
+            //    oldParticleDiameter = particleDiameter;
+            //    particleDiameter = QUALITY_LEVELS[qualityLevel].diameter;
+
+            //    oldParticleCountWidth = particleCountWidth;
+            //    oldParticleCountHeight = particleCountHeight;
+            //    particleCountWidth = QUALITY_LEVELS[qualityLevel].resolution[0];
+            //    particleCountHeight = QUALITY_LEVELS[qualityLevel].resolution[1];
+
+            //    particleCount = particleCountWidth * particleCountHeight;
+            //}
+
+            //this.changeQualityLevel(0);
+
+            //variables used for sorting
+            var totalSortSteps = (this.log2(particleCount) * (this.log2(particleCount) + 1)) / 2;
+            var sortStepsLeft = totalSortSteps;
+            var sortPass = -1;
+            var sortStage = -1;
+
+            var opacityTexture = this.buildTexture(gl, 0, gl.RGBA, gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.LINEAR, gl.LINEAR); //opacity from the light's point of view
+
+            var simulationFramebuffer = gl.createFramebuffer();
+            var sortFramebuffer = gl.createFramebuffer();
+
+            var opacityFramebuffer = this.buildFramebuffer(gl, opacityTexture);
+
+            var simulationProgramWrapper = this.buildProgramWrapper(gl,
+                this.buildShader(gl, gl.VERTEX_SHADER, SIMULATION_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, SIMULATION_FRAGMENT_SHADER_SOURCE),
+                { 'a_position': 0 }
+                );
+
+            var renderingProgramWrapper = this.buildProgramWrapper(gl,
+                this.buildShader(gl, gl.VERTEX_SHADER, RENDERING_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, RENDERING_FRAGMENT_SHADER_SOURCE),
+                { 'a_textureCoordinates': 0 }
+                );
+
+            var opacityProgramWrapper = this.buildProgramWrapper(gl,
+                this.buildShader(gl, gl.VERTEX_SHADER, OPACITY_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, OPACITY_FRAGMENT_SHADER_SOURCE),
+                { 'a_textureCoordinates': 0 }
+                );
+
+            var sortProgramWrapper = this.buildProgramWrapper(gl,
+                this.buildShader(gl, gl.VERTEX_SHADER, SORT_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, SORT_FRAGMENT_SHADER_SOURCE),
+                { 'a_position': 0 }
+                );
+
+            var resampleProgramWrapper = this.buildProgramWrapper(gl,
+                this.buildShader(gl, gl.VERTEX_SHADER, RESAMPLE_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, RESAMPLE_FRAGMENT_SHADER_SOURCE),
+                { 'a_position': 0 }
+                );
+
+            var floorProgramWrapper = this.buildProgramWrapper(gl,
+                this.buildShader(gl, gl.VERTEX_SHADER, FLOOR_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, FLOOR_FRAGMENT_SHADER_SOURCE),
+                { 'a_vertexPosition': 0 }
+                );
+
+            var backgroundProgramWrapper = this.buildProgramWrapper(gl,
+                this.buildShader(gl, gl.VERTEX_SHADER, BACKGROUND_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, BACKGROUND_FRAGMENT_SHADER_SOURCE),
+                { 'a_position': 0 }
+                );
+
+            var fullscreenVertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), gl.STATIC_DRAW);
+
+            var floorVertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, floorVertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                this.FLOOR_ORIGIN[0], this.FLOOR_ORIGIN[1], this.FLOOR_ORIGIN[2],
+                this.FLOOR_ORIGIN[0], this.FLOOR_ORIGIN[1], this.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
+                this.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.FLOOR_ORIGIN[1], this.FLOOR_ORIGIN[2],
+                this.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.FLOOR_ORIGIN[1], this.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
+            ]), gl.STATIC_DRAW);
+
+
+            var onresize = function () {
+                var aspectRatio = window.innerWidth / window.innerHeight;
+                this.makePerspectiveMatrix(projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            };
+
+            window.addEventListener('resize', onresize);
+            onresize();
+
+
+            var firstFrame = true;
+
+
+            var flipped = false;
+
+            var lastTime = 0.0;
+            var render = function render(currentTime) {
+                var deltaTime = (currentTime - lastTime) / 1000 || 0.0;
+                lastTime = currentTime;
+
+                if (deltaTime > this.MAX_DELTA_TIME) {
+                    deltaTime = 0;
+                }
+
+                if (changingParticleCount) {
+                    deltaTime = 0;
+                    changingParticleCount = false;
+
+                    particleVertexBuffer = particleVertexBuffers[this.qualityLevel];
+                    spawnTexture = spawnTextures[this.qualityLevel];
+
+                    //reset sort
+                    totalSortSteps = (this.log2(particleCount) * (this.log2(particleCount) + 1)) / 2;
+                    sortStepsLeft = totalSortSteps;
+                    sortPass = -1;
+                    sortStage = -1;
+
+                    if (oldParticleCountHeight === 0 && oldParticleCountWidth === 0) { //initial generation
+                        var particleData = new Float32Array(particleCount * 4);
+
+                        for (var i = 0; i < particleCount; ++i) {
+                            var position = this.randomPointInSphere();
+
+                            var positionX = position[0] * this.SPAWN_RADIUS;
+                            var positionY = position[1] * this.SPAWN_RADIUS;
+                            var positionZ = position[2] * this.SPAWN_RADIUS;
+
+                            particleData[i * 4] = positionX;
+                            particleData[i * 4 + 1] = positionY;
+                            particleData[i * 4 + 2] = positionZ;
+                            particleData[i * 4 + 3] = Math.random() * this.BASE_LIFETIME;
+                        }
+
+                        gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, particleCountWidth, particleCountHeight, 0, gl.RGBA, gl.FLOAT, particleData);
+
+                        delete particleData;
+
+                        gl.bindTexture(gl.TEXTURE_2D, particleTextureB);
+                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, particleCountWidth, particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
+                    } else {
+                        //resample from A into B
+                        gl.bindTexture(gl.TEXTURE_2D, particleTextureB);
+                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, particleCountWidth, particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
+
+                        gl.enableVertexAttribArray(0);
+                        gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+                        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+                        gl.enableVertexAttribArray(0);
+
+                        gl.useProgram(resampleProgramWrapper.program);
+                        gl.uniform1i(resampleProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                        gl.uniform1i(resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
+
+                        if (particleCount > oldParticleCountWidth * oldParticleCountHeight) { //if we are upsampling we need to add random sphere offsets
+                            gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], oldParticleDiameter);
+                        } else { //if downsampling we can just leave positions as they are
+                            gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
+                        }
+
+                        gl.activeTexture(gl.TEXTURE0);
+                        gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+
+                        gl.activeTexture(gl.TEXTURE1);
+                        gl.bindTexture(gl.TEXTURE_2D, offsetTexture);
+
+                        gl.bindFramebuffer(gl.FRAMEBUFFER, this.resampleFramebuffer);
+                        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
+
+                        gl.viewport(0, 0, particleCountWidth, particleCountHeight);
+
+                        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+                        gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, particleCountWidth, particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
+
+                        var temp = particleTextureA;
+                        particleTextureA = particleTextureB;
+                        particleTextureB = temp;
+                    }
+                }
+
+
+                var flippedThisFrame = false; //if the order reversed this frame
+
+                var viewDirection = camera.getViewDirection();
+
+                var halfVector;
+
+                if (this.dotVectors(viewDirection, this.LIGHT_DIRECTION) > 0.0) {
+                    halfVector = new Float32Array([
+                        this.LIGHT_DIRECTION[0] + viewDirection[0],
+                        this.LIGHT_DIRECTION[1] + viewDirection[1],
+                        this.LIGHT_DIRECTION[2] + viewDirection[2],
+                    ]);
+                    this.normalizeVector(halfVector, halfVector);
+
+                    if (flipped) {
+                        flippedThisFrame = true;
+                    }
+
+                    flipped = false;
+                } else {
+                    halfVector = new Float32Array([
+                        this.LIGHT_DIRECTION[0] - viewDirection[0],
+                        this.LIGHT_DIRECTION[1] - viewDirection[1],
+                        this.LIGHT_DIRECTION[2] - viewDirection[2],
+                    ]);
+                    this.normalizeVector(halfVector, halfVector);
+
+                    if (!flipped) {
+                        flippedThisFrame = true;
+                    }
+
+                    flipped = true;
+                }
+
+                gl.disable(gl.DEPTH_TEST);
+
+                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                gl.clearColor(0.0, 0.0, 0.0, 0.0);
+                gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+
+                for (var i = 0; i < (firstFrame ? this.BASE_LIFETIME / this.PRESIMULATION_DELTA_TIME : 1); ++i) {
+                    gl.enableVertexAttribArray(0);
+                    gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+                    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+                    gl.useProgram(simulationProgramWrapper.program);
+                    gl.uniform2f(simulationProgramWrapper.uniformLocations['u_resolution'], particleCountWidth, particleCountHeight);
+                    gl.uniform1f(simulationProgramWrapper.uniformLocations['u_deltaTime'], firstFrame ? this.PRESIMULATION_DELTA_TIME : deltaTime * timeScale);
+                    gl.uniform1f(simulationProgramWrapper.uniformLocations['u_time'], firstFrame ? this.PRESIMULATION_DELTA_TIME : currentTime);
+                    gl.uniform1i(simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
+
+                    gl.uniform1f(simulationProgramWrapper.uniformLocations['u_persistence'], persistence);
+
+                    gl.uniform1i(simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
+
+                    gl.disable(gl.BLEND);
+
+                    gl.activeTexture(gl.TEXTURE1);
+                    gl.bindTexture(gl.TEXTURE_2D, spawnTexture);
+
+                    //render from A -> B
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, simulationFramebuffer);
+                    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
+
+                    //swap A and B
+                    var temp = particleTextureA;
+                    particleTextureA = particleTextureB;
+                    particleTextureB = temp;
+
+                    gl.viewport(0, 0, particleCountWidth, particleCountHeight);
+
+                    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+                    if (firstFrame) gl.flush();
+                }
+
+                firstFrame = false;
+
+                gl.disable(gl.BLEND);
+
+                gl.enableVertexAttribArray(0);
+                gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+                gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+                if (flippedThisFrame) { //if the order reversed this frame sort everything
+                    sortPass = -1;
+                    sortStage = -1;
+                    sortStepsLeft = totalSortSteps;
+                }
+
+                for (var i = 0; i < (flippedThisFrame ? totalSortSteps : this.SORT_PASSES_PER_FRAME); ++i) {
+                    sortPass--;
+                    if (sortPass < 0) {
+                        sortStage++;
+                        sortPass = sortStage;
+                    }
+
+                    gl.useProgram(sortProgramWrapper.program);
+
+                    gl.uniform1i(sortProgramWrapper.uniformLocations['u_dataTexture'], 0);
+                    gl.uniform2f(sortProgramWrapper.uniformLocations['u_resolution'], particleCountWidth, particleCountHeight);
+
+                    gl.uniform1f(sortProgramWrapper.uniformLocations['pass'], 1 << sortPass);
+                    gl.uniform1f(sortProgramWrapper.uniformLocations['stage'], 1 << sortStage);
+
+                    gl.uniform3fv(sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
+
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, sortFramebuffer);
+                    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
+
+                    gl.viewport(0, 0, particleCountWidth, particleCountHeight);
+
+                    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+                    var temp = particleTextureA;
+                    particleTextureA = particleTextureB;
+                    particleTextureB = temp;
+
+                    sortStepsLeft--;
+
+                    if (sortStepsLeft === 0) {
+                        sortStepsLeft = totalSortSteps;
+                        sortPass = -1;
+                        sortStage = -1;
+                    }
+                }
+
+                gl.bindFramebuffer(gl.FRAMEBUFFER, opacityFramebuffer);
+                gl.clearColor(0.0, 0.0, 0.0, 0.0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+
+                for (var i = 0; i < this.SLICES; ++i) {
+                    //render particles
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+                    gl.viewport(0, 0, canvas.width, canvas.height);
+
+                    gl.useProgram(renderingProgramWrapper.program);
+
+                    gl.uniform1i(renderingProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                    gl.uniform1i(renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
+
+                    gl.uniformMatrix4fv(renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
+                    gl.uniformMatrix4fv(renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, projectionMatrix);
+
+                    gl.uniformMatrix4fv(renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, lightViewProjectionMatrix);
+
+                    gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleDiameter'], particleDiameter);
+                    gl.uniform1f(renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
+
+                    gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleAlpha'], particleAlpha);
+
+                    var colorRGB = this.hsvToRGB(hue, this.PARTICLE_SATURATION, this.PARTICLE_VALUE);
+                    gl.uniform3f(renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
+
+                    gl.uniform1i(renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);
+
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+
+                    gl.activeTexture(gl.TEXTURE1);
+                    gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
+
+                    gl.enableVertexAttribArray(0);
+                    gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffer);
+                    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+
+                    if (!flipped) {
+                        gl.enable(gl.BLEND);
+                        gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                        gl.blendFunc(gl.ONE_MINUS_DST_ALPHA, gl.ONE);
+                    } else {
+                        gl.enable(gl.BLEND);
+                        gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+                    }
+
+                    gl.drawArrays(gl.POINTS, i * (particleCount / this.SLICES), particleCount / this.SLICES);
+
+                    //render to opacity texture
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, opacityFramebuffer);
+
+                    gl.viewport(0, 0, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION);
+
+                    gl.useProgram(opacityProgramWrapper.program);
+
+                    gl.uniform1i(opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
+
+                    gl.uniformMatrix4fv(opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, lightViewMatrix);
+                    gl.uniformMatrix4fv(opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, lightProjectionMatrix);
+
+                    gl.uniform1f(opacityProgramWrapper.uniformLocations['u_particleDiameter'], particleDiameter);
+                    gl.uniform1f(opacityProgramWrapper.uniformLocations['u_screenWidth'], this.OPACITY_TEXTURE_RESOLUTION);
+
+                    gl.uniform1f(opacityProgramWrapper.uniformLocations['u_particleAlpha'], particleAlpha);
+
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+
+                    gl.enableVertexAttribArray(0);
+                    gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffer);
+                    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+                    gl.enable(gl.BLEND);
+                    gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+                    gl.drawArrays(gl.POINTS, i * (particleCount / this.SLICES), particleCount / this.SLICES);
+                }
+
+                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+                gl.viewport(0, 0, canvas.width, canvas.height);
+
+                gl.useProgram(floorProgramWrapper.program);
+
+                gl.enableVertexAttribArray(0);
+                gl.bindBuffer(gl.ARRAY_BUFFER, floorVertexBuffer);
+                gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+
+                gl.uniformMatrix4fv(floorProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
+                gl.uniformMatrix4fv(floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, projectionMatrix);
+
+                gl.uniformMatrix4fv(floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, lightViewProjectionMatrix);
+
+                gl.uniform1i(floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
+
+                gl.enable(gl.BLEND);
+                gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                gl.blendFunc(gl.ONE_MINUS_DST_ALPHA, gl.ONE);
+
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+                gl.viewport(0, 0, canvas.width, canvas.height);
+
+                gl.enableVertexAttribArray(0);
+                gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+                gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+                gl.useProgram(backgroundProgramWrapper.program);
+
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+                requestAnimationFrame(render);
+            };
+            //render();
+
 
         }
 
