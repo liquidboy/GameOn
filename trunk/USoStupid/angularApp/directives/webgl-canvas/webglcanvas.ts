@@ -30,7 +30,7 @@ module Application.Directives {
             this.controller = ['$scope', '$routeParams', FlowController];
             this.link = ($scope: IFlowScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: FlowController) => {
 
-                var renderCanvas = element.find("canvas[id='render']");
+                var renderCanvas = element.find("canvas[id='render']")[0];
 
                 if ($scope.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
                     $scope.initCanvas(renderCanvas);
