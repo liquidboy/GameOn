@@ -28,7 +28,7 @@ module USoStupidApp {
 
     //WIRE UP DIRECTIVES
     myapp.directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.prototype.injection());
-
+    
 
     //WIRE UP CONTROLLERS
     myapp.controller("HomeCtrl", ["$scope", "resourceSvc","dataSvc", Application.Controllers.HomeCtrl]);

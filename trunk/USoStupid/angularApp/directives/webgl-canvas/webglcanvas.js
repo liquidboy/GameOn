@@ -5,9 +5,17 @@ var Application;
         'use strict';
         var WebGLCanvasDirective = (function () {
             function WebGLCanvasDirective() {
+                this.scope = {};
                 this.restrict = 'E';
                 this.replace = true;
                 this.templateUrl = '/angularApp/directives/webgl-canvas/WebGLCanvas.html';
+                this.controller = ['$scope', '$routeParams', FlowController];
+                this.link = function ($scope, element, attributes, controller) {
+                    var renderCanvas = element.find("canvas[id='render']");
+                    if ($scope.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
+                        $scope.initCanvas(renderCanvas);
+                    }
+                };
             }
             WebGLCanvasDirective.prototype.injection = function () {
                 return [
@@ -16,13 +24,25 @@ var Application;
                     }
                 ];
             };
-            WebGLCanvasDirective.prototype.link = function ($scope, element, attributes) {
-                var renderCanvas = element.find("canvas[id='render']");
-                if (this.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
-                    var flow = new Flow(renderCanvas);
-                }
-            };
-            WebGLCanvasDirective.prototype.hasWebGLSupportWithExtensions = function (extensions) {
+            WebGLCanvasDirective.$inject = [function () {
+                return new WebGLCanvasDirective();
+            }];
+            return WebGLCanvasDirective;
+        })();
+        Directives.WebGLCanvasDirective = WebGLCanvasDirective;
+        var FlowController = (function () {
+            function FlowController($scope, $routeParams) {
+                var _this = this;
+                this.$scope = $scope;
+                this.$routeParams = $routeParams;
+                this.options = {
+                    premultipliedAlpha: false,
+                    alpha: true
+                };
+                $scope.hasWebGLSupportWithExtensions = function (extensions) { return _this.hasWebGLSupportWithExtensions(extensions); };
+                $scope.initCanvas = function (canvas) { return _this.initCanvas(canvas); };
+            }
+            FlowController.prototype.hasWebGLSupportWithExtensions = function (extensions) {
                 var canvas = document.createElement('canvas');
                 var gl = null;
                 try {
@@ -41,22 +61,13 @@ var Application;
                 }
                 return true;
             };
-            return WebGLCanvasDirective;
-        })();
-        Directives.WebGLCanvasDirective = WebGLCanvasDirective;
-        var Flow = (function () {
-            function Flow(canvas) {
-                this.options = {
-                    premultipliedAlpha: false,
-                    alpha: true
-                };
+            FlowController.prototype.initCanvas = function (canvas) {
                 var gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
                 gl.getExtension('OES_texture_float');
                 gl.clearColor(0.0, 0.0, 0.0, 0.0);
-            }
-            return Flow;
+            };
+            return FlowController;
         })();
-        Directives.Flow = Flow;
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=webglcanvas.js.map
