@@ -1054,43 +1054,43 @@ module Application.Directives {
 
             var opacityFramebuffer = this.buildFramebuffer(gl, opacityTexture);
 
-            var simulationProgramWrapper = this.buildProgramWrapper(gl,
+            var simulationProgramWrapper: any = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.SIMULATION_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.SIMULATION_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
-            var renderingProgramWrapper = this.buildProgramWrapper(gl,
+            var renderingProgramWrapper: any = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.RENDERING_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.RENDERING_FRAGMENT_SHADER_SOURCE),
                 { 'a_textureCoordinates': 0 }
                 );
 
-            var opacityProgramWrapper = this.buildProgramWrapper(gl,
+            var opacityProgramWrapper: any = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.OPACITY_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.OPACITY_FRAGMENT_SHADER_SOURCE),
                 { 'a_textureCoordinates': 0 }
                 );
 
-            var sortProgramWrapper = this.buildProgramWrapper(gl,
+            var sortProgramWrapper : any = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.SORT_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.SORT_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
-            var resampleProgramWrapper = this.buildProgramWrapper(gl,
+            var resampleProgramWrapper : any = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.RESAMPLE_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.RESAMPLE_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
-            var floorProgramWrapper = this.buildProgramWrapper(gl,
+            var floorProgramWrapper: any = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.FLOOR_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.FLOOR_FRAGMENT_SHADER_SOURCE),
                 { 'a_vertexPosition': 0 }
                 );
 
-            var backgroundProgramWrapper = this.buildProgramWrapper(gl,
+            var backgroundProgramWrapper: any = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.BACKGROUND_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.BACKGROUND_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
@@ -1186,7 +1186,7 @@ module Application.Directives {
                         gl.uniform1i(resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
 
                         if (__this.particleCount > __this.oldParticleCountWidth * __this.oldParticleCountHeight) { //if we are upsampling we need to add random sphere offsets
-                            gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], this.oldParticleDiameter);
+                            gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], __this.oldParticleDiameter);
                         } else { //if downsampling we can just leave positions as they are
                             gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
                         }
@@ -1197,15 +1197,15 @@ module Application.Directives {
                         gl.activeTexture(gl.TEXTURE1);
                         gl.bindTexture(gl.TEXTURE_2D, offsetTexture);
 
-                        gl.bindFramebuffer(gl.FRAMEBUFFER, this.resampleFramebuffer);
+                        gl.bindFramebuffer(gl.FRAMEBUFFER, resampleFramebuffer);
                         gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
 
-                        gl.viewport(0, 0, this.particleCountWidth, this.particleCountHeight);
+                        gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
 
                         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
                         gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
-                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
+                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
 
                         var temp = particleTextureA;
                         particleTextureA = particleTextureB;

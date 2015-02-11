@@ -836,7 +836,7 @@ var Application;
                             gl.uniform1i(resampleProgramWrapper.uniformLocations['u_particleTexture'], 0);
                             gl.uniform1i(resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
                             if (__this.particleCount > __this.oldParticleCountWidth * __this.oldParticleCountHeight) {
-                                gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], this.oldParticleDiameter);
+                                gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], __this.oldParticleDiameter);
                             }
                             else {
                                 gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
@@ -845,12 +845,12 @@ var Application;
                             gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
                             gl.activeTexture(gl.TEXTURE1);
                             gl.bindTexture(gl.TEXTURE_2D, offsetTexture);
-                            gl.bindFramebuffer(gl.FRAMEBUFFER, this.resampleFramebuffer);
+                            gl.bindFramebuffer(gl.FRAMEBUFFER, resampleFramebuffer);
                             gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
-                            gl.viewport(0, 0, this.particleCountWidth, this.particleCountHeight);
+                            gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
                             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
                             gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
-                            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
+                            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
                             var temp = particleTextureA;
                             particleTextureA = particleTextureB;
                             particleTextureB = temp;
