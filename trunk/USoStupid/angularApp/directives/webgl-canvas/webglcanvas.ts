@@ -209,8 +209,6 @@ module Application.Directives {
             var mouseDown = false;
             var __this = this;
 
-
-
             
             var recomputeViewMatrix = function () {
                 var xRotationMatrix = new Float32Array(16),
@@ -235,8 +233,8 @@ module Application.Directives {
 
             element.addEventListener('mousedown', function (event) {
                 mouseDown = true;
-                lastMouseX = this.getMousePosition(event, element).x;
-                lastMouseY = this.getMousePosition(event, element).y;
+                lastMouseX = __this.getMousePosition(event, element).x;
+                lastMouseY = __this.getMousePosition(event, element).y;
             });
 
             document.addEventListener('mouseup', function (event) {
@@ -245,8 +243,8 @@ module Application.Directives {
 
             element.addEventListener('mousemove', function (event) {
                 if (mouseDown) {
-                    var mouseX = this.getMousePosition(event, element).x;
-                    var mouseY = this.getMousePosition(event, element).y;
+                    var mouseX = __this.getMousePosition(event, element).x;
+                    var mouseY = __this.getMousePosition(event, element).y;
 
                     var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
                     var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
@@ -301,6 +299,16 @@ module Application.Directives {
 
             return viewDirection;
         }
+
+
+        public getMousePosition(event, element): any {
+            var boundingRect = element.getBoundingClientRect();
+            return {
+                x: event.clientX - boundingRect.left,
+                y: event.clientY - boundingRect.top
+            };
+        }
+
     }
 
     class FlowController {
@@ -1639,14 +1647,7 @@ module Application.Directives {
             return Math.log(x) / Math.log(2);
         }
 
-        private getMousePosition(event, element) : any {
-            var boundingRect = element.getBoundingClientRect();
-            return {
-                x: event.clientX - boundingRect.left,
-                y: event.clientY - boundingRect.top
-            };
-        }
-
+        
         private hsvToRGB(h, s, v) : any {
             h = h % 1;
 

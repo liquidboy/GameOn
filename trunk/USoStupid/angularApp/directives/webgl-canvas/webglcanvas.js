@@ -175,16 +175,16 @@ var Application;
                 };
                 element.addEventListener('mousedown', function (event) {
                     mouseDown = true;
-                    lastMouseX = this.getMousePosition(event, element).x;
-                    lastMouseY = this.getMousePosition(event, element).y;
+                    lastMouseX = __this.getMousePosition(event, element).x;
+                    lastMouseY = __this.getMousePosition(event, element).y;
                 });
                 document.addEventListener('mouseup', function (event) {
                     mouseDown = false;
                 });
                 element.addEventListener('mousemove', function (event) {
                     if (mouseDown) {
-                        var mouseX = this.getMousePosition(event, element).x;
-                        var mouseY = this.getMousePosition(event, element).y;
+                        var mouseX = __this.getMousePosition(event, element).x;
+                        var mouseY = __this.getMousePosition(event, element).y;
                         var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
                         var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
                         __this.azimuth += deltaAzimuth;
@@ -226,6 +226,13 @@ var Application;
                 viewDirection[1] = -Math.cos(Math.PI / 2 - this.elevation);
                 viewDirection[2] = -Math.sin(Math.PI / 2 - this.elevation) * Math.cos(-this.azimuth);
                 return viewDirection;
+            };
+            Camera.prototype.getMousePosition = function (event, element) {
+                var boundingRect = element.getBoundingClientRect();
+                return {
+                    x: event.clientX - boundingRect.left,
+                    y: event.clientY - boundingRect.top
+                };
             };
             return Camera;
         })();
@@ -1166,13 +1173,6 @@ var Application;
             };
             FlowController.prototype.log2 = function (x) {
                 return Math.log(x) / Math.log(2);
-            };
-            FlowController.prototype.getMousePosition = function (event, element) {
-                var boundingRect = element.getBoundingClientRect();
-                return {
-                    x: event.clientX - boundingRect.left,
-                    y: event.clientY - boundingRect.top
-                };
             };
             FlowController.prototype.hsvToRGB = function (h, s, v) {
                 h = h % 1;
