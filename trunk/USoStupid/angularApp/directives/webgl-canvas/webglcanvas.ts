@@ -34,6 +34,11 @@ module Application.Directives {
 
                 if ($scope.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
                     $scope.initCanvas(renderCanvas);
+
+                    controller.setHue(0);
+                    controller.setTimeScale(controller.INITIAL_SPEED);
+                    controller.setPersistence(controller.INITIAL_TURBULENCE);
+
                 }
 
             }
@@ -400,8 +405,8 @@ module Application.Directives {
         
         //private CAMERA_SENSITIVITY = 0.005;
 
-        private INITIAL_SPEED = 2;
-        private INITIAL_TURBULENCE = 0.2;
+        public INITIAL_SPEED : number = 2;
+        public INITIAL_TURBULENCE: number = 0.2;
 
         private MAX_SPEED = 5;
         private MAX_TURBULENCE = 0.5;
@@ -433,7 +438,7 @@ module Application.Directives {
             alpha: true
         };
 
-        private SIMULATION_VERTEX_SHADER_SOURCE : any = [
+        private SIMULATION_VERTEX_SHADER_SOURCE : string = [
             'precision highp float;',
 
             'attribute vec2 a_position;',
@@ -443,7 +448,7 @@ module Application.Directives {
             '}'
         ].join('\n');
         
-        private SIMULATION_FRAGMENT_SHADER_SOURCE : any = [
+        private SIMULATION_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'uniform sampler2D u_particleTexture;',
@@ -620,7 +625,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private RENDERING_VERTEX_SHADER_SOURCE : any = [
+        private RENDERING_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_textureCoordinates;',
@@ -660,7 +665,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private RENDERING_FRAGMENT_SHADER_SOURCE : any = [
+        private RENDERING_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'varying vec3 v_position;',
@@ -683,7 +688,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private OPACITY_VERTEX_SHADER_SOURCE : any = [
+        private OPACITY_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_textureCoordinates;',
@@ -712,7 +717,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private OPACITY_FRAGMENT_SHADER_SOURCE : any = [
+        private OPACITY_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'uniform float u_particleAlpha;',
@@ -726,7 +731,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private SORT_VERTEX_SHADER_SOURCE : any = [
+        private SORT_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_position;',
@@ -736,7 +741,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private SORT_FRAGMENT_SHADER_SOURCE : any = [
+        private SORT_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'uniform sampler2D u_dataTexture;',
@@ -782,7 +787,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private RESAMPLE_VERTEX_SHADER_SOURCE : any = [
+        private RESAMPLE_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_position;',
@@ -794,7 +799,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private RESAMPLE_FRAGMENT_SHADER_SOURCE : any = [
+        private RESAMPLE_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'varying vec2 v_coordinates;',
@@ -812,7 +817,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private FLOOR_VERTEX_SHADER_SOURCE : any = [
+        private FLOOR_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec3 a_vertexPosition;',
@@ -828,7 +833,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private FLOOR_FRAGMENT_SHADER_SOURCE : any = [
+        private FLOOR_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'varying vec3 v_position;',
@@ -849,7 +854,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private BACKGROUND_VERTEX_SHADER_SOURCE : any = [
+        private BACKGROUND_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_position;',
@@ -862,7 +867,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private BACKGROUND_FRAGMENT_SHADER_SOURCE : any = [
+        private BACKGROUND_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'varying vec2 v_position;',
@@ -895,6 +900,21 @@ module Application.Directives {
         private mathUtils: MathUtils;
 
 
+       
+
+
+
+        constructor(private $scope: IFlowScope,
+            private $routeParams: any) {
+
+            this.mathUtils = new MathUtils();
+
+            $scope.hasWebGLSupportWithExtensions = (extensions: any) => this.hasWebGLSupportWithExtensions(extensions);
+            $scope.initCanvas = (canvas: any) => this.initCanvas(canvas);
+        
+
+        }
+
         private changeQualityLevel(newLevel: any) {
             this.qualityLevel = newLevel;
 
@@ -910,19 +930,6 @@ module Application.Directives {
             this.particleCountHeight = this.QUALITY_LEVELS[this.qualityLevel].resolution[1];
 
             this.particleCount = this.particleCountWidth * this.particleCountHeight;
-        }
-
-
-
-        constructor(private $scope: IFlowScope,
-            private $routeParams: any) {
-
-            this.mathUtils = new MathUtils();
-
-            $scope.hasWebGLSupportWithExtensions = (extensions: any) => this.hasWebGLSupportWithExtensions(extensions);
-            $scope.initCanvas = (canvas: any) => this.initCanvas(canvas);
-        
-
         }
 
         private initCanvas(canvas: any): void {
@@ -1028,15 +1035,12 @@ module Application.Directives {
 
             var lightViewProjectionMatrix = new Float32Array(16);
             this.mathUtils.premultiplyMatrix(lightViewProjectionMatrix, lightViewMatrix, lightProjectionMatrix);
-
-            
             
             var resampleFramebuffer = gl.createFramebuffer();
             
+
             this.changeQualityLevel(0);
-
-
-
+            
             //variables used for sorting
             var totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
             var sortStepsLeft = totalSortSteps;
