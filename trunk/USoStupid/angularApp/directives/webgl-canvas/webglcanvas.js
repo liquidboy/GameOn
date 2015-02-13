@@ -239,6 +239,11 @@ var Application;
             };
             return Camera;
         })();
+        var FlowController2 = (function () {
+            function FlowController2() {
+            }
+            return FlowController2;
+        })();
         var FlowController = (function () {
             function FlowController($scope, $routeParams) {
                 var _this = this;
@@ -888,7 +893,7 @@ var Application;
                     gl.viewport(0, 0, canvas.width, canvas.height);
                     gl.clearColor(0.0, 0.0, 0.0, 0.0);
                     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-                    for (var i = 0; i < (firstFrame ? this.BASE_LIFETIME / this.PRESIMULATION_DELTA_TIME : 1); ++i) {
+                    for (var i = 0; i < (firstFrame ? __this.BASE_LIFETIME / __this.PRESIMULATION_DELTA_TIME : 1); ++i) {
                         gl.enableVertexAttribArray(0);
                         gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
                         gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
@@ -969,7 +974,7 @@ var Application;
                         gl.uniformMatrix4fv(renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, lightViewProjectionMatrix);
                         gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
                         gl.uniform1f(renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
-                        gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
+                        gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
                         var colorRGB = __this.hsvToRGB(__this.hue, __this.PARTICLE_SATURATION, __this.PARTICLE_VALUE);
                         gl.uniform3f(renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
                         gl.uniform1i(renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);

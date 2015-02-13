@@ -316,6 +316,9 @@ module Application.Directives {
 
     }
 
+    class FlowController2 {
+    }
+
     class FlowController {
 
         private MAX_DELTA_TIME = 0.2;
@@ -1256,7 +1259,7 @@ module Application.Directives {
                 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 
-                for (var i = 0; i < (firstFrame ? this.BASE_LIFETIME / this.PRESIMULATION_DELTA_TIME : 1); ++i) {
+                for (var i = 0; i < (firstFrame ? __this.BASE_LIFETIME / __this.PRESIMULATION_DELTA_TIME : 1); ++i) {
                     gl.enableVertexAttribArray(0);
                     gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
                     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
@@ -1371,7 +1374,7 @@ module Application.Directives {
                     gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
                     gl.uniform1f(renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
 
-                    gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
+                    gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
 
                     var colorRGB = __this.hsvToRGB(__this.hue, __this.PARTICLE_SATURATION, __this.PARTICLE_VALUE);
                     gl.uniform3f(renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
@@ -1702,5 +1705,6 @@ module Application.Directives {
 
 
     //angular.module('USoStupidApp').directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.$inject);
+   
 
 }
