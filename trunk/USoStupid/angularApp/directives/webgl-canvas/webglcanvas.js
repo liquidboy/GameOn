@@ -239,11 +239,6 @@ var Application;
             };
             return Camera;
         })();
-        var FlowController2 = (function () {
-            function FlowController2() {
-            }
-            return FlowController2;
-        })();
         var FlowController = (function () {
             function FlowController($scope, $routeParams) {
                 var _this = this;
@@ -314,13 +309,6 @@ var Application;
                 this.BASE_LIFETIME = 10;
                 this.MAX_ADDITIONAL_LIFETIME = 5;
                 this.OFFSET_RADIUS = 0.5;
-                //private CAMERA_DISTANCE = 2.2;
-                //private INITIAL_AZIMUTH = 0.6;
-                //private INITIAL_ELEVATION = 0.4;
-                //private MIN_ELEVATION = -0.1;
-                //private MAX_ELEVATION = Math.PI / 2.0;
-                //private CAMERA_ORBIT_POINT = [1.2, -0.3, 0.0];
-                //private CAMERA_SENSITIVITY = 0.005;
                 this.INITIAL_SPEED = 2;
                 this.INITIAL_TURBULENCE = 0.2;
                 this.MAX_SPEED = 5;
