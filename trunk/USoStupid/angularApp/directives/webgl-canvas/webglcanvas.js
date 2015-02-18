@@ -624,22 +624,6 @@ var Application;
                 this.OFFSET_RADIUS = 0.5;
                 this.INITIAL_SPEED = 2;
                 this.INITIAL_TURBULENCE = 0.2;
-                this.MAX_SPEED = 5;
-                this.MAX_TURBULENCE = 0.5;
-                this.HUE_INNER_RADIUS = 40;
-                this.HUE_OUTER_RADIUS = 70;
-                this.UI_SATURATION = 0.75;
-                this.UI_VALUE = 0.75;
-                this.BUTTON_ACTIVE_COLOR = 'white';
-                this.BUTTON_COLOR = '#333333';
-                this.BUTTON_BACKGROUND = '#bbbbbb';
-                this.HUE_HIGHLIGHTER_ANGLE_OFFSET = 0.2;
-                this.HUE_HIGHLIGHTER_RADIUS_OFFSET = 2;
-                this.HUE_PICKER_SATURATION = 0.75;
-                this.HUE_PICKER_VALUE = 1.0;
-                this.HUE_HIGHLIGHTER_SATURATION = 1;
-                this.HUE_HIGHLIGHTER_VALUE = 0.75;
-                this.HUE_HIGHLIGHTER_LINE_WIDTH = 5;
                 this.options = {
                     premultipliedAlpha: false,
                     alpha: true

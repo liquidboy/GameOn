@@ -849,41 +849,12 @@ module Application.Directives {
 
         public INITIAL_SPEED : number = 2;
         public INITIAL_TURBULENCE: number = 0.2;
-
-        private MAX_SPEED = 5;
-        private MAX_TURBULENCE = 0.5;
-
-        private HUE_INNER_RADIUS = 40;
-        private HUE_OUTER_RADIUS = 70;
-
-        private UI_SATURATION = 0.75;
-        private UI_VALUE = 0.75;
-
-        private BUTTON_ACTIVE_COLOR = 'white';
-        private BUTTON_COLOR = '#333333';
-        private BUTTON_BACKGROUND = '#bbbbbb';
-
-        private HUE_HIGHLIGHTER_ANGLE_OFFSET = 0.2;
-        private HUE_HIGHLIGHTER_RADIUS_OFFSET = 2;
-
-        private HUE_PICKER_SATURATION = 0.75;
-        private HUE_PICKER_VALUE = 1.0;
-
-        private HUE_HIGHLIGHTER_SATURATION = 1;
-        private HUE_HIGHLIGHTER_VALUE = 0.75;
-
-        private HUE_HIGHLIGHTER_LINE_WIDTH = 5;
-
-
+        
         private options: any = {
             premultipliedAlpha: false,
             alpha: true
         };
-
-       
         
-
-
         private hue : number = 0;
         private timeScale: number = this.INITIAL_SPEED;
         private persistence: number = this.INITIAL_TURBULENCE;
@@ -899,7 +870,13 @@ module Application.Directives {
         private changingParticleCount: boolean = false;
         private oldParticleDiameter: number;
         private oldParticleCountWidth : number;
-        private oldParticleCountHeight : number;
+        private oldParticleCountHeight: number;
+
+
+
+
+
+
         private mathUtils: MathUtils;
         private shaderLib: ShaderLib;
 
