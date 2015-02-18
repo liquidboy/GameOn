@@ -304,8 +304,7 @@ module Application.Directives {
 
             return viewDirection;
         }
-
-
+        
         public getMousePosition(event, element): any {
             var boundingRect = element.getBoundingClientRect();
             return {
@@ -316,119 +315,27 @@ module Application.Directives {
 
     }
 
-    class FlowController {
-
-        private MAX_DELTA_TIME = 0.2;
-
-        private PRESIMULATION_DELTA_TIME = 0.1;
-
-        private QUALITY_LEVELS = [
-            {
-                resolution: [256, 256],
-                diameter: 0.03,
-                alpha: 0.5
-            }, {
-                resolution: [512, 256],
-                diameter: 0.025,
-                alpha: 0.4
-            }, {
-                resolution: [512, 512],
-                diameter: 0.02,
-                alpha: 0.3
-            }, {
-                resolution: [1024, 512],
-                diameter: 0.015,
-                alpha: 0.25
-            }, {
-                resolution: [1024, 1024],
-                diameter: 0.0125,
-                alpha: 0.2
-            }, {
-                resolution: [2048, 1024],
-                diameter: 0.01,
-                alpha: 0.2
-            },
-        ];
-
-        private OPACITY_TEXTURE_RESOLUTION = 1024;
-
-        private LIGHT_DIRECTION = [0.0, -1.0, 0.0]; //points away from the light source
-        private LIGHT_UP_VECTOR = [0.0, 0.0, 1.0];
-
-        private SLICES = 128;
-
-        private SORT_PASSES_PER_FRAME = 50;
+    class ShaderLib {
 
         private NOISE_OCTAVES = 3;
         private NOISE_POSITION_SCALE = 1.5;
         private NOISE_SCALE = 0.075;
         private NOISE_TIME_SCALE = 1 / 4000;
+        
         private BASE_SPEED = 0.2;
+        
 
-        private PARTICLE_SATURATION = 0.75;
-        private PARTICLE_VALUE = 1.0;
         private PARTICLE_OPACITY_SCALE = 0.75;
-
+        
         private BACKGROUND_DISTANCE_SCALE = 0.1;
 
-        private FLOOR_WIDTH = 100.0;
-        private FLOOR_HEIGHT = 100.0;
-        private FLOOR_ORIGIN = [-2.0, -0.75, -5.0];
 
-        private ASPECT_RATIO = 16 / 9;
+        public constructor(public FLOOR_ORIGIN: any, public PARTICLE_SATURATION: number, public PARTICLE_VALUE: number) {
 
-        private PROJECTION_NEAR = 0.01;
-        private PROJECTION_FAR = 10.0;
-
-        private PROJECTION_FOV = (60 / 180) * Math.PI;
-
-        private LIGHT_PROJECTION_LEFT = -5.0;
-        private LIGHT_PROJECTION_RIGHT = 5.0;
-        private LIGHT_PROJECTION_BOTTOM = -5.0;
-        private LIGHT_PROJECTION_TOP = 5.0;
-        private LIGHT_PROJECTION_NEAR = -50.0;
-        private LIGHT_PROJECTION_FAR = 50.0;
-
-        private SPAWN_RADIUS = 0.1;
-        private BASE_LIFETIME = 10;
-        private MAX_ADDITIONAL_LIFETIME = 5;
-        private OFFSET_RADIUS = 0.5;
+        }
 
 
-        public INITIAL_SPEED : number = 2;
-        public INITIAL_TURBULENCE: number = 0.2;
-
-        private MAX_SPEED = 5;
-        private MAX_TURBULENCE = 0.5;
-
-        private HUE_INNER_RADIUS = 40;
-        private HUE_OUTER_RADIUS = 70;
-
-        private UI_SATURATION = 0.75;
-        private UI_VALUE = 0.75;
-
-        private BUTTON_ACTIVE_COLOR = 'white';
-        private BUTTON_COLOR = '#333333';
-        private BUTTON_BACKGROUND = '#bbbbbb';
-
-        private HUE_HIGHLIGHTER_ANGLE_OFFSET = 0.2;
-        private HUE_HIGHLIGHTER_RADIUS_OFFSET = 2;
-
-        private HUE_PICKER_SATURATION = 0.75;
-        private HUE_PICKER_VALUE = 1.0;
-
-        private HUE_HIGHLIGHTER_SATURATION = 1;
-        private HUE_HIGHLIGHTER_VALUE = 0.75;
-
-        private HUE_HIGHLIGHTER_LINE_WIDTH = 5;
-
-
-        private options: any = {
-            premultipliedAlpha: false,
-            alpha: true
-        };
-
-        private SIMULATION_VERTEX_SHADER_SOURCE : string = [
+        public SIMULATION_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_position;',
@@ -437,8 +344,8 @@ module Application.Directives {
             'gl_Position = vec4(a_position, 0.0, 1.0);',
             '}'
         ].join('\n');
-        
-        private SIMULATION_FRAGMENT_SHADER_SOURCE: string = [
+
+        public SIMULATION_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'uniform sampler2D u_particleTexture;',
@@ -615,7 +522,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private RENDERING_VERTEX_SHADER_SOURCE: string = [
+        public RENDERING_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_textureCoordinates;',
@@ -655,7 +562,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private RENDERING_FRAGMENT_SHADER_SOURCE: string = [
+        public RENDERING_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'varying vec3 v_position;',
@@ -678,7 +585,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private OPACITY_VERTEX_SHADER_SOURCE: string = [
+        public OPACITY_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_textureCoordinates;',
@@ -707,7 +614,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private OPACITY_FRAGMENT_SHADER_SOURCE: string = [
+        public OPACITY_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'uniform float u_particleAlpha;',
@@ -721,7 +628,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private SORT_VERTEX_SHADER_SOURCE: string = [
+        public SORT_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_position;',
@@ -731,7 +638,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private SORT_FRAGMENT_SHADER_SOURCE: string = [
+        public SORT_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'uniform sampler2D u_dataTexture;',
@@ -777,7 +684,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private RESAMPLE_VERTEX_SHADER_SOURCE: string = [
+        public RESAMPLE_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_position;',
@@ -789,7 +696,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private RESAMPLE_FRAGMENT_SHADER_SOURCE: string = [
+        public RESAMPLE_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'varying vec2 v_coordinates;',
@@ -807,7 +714,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private FLOOR_VERTEX_SHADER_SOURCE: string = [
+        public FLOOR_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec3 a_vertexPosition;',
@@ -823,7 +730,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private FLOOR_FRAGMENT_SHADER_SOURCE: string = [
+        public FLOOR_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'varying vec3 v_position;',
@@ -844,7 +751,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private BACKGROUND_VERTEX_SHADER_SOURCE: string = [
+        public BACKGROUND_VERTEX_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'attribute vec2 a_position;',
@@ -857,7 +764,7 @@ module Application.Directives {
             '}'
         ].join('\n');
 
-        private BACKGROUND_FRAGMENT_SHADER_SOURCE: string = [
+        public BACKGROUND_FRAGMENT_SHADER_SOURCE: string = [
             'precision highp float;',
 
             'varying vec2 v_position;',
@@ -867,6 +774,112 @@ module Application.Directives {
             'gl_FragColor = vec4(vec3(1.0) - dist * ' + this.BACKGROUND_DISTANCE_SCALE.toFixed(8) + ', 1.0);',
             '}'
         ].join('\n');
+
+
+    }
+
+    class FlowController {
+
+        private MAX_DELTA_TIME = 0.2;
+
+        private PRESIMULATION_DELTA_TIME = 0.1;
+
+        private QUALITY_LEVELS = [
+            {
+                resolution: [256, 256],
+                diameter: 0.03,
+                alpha: 0.5
+            }, {
+                resolution: [512, 256],
+                diameter: 0.025,
+                alpha: 0.4
+            }, {
+                resolution: [512, 512],
+                diameter: 0.02,
+                alpha: 0.3
+            }, {
+                resolution: [1024, 512],
+                diameter: 0.015,
+                alpha: 0.25
+            }, {
+                resolution: [1024, 1024],
+                diameter: 0.0125,
+                alpha: 0.2
+            }, {
+                resolution: [2048, 1024],
+                diameter: 0.01,
+                alpha: 0.2
+            },
+        ];
+
+        private OPACITY_TEXTURE_RESOLUTION = 1024;
+
+        private LIGHT_DIRECTION = [0.0, -1.0, 0.0]; //points away from the light source
+        private LIGHT_UP_VECTOR = [0.0, 0.0, 1.0];
+
+        private SLICES = 128;
+
+        private SORT_PASSES_PER_FRAME = 50;
+        
+        private ASPECT_RATIO = 16 / 9;
+
+        private PROJECTION_NEAR = 0.01;
+        private PROJECTION_FAR = 10.0;
+        private PROJECTION_FOV = (60 / 180) * Math.PI;
+
+        public PARTICLE_SATURATION: number = 0.75;
+        public PARTICLE_VALUE: number = 1.0;
+
+        private FLOOR_ORIGIN: any = [-2.0, -0.75, -5.0];
+        private FLOOR_WIDTH: number = 100.0;
+        private FLOOR_HEIGHT: number = 100.0;
+
+        private LIGHT_PROJECTION_LEFT = -5.0;
+        private LIGHT_PROJECTION_RIGHT = 5.0;
+        private LIGHT_PROJECTION_BOTTOM = -5.0;
+        private LIGHT_PROJECTION_TOP = 5.0;
+        private LIGHT_PROJECTION_NEAR = -50.0;
+        private LIGHT_PROJECTION_FAR = 50.0;
+
+        private SPAWN_RADIUS = 0.1;
+        private BASE_LIFETIME = 10;
+        private MAX_ADDITIONAL_LIFETIME = 5;
+        private OFFSET_RADIUS = 0.5;
+
+
+        public INITIAL_SPEED : number = 2;
+        public INITIAL_TURBULENCE: number = 0.2;
+
+        private MAX_SPEED = 5;
+        private MAX_TURBULENCE = 0.5;
+
+        private HUE_INNER_RADIUS = 40;
+        private HUE_OUTER_RADIUS = 70;
+
+        private UI_SATURATION = 0.75;
+        private UI_VALUE = 0.75;
+
+        private BUTTON_ACTIVE_COLOR = 'white';
+        private BUTTON_COLOR = '#333333';
+        private BUTTON_BACKGROUND = '#bbbbbb';
+
+        private HUE_HIGHLIGHTER_ANGLE_OFFSET = 0.2;
+        private HUE_HIGHLIGHTER_RADIUS_OFFSET = 2;
+
+        private HUE_PICKER_SATURATION = 0.75;
+        private HUE_PICKER_VALUE = 1.0;
+
+        private HUE_HIGHLIGHTER_SATURATION = 1;
+        private HUE_HIGHLIGHTER_VALUE = 0.75;
+
+        private HUE_HIGHLIGHTER_LINE_WIDTH = 5;
+
+
+        private options: any = {
+            premultipliedAlpha: false,
+            alpha: true
+        };
+
        
         
 
@@ -888,6 +901,7 @@ module Application.Directives {
         private oldParticleCountWidth : number;
         private oldParticleCountHeight : number;
         private mathUtils: MathUtils;
+        private shaderLib: ShaderLib;
 
 
        
@@ -898,6 +912,7 @@ module Application.Directives {
             private $routeParams: any) {
 
             this.mathUtils = new MathUtils();
+            this.shaderLib = new ShaderLib(this.FLOOR_ORIGIN, this.PARTICLE_SATURATION, this.PARTICLE_VALUE);
 
             $scope.hasWebGLSupportWithExtensions = (extensions: any) => this.hasWebGLSupportWithExtensions(extensions);
             $scope.initCanvas = (canvas: any) => this.initCanvas(canvas);
@@ -1045,44 +1060,44 @@ module Application.Directives {
             var opacityFramebuffer = this.buildFramebuffer(gl, opacityTexture);
 
             var simulationProgramWrapper: any = this.buildProgramWrapper(gl,
-                this.buildShader(gl, gl.VERTEX_SHADER, this.SIMULATION_VERTEX_SHADER_SOURCE),
-                this.buildShader(gl, gl.FRAGMENT_SHADER, this.SIMULATION_FRAGMENT_SHADER_SOURCE),
+                this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
             var renderingProgramWrapper: any = this.buildProgramWrapper(gl,
-                this.buildShader(gl, gl.VERTEX_SHADER, this.RENDERING_VERTEX_SHADER_SOURCE),
-                this.buildShader(gl, gl.FRAGMENT_SHADER, this.RENDERING_FRAGMENT_SHADER_SOURCE),
+                this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.RENDERING_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.RENDERING_FRAGMENT_SHADER_SOURCE),
                 { 'a_textureCoordinates': 0 }
                 );
 
             var opacityProgramWrapper: any = this.buildProgramWrapper(gl,
-                this.buildShader(gl, gl.VERTEX_SHADER, this.OPACITY_VERTEX_SHADER_SOURCE),
-                this.buildShader(gl, gl.FRAGMENT_SHADER, this.OPACITY_FRAGMENT_SHADER_SOURCE),
+                this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.OPACITY_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.OPACITY_FRAGMENT_SHADER_SOURCE),
                 { 'a_textureCoordinates': 0 }
                 );
 
             var sortProgramWrapper : any = this.buildProgramWrapper(gl,
-                this.buildShader(gl, gl.VERTEX_SHADER, this.SORT_VERTEX_SHADER_SOURCE),
-                this.buildShader(gl, gl.FRAGMENT_SHADER, this.SORT_FRAGMENT_SHADER_SOURCE),
+                this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.SORT_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.SORT_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
             var resampleProgramWrapper : any = this.buildProgramWrapper(gl,
-                this.buildShader(gl, gl.VERTEX_SHADER, this.RESAMPLE_VERTEX_SHADER_SOURCE),
-                this.buildShader(gl, gl.FRAGMENT_SHADER, this.RESAMPLE_FRAGMENT_SHADER_SOURCE),
+                this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.RESAMPLE_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.RESAMPLE_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
             var floorProgramWrapper: any = this.buildProgramWrapper(gl,
-                this.buildShader(gl, gl.VERTEX_SHADER, this.FLOOR_VERTEX_SHADER_SOURCE),
-                this.buildShader(gl, gl.FRAGMENT_SHADER, this.FLOOR_FRAGMENT_SHADER_SOURCE),
+                this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.FLOOR_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.FLOOR_FRAGMENT_SHADER_SOURCE),
                 { 'a_vertexPosition': 0 }
                 );
 
             var backgroundProgramWrapper: any = this.buildProgramWrapper(gl,
-                this.buildShader(gl, gl.VERTEX_SHADER, this.BACKGROUND_VERTEX_SHADER_SOURCE),
-                this.buildShader(gl, gl.FRAGMENT_SHADER, this.BACKGROUND_FRAGMENT_SHADER_SOURCE),
+                this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.BACKGROUND_VERTEX_SHADER_SOURCE),
+                this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.BACKGROUND_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
@@ -1093,10 +1108,10 @@ module Application.Directives {
             var floorVertexBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, floorVertexBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-                this.FLOOR_ORIGIN[0], this.FLOOR_ORIGIN[1], this.FLOOR_ORIGIN[2],
-                this.FLOOR_ORIGIN[0], this.FLOOR_ORIGIN[1], this.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
-                this.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.FLOOR_ORIGIN[1], this.FLOOR_ORIGIN[2],
-                this.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.FLOOR_ORIGIN[1], this.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
+                this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
+                this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
+                this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
+                this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
             ]), gl.STATIC_DRAW);
 
 
@@ -1363,7 +1378,7 @@ module Application.Directives {
 
                     gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
 
-                    var colorRGB = __this.hsvToRGB(__this.hue, __this.PARTICLE_SATURATION, __this.PARTICLE_VALUE);
+                    var colorRGB = __this.hsvToRGB(__this.hue, __this.shaderLib.PARTICLE_SATURATION, __this.shaderLib.PARTICLE_VALUE);
                     gl.uniform3f(renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
 
                     gl.uniform1i(renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);

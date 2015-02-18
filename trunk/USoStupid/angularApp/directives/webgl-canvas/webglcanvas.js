@@ -239,98 +239,18 @@ var Application;
             };
             return Camera;
         })();
-        var FlowController = (function () {
-            function FlowController($scope, $routeParams) {
-                var _this = this;
-                this.$scope = $scope;
-                this.$routeParams = $routeParams;
-                this.MAX_DELTA_TIME = 0.2;
-                this.PRESIMULATION_DELTA_TIME = 0.1;
-                this.QUALITY_LEVELS = [
-                    {
-                        resolution: [256, 256],
-                        diameter: 0.03,
-                        alpha: 0.5
-                    },
-                    {
-                        resolution: [512, 256],
-                        diameter: 0.025,
-                        alpha: 0.4
-                    },
-                    {
-                        resolution: [512, 512],
-                        diameter: 0.02,
-                        alpha: 0.3
-                    },
-                    {
-                        resolution: [1024, 512],
-                        diameter: 0.015,
-                        alpha: 0.25
-                    },
-                    {
-                        resolution: [1024, 1024],
-                        diameter: 0.0125,
-                        alpha: 0.2
-                    },
-                    {
-                        resolution: [2048, 1024],
-                        diameter: 0.01,
-                        alpha: 0.2
-                    },
-                ];
-                this.OPACITY_TEXTURE_RESOLUTION = 1024;
-                this.LIGHT_DIRECTION = [0.0, -1.0, 0.0]; //points away from the light source
-                this.LIGHT_UP_VECTOR = [0.0, 0.0, 1.0];
-                this.SLICES = 128;
-                this.SORT_PASSES_PER_FRAME = 50;
+        var ShaderLib = (function () {
+            function ShaderLib(FLOOR_ORIGIN, PARTICLE_SATURATION, PARTICLE_VALUE) {
+                this.FLOOR_ORIGIN = FLOOR_ORIGIN;
+                this.PARTICLE_SATURATION = PARTICLE_SATURATION;
+                this.PARTICLE_VALUE = PARTICLE_VALUE;
                 this.NOISE_OCTAVES = 3;
                 this.NOISE_POSITION_SCALE = 1.5;
                 this.NOISE_SCALE = 0.075;
                 this.NOISE_TIME_SCALE = 1 / 4000;
                 this.BASE_SPEED = 0.2;
-                this.PARTICLE_SATURATION = 0.75;
-                this.PARTICLE_VALUE = 1.0;
                 this.PARTICLE_OPACITY_SCALE = 0.75;
                 this.BACKGROUND_DISTANCE_SCALE = 0.1;
-                this.FLOOR_WIDTH = 100.0;
-                this.FLOOR_HEIGHT = 100.0;
-                this.FLOOR_ORIGIN = [-2.0, -0.75, -5.0];
-                this.ASPECT_RATIO = 16 / 9;
-                this.PROJECTION_NEAR = 0.01;
-                this.PROJECTION_FAR = 10.0;
-                this.PROJECTION_FOV = (60 / 180) * Math.PI;
-                this.LIGHT_PROJECTION_LEFT = -5.0;
-                this.LIGHT_PROJECTION_RIGHT = 5.0;
-                this.LIGHT_PROJECTION_BOTTOM = -5.0;
-                this.LIGHT_PROJECTION_TOP = 5.0;
-                this.LIGHT_PROJECTION_NEAR = -50.0;
-                this.LIGHT_PROJECTION_FAR = 50.0;
-                this.SPAWN_RADIUS = 0.1;
-                this.BASE_LIFETIME = 10;
-                this.MAX_ADDITIONAL_LIFETIME = 5;
-                this.OFFSET_RADIUS = 0.5;
-                this.INITIAL_SPEED = 2;
-                this.INITIAL_TURBULENCE = 0.2;
-                this.MAX_SPEED = 5;
-                this.MAX_TURBULENCE = 0.5;
-                this.HUE_INNER_RADIUS = 40;
-                this.HUE_OUTER_RADIUS = 70;
-                this.UI_SATURATION = 0.75;
-                this.UI_VALUE = 0.75;
-                this.BUTTON_ACTIVE_COLOR = 'white';
-                this.BUTTON_COLOR = '#333333';
-                this.BUTTON_BACKGROUND = '#bbbbbb';
-                this.HUE_HIGHLIGHTER_ANGLE_OFFSET = 0.2;
-                this.HUE_HIGHLIGHTER_RADIUS_OFFSET = 2;
-                this.HUE_PICKER_SATURATION = 0.75;
-                this.HUE_PICKER_VALUE = 1.0;
-                this.HUE_HIGHLIGHTER_SATURATION = 1;
-                this.HUE_HIGHLIGHTER_VALUE = 0.75;
-                this.HUE_HIGHLIGHTER_LINE_WIDTH = 5;
-                this.options = {
-                    premultipliedAlpha: false,
-                    alpha: true
-                };
                 this.SIMULATION_VERTEX_SHADER_SOURCE = [
                     'precision highp float;',
                     'attribute vec2 a_position;',
@@ -636,6 +556,94 @@ var Application;
                     'gl_FragColor = vec4(vec3(1.0) - dist * ' + this.BACKGROUND_DISTANCE_SCALE.toFixed(8) + ', 1.0);',
                     '}'
                 ].join('\n');
+            }
+            return ShaderLib;
+        })();
+        var FlowController = (function () {
+            function FlowController($scope, $routeParams) {
+                var _this = this;
+                this.$scope = $scope;
+                this.$routeParams = $routeParams;
+                this.MAX_DELTA_TIME = 0.2;
+                this.PRESIMULATION_DELTA_TIME = 0.1;
+                this.QUALITY_LEVELS = [
+                    {
+                        resolution: [256, 256],
+                        diameter: 0.03,
+                        alpha: 0.5
+                    },
+                    {
+                        resolution: [512, 256],
+                        diameter: 0.025,
+                        alpha: 0.4
+                    },
+                    {
+                        resolution: [512, 512],
+                        diameter: 0.02,
+                        alpha: 0.3
+                    },
+                    {
+                        resolution: [1024, 512],
+                        diameter: 0.015,
+                        alpha: 0.25
+                    },
+                    {
+                        resolution: [1024, 1024],
+                        diameter: 0.0125,
+                        alpha: 0.2
+                    },
+                    {
+                        resolution: [2048, 1024],
+                        diameter: 0.01,
+                        alpha: 0.2
+                    },
+                ];
+                this.OPACITY_TEXTURE_RESOLUTION = 1024;
+                this.LIGHT_DIRECTION = [0.0, -1.0, 0.0]; //points away from the light source
+                this.LIGHT_UP_VECTOR = [0.0, 0.0, 1.0];
+                this.SLICES = 128;
+                this.SORT_PASSES_PER_FRAME = 50;
+                this.ASPECT_RATIO = 16 / 9;
+                this.PROJECTION_NEAR = 0.01;
+                this.PROJECTION_FAR = 10.0;
+                this.PROJECTION_FOV = (60 / 180) * Math.PI;
+                this.PARTICLE_SATURATION = 0.75;
+                this.PARTICLE_VALUE = 1.0;
+                this.FLOOR_ORIGIN = [-2.0, -0.75, -5.0];
+                this.FLOOR_WIDTH = 100.0;
+                this.FLOOR_HEIGHT = 100.0;
+                this.LIGHT_PROJECTION_LEFT = -5.0;
+                this.LIGHT_PROJECTION_RIGHT = 5.0;
+                this.LIGHT_PROJECTION_BOTTOM = -5.0;
+                this.LIGHT_PROJECTION_TOP = 5.0;
+                this.LIGHT_PROJECTION_NEAR = -50.0;
+                this.LIGHT_PROJECTION_FAR = 50.0;
+                this.SPAWN_RADIUS = 0.1;
+                this.BASE_LIFETIME = 10;
+                this.MAX_ADDITIONAL_LIFETIME = 5;
+                this.OFFSET_RADIUS = 0.5;
+                this.INITIAL_SPEED = 2;
+                this.INITIAL_TURBULENCE = 0.2;
+                this.MAX_SPEED = 5;
+                this.MAX_TURBULENCE = 0.5;
+                this.HUE_INNER_RADIUS = 40;
+                this.HUE_OUTER_RADIUS = 70;
+                this.UI_SATURATION = 0.75;
+                this.UI_VALUE = 0.75;
+                this.BUTTON_ACTIVE_COLOR = 'white';
+                this.BUTTON_COLOR = '#333333';
+                this.BUTTON_BACKGROUND = '#bbbbbb';
+                this.HUE_HIGHLIGHTER_ANGLE_OFFSET = 0.2;
+                this.HUE_HIGHLIGHTER_RADIUS_OFFSET = 2;
+                this.HUE_PICKER_SATURATION = 0.75;
+                this.HUE_PICKER_VALUE = 1.0;
+                this.HUE_HIGHLIGHTER_SATURATION = 1;
+                this.HUE_HIGHLIGHTER_VALUE = 0.75;
+                this.HUE_HIGHLIGHTER_LINE_WIDTH = 5;
+                this.options = {
+                    premultipliedAlpha: false,
+                    alpha: true
+                };
                 this.hue = 0;
                 this.timeScale = this.INITIAL_SPEED;
                 this.persistence = this.INITIAL_TURBULENCE;
@@ -647,6 +655,7 @@ var Application;
                 this.particleAlpha = 0.0;
                 this.changingParticleCount = false;
                 this.mathUtils = new MathUtils();
+                this.shaderLib = new ShaderLib(this.FLOOR_ORIGIN, this.PARTICLE_SATURATION, this.PARTICLE_VALUE);
                 $scope.hasWebGLSupportWithExtensions = function (extensions) { return _this.hasWebGLSupportWithExtensions(extensions); };
                 $scope.initCanvas = function (canvas) { return _this.initCanvas(canvas); };
             }
@@ -746,31 +755,31 @@ var Application;
                 var simulationFramebuffer = gl.createFramebuffer();
                 var sortFramebuffer = gl.createFramebuffer();
                 var opacityFramebuffer = this.buildFramebuffer(gl, opacityTexture);
-                var simulationProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.SIMULATION_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.SIMULATION_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                var renderingProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.RENDERING_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.RENDERING_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
-                var opacityProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.OPACITY_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.OPACITY_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
-                var sortProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.SORT_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.SORT_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                var resampleProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.RESAMPLE_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.RESAMPLE_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                var floorProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.FLOOR_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.FLOOR_FRAGMENT_SHADER_SOURCE), { 'a_vertexPosition': 0 });
-                var backgroundProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.BACKGROUND_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.BACKGROUND_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                var simulationProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                var renderingProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.RENDERING_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.RENDERING_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
+                var opacityProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.OPACITY_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.OPACITY_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
+                var sortProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.SORT_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.SORT_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                var resampleProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.RESAMPLE_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.RESAMPLE_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                var floorProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.FLOOR_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.FLOOR_FRAGMENT_SHADER_SOURCE), { 'a_vertexPosition': 0 });
+                var backgroundProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.BACKGROUND_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.BACKGROUND_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
                 var fullscreenVertexBuffer = gl.createBuffer();
                 gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
                 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), gl.STATIC_DRAW);
                 var floorVertexBuffer = gl.createBuffer();
                 gl.bindBuffer(gl.ARRAY_BUFFER, floorVertexBuffer);
                 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-                    this.FLOOR_ORIGIN[0],
-                    this.FLOOR_ORIGIN[1],
-                    this.FLOOR_ORIGIN[2],
-                    this.FLOOR_ORIGIN[0],
-                    this.FLOOR_ORIGIN[1],
-                    this.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
-                    this.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH,
-                    this.FLOOR_ORIGIN[1],
-                    this.FLOOR_ORIGIN[2],
-                    this.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH,
-                    this.FLOOR_ORIGIN[1],
-                    this.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
+                    this.shaderLib.FLOOR_ORIGIN[0],
+                    this.shaderLib.FLOOR_ORIGIN[1],
+                    this.shaderLib.FLOOR_ORIGIN[2],
+                    this.shaderLib.FLOOR_ORIGIN[0],
+                    this.shaderLib.FLOOR_ORIGIN[1],
+                    this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
+                    this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH,
+                    this.shaderLib.FLOOR_ORIGIN[1],
+                    this.shaderLib.FLOOR_ORIGIN[2],
+                    this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH,
+                    this.shaderLib.FLOOR_ORIGIN[1],
+                    this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
                 ]), gl.STATIC_DRAW);
                 var onresize = function () {
                     var aspectRatio = window.innerWidth / window.innerHeight;
@@ -963,7 +972,7 @@ var Application;
                         gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
                         gl.uniform1f(renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
                         gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
-                        var colorRGB = __this.hsvToRGB(__this.hue, __this.PARTICLE_SATURATION, __this.PARTICLE_VALUE);
+                        var colorRGB = __this.hsvToRGB(__this.hue, __this.shaderLib.PARTICLE_SATURATION, __this.shaderLib.PARTICLE_VALUE);
                         gl.uniform3f(renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
                         gl.uniform1i(renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);
                         gl.activeTexture(gl.TEXTURE0);
