@@ -86,6 +86,21 @@
             top:20px;
             z-index:100;
         }
+
+        .jf-headphones-1 {
+            right:20px;
+            top:10px;
+            position:absolute;
+            cursor:pointer;
+        }
+            .jf-headphones-1 img{
+                width:50px;
+            }
+
+        #divMusicLoad {
+            right:-100px;
+            z-index:100;
+        }
     </style>
 
     <link href="/Scripts/video-js/video-js.css" rel="stylesheet">
@@ -102,7 +117,10 @@
             //$VidPlayer.play();
 
 
-            $('#divMainTitle').fadeIn('slow');
+            $('#divMainTitle').fadeIn('slow', function () {
+                $('#divMusicLoad').animate({ right:"+20", opacity: 1}, 1000);
+            });
+            
         });
 
         function jsPlay() {
@@ -112,7 +130,9 @@
             $('#imgPlay').hide();
             $('#imgStop').show();
             $('#imgRewind').show();
-            $('#divMainTitle').fadeOut('slow');
+            $('#divMainTitle').fadeOut('slow', function () {
+                $('#divMusicLoad').animate({ right: "-20", opacity: 0 }, 1000);
+            });
         }
        
         function jsStop() {
@@ -122,7 +142,9 @@
             $('#imgPlay').show();
             $('#imgStop').hide();
             $('#imgRewind').hide();
-            $('#divMainTitle').fadeIn('slow');
+            $('#divMainTitle').fadeIn('slow', function () {
+                $('#divMusicLoad').animate({ right: "+20", opacity: 1 }, 1000);
+            });
         }
 
         function jsRewind() {
@@ -135,12 +157,12 @@
     </script>
 </head>
 <body>
-    <!--<div class="Absolute-Center-headphones"><img src="Content/CommingSoon/Headphone-01.png" /></div>-->
+    
     <div class="Absolute-Center-onitsway"></div>
 
 
     <video  id="vidPlayer" 
-            style="width: 100%; height:100%;  position: absolute; top:0; display: none; -o-object-fit: cover; object-fit: cover;z-index:90; "
+            style="left:0; width: 100%; height:100%;  position: absolute; top:0; display: none; -o-object-fit: cover; object-fit: cover;z-index:90; "
             loop preload="auto"
            >
         <!--<source src="/content/videos/RegusVideoBanner3.mp4" />-->
@@ -154,6 +176,10 @@
         <source src="/Content/Videos/test3.mp4" type='video/mp4' />
         <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
     </video>-->
+
+    <div id="divMusicLoad" class="jf-headphones-1 "><img src="Content/CommingSoon/Headphone-01.png" /></div>
+
+
 
     <div id="divMainTitle" class="jf-main-title jf-hidden">
         <img src="Content/_001/atlyl.png"  />
