@@ -100,6 +100,7 @@
     <Content Include="Content\Videos\test1.mp4" />
     <Content Include="Content\Videos\test2.mp4" />
     <Content Include="Content\Videos\test3.mp4" />
+    <Content Include="Content\_001\atlyl.png" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>

@@ -78,6 +78,14 @@
             float:left;
             margin-bottom:10px;
         }
+
+        .jf-main-title {
+            position:absolute;
+            float:left;
+            left:20px;
+            top:20px;
+            z-index:100;
+        }
     </style>
 
     <link href="/Scripts/video-js/video-js.css" rel="stylesheet">
@@ -92,6 +100,9 @@
             $($VidPlayer).attr("src", "/Content/Videos/test3.mp4");
             //$($VidPlayer).show();
             //$VidPlayer.play();
+
+
+            $('#divMainTitle').fadeIn('slow');
         });
 
         function jsPlay() {
@@ -101,6 +112,7 @@
             $('#imgPlay').hide();
             $('#imgStop').show();
             $('#imgRewind').show();
+            $('#divMainTitle').fadeOut('slow');
         }
        
         function jsStop() {
@@ -110,12 +122,16 @@
             $('#imgPlay').show();
             $('#imgStop').hide();
             $('#imgRewind').hide();
+            $('#divMainTitle').fadeIn('slow');
         }
 
         function jsRewind() {
             var $VidPlayer = $('#vidPlayer')[0];
             $VidPlayer.currentTime = 0;            
         }
+
+
+
     </script>
 </head>
 <body>
@@ -138,6 +154,10 @@
         <source src="/Content/Videos/test3.mp4" type='video/mp4' />
         <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
     </video>-->
+
+    <div id="divMainTitle" class="jf-main-title jf-hidden">
+        <img src="Content/_001/atlyl.png"  />
+    </div>
 
     <div class="jf-vidplayer-controls">
         <img id="imgPlay" src="Content/VideoPlayer/Play.png" class="jf-button" onclick="jsPlay();" />
