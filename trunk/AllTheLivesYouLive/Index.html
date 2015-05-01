@@ -2,16 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>All the lives you live!</title>
-
+    <link href='http://fonts.googleapis.com/css?family=Amatic+SC:700' rel='stylesheet' type='text/css'>
     <style type="text/css">
         html {
             /*http://css-tricks.com/perfect-full-page-background-image/*/
 
-            background: url('Content/Backgrounds/Alley B & W.jpg' ) no-repeat center center fixed;
+            background: url('Content/Backgrounds/ScarMainImage1.jpg' ) no-repeat center center fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
+            overflow:hidden;
         }
 
 
@@ -45,11 +46,104 @@
           position: absolute;
           top: 100px; left: 0; bottom: 0; right: 0;
         }
+
+        .jf-hidden {
+            display:none;
+        }
+
+        .jf-button {
+            cursor:pointer;
+        }
+
+        .jf-vidplayer-controls {
+            margin-left:auto;
+            margin-right:auto;
+            width:110px;
+            z-index:100;
+            bottom:0;
+            left:0;
+            right:0;
+            position:absolute
+        }
+
+            .jf-vidplayer-controls img {
+                width:25px;
+                float:left;
+                margin-right:10px;
+            }
+
+        .jf-song-title {
+            font-family: 'Amatic SC', cursive;
+            font-size:30px;
+            float:left;
+            margin-bottom:10px;
+        }
     </style>
+
+    <link href="/Scripts/video-js/video-js.css" rel="stylesheet">
+    <script src="/Scripts/video-js/video.js"></script>
+    <script src="Scripts/jquery-2.1.3.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('#vidPlayer').width(window.outerWidth).height(window.outerHeight);
+            var $VidPlayer = $('#vidPlayer')[0];
+            $($VidPlayer).attr("src", "/Content/Videos/test3.mp4");
+            //$($VidPlayer).show();
+            //$VidPlayer.play();
+        });
+
+        function jsPlay() {
+            var $VidPlayer = $('#vidPlayer')[0];
+            $($VidPlayer).show();
+            $VidPlayer.play();
+            $('#imgPlay').hide();
+            $('#imgStop').show();
+            $('#imgRewind').show();
+        }
+       
+        function jsStop() {
+            var $VidPlayer = $('#vidPlayer')[0];
+            $VidPlayer.pause();
+            $($VidPlayer).hide();
+            $('#imgPlay').show();
+            $('#imgStop').hide();
+            $('#imgRewind').hide();
+        }
+
+        function jsRewind() {
+            var $VidPlayer = $('#vidPlayer')[0];
+            $VidPlayer.currentTime = 0;            
+        }
+    </script>
 </head>
 <body>
-    <div class="Absolute-Center-headphones"><img src="Content/CommingSoon/Headphone-01.png" /></div>
+    <!--<div class="Absolute-Center-headphones"><img src="Content/CommingSoon/Headphone-01.png" /></div>-->
     <div class="Absolute-Center-onitsway"></div>
 
+
+    <video  id="vidPlayer" 
+            style="width: 100%; height:100%;  position: absolute; top:0; display: none; -o-object-fit: cover; object-fit: cover;z-index:90; "
+            loop preload="auto"
+           >
+        <!--<source src="/content/videos/RegusVideoBanner3.mp4" />-->
+        <!--<source src="/content/videos/Regus Video Banner 3.mp4" />-->
+    </video>
+
+    <!--<video id="vidPlayer" class="video-js vjs-default-skin jf-hidden"
+           controls preload="auto" width="300px" height="180px"
+           poster="Content/Backgrounds/ScarMainImage1.jpg"
+           data-setup='{"example_option":true}'>
+        <source src="/Content/Videos/test3.mp4" type='video/mp4' />
+        <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+    </video>-->
+
+    <div class="jf-vidplayer-controls">
+        <img id="imgPlay" src="Content/VideoPlayer/Play.png" class="jf-button" onclick="jsPlay();" />
+        <img id="imgRewind" src="Content/VideoPlayer/Rewind.png" class="jf-button jf-hidden" onclick="jsRewind();" />
+        <img id="imgStop" src="Content/VideoPlayer/Stop.png" class="jf-button jf-hidden" onclick="jsStop();" />
+        <div class="jf-song-title">Scar</div>
+    </div>
 </body>
 </html>
