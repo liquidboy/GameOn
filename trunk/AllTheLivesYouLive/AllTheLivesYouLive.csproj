@@ -92,8 +92,14 @@
   <ItemGroup>
     <Content Include="Content\Backgrounds\Alley B &amp; W.jpg" />
     <Content Include="Content\Backgrounds\Park Black &amp; White.jpg" />
+    <Content Include="Content\Backgrounds\ScarMainImage3.jpg" />
     <Content Include="Content\Backgrounds\ScarMainImage1.jpg" />
     <Content Include="Content\Backgrounds\ScarMainImage2.jpg" />
+    <Content Include="Content\MusicSample\Blotting Out The Frames.wma" />
+    <Content Include="Content\MusicSample\Nameless.wma" />
+    <Content Include="Content\MusicSample\One Night.wma" />
+    <Content Include="Content\MusicSample\Scar.wma" />
+    <Content Include="Content\MusicSample\Stolen.wma" />
     <Content Include="Content\VideoPlayer\Play.png" />
     <Content Include="Content\VideoPlayer\Rewind.png" />
     <Content Include="Content\VideoPlayer\Stop.png" />
