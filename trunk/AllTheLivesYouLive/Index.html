@@ -113,7 +113,7 @@
             opacity: 0;
             position:absolute;
             
-            width:250px;
+            width:290px;
             left:0;
             right:0;
             margin-left:auto;
@@ -143,6 +143,30 @@
                 z-index:110;
             }
 
+
+        .jf-actions {
+            float:right;
+            background-image:none !important;
+        }
+            .jf-actions div{
+                background-image:none !important;
+                float:left;
+                margin-right:10px;
+                margin-top:5px;
+
+                cursor:pointer;
+
+                background-color:#c7c7c7;
+                color:black;
+                padding:4px;
+                font-size:12px;
+            }
+            .jf-actions .jf-play-button:hover {
+               background-color:white;
+            }
+            .jf-actions .jf-pause-button:hover {
+                background-color:white;
+            }
     </style>
 
     <link href="/Scripts/video-js/video-js.css" rel="stylesheet">
@@ -168,19 +192,26 @@
         });
 
         function jsPlay() {
+            var $VidPlayer = $('#vidPlayer')[0];
             jsHideMusicList();
+            $($VidPlayer).show();
+
+            $('#imgPlay').hide();
+            $('#divMainTitle').fadeOut('slow', function () {
+                $('#divMusicLoad').animate({ right: "-20", opacity: 0 }, 1000);
+            });
+            $('#imgStop').show();
+            $('#imgRewind').show();
 
 
             setTimeout(function () {
-                var $VidPlayer = $('#vidPlayer')[0];
+                $($VidPlayer).attr("src", "/Content/Videos/test3.mp4");
+                
                 $($VidPlayer).animate({opacity: 1}, 1000);
                 $VidPlayer.play();
-                $('#imgPlay').hide();
-                $('#imgStop').show();
-                $('#imgRewind').show();
-                $('#divMainTitle').fadeOut('slow', function () {
-                    $('#divMusicLoad').animate({ right: "-20", opacity: 0 }, 1000);
-                });
+                
+                
+
 
                 $('html').css('background-image', 'none');
 
@@ -191,7 +222,7 @@
         function jsStop() {
             var $VidPlayer = $('#vidPlayer')[0];
             $VidPlayer.pause();
-            $($VidPlayer).animate({opacity: 0}, 1000);
+            $($VidPlayer).animate({ opacity: 0 }, 1000, null, function () { $($VidPlayer).hide(); });
             $('#imgPlay').show();
             $('#imgStop').hide();
             $('#imgRewind').hide();
@@ -234,14 +265,13 @@
     </script>
 </head>
 <body>
-    
+
     <div class="Absolute-Center-onitsway"></div>
 
 
-    <video  id="vidPlayer" 
-            style="left:0; width: 100%; height:100%;  position: absolute; top:0; opacity: 0; -o-object-fit: cover; object-fit: cover;z-index:90; "
-            loop preload="auto"
-           >
+    <video id="vidPlayer"
+           style="left:0; width: 100%; height:100%;  position: absolute; top:0; opacity: 0; display:none; -o-object-fit: cover; object-fit: cover;z-index:90; "
+           loop preload="auto">
         <!--<source src="/content/videos/RegusVideoBanner3.mp4" />-->
         <!--<source src="/content/videos/Regus Video Banner 3.mp4" />-->
     </video>
@@ -257,15 +287,45 @@
     <div id="divMusicLoad" class="jf-headphones-1 " onclick="jsToggleMusicList();"><img src="Content/CommingSoon/Headphone-01.png" /></div>
 
     <div id="divMusicList" class="jf-musiclist">
-        <div>Blotting Out the Frames</div>
-        <div>Nameless</div>
-        <div>One Night</div>
-        <div>Scar</div>
-        <div>Stolen</div>
+        <div>
+            Blotting Out the Frames
+            <div class="jf-actions">
+                <div class="jf-play-button">play</div>
+                <div class="jf-pause-button">buy</div>
+            </div>
+        </div>
+        <div>
+            Nameless
+            <div class="jf-actions">
+                <div class="jf-play-button">play</div>
+                <div class="jf-pause-button">buy</div>
+            </div>
+        </div>
+        <div>
+            One Night
+            <div class="jf-actions">
+                <div class="jf-play-button">play</div>
+                <div class="jf-pause-button">buy</div>
+            </div>
+        </div>
+        <div>
+            Scar
+            <div class="jf-actions">
+                <div class="jf-play-button">play</div>
+                <div class="jf-pause-button">buy</div>
+            </div>
+        </div>
+        <div>
+            Stolen
+            <div class="jf-actions">
+                <div class="jf-play-button">play</div>
+                <div class="jf-pause-button">buy</div>
+            </div>
+        </div>
     </div>
 
     <div id="divMainTitle" class="jf-main-title jf-hidden">
-        <img src="Content/_001/atlyl.png"  />
+        <img src="Content/_001/atlyl.png" />
     </div>
 
     <div class="jf-vidplayer-controls">
