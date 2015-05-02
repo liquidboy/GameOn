@@ -180,6 +180,7 @@
         $(document).ready(function () {
             //$('#vidPlayer').width(window.outerWidth).height(window.outerHeight);
             var $VidPlayer = $('#vidPlayer')[0];
+
             $($VidPlayer).attr("src", "/Content/Videos/test3.mp4");
             //$($VidPlayer).show();
             //$VidPlayer.play();
@@ -193,9 +194,11 @@
 
         function jsPlay() {
             var $VidPlayer = $('#vidPlayer')[0];
-            jsHideMusicList();
             $($VidPlayer).show();
-
+            $($VidPlayer).attr("src", "/Content/Videos/test3.mp4");
+            jsHideMusicList();
+            
+            $VidPlayer.play();
             $('#imgPlay').hide();
             $('#divMainTitle').fadeOut('slow', function () {
                 $('#divMusicLoad').animate({ right: "-20", opacity: 0 }, 1000);
@@ -205,14 +208,9 @@
 
 
             setTimeout(function () {
-                $($VidPlayer).attr("src", "/Content/Videos/test3.mp4");
                 
                 $($VidPlayer).animate({opacity: 1}, 1000);
-                $VidPlayer.play();
                 
-                
-
-
                 $('html').css('background-image', 'none');
 
             }, 1000);
