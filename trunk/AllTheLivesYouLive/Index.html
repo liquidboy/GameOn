@@ -264,7 +264,6 @@
         }
 
         function jsToggleMusicList() {
-            
             if (_isShowingMusicList) {
                 jsHideMusicList();
                 jsStopSong();
@@ -289,11 +288,24 @@
             $(_playButtonSelected).next().removeClass('jf-hidden');
             $(_playButtonSelected).addClass('jf-hidden');
 
+            
+            
+
+
+            var $AudioPlayer = $('#audioPlayer')[0];
+            $($AudioPlayer).show();
+            $($AudioPlayer).attr("src", url);
+            $AudioPlayer.play();
+
         }
         function jsStopSong() {
             jsUnselectPreviousPlayingSong();
 
             _playButtonSelected = undefined;
+
+            var $AudioPlayer = $('#audioPlayer')[0];
+            $AudioPlayer.pause();
+            $($AudioPlayer).hide();
         }
 
         function jsUnselectPreviousPlayingSong() {
@@ -308,6 +320,7 @@
 
     <div class="Absolute-Center-onitsway"></div>
 
+    <audio id="audioPlayer" style="display:none;" loop preload="auto"></audio>
 
     <video id="vidPlayer"
            style="left:0; width: 100%; height:100%;  position: absolute; top:0; opacity: 0; display:none; -o-object-fit: cover; object-fit: cover;z-index:90; "
@@ -327,18 +340,20 @@
     <div id="divMusicLoad" class="jf-headphones-1 " onclick="jsToggleMusicList();"><img src="Content/CommingSoon/Headphone-01.png" /></div>
 
     <div id="divMusicList" class="jf-musiclist">
+
         <div>
-            Blotting Out the Frames
+            Nameless
             <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Blotting Out The Frames.wma');">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Nameless.mp3');">play</div>
                 <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>
         </div>
+
         <div>
-            Nameless
+            Scar
             <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Nameless.wma');">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Scar.mp3');">play</div>
                 <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>
@@ -346,23 +361,25 @@
         <div>
             One Night
             <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/One Night.wma');">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/One Night.mp3');">play</div>
                 <div class="jf-stop-button jf-hidden " onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>
         </div>
+      
         <div>
-            Scar
+            Stolen
             <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Scar.wma');">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Stolen.mp3');">play</div>
                 <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>
         </div>
+
         <div>
-            Stolen
+            Blotting Out the Frames
             <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Stolen.wma');">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Blotting Out The Frames.mp3');">play</div>
                 <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>

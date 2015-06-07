@@ -96,10 +96,15 @@
     <Content Include="Content\Backgrounds\ScarMainImage1.jpg" />
     <Content Include="Content\Backgrounds\ScarMainImage2.jpg" />
     <Content Include="Content\CommingSoon\MusicNote.png" />
+    <Content Include="Content\MusicSample\Blotting Out The Frames.mp3" />
     <Content Include="Content\MusicSample\Blotting Out The Frames.wma" />
+    <Content Include="Content\MusicSample\Nameless.mp3" />
     <Content Include="Content\MusicSample\Nameless.wma" />
+    <Content Include="Content\MusicSample\One Night.mp3" />
     <Content Include="Content\MusicSample\One Night.wma" />
+    <Content Include="Content\MusicSample\Scar.mp3" />
     <Content Include="Content\MusicSample\Scar.wma" />
+    <Content Include="Content\MusicSample\Stolen.mp3" />
     <Content Include="Content\MusicSample\Stolen.wma" />
     <Content Include="Content\VideoPlayer\Play.png" />
     <Content Include="Content\VideoPlayer\Rewind.png" />
