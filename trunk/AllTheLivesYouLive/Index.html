@@ -158,15 +158,28 @@
 
                 background-color:#c7c7c7;
                 color:black;
-                padding:4px;
-                font-size:12px;
+                padding-left:4px;
+                padding-right:4px;
+                padding-top:0;
+                padding-bottom:0;
+                font-size:16px;
+            }
+            .jf-actions .jf-stop-button {
+                background-color:red;
+                color:white;
             }
             .jf-actions .jf-play-button:hover {
                background-color:white;
             }
+            .jf-actions .jf-stop-button:hover {
+                background-color:#f65252;
+            }
             .jf-actions .jf-pause-button:hover {
                 background-color:white;
             }
+
+        
+            
     </style>
 
     <link href="/Scripts/video-js/video-js.css" rel="stylesheet">
@@ -193,6 +206,8 @@
         });
 
         function jsPlay() {
+            jsStopSong();
+
             var $VidPlayer = $('#vidPlayer')[0];
             $($VidPlayer).show();
             $($VidPlayer).attr("src", "/Content/Videos/test3.mp4");
@@ -252,13 +267,40 @@
             
             if (_isShowingMusicList) {
                 jsHideMusicList();
+                jsStopSong();
             }
             else {
                 jsShowMusicList();
                 
             }
+        }
+
+
+
+        var _playingSong = '';
+        var _playButtonSelected = undefined;
+        function jsPlaySong(el, url) {
+
+            jsUnselectPreviousPlayingSong();
+
+            _playButtonSelected = el;
 
             
+            $(_playButtonSelected).next().removeClass('jf-hidden');
+            $(_playButtonSelected).addClass('jf-hidden');
+
+        }
+        function jsStopSong() {
+            jsUnselectPreviousPlayingSong();
+
+            _playButtonSelected = undefined;
+        }
+
+        function jsUnselectPreviousPlayingSong() {
+            if (_playButtonSelected != undefined) {
+                $(_playButtonSelected).removeClass('jf-hidden');
+                $(_playButtonSelected).next().addClass('jf-hidden');
+            }
         }
     </script>
 </head>
@@ -288,35 +330,40 @@
         <div>
             Blotting Out the Frames
             <div class="jf-actions">
-                <div class="jf-play-button">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Blotting Out The Frames.wma');">play</div>
+                <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>
         </div>
         <div>
             Nameless
             <div class="jf-actions">
-                <div class="jf-play-button">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Nameless.wma');">play</div>
+                <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>
         </div>
         <div>
             One Night
             <div class="jf-actions">
-                <div class="jf-play-button">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/One Night.wma');">play</div>
+                <div class="jf-stop-button jf-hidden " onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>
         </div>
         <div>
             Scar
             <div class="jf-actions">
-                <div class="jf-play-button">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Scar.wma');">play</div>
+                <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>
         </div>
         <div>
             Stolen
             <div class="jf-actions">
-                <div class="jf-play-button">play</div>
+                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Stolen.wma');">play</div>
+                <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
                 <div class="jf-pause-button">buy</div>
             </div>
         </div>
