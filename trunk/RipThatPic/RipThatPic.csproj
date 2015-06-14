@@ -76,6 +76,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="angularApp\BootstrapApp.js">
+      <DependentUpon>BootstrapApp.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\home.js">
+      <DependentUpon>home.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\billboard.js">
+      <DependentUpon>billboard.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\partials\billboard.html" />
+    <Content Include="angularApp\services\dataService.js">
+      <DependentUpon>dataService.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\serviceHelper.js">
+      <DependentUpon>serviceHelper.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\views\home\home.html" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
@@ -116,6 +133,21 @@
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="angularApp\controllers\home.js.map">
+      <DependentUpon>home.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\billboard.js.map">
+      <DependentUpon>billboard.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\dataService.js.map">
+      <DependentUpon>dataService.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\serviceHelper.js.map">
+      <DependentUpon>serviceHelper.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\BootstrapApp.js.map">
+      <DependentUpon>BootstrapApp.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
@@ -894,6 +926,11 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\home.ts" />
+    <TypeScriptCompile Include="angularApp\directives\billboard.ts" />
+    <TypeScriptCompile Include="angularApp\services\dataService.ts" />
+    <TypeScriptCompile Include="angularApp\services\serviceHelper.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
