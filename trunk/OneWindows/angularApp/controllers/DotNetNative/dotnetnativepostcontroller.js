@@ -20,4 +20,5 @@ var Application;
         Controllers.DotNetNativePostCtrl = DotNetNativePostCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("DotNetNativeCtrl", ["$scope", "resourceSvc", Application.Controllers.DotNetNativeCtrl]);
 //# sourceMappingURL=DotNetNativePostController.js.map

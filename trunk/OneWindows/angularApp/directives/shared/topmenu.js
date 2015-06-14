@@ -36,4 +36,26 @@ var Application;
         Directives.TopMenuDirective = TopMenuDirective;
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//window["app"].directive("cstTopMenu", Application.Directives.TopMenuDirective.prototype.injection());
+//used to be like this before TS came along :)
+//app.directive('cstTopMenu', function () {
+//    return {
+//        restrict: 'E',
+//        replace: true,
+//        templateUrl: '/angularApp/partials/TopMenu.html',
+//        link: function (scope, element, attrs) {
+//            var menuItems = element.find("a");
+//            menuItems.on('click', function () {
+//                menuItems.removeClass('active');
+//                $(this).addClass('active');
+//            });
+//            scope.$on('logOff', function () {
+//                scope.isAuthenticated = false;
+//            });
+//            scope.$on('logOn', function () {
+//                scope.isAuthenticated = true;
+//            });
+//        }
+//    };
+//});
 //# sourceMappingURL=topmenu.js.map

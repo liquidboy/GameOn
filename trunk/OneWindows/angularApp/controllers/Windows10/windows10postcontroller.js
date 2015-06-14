@@ -20,4 +20,5 @@ var Application;
         Controllers.Windows10PostCtrl = Windows10PostCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("Windows10Ctrl", ["$scope", "resourceSvc", Application.Controllers.Windows10Ctrl]);
 //# sourceMappingURL=Windows10PostController.js.map

@@ -20,4 +20,5 @@ var Application;
         Controllers.WindowsStorePostCtrl = WindowsStorePostCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("WindowsStoreCtrl", ["$scope", "resourceSvc", Application.Controllers.WindowsStoreCtrl]);
 //# sourceMappingURL=WindowsStorePostController.js.map

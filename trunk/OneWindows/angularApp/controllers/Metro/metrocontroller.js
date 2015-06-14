@@ -20,4 +20,5 @@ var Application;
         Controllers.MetroCtrl = MetroCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("MetroCtrl", ["$scope", "resourceSvc", Application.Controllers.MetroCtrl]);
 //# sourceMappingURL=MetroController.js.map

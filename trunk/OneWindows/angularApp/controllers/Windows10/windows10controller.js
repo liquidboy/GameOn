@@ -20,4 +20,5 @@ var Application;
         Controllers.Windows10Ctrl = Windows10Ctrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("Windows10Ctrl", ["$scope", "resourceSvc", Application.Controllers.Windows10Ctrl]);
 //# sourceMappingURL=windows10controller.js.map

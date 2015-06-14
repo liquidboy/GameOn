@@ -20,4 +20,5 @@ var Application;
         Controllers.DotNetNativeCtrl = DotNetNativeCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("DotNetNativeCtrl", ["$scope", "resourceSvc", Application.Controllers.DotNetNativeCtrl]);
 //# sourceMappingURL=DotNetNativeController.js.map

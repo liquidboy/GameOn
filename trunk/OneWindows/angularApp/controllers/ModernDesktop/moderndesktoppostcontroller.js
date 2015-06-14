@@ -20,4 +20,5 @@ var Application;
         Controllers.ModernDesktopPostCtrl = ModernDesktopPostCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("ModernDesktopCtrl", ["$scope", "resourceSvc", Application.Controllers.ModernDesktopCtrl]);
 //# sourceMappingURL=ModernDesktopPostController.js.map

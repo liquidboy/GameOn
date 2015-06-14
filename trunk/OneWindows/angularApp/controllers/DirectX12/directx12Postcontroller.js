@@ -20,4 +20,5 @@ var Application;
         Controllers.DirectX12PostCtrl = DirectX12PostCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("DirectX12Ctrl", ["$scope", "resourceSvc", Application.Controllers.DirectX12Ctrl]);
 //# sourceMappingURL=DirectX12PostController.js.map

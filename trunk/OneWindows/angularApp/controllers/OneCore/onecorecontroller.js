@@ -20,4 +20,5 @@ var Application;
         Controllers.OneCoreCtrl = OneCoreCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("OneCoreCtrl", ["$scope", "resourceSvc", Application.Controllers.OneCoreCtrl]);
 //# sourceMappingURL=OneCoreController.js.map

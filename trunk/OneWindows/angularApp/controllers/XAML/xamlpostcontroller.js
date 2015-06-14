@@ -20,4 +20,5 @@ var Application;
         Controllers.XAMLPostCtrl = XAMLPostCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("XAMLCtrl", ["$scope", "resourceSvc", Application.Controllers.XAMLCtrl]);
 //# sourceMappingURL=XAMLPostController.js.map

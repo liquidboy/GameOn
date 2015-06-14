@@ -20,4 +20,5 @@ var Application;
         Controllers.XAMLCtrl = XAMLCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//window["app"].controller("XAMLCtrl", ["$scope", "resourceSvc", Application.Controllers.XAMLCtrl]);
 //# sourceMappingURL=XAMLController.js.map
