@@ -7,6 +7,7 @@ var BootstrapApp;
     myapp.service("dataSvc", ["$http", "serviceHelperSvc", function ($http, serviceHelperSvc) { return new Application.Services.DataSvc($http, serviceHelperSvc); }]);
     //DIRECTIVES
     myapp.directive("dBillboard", Application.Directives.BillboardDirective.prototype.injection());
+    myapp.directive("dWorkarea", Application.Directives.WorkareaDirective.prototype.injection());
     //CONTROLLERS
     myapp.controller("HomeCtrl", ["$scope", "$rootScope", Application.Controllers.HomeCtrl]);
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {

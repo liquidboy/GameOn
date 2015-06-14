@@ -85,6 +85,10 @@
     <Content Include="angularApp\directives\billboard.js">
       <DependentUpon>billboard.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\workarea.js">
+      <DependentUpon>workarea.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\partials\workarea.html" />
     <Content Include="angularApp\partials\billboard.html" />
     <Content Include="angularApp\services\dataService.js">
       <DependentUpon>dataService.ts</DependentUpon>
@@ -147,6 +151,9 @@
     </Content>
     <Content Include="angularApp\BootstrapApp.js.map">
       <DependentUpon>BootstrapApp.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\workarea.js.map">
+      <DependentUpon>workarea.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -928,6 +935,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
+    <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />
     <TypeScriptCompile Include="angularApp\services\serviceHelper.ts" />

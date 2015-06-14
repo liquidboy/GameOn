@@ -12,6 +12,7 @@
 
     //DIRECTIVES
     myapp.directive("dBillboard", Application.Directives.BillboardDirective.prototype.injection());
+    myapp.directive("dWorkarea", Application.Directives.WorkareaDirective.prototype.injection());
 
 
     //CONTROLLERS
