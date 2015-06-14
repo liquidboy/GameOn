@@ -12,9 +12,7 @@ var BootstrapApp;
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
         $locationProvider.html5Mode(true);
-        $routeProvider.when('/home', { templateUrl: '/angularApp/views/home/home.html' }).when('/error', { templateUrl: '/angularApp/views/shared/error.html' }).otherwise({
-            redirectTo: '/home'
-        });
+        $routeProvider.when('/home', { controller: 'HomeCtrl', templateUrl: '/angularApp/views/home/home.html' }).when('/error', { controller: 'ErrorCtrl', templateUrl: '/angularApp/views/shared/error.html' }).otherwise({ redirectTo: '/home' });
     }]);
     localWindow.app = myapp;
 })(BootstrapApp || (BootstrapApp = {}));
