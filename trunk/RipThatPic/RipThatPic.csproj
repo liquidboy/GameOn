@@ -956,6 +956,7 @@
     <Compile Include="Controllers\AreasController.cs" />
     <Compile Include="Controllers\CloudService.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VideoController.cs" />

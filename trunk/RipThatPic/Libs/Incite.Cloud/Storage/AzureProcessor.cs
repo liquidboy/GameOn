@@ -214,6 +214,17 @@ namespace Incite.Cloud.Storage
 
         }
 
+        public async Task<int> AddToTable(string tableName, TableEntity entity)
+        {
+            var table = _tableClient.GetTableReference(tableName);
+            await table.CreateIfNotExistsAsync();
+
+            TableOperation insertOp = TableOperation.InsertOrReplace(entity);
+            var result = await table.ExecuteAsync(insertOp);
+
+            return result.HttpStatusCode;
+            
+        }
 
         public async Task<bool> DownloadFile(string folderPathToSaveUrn, string containerName, string containerFileName, string folderPrefix = "", long singleFileSizeInMB = 0)
         {
