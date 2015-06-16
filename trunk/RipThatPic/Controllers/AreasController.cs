@@ -12,12 +12,21 @@ namespace RipThatPic.Controllers
 {
     public class AreasController : ApiController
     {
-        // GET: api/Areas
         public async Task<IEnumerable<string>> Get()
+        {
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var result = await processor.RetrieveAllAreas("Area");
+            return result.Select(x => x.LongName).AsEnumerable();
+
+        }
+
+
+        // GET: api/Areas/gaming 
+        public async Task<IEnumerable<string>> Get(string grouping)
         {
 
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
-            var result = await  processor.RetrieveAllAreas("Area", "gaming");
+            var result = await  processor.RetrieveAllAreas("Area", grouping);
             return result.Select(x => x.LongName).AsEnumerable();
 
         }

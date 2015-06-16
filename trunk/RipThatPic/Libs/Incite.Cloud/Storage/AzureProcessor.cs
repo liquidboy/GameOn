@@ -250,6 +250,17 @@ namespace Incite.Cloud.Storage
             
         }
 
+        public async Task<IEnumerable<RipThatPic.Controllers.AreaEntity>> RetrieveAllAreas(string tableName)
+        {
+            var table = _tableClient.GetTableReference(tableName);
+            await table.CreateIfNotExistsAsync();
+            
+            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
+
+            return table.ExecuteQuery(query);
+
+        }
+
 
 
         public async Task<bool> DownloadFile(string folderPathToSaveUrn, string containerName, string containerFileName, string folderPrefix = "", long singleFileSizeInMB = 0)
