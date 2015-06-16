@@ -226,6 +226,19 @@ namespace Incite.Cloud.Storage
             
         }
 
+        public async Task<object> RetrieveFromTable(string tableName, string partition, string key)
+        {
+            var table = _tableClient.GetTableReference(tableName);
+            await table.CreateIfNotExistsAsync();
+
+            TableOperation retrieveOp = TableOperation.Retrieve(partition, key);
+            var result = await table.ExecuteAsync(retrieveOp);
+
+            return result.Result;
+
+        }
+
+
         public async Task<bool> DownloadFile(string folderPathToSaveUrn, string containerName, string containerFileName, string folderPrefix = "", long singleFileSizeInMB = 0)
         {
             var path = string.Format(folderPathToSaveUrn + @"\" + folderPrefix + "-" + containerName);

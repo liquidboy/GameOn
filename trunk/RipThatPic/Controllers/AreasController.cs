@@ -19,26 +19,34 @@ namespace RipThatPic.Controllers
         }
 
         // GET: api/Areas/5
-        public async Task<string> Get(int id)
+        public async Task<object> Get(string name, string grouping)
         {
-
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var ret = await processor.CreateTable("Area");
 
-            var newArea = new AreaEntity("Xbox", "gaming") { Color="green", LongName= "Xbox One" };
-            await processor.AddToTable("Area", newArea);
+            var result = await processor.RetrieveFromTable("Area", grouping, name);
 
-            return "value";
+            return result;
         }
 
         // POST: api/Areas
-        public void Post([FromBody]string value)
+        public async void Post([FromBody]string name, [FromBody]string grouping, [FromBody]string color, [FromBody]string longName)
         {
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var ret = await processor.CreateTable("Area");
+
+            var newArea = new AreaEntity(name, grouping) { Color = color, LongName = longName };
+            await processor.AddToTable("Area", newArea);
         }
 
         // PUT: api/Areas/5
-        public void Put(int id, [FromBody]string value)
+        public async void Put(int id, [FromBody]string value)
         {
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var ret = await processor.CreateTable("Area");
+
+            var newArea = new AreaEntity("Xbox", "gaming") { Color = "green", LongName = "Xbox One" };
+            await processor.AddToTable("Area", newArea);
         }
 
         // DELETE: api/Areas/5
