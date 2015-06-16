@@ -954,6 +954,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\AreasController.cs" />
+    <Compile Include="Controllers\CloudService.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -961,6 +962,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Libs\Incite.Cloud\Blob.cs" />
+    <Compile Include="Libs\Incite.Cloud\Compute\AzureJobProcessor.cs" />
+    <Compile Include="Libs\Incite.Cloud\Container.cs" />
+    <Compile Include="Libs\Incite.Cloud\IJobProcessor.cs" />
+    <Compile Include="Libs\Incite.Cloud\ILogger.cs" />
+    <Compile Include="Libs\Incite.Cloud\IStorageProcessor.cs" />
+    <Compile Include="Libs\Incite.Cloud\LogData.cs" />
+    <Compile Include="Libs\Incite.Cloud\Logging\AzureLogger.cs" />
+    <Compile Include="Libs\Incite.Cloud\Storage\AzureProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
