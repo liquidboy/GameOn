@@ -18,7 +18,7 @@ namespace RipThatPic.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/Areas/5
+        // GET: api/Areas?name=Xbox&grouping=gaming    <-- case sensitive
         public async Task<object> Get(string name, string grouping)
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
