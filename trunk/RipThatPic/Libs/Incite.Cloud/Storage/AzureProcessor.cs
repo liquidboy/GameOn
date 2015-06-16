@@ -238,6 +238,19 @@ namespace Incite.Cloud.Storage
 
         }
 
+        public async Task<IEnumerable<RipThatPic.Controllers.AreaEntity>> RetrieveAllAreas(string tableName, string partition)
+        {
+            var table = _tableClient.GetTableReference(tableName);
+            await table.CreateIfNotExistsAsync();
+
+
+            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partition));
+            
+            return  table.ExecuteQuery(query);
+            
+        }
+
+
 
         public async Task<bool> DownloadFile(string folderPathToSaveUrn, string containerName, string containerFileName, string folderPrefix = "", long singleFileSizeInMB = 0)
         {
