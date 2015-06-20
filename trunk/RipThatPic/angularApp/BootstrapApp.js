@@ -3,8 +3,10 @@ var BootstrapApp;
     var localWindow = window;
     var myapp = angular.module('bootstrapApp', ['ngRoute', 'ngResource', 'ngAnimate', 'ngSanitize']);
     //SERVICES
-    myapp.factory("serviceHelperSvc", ["$http", "$location", function ($http, $location) { return new Application.Services.ServiceHelperSvc($http, $location); }]);
-    myapp.service("dataSvc", ["$http", "serviceHelperSvc", function ($http, serviceHelperSvc) { return new Application.Services.DataSvc($http, serviceHelperSvc); }]);
+    //myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location)
+    //    => new Application.Services.ServiceHelperSvc($http, $location)]);
+    //myapp.service("dataSvc", ["$http", "serviceHelperSvc", ($http, serviceHelperSvc)
+    //    => new Application.Services.DataSvc($http, serviceHelperSvc)]);
     //DIRECTIVES
     //myapp.directive("dBillboard", Application.Directives.BillboardDirective.prototype.injection());
     //myapp.directive("dWorkarea", Application.Directives.WorkareaDirective.prototype.injection());

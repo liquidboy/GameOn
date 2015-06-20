@@ -38,4 +38,8 @@
         }
        
     }
+
+    var myapp: ng.IModule = angular.module('bootstrapApp');
+    myapp.service("dataSvc", ["$http", "serviceHelperSvc", ($http, serviceHelperSvc)
+        => new DataSvc($http, serviceHelperSvc)]);
 } 

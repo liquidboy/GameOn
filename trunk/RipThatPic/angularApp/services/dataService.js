@@ -25,6 +25,8 @@ var Application;
             return DataSvc;
         })();
         Services.DataSvc = DataSvc;
+        var myapp = angular.module('bootstrapApp');
+        myapp.service("dataSvc", ["$http", "serviceHelperSvc", function ($http, serviceHelperSvc) { return new DataSvc($http, serviceHelperSvc); }]);
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=dataService.js.map

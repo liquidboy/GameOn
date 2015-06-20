@@ -4,10 +4,10 @@
     
 
     //SERVICES
-    myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location)
-        => new Application.Services.ServiceHelperSvc($http, $location)]);
-    myapp.service("dataSvc", ["$http", "serviceHelperSvc", ($http, serviceHelperSvc)
-        => new Application.Services.DataSvc($http, serviceHelperSvc)]);
+    //myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location)
+    //    => new Application.Services.ServiceHelperSvc($http, $location)]);
+    //myapp.service("dataSvc", ["$http", "serviceHelperSvc", ($http, serviceHelperSvc)
+    //    => new Application.Services.DataSvc($http, serviceHelperSvc)]);
 
 
     //DIRECTIVES
