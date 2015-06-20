@@ -3,9 +3,20 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigCtrl = (function () {
-            function ConfigCtrl($scope, $rootScope) {
+            function ConfigCtrl($scope, $rootScope, serviceHelperSvc, dataSvc) {
+                var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
+                this.serviceHelperSvc = serviceHelperSvc;
+                this.dataSvc = dataSvc;
+                this.testclick = function () {
+                    //this.serviceHelperSvc.testCall();
+                    _this.dataSvc.getAll("areas", function (result) {
+                        alert(result.data);
+                    }, function (result) {
+                        alert('failure');
+                    });
+                };
                 this.init();
             }
             ConfigCtrl.prototype.init = function () {
@@ -15,7 +26,7 @@ var Application;
         })();
         Controllers.ConfigCtrl = ConfigCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigCtrl", ["$scope", "$rootScope", ConfigCtrl]);
+        myapp.controller("ConfigCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=config.js.map

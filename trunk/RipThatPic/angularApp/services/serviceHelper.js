@@ -21,6 +21,9 @@ var Application;
                     successCallback(error);
                 });
             };
+            ServiceHelperSvc.prototype.testCall = function () {
+                alert('servicehelpersvc test call');
+            };
             return ServiceHelperSvc;
         })();
         Services.ServiceHelperSvc = ServiceHelperSvc;

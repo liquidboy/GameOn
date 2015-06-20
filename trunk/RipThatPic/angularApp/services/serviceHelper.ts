@@ -1,6 +1,7 @@
 ﻿module Application.Services {
     export interface IServiceHelper {
         getAuthorizationToken(successCallback: Function);
+        testCall();
     }
 
     export class ServiceHelperSvc {
@@ -27,6 +28,10 @@
                 successCallback(error);
             });
 
+        }
+
+        testCall() {
+            alert('servicehelpersvc test call');
         }
 
     }

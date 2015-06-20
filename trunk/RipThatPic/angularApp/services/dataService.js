@@ -16,11 +16,14 @@ var Application;
                 ];
             };
             DataSvc.prototype.getAll = function (area, successCallback, errorCallback) {
-                var data = this.http.get(this.urlBase + area + '.json?r=' + Math.random()).then(function (response) {
+                var data = this.http.get(this.urlBase + area).then(function (response) {
                     successCallback({ data: response.data, status: response.status });
                 }, function (response) {
                     errorCallback({ status: response.status, reason: response.statusText });
                 });
+            };
+            DataSvc.prototype.testCall = function () {
+                alert('DataSvc test call');
             };
             return DataSvc;
         })();
