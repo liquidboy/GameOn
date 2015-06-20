@@ -27,6 +27,7 @@
         
         $routeProvider
             .when('/home', { controller: 'HomeCtrl', templateUrl: '/angularApp/views/home/home.html' })
+            .when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html' })
             .when('/error', { controller: 'ErrorCtrl',templateUrl: '/angularApp/views/shared/error.html' })
             .otherwise({ redirectTo: '/home'});
 
