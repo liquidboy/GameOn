@@ -25,7 +25,7 @@ var Application;
         })();
         Services.ServiceHelperSvc = ServiceHelperSvc;
         var myapp = angular.module('bootstrapApp');
-        myapp.factory("serviceHelperSvc", ["$http", "$location", function ($http, $location) { return new ServiceHelperSvc($http, $location); }]);
+        myapp.service("serviceHelperSvc", ["$http", "$location", function ($http, $location) { return new ServiceHelperSvc($http, $location); }]);
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=serviceHelper.js.map

@@ -32,5 +32,5 @@
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location) => new ServiceHelperSvc($http, $location)]);
+    myapp.service("serviceHelperSvc", ["$http", "$location", ($http, $location) => new ServiceHelperSvc($http, $location)]);
 } 

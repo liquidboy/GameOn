@@ -2,9 +2,7 @@
 
     export interface IData {
         getAll(area: string, successCallback: Function, errorCallback: Function);
-
     }
-
     export interface ISuccessResponse { data: any; status: any }
     export interface IFailureResponse { status: string; reason: string }
 
@@ -40,6 +38,5 @@
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.service("dataSvc", ["$http", "serviceHelperSvc", ($http, serviceHelperSvc)
-        => new DataSvc($http, serviceHelperSvc)]);
+    myapp.service("dataSvc", ["$http", "serviceHelperSvc", ($http, serviceHelperSvc) => new DataSvc($http, serviceHelperSvc)]);
 } 
