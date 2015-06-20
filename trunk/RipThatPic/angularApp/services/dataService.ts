@@ -2,6 +2,7 @@
 
     export interface IData {
         getAll(area: string, successCallback: Function, errorCallback: Function);
+        addArea(name: string, color: string, longname: string, successCallback: Function, errorCallback: Function);
         testCall();
     }
     export interface ISuccessResponse { data: any; status: any }
@@ -33,9 +34,20 @@
                     },
                     function (response) {
                         errorCallback({ status: response.status, reason: response.statusText });
-                    });
+                });
+        }
 
-
+        addArea(name: string, color: string, longname: string, successCallback: Function, errorCallback: Function) {
+            var postData = { name: name, grouping: "areas", color: color, longName: longname};
+            var data = this.http
+                .post(this.urlBase + "areas", postData)  //+ '.json?r=' + Math.random()
+                .then(
+                function (response) {
+                    successCallback({ data: response.data, status: response.status });
+                },
+                function (response) {
+                    errorCallback({ status: response.status, reason: response.statusText });
+                });
         }
 
         testCall() {

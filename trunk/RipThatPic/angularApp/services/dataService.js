@@ -22,6 +22,14 @@ var Application;
                     errorCallback({ status: response.status, reason: response.statusText });
                 });
             };
+            DataSvc.prototype.addArea = function (name, color, longname, successCallback, errorCallback) {
+                var postData = { name: name, grouping: "areas", color: color, longName: longname };
+                var data = this.http.post(this.urlBase + "areas", postData).then(function (response) {
+                    successCallback({ data: response.data, status: response.status });
+                }, function (response) {
+                    errorCallback({ status: response.status, reason: response.statusText });
+                });
+            };
             DataSvc.prototype.testCall = function () {
                 alert('DataSvc test call');
             };
