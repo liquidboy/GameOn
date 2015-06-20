@@ -12,7 +12,7 @@ var Application;
                 this.testclick = function () {
                     //this.serviceHelperSvc.testCall();
                     _this.dataSvc.getAll("areas", function (result) {
-                        alert(result.data);
+                        alert(result.data[0].PartitionKey);
                     }, function (result) {
                         alert('failure');
                     });

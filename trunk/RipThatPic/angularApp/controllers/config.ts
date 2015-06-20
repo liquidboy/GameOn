@@ -18,7 +18,7 @@
         testclick = () => {
             //this.serviceHelperSvc.testCall();
             this.dataSvc.getAll("areas",
-                function (result) { alert(result.data);},
+                function (result) { alert(result.data[0].PartitionKey);},
                 function (result) { alert('failure');});
         }
         
