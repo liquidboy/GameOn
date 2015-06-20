@@ -23,4 +23,6 @@
         }
         
     }
+    var myapp: ng.IModule = angular.module('bootstrapApp');
+    myapp.controller("HomeCtrl", ["$scope", "$rootScope", HomeCtrl]);
 }

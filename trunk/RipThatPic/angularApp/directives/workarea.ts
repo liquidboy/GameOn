@@ -73,4 +73,8 @@
   
         
     }
+
+
+    var myapp: ng.IModule = angular.module('bootstrapApp');
+    myapp.directive("dWorkarea", WorkareaDirective.prototype.injection());
 }

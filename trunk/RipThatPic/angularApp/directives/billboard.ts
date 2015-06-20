@@ -85,4 +85,7 @@
   
         
     }
+
+    var myapp: ng.IModule = angular.module('bootstrapApp');
+    myapp.directive("dBillboard", BillboardDirective.prototype.injection());
 }

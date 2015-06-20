@@ -19,6 +19,8 @@ var Application;
             return HomeCtrl;
         })();
         Controllers.HomeCtrl = HomeCtrl;
+        var myapp = angular.module('bootstrapApp');
+        myapp.controller("HomeCtrl", ["$scope", "$rootScope", HomeCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=home.js.map

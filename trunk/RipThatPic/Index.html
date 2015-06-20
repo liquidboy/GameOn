@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" data-ng-app="bootstrapApp">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="bootstrapApp">
 <head>
     <title>Rip that Pic!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,7 +14,7 @@
     <div ng-controller="HomeCtrl">
         <d-billboard></d-billboard>
         <d-workarea></d-workarea>
-        <div data-ng-view ng-animate >
+        <div ng-animate ng-view="">
         </div>
     </div>
 
@@ -37,15 +37,24 @@
     <script src="/angularApp/services/serviceHelper.js"></script>
     <script src="/angularApp/services/dataService.js"></script>
 
-    <!-- DIRECTIVES -->
-    <script src="/angularApp/directives/billboard.js"></script>
-    <script src="/angularApp/directives/workarea.js"></script>
+    
 
-    <!-- CONTROLLERS -->
-    <script src="/angularApp/controllers/home.js"></script>
+    
 
     <!-- BOOTSTRAP APP -->
     <script src="/angularApp/BootstrapApp.js"></script>
 
+
+    <!-- CONTROLLERS -->
+    <script src="/angularApp/controllers/home.js"></script>
+
+
+    <!-- DIRECTIVES -->
+    <script src="/angularApp/directives/billboard.js"></script>
+    <script src="/angularApp/directives/workarea.js"></script>
+
 </body>
 </html>
+
+
+<!-- sample:  http://www.codeproject.com/Articles/888764/Getting-started-with-TypeScript-in-AngularJS-appli  -->
