@@ -4,10 +4,19 @@ var Application;
     (function (Controllers) {
         var ConfigCtrl = (function () {
             function ConfigCtrl($scope, $rootScope, serviceHelperSvc, dataSvc) {
+                var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
+                this.CreateArea = function () {
+                    var __this = _this;
+                    _this.dataSvc.addArea("name", "gaming", "green", "Xbox One").success(function (val) {
+                        alert('Success creating area');
+                    }).error(function (val) {
+                        alert('Failed creating area');
+                    });
+                };
                 this.testclick = function () {
                     //this.serviceHelperSvc.testCall();
                     //this.dataSvc.getAllAreas()

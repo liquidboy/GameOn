@@ -15,6 +15,17 @@
 
         }
 
+        CreateArea = () => {
+
+            var __this = this;
+
+            this.dataSvc.addArea("name", "gaming", "green", "Xbox One")
+                .success(function (val) { alert('Success creating area');})
+                .error(function (val) { alert('Failed creating area');})
+            ;
+
+        }
+
         testclick = () => {
             //this.serviceHelperSvc.testCall();
 

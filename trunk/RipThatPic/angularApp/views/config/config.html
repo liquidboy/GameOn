@@ -1,3 +1,10 @@
 ﻿config
 
-<input type="button" value="Call API Test" ng-click="config.testclick()" />
+
+<div>
+    <input type="text" ng-bind="config.Name" width="150" />
+    <input type="text" ng-bind="config.LongName" width="150" />
+    <input type="text" ng-bind="config.Color" width="150" />
+    <input type="text" ng-bind="config.Grouping" width="150" />
+    <input type="button" value="Call API Test" ng-click="config.CreateArea()" />
+</div>
