@@ -19,18 +19,22 @@
             //this.serviceHelperSvc.testCall();
 
 
-            //this.dataSvc.getAll("areas")
+            //this.dataSvc.getAllAreas()
             //    .success(function (result: any) {
             //        //alert(result[0].PartitionKey);
             //    })
             //    .error(function (err) { });
-                
-
+            
             //this.dataSvc.addArea("xbox", "gaming", "green", "Xbox One")
             //    .success(function (val) { alert(val);})
             //    .error(function (val) { alert(val);})
             //;
 
+            //this.dataSvc.getAllAreasByGrouping("gaming")
+            //    .success(function (result: any) {
+            //        alert(result.length);
+            //    })
+            //    .error(function (err) { });
         }
         
     }

@@ -10,7 +10,7 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.testclick = function () {
                     //this.serviceHelperSvc.testCall();
-                    //this.dataSvc.getAll("areas")
+                    //this.dataSvc.getAllAreas()
                     //    .success(function (result: any) {
                     //        //alert(result[0].PartitionKey);
                     //    })
@@ -19,6 +19,11 @@ var Application;
                     //    .success(function (val) { alert(val);})
                     //    .error(function (val) { alert(val);})
                     //;
+                    //this.dataSvc.getAllAreasByGrouping("gaming")
+                    //    .success(function (result: any) {
+                    //        alert(result.length);
+                    //    })
+                    //    .error(function (err) { });
                 };
                 this.init();
             }

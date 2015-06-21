@@ -1,7 +1,8 @@
 ﻿module Application.Services {
 
     export interface IData {
-        getAll(area: string): ng.IHttpPromise<{}>;
+        getAllAreas(): ng.IHttpPromise<{}>;
+        getAllAreasByGrouping(grouping:string): ng.IHttpPromise<{}>;
         addArea(name: string, grouping: string, color: string, longname: string): ng.IHttpPromise<{}>;
         testCall();
     }
@@ -25,8 +26,12 @@
 
         }
 
-        getAll(area: string) {
-            return this.http.get(this.urlBase + area);  //+ '.json?r=' + Math.random()
+        getAllAreas() {
+            return this.http.get(this.urlBase + "areas");  //+ '.json?r=' + Math.random()
+        }
+
+        getAllAreasByGrouping(grouping: string) {
+            return this.http.get(this.urlBase + "areas/" + grouping); 
         }
 
         addArea(name: string, grouping: string, color: string, longname: string) {
