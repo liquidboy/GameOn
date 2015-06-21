@@ -4,18 +4,21 @@ var Application;
     (function (Controllers) {
         var ConfigCtrl = (function () {
             function ConfigCtrl($scope, $rootScope, serviceHelperSvc, dataSvc) {
-                var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
                 this.testclick = function () {
                     //this.serviceHelperSvc.testCall();
-                    _this.dataSvc.getAll("areas", function (result) {
-                        alert(result.data[0].PartitionKey);
-                    }, function (result) {
-                        alert('failure');
-                    });
+                    //this.dataSvc.getAll("areas")
+                    //    .success(function (result: any) {
+                    //        //alert(result[0].PartitionKey);
+                    //    })
+                    //    .error(function (err) { });
+                    //this.dataSvc.addArea("xbox", "gaming", "green", "Xbox One")
+                    //    .success(function (val) { alert(val);})
+                    //    .error(function (val) { alert(val);})
+                    //;
                 };
                 this.init();
             }

@@ -1,8 +1,8 @@
 ﻿module Application.Services {
 
     export interface IData {
-        getAll(area: string, successCallback: Function, errorCallback: Function);
-        addArea(name: string, color: string, longname: string, successCallback: Function, errorCallback: Function);
+        getAll(area: string): ng.IHttpPromise<{}>;
+        addArea(name: string, grouping: string, color: string, longname: string): ng.IHttpPromise<{}>;
         testCall();
     }
     export interface ISuccessResponse { data: any; status: any }
@@ -25,29 +25,13 @@
 
         }
 
-        getAll(area: string, successCallback: Function, errorCallback: Function) {
-            var data = this.http
-                .get(this.urlBase + area)  //+ '.json?r=' + Math.random()
-                .then(
-                    function (response) {
-                        successCallback({ data: response.data, status: response.status });
-                    },
-                    function (response) {
-                        errorCallback({ status: response.status, reason: response.statusText });
-                });
+        getAll(area: string) {
+            return this.http.get(this.urlBase + area);  //+ '.json?r=' + Math.random()
         }
 
-        addArea(name: string, color: string, longname: string, successCallback: Function, errorCallback: Function) {
-            var postData = { name: name, grouping: "areas", color: color, longName: longname};
-            var data = this.http
-                .post(this.urlBase + "areas", postData)  //+ '.json?r=' + Math.random()
-                .then(
-                function (response) {
-                    successCallback({ data: response.data, status: response.status });
-                },
-                function (response) {
-                    errorCallback({ status: response.status, reason: response.statusText });
-                });
+        addArea(name: string, grouping: string, color: string, longname: string) {
+            var postData = { "name": name, "grouping": grouping, "color": color, "longName": longname };
+            return this.http.post(this.urlBase + "areas", postData);
         }
 
         testCall() {
@@ -59,3 +43,10 @@
     var myapp: ng.IModule = angular.module('bootstrapApp');
     myapp.service("dataSvc", ["$http", "serviceHelperSvc", ($http, serviceHelperSvc) => new DataSvc($http, serviceHelperSvc)]);
 } 
+
+
+//example calls
+//dataSvc.addArea("xbox", "gaming", "green", "Xbox One")
+//    .success(function (val) { alert(val);})
+//    .error(function (val) { alert(val);})
+//;

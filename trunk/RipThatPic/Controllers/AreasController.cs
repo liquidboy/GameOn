@@ -43,14 +43,18 @@ namespace RipThatPic.Controllers
         }
 
         // POST: api/Areas
-        public async void Post([FromBody]string name, [FromBody]string grouping, [FromBody]string color, [FromBody]string longName)
+        [HttpPost]
+        //public async void Post([FromBody]string name, [FromBody]string grouping, [FromBody]string color, [FromBody]string longName)
+        public async Task<int> Post([FromBody]AreaEntity data)
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var ret = await processor.CreateTable("Area");
-
-            var newArea = new AreaEntity(name, grouping) { Color = color, LongName = longName };
-            await processor.AddToTable("Area", newArea);
+            var id = await processor.AddToTable("Area", data);
+            return id;
         }
+
+       
+
 
         // PUT: api/Areas/5
         public async void Put(string name, [FromBody]string grouping, [FromBody]string color, [FromBody]string longName)
@@ -73,16 +77,28 @@ namespace RipThatPic.Controllers
 
     public class AreaEntity : TableEntity
     {
+        private string _name;
+        public string Name { get { return _name; } set { _name = value; this.RowKey = value; } }
+
+
+        private string _grouping;
+        public string Grouping { get { return _grouping; } set { _grouping = value; this.PartitionKey = value; } }
+
         public AreaEntity(string name, string grouping)
         {
             this.PartitionKey = grouping;    //queried faster (by group)
-            this.RowKey = name;  
+            this.RowKey = name;
+            this.Name = name;
+            this.Grouping = grouping;
         }
 
         public AreaEntity() { }
 
         public string LongName { get; set; }
-
         public string Color { get; set; }
+
+
+
+        
     }
 }

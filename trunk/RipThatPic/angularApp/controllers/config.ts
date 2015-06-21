@@ -17,9 +17,20 @@
 
         testclick = () => {
             //this.serviceHelperSvc.testCall();
-            this.dataSvc.getAll("areas",
-                function (result) { alert(result.data[0].PartitionKey);},
-                function (result) { alert('failure');});
+
+
+            //this.dataSvc.getAll("areas")
+            //    .success(function (result: any) {
+            //        //alert(result[0].PartitionKey);
+            //    })
+            //    .error(function (err) { });
+                
+
+            //this.dataSvc.addArea("xbox", "gaming", "green", "Xbox One")
+            //    .success(function (val) { alert(val);})
+            //    .error(function (val) { alert(val);})
+            //;
+
         }
         
     }
