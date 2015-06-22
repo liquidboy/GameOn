@@ -226,6 +226,18 @@ namespace Incite.Cloud.Storage
             
         }
 
+        public async Task<int> DeleteFromTable(string tableName, TableEntity entity)
+        {
+            var table = _tableClient.GetTableReference(tableName);
+            await table.CreateIfNotExistsAsync();
+
+            TableOperation insertOp = TableOperation.Delete(entity);
+            var result = await table.ExecuteAsync(insertOp);
+
+            return result.HttpStatusCode;
+
+        }
+
         public async Task<object> RetrieveFromTable(string tableName, string partition, string key)
         {
             var table = _tableClient.GetTableReference(tableName);

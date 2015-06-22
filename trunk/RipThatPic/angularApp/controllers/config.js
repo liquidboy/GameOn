@@ -16,12 +16,13 @@ var Application;
                     Color: ""
                 };
                 this.DeleteArea = function () {
-                    //this.dataSvc.deleteArea
+                    _this.dataSvc.deleteArea(_this.SelectedArea.Name, _this.SelectedArea.Grouping);
+                    _this.RefreshData();
                 };
                 this.SaveArea = function () {
                     var __this = _this;
                     _this.dataSvc.addArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName).success(function (val) {
-                        alert('Success saving area');
+                        __this.RefreshData();
                     }).error(function (val) {
                         alert('Failed saving area');
                     });
@@ -53,6 +54,9 @@ var Application;
                 this.init();
             }
             ConfigCtrl.prototype.init = function () {
+                this.RefreshData();
+            };
+            ConfigCtrl.prototype.RefreshData = function () {
                 var __this = this;
                 this.dataSvc.getAllAreas().success(function (result) {
                     //alert(result[0].PartitionKey);

@@ -57,6 +57,7 @@ namespace RipThatPic.Controllers
 
 
         // PUT: api/Areas/5
+        //DOES THIS EVEN WORK???????????
         public async void Put(string name, [FromBody]string grouping, [FromBody]string color, [FromBody]string longName)
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
@@ -68,8 +69,14 @@ namespace RipThatPic.Controllers
 
 
         // DELETE: api/Areas/5
-        public void Delete(int id)
+        [HttpDelete]
+        public async void Delete([FromUri]string grouping, [FromUri]string name)
         {
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            AreaEntity entity = new AreaEntity(name, grouping);
+            entity.ETag = "*";
+            var result = await processor.DeleteFromTable("Area", entity);
+
         }
     }
 

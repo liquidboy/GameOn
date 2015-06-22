@@ -18,24 +18,30 @@
         }
 
         DeleteArea = () => {
-            //this.dataSvc.deleteArea
+            this.dataSvc.deleteArea(this.SelectedArea.Name, this.SelectedArea.Grouping);
+            this.RefreshData();
         }
 
         private init() {
             
-            var __this = this;
+            
 
+            this.RefreshData();
+            
+
+        }
+
+        private RefreshData() {
+            var __this = this;
 
             this.dataSvc
                 .getAllAreas()
-                .success(function (result: any)
-                {
-                    //alert(result[0].PartitionKey);
-                    __this.AreasList = result;
-                    __this.$scope.$apply();
-                })
+                .success(function (result: any) {
+                //alert(result[0].PartitionKey);
+                __this.AreasList = result;
+                __this.$scope.$apply();
+            })
                 .error(function (err) { });
-
         }
 
         SaveArea = () => {
@@ -43,7 +49,7 @@
             var __this:any = this;
 
             this.dataSvc.addArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName)
-                .success(function (val) { alert('Success saving area');})
+                .success(function (val) { __this.RefreshData();})
                 .error(function (val) { alert('Failed saving area');})
             ;
 

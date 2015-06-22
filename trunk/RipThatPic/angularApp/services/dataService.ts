@@ -1,9 +1,11 @@
 ﻿module Application.Services {
 
     export interface IData {
+        deleteArea(name: string, grouping: string): ng.IHttpPromise<{}>;
         getAllAreas(): ng.IHttpPromise<{}>;
         getAllAreasByGrouping(grouping:string): ng.IHttpPromise<{}>;
         addArea(name: string, grouping: string, color: string, longname: string): ng.IHttpPromise<{}>;
+
         testCall();
     }
     export interface ISuccessResponse { data: any; status: any }
@@ -14,6 +16,10 @@
         serviceHelper: IServiceHelper;
 
         urlBase: string = '/api/';
+
+        deleteArea(name: string, grouping: string) {
+            return this.http.delete(this.urlBase + "areas?" + "grouping=" + grouping + "&name=" + name);
+        }
 
         public injection(): Array<any> {
             return [

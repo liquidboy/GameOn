@@ -8,6 +8,9 @@ var Application;
                 this.http = $http;
                 this.serviceHelper = $serviceHelper;
             }
+            DataSvc.prototype.deleteArea = function (name, grouping) {
+                return this.http.delete(this.urlBase + "areas?" + "grouping=" + grouping + "&name=" + name);
+            };
             DataSvc.prototype.injection = function () {
                 return [
                     function () {
