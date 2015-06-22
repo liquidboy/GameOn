@@ -128,6 +128,9 @@
     <Content Include="angularApp\controllers\config.js">
       <DependentUpon>config.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\configArea.js">
+      <DependentUpon>configArea.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\home.js">
       <DependentUpon>home.ts</DependentUpon>
     </Content>
@@ -145,6 +148,7 @@
     <Content Include="angularApp\services\serviceHelper.js">
       <DependentUpon>serviceHelper.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\views\config\area.html" />
     <Content Include="angularApp\views\config\config.html" />
     <Content Include="angularApp\views\home\home.html" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
@@ -207,6 +211,9 @@
     </Content>
     <Content Include="angularApp\controllers\config.js.map">
       <DependentUpon>config.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configArea.js.map">
+      <DependentUpon>configArea.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1001,6 +1008,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />

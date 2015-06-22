@@ -60,13 +60,14 @@ namespace RipThatPic.Controllers
 
         // DELETE: api/Areas/5
         [HttpDelete]
-        public async void Delete([FromUri]string grouping, [FromUri]string name)
+        public async Task<int> Delete([FromUri]string grouping, [FromUri]string name)
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             AreaEntity entity = new AreaEntity(name, grouping);
             entity.ETag = "*";
             var result = await processor.DeleteFromTable("Area", entity);
 
+            return result;
         }
     }
 

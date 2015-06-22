@@ -1,0 +1,51 @@
+﻿<div class="config">
+
+
+
+    <div>
+        <input type="text" ng-model="configarea.SelectedArea.Name" width="150" />
+        <input type="text" ng-model="configarea.SelectedArea.LongName" width="150" />
+        <input type="text" ng-model="configarea.SelectedArea.Color" width="150" />
+        <input type="text" ng-model="configarea.SelectedArea.Grouping" width="150" />
+        <input type="button" value="Save" ng-click="configarea.SaveArea()" />
+        <input type="button" value="Delete" ng-click="configarea.DeleteArea()" />
+    </div>
+
+
+
+
+
+    <div>
+        <table>
+            <colgroup>
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+            </colgroup>
+
+            <tr>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <td class="table-header">Grouping</td>
+            </tr>
+
+            <tr ng-repeat="area in configarea.AreasList"
+                ng-include="'arealist.html'"
+                ng-click="configarea.SelectAreaRow(area, $event)"
+                class="table-content-row"></tr>
+
+        </table>
+    </div>
+
+    <script type="text/ng-template" id="arealist.html">
+
+        <td>{{area.Name}} </td>
+        <td>{{area.LongName}} </td>
+        <td>{{area.Color}} </td>
+        <td>{{area.Grouping}} </td>
+
+
+    </script>
+</div>
