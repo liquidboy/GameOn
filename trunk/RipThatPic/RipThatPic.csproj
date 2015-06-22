@@ -131,6 +131,18 @@
     <Content Include="angularApp\controllers\configArea.js">
       <DependentUpon>configArea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\configComment.js">
+      <DependentUpon>configComment.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configSession.js">
+      <DependentUpon>configSession.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configUser.js">
+      <DependentUpon>configUser.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configVideo.js">
+      <DependentUpon>configVideo.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\home.js">
       <DependentUpon>home.ts</DependentUpon>
     </Content>
@@ -148,6 +160,10 @@
     <Content Include="angularApp\services\serviceHelper.js">
       <DependentUpon>serviceHelper.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\views\config\comment.html" />
+    <Content Include="angularApp\views\config\video.html" />
+    <Content Include="angularApp\views\config\session.html" />
+    <Content Include="angularApp\views\config\user.html" />
     <Content Include="angularApp\views\config\area.html" />
     <Content Include="angularApp\views\config\config.html" />
     <Content Include="angularApp\views\home\home.html" />
@@ -214,6 +230,18 @@
     </Content>
     <Content Include="angularApp\controllers\configArea.js.map">
       <DependentUpon>configArea.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configComment.js.map">
+      <DependentUpon>configComment.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configSession.js.map">
+      <DependentUpon>configSession.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configUser.js.map">
+      <DependentUpon>configUser.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configVideo.js.map">
+      <DependentUpon>configVideo.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1008,6 +1036,10 @@
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configVideo.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configUser.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configSession.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configComment.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
