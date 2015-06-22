@@ -11,12 +11,18 @@ var Application;
             DataSvc.prototype.deleteArea = function (name, grouping) {
                 return this.http.delete(this.urlBase + "areas?" + "grouping=" + grouping + "&name=" + name);
             };
+            DataSvc.prototype.deleteAreaByDisplayId = function (displayid) {
+                return this.http.delete(this.urlBase + "area?displayid=" + displayid);
+            };
             DataSvc.prototype.injection = function () {
                 return [
                     function () {
                         return [DataSvc];
                     }
                 ];
+            };
+            DataSvc.prototype.getAreaByDisplayId = function (displayid) {
+                return this.http.get(this.urlBase + "area/" + displayid);
             };
             DataSvc.prototype.getAllAreas = function () {
                 return this.http.get(this.urlBase + "areas"); //+ '.json?r=' + Math.random()

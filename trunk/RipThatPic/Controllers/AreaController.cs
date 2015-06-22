@@ -26,12 +26,12 @@ namespace RipThatPic.Controllers
             return await processor.RetrieveFromTable("Area", grouping, name);
         }
 
-        // GET: api/Area?name=areaname
+        // GET: api/Area?grouping=groupname
         public async Task<IEnumerable<object>> Get(string name)
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var ret = await processor.CreateTable("Area");
-            return await processor.RetrieveAllAreas("Area", name);
+            return await processor.RetrieveAllAreasByName(name);
         }
 
         // POST: api/Area
@@ -47,6 +47,15 @@ namespace RipThatPic.Controllers
         // DELETE: api/Area/5
         public void Delete(int id)
         {
+        }
+
+        // DELETE: api/Area/guid
+        [HttpDelete]
+        public async Task<int> Delete([FromUri]string displayid)
+        {
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var result = await processor.DeleteAreaByDisplayId( Guid.Parse(displayid));
+            return result;
         }
     }
 

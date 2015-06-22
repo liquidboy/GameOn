@@ -5,16 +5,6 @@
 
     <br />
 
-    <div>
-        <input type="text" ng-model="configarea.SelectedArea.Name" width="150" />
-        <input type="text" ng-model="configarea.SelectedArea.LongName" width="150" />
-        <input type="text" ng-model="configarea.SelectedArea.Color" width="150" />
-        <input type="text" ng-model="configarea.SelectedArea.Grouping" width="150" />
-        <input type="text" ng-model="configarea.SelectedArea.DisplayId" width="150" />
-        <input type="button" value="Save" ng-click="configarea.SaveArea()" />
-        <input type="button" value="Delete" ng-click="configarea.DeleteArea()" />
-    </div>
-
 
 
 
@@ -27,7 +17,21 @@
                 <col style="width:155px" />
                 <col style="width:155px" />
                 <col style="width:250px" />
+                <col style="width:155px" />
             </colgroup>
+
+            <tr>
+                <td><input type="text" ng-model="configarea.SelectedArea.Name" style="width:150px" /></td>
+                <td><input type="text" ng-model="configarea.SelectedArea.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configarea.SelectedArea.Color" style="width:150px" /></td>
+                <td><input type="text" ng-model="configarea.SelectedArea.Grouping" style="width:150px" /></td>
+                <td><input type="text" ng-model="configarea.SelectedArea.DisplayId" style="width:250px" /></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configarea.SaveArea()" />
+                    <input type="button" value="Delete" ng-click="configarea.DeleteArea()" />
+                </td>
+            </tr>
+
 
             <tr>
                 <td class="table-header">Name</td>
@@ -35,6 +39,7 @@
                 <td class="table-header">Color</td>
                 <td class="table-header">Grouping</td>
                 <td class="table-header">DisplayId</td>
+                <td></td>
             </tr>
 
             <tr ng-repeat="area in configarea.AreasList"
@@ -52,7 +57,7 @@
         <td>{{area.Color}} </td>
         <td>{{area.Grouping}} </td>
         <td>{{area.DisplayId}} </td>
-
+        <td></td>
 
     </script>
 </div>

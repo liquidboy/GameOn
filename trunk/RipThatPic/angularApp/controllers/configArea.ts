@@ -21,11 +21,16 @@
 
             var __this = this;
 
+            //this.dataSvc
+            //    .deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping)
+            //    .success(function (result:any) { __this.RefreshData();})
+            //    .error(function (err:any) { alert('failure deleting..')});
+            
+
             this.dataSvc
-                .deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping)
+                .deleteAreaByDisplayId(__this.SelectedArea.DisplayId)
                 .success(function (result:any) { __this.RefreshData();})
                 .error(function (err:any) { alert('failure deleting..')});
-            
         }
 
         private init() {
@@ -38,11 +43,18 @@
             this.dataSvc
                 .getAllAreas()
                 .success(function (result: any) {
-                //alert(result[0].PartitionKey);
-                __this.AreasList = result;
-                __this.$scope.$apply();
-            })
+                    //alert(result[0].PartitionKey);
+                    __this.AreasList = result;
+                    __this.$scope.$apply();})
                 .error(function (err) { });
+        }
+
+        private ClearEntryFields() {
+            this.SelectedArea.Name = '';
+            this.SelectedArea.LongName = '';
+            this.SelectedArea.Color = '';
+            this.SelectedArea.Grouping = '';
+            this.SelectedArea.DisplayId = '';
         }
 
         SaveArea = () => {
@@ -57,8 +69,7 @@
                     __this.SelectedArea.LongName,
                     __this.SelectedArea.DisplayId)
                 .success(function (val) { __this.RefreshData();})
-                .error(function (val) { alert('Failed saving area');})
-            ;
+                .error(function (val) { alert('Failed saving area');});
 
         }
 
@@ -72,15 +83,7 @@
             this.SelectedArea.DisplayId = model.DisplayId;
         }
 
-        testclick = () => {
-            //this.serviceHelperSvc.testCall();
-            
-            //this.dataSvc.getAllAreasByGrouping("gaming")
-            //    .success(function (result: any) {
-            //        alert(result.length);
-            //    })
-            //    .error(function (err) { });
-        }
+
         
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');

@@ -15,7 +15,7 @@ namespace RipThatPic.Controllers
         public async Task<IEnumerable<object>> Get()
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
-            var result = await processor.RetrieveAllAreas("Area");
+            var result = await processor.RetrieveAllAreas();
             return result.Select(x => new { x.Name, x.Grouping, x.LongName,  x.Color, x.DisplayId }).AsEnumerable();
 
         }
@@ -27,7 +27,7 @@ namespace RipThatPic.Controllers
         {
 
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
-            var result = await  processor.RetrieveAllAreas("Area", grouping);
+            var result = await  processor.RetrieveAllAreas(grouping);
             return result.Select(x => new { x.Name, x.Grouping, x.LongName, x.Color, x.DisplayId }).AsEnumerable();
 
         }

@@ -18,7 +18,11 @@ var Application;
                 };
                 this.DeleteArea = function () {
                     var __this = _this;
-                    _this.dataSvc.deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping).success(function (result) {
+                    //this.dataSvc
+                    //    .deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping)
+                    //    .success(function (result:any) { __this.RefreshData();})
+                    //    .error(function (err:any) { alert('failure deleting..')});
+                    _this.dataSvc.deleteAreaByDisplayId(__this.SelectedArea.DisplayId).success(function (result) {
                         __this.RefreshData();
                     }).error(function (err) {
                         alert('failure deleting..');
@@ -40,14 +44,6 @@ var Application;
                     _this.SelectedArea.Grouping = model.Grouping;
                     _this.SelectedArea.DisplayId = model.DisplayId;
                 };
-                this.testclick = function () {
-                    //this.serviceHelperSvc.testCall();
-                    //this.dataSvc.getAllAreasByGrouping("gaming")
-                    //    .success(function (result: any) {
-                    //        alert(result.length);
-                    //    })
-                    //    .error(function (err) { });
-                };
                 this.init();
             }
             ConfigAreaCtrl.prototype.init = function () {
@@ -61,6 +57,13 @@ var Application;
                     __this.$scope.$apply();
                 }).error(function (err) {
                 });
+            };
+            ConfigAreaCtrl.prototype.ClearEntryFields = function () {
+                this.SelectedArea.Name = '';
+                this.SelectedArea.LongName = '';
+                this.SelectedArea.Color = '';
+                this.SelectedArea.Grouping = '';
+                this.SelectedArea.DisplayId = '';
             };
             return ConfigAreaCtrl;
         })();

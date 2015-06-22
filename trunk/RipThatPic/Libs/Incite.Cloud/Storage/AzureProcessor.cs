@@ -238,6 +238,28 @@ namespace Incite.Cloud.Storage
 
         }
 
+        public async Task<int> DeleteAreaByDisplayId(Guid displayId)
+        {
+            var table = _tableClient.GetTableReference("Area");
+            await table.CreateIfNotExistsAsync();
+
+
+            var ret = 0;
+            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
+            var found = table.ExecuteQuery(query);
+            foreach (var item in found) {
+                
+                TableOperation op = TableOperation.Delete(item);
+                var result = await table.ExecuteAsync(op);
+                ret = result.HttpStatusCode;
+            }
+            return ret;
+
+        }
+
+
+
+
         public async Task<object> RetrieveFromTable(string tableName, string partition, string key)
         {
             var table = _tableClient.GetTableReference(tableName);
@@ -250,21 +272,34 @@ namespace Incite.Cloud.Storage
 
         }
 
-        public async Task<IEnumerable<RipThatPic.Controllers.AreaEntity>> RetrieveAllAreas(string tableName, string partition)
+
+        public async Task<IEnumerable<RipThatPic.Controllers.AreaEntity>> RetrieveAllAreasByName(string name)
         {
-            var table = _tableClient.GetTableReference(tableName);
+            var table = _tableClient.GetTableReference("Area");
             await table.CreateIfNotExistsAsync();
 
 
-            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partition));
+            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
+
+            return table.ExecuteQuery(query);
+
+        }
+
+        public async Task<IEnumerable<RipThatPic.Controllers.AreaEntity>> RetrieveAllAreas(string grouping)
+        {
+            var table = _tableClient.GetTableReference("Area");
+            await table.CreateIfNotExistsAsync();
+
+
+            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
             
             return  table.ExecuteQuery(query);
             
         }
 
-        public async Task<IEnumerable<RipThatPic.Controllers.AreaEntity>> RetrieveAllAreas(string tableName)
+        public async Task<IEnumerable<RipThatPic.Controllers.AreaEntity>> RetrieveAllAreas()
         {
-            var table = _tableClient.GetTableReference(tableName);
+            var table = _tableClient.GetTableReference("Area");
             await table.CreateIfNotExistsAsync();
             
             TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
