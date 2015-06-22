@@ -16,7 +16,7 @@ namespace RipThatPic.Controllers
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var result = await processor.RetrieveAllAreas("Area");
-            return result.Select(x => new { x.Name, x.Grouping, x.LongName,  x.Color }).AsEnumerable();
+            return result.Select(x => new { x.Name, x.Grouping, x.LongName,  x.Color, x.DisplayId }).AsEnumerable();
 
         }
 
@@ -28,7 +28,7 @@ namespace RipThatPic.Controllers
 
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var result = await  processor.RetrieveAllAreas("Area", grouping);
-            return result.Select(x => new { x.Name, x.Grouping, x.LongName, x.Color }).AsEnumerable();
+            return result.Select(x => new { x.Name, x.Grouping, x.LongName, x.Color, x.DisplayId }).AsEnumerable();
 
         }
 
@@ -37,10 +37,7 @@ namespace RipThatPic.Controllers
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var ret = await processor.CreateTable("Area");
-
-            var result = await processor.RetrieveFromTable("Area", grouping, name);
-
-            return result;
+            return await processor.RetrieveFromTable("Area", grouping, name);
         }
 
 
@@ -49,10 +46,10 @@ namespace RipThatPic.Controllers
         //public async void Post([FromBody]string name, [FromBody]string grouping, [FromBody]string color, [FromBody]string longName)
         public async Task<int> Post([FromBody]AreaEntity data)
         {
+            if (data.DisplayId == Guid.Empty) data.DisplayId = Guid.NewGuid();
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var ret = await processor.CreateTable("Area");
-            var id = await processor.AddToTable("Area", data);
-            return id;
+            return await processor.AddToTable("Area", data);
         }
 
        
@@ -73,25 +70,5 @@ namespace RipThatPic.Controllers
 
     //https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-tables/
 
-    public class AreaEntity : TableEntity
-    {
-        private string _name;
-        public string Name { get { return _name; } set { _name = value; this.RowKey = value; } }
-
-
-        private string _grouping;
-        public string Grouping { get { return _grouping; } set { _grouping = value; this.PartitionKey = value; } }
-
-        public AreaEntity(string name, string grouping)
-        {
-            this.Name = name;
-            this.Grouping = grouping;
-        }
-
-        public AreaEntity() { }
-
-        public string LongName { get; set; }
-        public string Color { get; set; }
-        
-    }
+ 
 }

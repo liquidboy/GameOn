@@ -24,8 +24,8 @@ var Application;
             DataSvc.prototype.getAllAreasByGrouping = function (grouping) {
                 return this.http.get(this.urlBase + "areas/" + grouping);
             };
-            DataSvc.prototype.saveArea = function (name, grouping, color, longname) {
-                var postData = { "name": name, "grouping": grouping, "color": color, "longName": longname };
+            DataSvc.prototype.saveArea = function (name, grouping, color, longname, displayid) {
+                var postData = { "name": name, "grouping": grouping, "color": color, "longName": longname, "displayId": displayid };
                 return this.http.post(this.urlBase + "areas", postData);
             };
             DataSvc.prototype.testCall = function () {

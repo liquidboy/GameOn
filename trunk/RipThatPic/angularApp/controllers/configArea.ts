@@ -7,7 +7,8 @@
             Name: "",
             LongName: "",
             Grouping: "",
-            Color: ""
+            Color: "",
+            DisplayId: ""
         };
 
 
@@ -48,7 +49,13 @@
 
             var __this:any = this;
 
-            this.dataSvc.saveArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName)
+            this.dataSvc
+                .saveArea(
+                    __this.SelectedArea.Name,
+                    __this.SelectedArea.Grouping,
+                    __this.SelectedArea.Color,
+                    __this.SelectedArea.LongName,
+                    __this.SelectedArea.DisplayId)
                 .success(function (val) { __this.RefreshData();})
                 .error(function (val) { alert('Failed saving area');})
             ;
@@ -62,6 +69,7 @@
             this.SelectedArea.LongName = model.LongName;
             this.SelectedArea.Color = model.Color;
             this.SelectedArea.Grouping = model.Grouping;
+            this.SelectedArea.DisplayId = model.DisplayId;
         }
 
         testclick = () => {
