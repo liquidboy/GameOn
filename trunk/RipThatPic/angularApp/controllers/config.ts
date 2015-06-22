@@ -17,6 +17,10 @@
             this.init();
         }
 
+        DeleteArea = () => {
+            //this.dataSvc.deleteArea
+        }
+
         private init() {
             
             var __this = this;
@@ -34,13 +38,13 @@
 
         }
 
-        CreateArea = () => {
+        SaveArea = () => {
 
             var __this:any = this;
 
             this.dataSvc.addArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName)
-                .success(function (val) { alert('Success creating area');})
-                .error(function (val) { alert('Failed creating area');})
+                .success(function (val) { alert('Success saving area');})
+                .error(function (val) { alert('Failed saving area');})
             ;
 
         }

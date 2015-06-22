@@ -15,12 +15,15 @@ var Application;
                     Grouping: "",
                     Color: ""
                 };
-                this.CreateArea = function () {
+                this.DeleteArea = function () {
+                    //this.dataSvc.deleteArea
+                };
+                this.SaveArea = function () {
                     var __this = _this;
                     _this.dataSvc.addArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName).success(function (val) {
-                        alert('Success creating area');
+                        alert('Success saving area');
                     }).error(function (val) {
-                        alert('Failed creating area');
+                        alert('Failed saving area');
                     });
                 };
                 this.SelectAreaRow = function (model, event) {
