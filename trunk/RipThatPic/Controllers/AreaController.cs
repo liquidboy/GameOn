@@ -31,7 +31,7 @@ namespace RipThatPic.Controllers
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var ret = await processor.CreateTable("Area");
-            return await processor.RetrieveAllAreasByName(name);
+            return processor.RetrieveAllAreasByName(name);
         }
 
         // POST: api/Area
