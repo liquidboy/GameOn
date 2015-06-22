@@ -15,7 +15,7 @@ var BootstrapApp;
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
         //$locationProvider.html5Mode(true);
-        $routeProvider.when('/home', { controller: 'HomeCtrl', templateUrl: '/angularApp/views/home/home.html', controllerAs: 'home' }).when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html', controllerAs: 'config' }).when('/config/area', { controller: 'ConfigAreaCtrl', templateUrl: '/angularApp/views/config/area.html', controllerAs: 'configarea' }).when('/error', { controller: 'ErrorCtrl', templateUrl: '/angularApp/views/shared/error.html' }).otherwise({ redirectTo: '/config/area' });
+        $routeProvider.when('/home', { controller: 'HomeCtrl', templateUrl: '/angularApp/views/home/home.html', controllerAs: 'home' }).when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html', controllerAs: 'config' }).when('/config/area', { controller: 'ConfigAreaCtrl', templateUrl: '/angularApp/views/config/area.html', controllerAs: 'configarea' }).when('/error', { controller: 'ErrorCtrl', templateUrl: '/angularApp/views/shared/error.html' }).otherwise({ redirectTo: '/config' });
     }]);
     localWindow.app = myapp;
 })(BootstrapApp || (BootstrapApp = {}));

@@ -30,7 +30,7 @@
             .when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html', controllerAs: 'config' })
             .when('/config/area', { controller: 'ConfigAreaCtrl', templateUrl: '/angularApp/views/config/area.html', controllerAs: 'configarea' })
             .when('/error', { controller: 'ErrorCtrl',templateUrl: '/angularApp/views/shared/error.html' })
-            .otherwise({ redirectTo: '/config/area'});
+            .otherwise({ redirectTo: '/config'});
 
     }]);
 
