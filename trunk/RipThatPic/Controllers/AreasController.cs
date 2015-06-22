@@ -22,6 +22,7 @@ namespace RipThatPic.Controllers
 
 
         // GET: api/Areas/gaming 
+        // have not tested yet!
         public async Task<IEnumerable<object>> Get(string grouping)
         {
 
@@ -42,6 +43,7 @@ namespace RipThatPic.Controllers
             return result;
         }
 
+
         // POST: api/Areas
         [HttpPost]
         //public async void Post([FromBody]string name, [FromBody]string grouping, [FromBody]string color, [FromBody]string longName)
@@ -54,18 +56,6 @@ namespace RipThatPic.Controllers
         }
 
        
-
-
-        // PUT: api/Areas/5
-        //DOES THIS EVEN WORK???????????
-        public async void Put(string name, [FromBody]string grouping, [FromBody]string color, [FromBody]string longName)
-        {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
-            var ret = await processor.CreateTable("Area");
-
-            var updatedArea = new AreaEntity(name, grouping) { Color = color, LongName = longName };
-            await processor.AddToTable("Area", updatedArea);
-        }
 
 
         // DELETE: api/Areas/5
@@ -101,9 +91,6 @@ namespace RipThatPic.Controllers
 
         public string LongName { get; set; }
         public string Color { get; set; }
-
-
-
         
     }
 }
