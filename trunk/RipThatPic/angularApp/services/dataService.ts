@@ -4,7 +4,7 @@
         deleteArea(name: string, grouping: string): ng.IHttpPromise<{}>;
         getAllAreas(): ng.IHttpPromise<{}>;
         getAllAreasByGrouping(grouping:string): ng.IHttpPromise<{}>;
-        addArea(name: string, grouping: string, color: string, longname: string): ng.IHttpPromise<{}>;
+        saveArea(name: string, grouping: string, color: string, longname: string): ng.IHttpPromise<{}>;
 
         testCall();
     }
@@ -40,7 +40,7 @@
             return this.http.get(this.urlBase + "areas/" + grouping); 
         }
 
-        addArea(name: string, grouping: string, color: string, longname: string) {
+        saveArea(name: string, grouping: string, color: string, longname: string) {
             var postData = { "name": name, "grouping": grouping, "color": color, "longName": longname };
             return this.http.post(this.urlBase + "areas", postData);
         }

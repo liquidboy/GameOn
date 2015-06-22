@@ -13,7 +13,6 @@
 
 
         constructor(public $scope: ng.IScope, public $rootScope: any, public serviceHelperSvc: Application.Services.IServiceHelper, public dataSvc: Application.Services.IData) {
-
             this.init();
         }
 
@@ -23,12 +22,7 @@
         }
 
         private init() {
-            
-            
-
             this.RefreshData();
-            
-
         }
 
         private RefreshData() {
@@ -48,7 +42,7 @@
 
             var __this:any = this;
 
-            this.dataSvc.addArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName)
+            this.dataSvc.saveArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName)
                 .success(function (val) { __this.RefreshData();})
                 .error(function (val) { alert('Failed saving area');})
             ;
@@ -62,25 +56,11 @@
             this.SelectedArea.LongName = model.LongName;
             this.SelectedArea.Color = model.Color;
             this.SelectedArea.Grouping = model.Grouping;
-
-
         }
 
         testclick = () => {
             //this.serviceHelperSvc.testCall();
-
-            //this.dataSvc.getAllAreas()
-            //    .success(function (result: any) {
-            //        //alert(result[0].PartitionKey);
-            //    })
-            //    .error(function (err) { });
-
             
-            //this.dataSvc.addArea("xbox", "gaming", "green", "Xbox One")
-            //    .success(function (val) { alert(val);})
-            //    .error(function (val) { alert(val);})
-            //;
-
             //this.dataSvc.getAllAreasByGrouping("gaming")
             //    .success(function (result: any) {
             //        alert(result.length);
