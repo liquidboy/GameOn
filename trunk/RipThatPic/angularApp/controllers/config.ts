@@ -3,6 +3,15 @@
 
         AreasList: Array<any>;
 
+        SelectedArea: any = {
+            Name: "",
+            LongName: "",
+            Grouping: "",
+            Color: ""
+        };
+
+
+
         constructor(public $scope: ng.IScope, public $rootScope: any, public serviceHelperSvc: Application.Services.IServiceHelper, public dataSvc: Application.Services.IData) {
 
             this.init();
@@ -29,10 +38,21 @@
 
             var __this:any = this;
 
-            this.dataSvc.addArea(__this.Name, __this.Grouping, __this.Color, __this.LongName)
+            this.dataSvc.addArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName)
                 .success(function (val) { alert('Success creating area');})
                 .error(function (val) { alert('Failed creating area');})
             ;
+
+        }
+
+        SelectAreaRow = (model, event) => {
+            var trElement = event.currentTarget;
+            
+            this.SelectedArea.Name = model.Name;
+            this.SelectedArea.LongName = model.LongName;
+            this.SelectedArea.Color = model.Color;
+            this.SelectedArea.Grouping = model.Grouping;
+
 
         }
 

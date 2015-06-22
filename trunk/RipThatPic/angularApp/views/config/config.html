@@ -2,10 +2,10 @@
 
 
 <div>
-    <input type="text" ng-model="config.Name" width="150" />
-    <input type="text" ng-model="config.LongName" width="150" />
-    <input type="text" ng-model="config.Color" width="150" />
-    <input type="text" ng-model="config.Grouping" width="150" />
+    <input type="text" ng-model="config.SelectedArea.Name" width="150" />
+    <input type="text" ng-model="config.SelectedArea.LongName" width="150" />
+    <input type="text" ng-model="config.SelectedArea.Color" width="150" />
+    <input type="text" ng-model="config.SelectedArea.Grouping" width="150" />
     <input type="button" value="Call API Test" ng-click="config.CreateArea()" />
 </div>
 
@@ -26,7 +26,7 @@
             <col style="width:155px" />
             <col style="width:155px" />
         </colgroup>
-        <tr>
+        <tr ng-click="config.SelectAreaRow(area, $event)" >
             <td>{{area.Name}} </td>
             <td>{{area.LongName}} </td>
             <td>{{area.Color}} </td>

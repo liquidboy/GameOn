@@ -9,13 +9,26 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
+                this.SelectedArea = {
+                    Name: "",
+                    LongName: "",
+                    Grouping: "",
+                    Color: ""
+                };
                 this.CreateArea = function () {
                     var __this = _this;
-                    _this.dataSvc.addArea(__this.Name, __this.Grouping, __this.Color, __this.LongName).success(function (val) {
+                    _this.dataSvc.addArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName).success(function (val) {
                         alert('Success creating area');
                     }).error(function (val) {
                         alert('Failed creating area');
                     });
+                };
+                this.SelectAreaRow = function (model, event) {
+                    var trElement = event.currentTarget;
+                    _this.SelectedArea.Name = model.Name;
+                    _this.SelectedArea.LongName = model.LongName;
+                    _this.SelectedArea.Color = model.Color;
+                    _this.SelectedArea.Grouping = model.Grouping;
                 };
                 this.testclick = function () {
                     //this.serviceHelperSvc.testCall();
