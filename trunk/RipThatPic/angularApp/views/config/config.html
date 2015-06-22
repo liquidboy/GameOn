@@ -2,9 +2,35 @@
 
 
 <div>
-    <input type="text" ng-bind="config.Name" width="150" />
-    <input type="text" ng-bind="config.LongName" width="150" />
-    <input type="text" ng-bind="config.Color" width="150" />
-    <input type="text" ng-bind="config.Grouping" width="150" />
+    <input type="text" ng-model="config.Name" width="150" />
+    <input type="text" ng-model="config.LongName" width="150" />
+    <input type="text" ng-model="config.Color" width="150" />
+    <input type="text" ng-model="config.Grouping" width="150" />
     <input type="button" value="Call API Test" ng-click="config.CreateArea()" />
 </div>
+
+
+<div 
+     ng-repeat="area in config.AreasList" 
+     ng-include="'arealist.html'">
+</div>
+
+
+
+
+<script type="text/ng-template" id="arealist.html">
+    <table>
+        <colgroup>
+            <col style="width:155px" />
+            <col style="width:155px" />
+            <col style="width:155px" />
+            <col style="width:155px" />
+        </colgroup>
+        <tr>
+            <td>{{area.Name}} </td>
+            <td>{{area.LongName}} </td>
+            <td>{{area.Color}} </td>
+            <td >{{area.Grouping}} </td>
+        </tr>
+    </table>
+</script>

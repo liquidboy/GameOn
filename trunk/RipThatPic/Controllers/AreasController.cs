@@ -16,7 +16,7 @@ namespace RipThatPic.Controllers
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var result = await processor.RetrieveAllAreas("Area");
-            return result.Select(x => new { x.LongName, x.PartitionKey, x.Color }).AsEnumerable();
+            return result.Select(x => new { x.Name, x.Grouping, x.LongName,  x.Color }).AsEnumerable();
 
         }
 
@@ -27,7 +27,7 @@ namespace RipThatPic.Controllers
 
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var result = await  processor.RetrieveAllAreas("Area", grouping);
-            return result.Select(x => new { x.LongName,  x.PartitionKey, x.Color }).AsEnumerable();
+            return result.Select(x => new { x.Name, x.Grouping, x.LongName, x.Color }).AsEnumerable();
 
         }
 
@@ -86,8 +86,6 @@ namespace RipThatPic.Controllers
 
         public AreaEntity(string name, string grouping)
         {
-            this.PartitionKey = grouping;    //queried faster (by group)
-            this.RowKey = name;
             this.Name = name;
             this.Grouping = grouping;
         }

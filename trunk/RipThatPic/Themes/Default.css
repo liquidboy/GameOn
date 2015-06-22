@@ -62,3 +62,9 @@
 .text-quote {
     font: italic 1.6em Georgia,"Times New Roman",Times,serif;
 }
+
+
+
+.areaslist .col {
+    width:200px;
+}

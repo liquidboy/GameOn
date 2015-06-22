@@ -955,6 +955,7 @@
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Themes\Default.css" />
+    <Content Include="Themes\office365stuff.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

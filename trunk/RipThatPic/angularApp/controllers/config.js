@@ -11,7 +11,7 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.CreateArea = function () {
                     var __this = _this;
-                    _this.dataSvc.addArea("name", "gaming", "green", "Xbox One").success(function (val) {
+                    _this.dataSvc.addArea(__this.Name, __this.Grouping, __this.Color, __this.LongName).success(function (val) {
                         alert('Success creating area');
                     }).error(function (val) {
                         alert('Failed creating area');
@@ -38,6 +38,12 @@ var Application;
             }
             ConfigCtrl.prototype.init = function () {
                 var __this = this;
+                this.dataSvc.getAllAreas().success(function (result) {
+                    //alert(result[0].PartitionKey);
+                    __this.AreasList = result;
+                    __this.$scope.$apply();
+                }).error(function (err) {
+                });
             };
             return ConfigCtrl;
         })();
