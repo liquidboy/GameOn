@@ -30,9 +30,8 @@ var Application;
             DataSvc.prototype.getAllAreasByGrouping = function (grouping) {
                 return this.http.get(this.urlBase + "areas/" + grouping);
             };
-            DataSvc.prototype.saveArea = function (name, grouping, color, longname, displayid) {
-                var postData = { "name": name, "grouping": grouping, "color": color, "longName": longname, "displayId": displayid };
-                return this.http.post(this.urlBase + "area", postData);
+            DataSvc.prototype.saveArea = function (areaentity) {
+                return this.http.post(this.urlBase + "area", areaentity);
             };
             DataSvc.prototype.testCall = function () {
                 alert('DataSvc test call');

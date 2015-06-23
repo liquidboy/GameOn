@@ -2,18 +2,15 @@
     export class ConfigAreaCtrl {
 
         AreasList: Array<any>;
-
-        SelectedArea: any = {
-            Name: "",
-            LongName: "",
-            Grouping: "",
-            Color: "",
-            DisplayId: ""
-        };
+        SelectedArea: any;
 
 
 
-        constructor(public $scope: ng.IScope, public $rootScope: any, public serviceHelperSvc: Application.Services.IServiceHelper, public dataSvc: Application.Services.IData) {
+        constructor(
+            public $scope: ng.IScope,
+            public $rootScope: any,
+            public serviceHelperSvc: Application.Services.IServiceHelper,
+            public dataSvc: Application.Services.IData) {
             this.init();
         }
 
@@ -34,6 +31,7 @@
         }
 
         private init() {
+            this.InitSelectedArea();
             this.RefreshData();
         }
 
@@ -63,13 +61,8 @@
 
             var __this:any = this;
 
-            this.dataSvc
-                .saveArea(
-                    __this.SelectedArea.Name,
-                    __this.SelectedArea.Grouping,
-                    __this.SelectedArea.Color,
-                    __this.SelectedArea.LongName,
-                    __this.SelectedArea.DisplayId)
+            __this.dataSvc
+                .saveArea(__this.SelectedArea)
                 .success(function (val) { __this.RefreshData(); __this.InitSelectedArea();})
                 .error(function (val) { alert('Failed saving area');});
 
@@ -77,12 +70,7 @@
 
         SelectAreaRow = (model, event) => {
             var trElement = event.currentTarget;
-            
-            this.SelectedArea.Name = model.Name;
-            this.SelectedArea.LongName = model.LongName;
-            this.SelectedArea.Color = model.Color;
-            this.SelectedArea.Grouping = model.Grouping;
-            this.SelectedArea.DisplayId = model.DisplayId;
+            this.SelectedArea = jQuery.extend(true, {}, model);;
         }
 
 

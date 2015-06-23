@@ -6,7 +6,8 @@
         getAllAreas(): ng.IHttpPromise<{}>;
         getAllAreasByGrouping(grouping: string): ng.IHttpPromise<{}>;
         getAreaByDisplayId(displayid: string): ng.IHttpPromise<{}>;
-        saveArea(name: string, grouping: string, color: string, longname: string, displayid: string ): ng.IHttpPromise<{}>;
+        saveArea(areaentity: any): ng.IHttpPromise<{}>;
+        //saveArea(name: string, grouping: string, color: string, longname: string, displayid: string ): ng.IHttpPromise<{}>;
 
         testCall();
     }
@@ -46,9 +47,8 @@
             return this.http.get(this.urlBase + "areas/" + grouping); 
         }
 
-        saveArea(name: string, grouping: string, color: string, longname: string, displayid: string) {
-            var postData = { "name": name, "grouping": grouping, "color": color, "longName": longname, "displayId": displayid };
-            return this.http.post(this.urlBase + "area", postData);
+        saveArea(areaentity: any) {
+            return this.http.post(this.urlBase + "area", areaentity);
         }
 
         testCall() {

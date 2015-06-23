@@ -9,13 +9,6 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.SelectedArea = {
-                    Name: "",
-                    LongName: "",
-                    Grouping: "",
-                    Color: "",
-                    DisplayId: ""
-                };
                 this.DeleteArea = function () {
                     var __this = _this;
                     //this.dataSvc
@@ -31,7 +24,7 @@ var Application;
                 };
                 this.SaveArea = function () {
                     var __this = _this;
-                    _this.dataSvc.saveArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName, __this.SelectedArea.DisplayId).success(function (val) {
+                    __this.dataSvc.saveArea(__this.SelectedArea).success(function (val) {
                         __this.RefreshData();
                         __this.InitSelectedArea();
                     }).error(function (val) {
@@ -40,15 +33,13 @@ var Application;
                 };
                 this.SelectAreaRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedArea.Name = model.Name;
-                    _this.SelectedArea.LongName = model.LongName;
-                    _this.SelectedArea.Color = model.Color;
-                    _this.SelectedArea.Grouping = model.Grouping;
-                    _this.SelectedArea.DisplayId = model.DisplayId;
+                    _this.SelectedArea = jQuery.extend(true, {}, model);
+                    ;
                 };
                 this.init();
             }
             ConfigAreaCtrl.prototype.init = function () {
+                this.InitSelectedArea();
                 this.RefreshData();
             };
             ConfigAreaCtrl.prototype.RefreshData = function () {
