@@ -11,16 +11,19 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.DeleteArea = function () {
                     var __this = _this;
-                    //this.dataSvc
-                    //    .deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping)
-                    //    .success(function (result:any) { __this.RefreshData(); __this.InitSelectedArea();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
-                    _this.dataSvc.deleteAreaByDisplayId(__this.SelectedArea.DisplayId).success(function (result) {
+                    _this.dataSvc.deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping).success(function (result) {
                         __this.RefreshData();
                         __this.InitSelectedArea();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
+                    //this.dataSvc
+                    //    .deleteAreaByDisplayId(__this.SelectedArea.DisplayId)
+                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedArea();})
+                    //    .error(function (err:any) { alert('failure deleting..')});
+                };
+                this.ClearEntryFields = function () {
+                    _this.InitSelectedArea();
                 };
                 this.SaveArea = function () {
                     var __this = _this;

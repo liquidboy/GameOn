@@ -18,16 +18,20 @@
 
             var __this = this;
 
-            //this.dataSvc
-            //    .deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping)
-            //    .success(function (result:any) { __this.RefreshData(); __this.InitSelectedArea();})
-            //    .error(function (err:any) { alert('failure deleting..')});
+            this.dataSvc
+                .deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping)
+                .success(function (result:any) { __this.RefreshData(); __this.InitSelectedArea();})
+                .error(function (err:any) { alert('failure deleting..')});
             
 
-            this.dataSvc
-                .deleteAreaByDisplayId(__this.SelectedArea.DisplayId)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedArea();})
-                .error(function (err:any) { alert('failure deleting..')});
+            //this.dataSvc
+            //    .deleteAreaByDisplayId(__this.SelectedArea.DisplayId)
+            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedArea();})
+            //    .error(function (err:any) { alert('failure deleting..')});
+        }
+
+        ClearEntryFields = () => {
+            this.InitSelectedArea();
         }
 
         private init() {
