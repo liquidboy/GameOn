@@ -20,7 +20,7 @@
         urlBase: string = '/api/';
 
         deleteArea(name: string, grouping: string) {
-            return this.http.delete(this.urlBase + "areas?" + "grouping=" + grouping + "&name=" + name);
+            return this.http.delete(this.urlBase + "area?" + "grouping=" + grouping + "&name=" + name);
         }
 
         deleteAreaByDisplayId(displayid: string) { return this.http.delete(this.urlBase + "area?displayid=" + displayid ); }
@@ -48,7 +48,7 @@
 
         saveArea(name: string, grouping: string, color: string, longname: string, displayid: string) {
             var postData = { "name": name, "grouping": grouping, "color": color, "longName": longname, "displayId": displayid };
-            return this.http.post(this.urlBase + "areas", postData);
+            return this.http.post(this.urlBase + "area", postData);
         }
 
         testCall() {

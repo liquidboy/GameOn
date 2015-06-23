@@ -9,7 +9,7 @@ var Application;
                 this.serviceHelper = $serviceHelper;
             }
             DataSvc.prototype.deleteArea = function (name, grouping) {
-                return this.http.delete(this.urlBase + "areas?" + "grouping=" + grouping + "&name=" + name);
+                return this.http.delete(this.urlBase + "area?" + "grouping=" + grouping + "&name=" + name);
             };
             DataSvc.prototype.deleteAreaByDisplayId = function (displayid) {
                 return this.http.delete(this.urlBase + "area?displayid=" + displayid);
@@ -32,7 +32,7 @@ var Application;
             };
             DataSvc.prototype.saveArea = function (name, grouping, color, longname, displayid) {
                 var postData = { "name": name, "grouping": grouping, "color": color, "longName": longname, "displayId": displayid };
-                return this.http.post(this.urlBase + "areas", postData);
+                return this.http.post(this.urlBase + "area", postData);
             };
             DataSvc.prototype.testCall = function () {
                 alert('DataSvc test call');

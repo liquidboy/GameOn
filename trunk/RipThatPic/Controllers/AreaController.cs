@@ -12,11 +12,8 @@ namespace RipThatPic.Controllers
 {
     public class AreaController : ApiController
     {
-        // GET: api/Area
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "area", "value2" };
-        }
+
+
 
         // GET: api/Area?name=areaname&grouping=groupname
         public async Task<object> Get(string name, string grouping)
@@ -34,20 +31,24 @@ namespace RipThatPic.Controllers
             return processor.RetrieveAllAreasByName(name);
         }
 
+
+
+
         // POST: api/Area
-        public void Post([FromBody]string value)
+        [HttpPost]
+        //public async void Post([FromBody]string name, [FromBody]string grouping, [FromBody]string color, [FromBody]string longName)
+        public async Task<int> Post([FromBody]AreaEntity data)
         {
+            if (data.DisplayId == Guid.Empty) data.DisplayId = Guid.NewGuid();
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var ret = await processor.CreateTable("Area");
+            return await processor.AddToTable("Area", data);
         }
 
-        // PUT: api/Area/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
 
-        // DELETE: api/Area/5
-        public void Delete(int id)
-        {
-        }
+
+
+
 
         // DELETE: api/Area/guid
         [HttpDelete]
@@ -57,6 +58,21 @@ namespace RipThatPic.Controllers
             var result = await processor.DeleteAreaByDisplayId( Guid.Parse(displayid));
             return result;
         }
+
+
+        // DELETE: api/Areas/5
+        [HttpDelete]
+        public async Task<int> Delete([FromUri]string grouping, [FromUri]string name)
+        {
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            AreaEntity entity = new AreaEntity(name, grouping);
+            entity.ETag = "*";
+            var result = await processor.DeleteFromTable("Area", entity);
+
+            return result;
+        }
+
+
     }
 
 
