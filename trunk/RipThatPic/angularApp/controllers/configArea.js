@@ -20,10 +20,11 @@ var Application;
                     var __this = _this;
                     //this.dataSvc
                     //    .deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping)
-                    //    .success(function (result:any) { __this.RefreshData();})
+                    //    .success(function (result:any) { __this.RefreshData(); __this.InitSelectedArea();})
                     //    .error(function (err:any) { alert('failure deleting..')});
                     _this.dataSvc.deleteAreaByDisplayId(__this.SelectedArea.DisplayId).success(function (result) {
                         __this.RefreshData();
+                        __this.InitSelectedArea();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
@@ -32,6 +33,7 @@ var Application;
                     var __this = _this;
                     _this.dataSvc.saveArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping, __this.SelectedArea.Color, __this.SelectedArea.LongName, __this.SelectedArea.DisplayId).success(function (val) {
                         __this.RefreshData();
+                        __this.InitSelectedArea();
                     }).error(function (val) {
                         alert('Failed saving area');
                     });
@@ -58,12 +60,14 @@ var Application;
                 }).error(function (err) {
                 });
             };
-            ConfigAreaCtrl.prototype.ClearEntryFields = function () {
-                this.SelectedArea.Name = '';
-                this.SelectedArea.LongName = '';
-                this.SelectedArea.Color = '';
-                this.SelectedArea.Grouping = '';
-                this.SelectedArea.DisplayId = '';
+            ConfigAreaCtrl.prototype.InitSelectedArea = function () {
+                this.SelectedArea = {
+                    Name: "",
+                    LongName: "",
+                    Grouping: "",
+                    Color: "",
+                    DisplayId: ""
+                };
             };
             return ConfigAreaCtrl;
         })();
