@@ -21,10 +21,10 @@
             </colgroup>
 
             <tr>
+                <td><input type="text" ng-model="configarea.SelectedArea.Grouping" style="width:150px" /></td>
                 <td><input type="text" ng-model="configarea.SelectedArea.Name" style="width:150px" /></td>
                 <td><input type="text" ng-model="configarea.SelectedArea.LongName" style="width:150px" /></td>
                 <td><input type="text" ng-model="configarea.SelectedArea.Color" style="width:150px" /></td>
-                <td><input type="text" ng-model="configarea.SelectedArea.Grouping" style="width:150px" /></td>
                 <td><input type="text" ng-model="configarea.SelectedArea.DisplayId" style="width:250px" /></td>
                 <td>
                     <input type="button" value="Save" ng-click="configarea.SaveArea()" />
@@ -34,10 +34,10 @@
 
 
             <tr>
+                <td class="table-header">Grouping</td>
                 <td class="table-header">Name</td>
                 <td class="table-header">LongName</td>
                 <td class="table-header">Color</td>
-                <td class="table-header">Grouping</td>
                 <td class="table-header">DisplayId</td>
                 <td></td>
             </tr>
@@ -52,10 +52,10 @@
 
     <script type="text/ng-template" id="arealist.html">
 
+        <td>{{area.Grouping}} </td>
         <td>{{area.Name}} </td>
         <td>{{area.LongName}} </td>
         <td>{{area.Color}} </td>
-        <td>{{area.Grouping}} </td>
         <td>{{area.DisplayId}} </td>
         <td></td>
 
