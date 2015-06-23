@@ -17,6 +17,12 @@ var Application;
             DataSvc.prototype.deleteImage = function (name, grouping) {
                 return this.http.delete(this.urlBase + "image?" + "grouping=" + grouping + "&name=" + name);
             };
+            DataSvc.prototype.deleteDocument = function (name, grouping) {
+                return this.http.delete(this.urlBase + "document?" + "grouping=" + grouping + "&name=" + name);
+            };
+            DataSvc.prototype.deleteLink = function (name, grouping) {
+                return this.http.delete(this.urlBase + "link?" + "grouping=" + grouping + "&name=" + name);
+            };
             DataSvc.prototype.deleteAreaByDisplayId = function (displayid) {
                 return this.http.delete(this.urlBase + "area?displayid=" + displayid);
             };
@@ -25,6 +31,12 @@ var Application;
             };
             DataSvc.prototype.deleteImageByDisplayId = function (displayid) {
                 return this.http.delete(this.urlBase + "image?displayid=" + displayid);
+            };
+            DataSvc.prototype.deleteDocumentByDisplayId = function (displayid) {
+                return this.http.delete(this.urlBase + "document?displayid=" + displayid);
+            };
+            DataSvc.prototype.deleteLinkByDisplayId = function (displayid) {
+                return this.http.delete(this.urlBase + "link?displayid=" + displayid);
             };
             DataSvc.prototype.injection = function () {
                 return [
@@ -42,6 +54,12 @@ var Application;
             DataSvc.prototype.getImageByDisplayId = function (displayid) {
                 return this.http.get(this.urlBase + "image/" + displayid);
             };
+            DataSvc.prototype.getDocumentByDisplayId = function (displayid) {
+                return this.http.get(this.urlBase + "document/" + displayid);
+            };
+            DataSvc.prototype.getLinkByDisplayId = function (displayid) {
+                return this.http.get(this.urlBase + "link/" + displayid);
+            };
             DataSvc.prototype.getAllAreas = function () {
                 return this.http.get(this.urlBase + "areas");
             };
@@ -50,6 +68,12 @@ var Application;
             };
             DataSvc.prototype.getAllImages = function () {
                 return this.http.get(this.urlBase + "images");
+            };
+            DataSvc.prototype.getAllDocuments = function () {
+                return this.http.get(this.urlBase + "documents");
+            };
+            DataSvc.prototype.getAllLinks = function () {
+                return this.http.get(this.urlBase + "links");
             };
             DataSvc.prototype.getAllAreasByGrouping = function (grouping) {
                 return this.http.get(this.urlBase + "areas/" + grouping);
@@ -60,6 +84,12 @@ var Application;
             DataSvc.prototype.getAllImagesByGrouping = function (grouping) {
                 return this.http.get(this.urlBase + "images/" + grouping);
             };
+            DataSvc.prototype.getAllDocumentsByGrouping = function (grouping) {
+                return this.http.get(this.urlBase + "documents/" + grouping);
+            };
+            DataSvc.prototype.getAllLinksByGrouping = function (grouping) {
+                return this.http.get(this.urlBase + "links/" + grouping);
+            };
             DataSvc.prototype.saveArea = function (areaentity) {
                 return this.http.post(this.urlBase + "area", areaentity);
             };
@@ -68,6 +98,12 @@ var Application;
             };
             DataSvc.prototype.saveImage = function (imageentity) {
                 return this.http.post(this.urlBase + "image", imageentity);
+            };
+            DataSvc.prototype.saveDocument = function (documententity) {
+                return this.http.post(this.urlBase + "document", documententity);
+            };
+            DataSvc.prototype.saveLink = function (linkentity) {
+                return this.http.post(this.urlBase + "link", linkentity);
             };
             DataSvc.prototype.testCall = function () {
                 alert('DataSvc test call');

@@ -292,6 +292,39 @@ namespace Incite.Cloud.Storage
             }
             return ret;
         }
+        public async Task<int> DeleteDocumentByDisplayId(Guid displayId)
+        {
+            var table = _tableClient.GetTableReference("Document");
+            await table.CreateIfNotExistsAsync();
+
+            var ret = 0;
+            TableQuery<RipThatPic.Controllers.DocumentEntity> query = new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
+            var found = table.ExecuteQuery(query);
+            foreach (var item in found)
+            {
+                TableOperation op = TableOperation.Delete(item);
+                var result = await table.ExecuteAsync(op);
+                ret = result.HttpStatusCode;
+            }
+            return ret;
+        }
+        public async Task<int> DeleteLinkByDisplayId(Guid displayId)
+        {
+            var table = _tableClient.GetTableReference("Link");
+            await table.CreateIfNotExistsAsync();
+
+            var ret = 0;
+            TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
+            var found = table.ExecuteQuery(query);
+            foreach (var item in found)
+            {
+                TableOperation op = TableOperation.Delete(item);
+                var result = await table.ExecuteAsync(op);
+                ret = result.HttpStatusCode;
+            }
+            return ret;
+        }
+
 
 
 
@@ -346,7 +379,18 @@ namespace Incite.Cloud.Storage
             TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
             return table.ExecuteQuery(query);
         }
-
+        public IEnumerable<RipThatPic.Controllers.DocumentEntity> RetrieveAllDocumentsByName(string name)
+        {
+            var table = _tableClient.GetTableReference("Document");
+            TableQuery<RipThatPic.Controllers.DocumentEntity> query = new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
+            return table.ExecuteQuery(query);
+        }
+        public IEnumerable<RipThatPic.Controllers.LinkEntity> RetrieveAllLinksByName(string name)
+        {
+            var table = _tableClient.GetTableReference("Link");
+            TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
+            return table.ExecuteQuery(query);
+        }
 
 
 
@@ -377,7 +421,18 @@ namespace Incite.Cloud.Storage
             TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
             return table.ExecuteQuery(query);
         }
-
+        public IEnumerable<RipThatPic.Controllers.DocumentEntity> RetrieveAllDocuments(string grouping)
+        {
+            var table = _tableClient.GetTableReference("Document");
+            TableQuery<RipThatPic.Controllers.DocumentEntity> query = new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
+            return table.ExecuteQuery(query);
+        }
+        public IEnumerable<RipThatPic.Controllers.LinkEntity> RetrieveAllLinks(string grouping)
+        {
+            var table = _tableClient.GetTableReference("Link");
+            TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
+            return table.ExecuteQuery(query);
+        }
 
 
 
@@ -412,7 +467,18 @@ namespace Incite.Cloud.Storage
             TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
             return table.ExecuteQuery(query);
         }
-
+        public IEnumerable<RipThatPic.Controllers.DocumentEntity> RetrieveAllDocuments()
+        {
+            var table = _tableClient.GetTableReference("Document");
+            TableQuery<RipThatPic.Controllers.DocumentEntity> query = new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
+            return table.ExecuteQuery(query);
+        }
+        public IEnumerable<RipThatPic.Controllers.LinkEntity> RetrieveAllLinks()
+        {
+            var table = _tableClient.GetTableReference("Link");
+            TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
+            return table.ExecuteQuery(query);
+        }
 
 
 
