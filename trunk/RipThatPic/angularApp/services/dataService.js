@@ -11,8 +11,20 @@ var Application;
             DataSvc.prototype.deleteArea = function (name, grouping) {
                 return this.http.delete(this.urlBase + "area?" + "grouping=" + grouping + "&name=" + name);
             };
+            DataSvc.prototype.deleteVideo = function (name, grouping) {
+                return this.http.delete(this.urlBase + "video?" + "grouping=" + grouping + "&name=" + name);
+            };
+            DataSvc.prototype.deleteImage = function (name, grouping) {
+                return this.http.delete(this.urlBase + "image?" + "grouping=" + grouping + "&name=" + name);
+            };
             DataSvc.prototype.deleteAreaByDisplayId = function (displayid) {
                 return this.http.delete(this.urlBase + "area?displayid=" + displayid);
+            };
+            DataSvc.prototype.deleteVideoByDisplayId = function (displayid) {
+                return this.http.delete(this.urlBase + "video?displayid=" + displayid);
+            };
+            DataSvc.prototype.deleteImageByDisplayId = function (displayid) {
+                return this.http.delete(this.urlBase + "image?displayid=" + displayid);
             };
             DataSvc.prototype.injection = function () {
                 return [
@@ -24,14 +36,38 @@ var Application;
             DataSvc.prototype.getAreaByDisplayId = function (displayid) {
                 return this.http.get(this.urlBase + "area/" + displayid);
             };
+            DataSvc.prototype.getVideoByDisplayId = function (displayid) {
+                return this.http.get(this.urlBase + "video/" + displayid);
+            };
+            DataSvc.prototype.getImageByDisplayId = function (displayid) {
+                return this.http.get(this.urlBase + "image/" + displayid);
+            };
             DataSvc.prototype.getAllAreas = function () {
-                return this.http.get(this.urlBase + "areas"); //+ '.json?r=' + Math.random()
+                return this.http.get(this.urlBase + "areas");
+            };
+            DataSvc.prototype.getAllVideos = function () {
+                return this.http.get(this.urlBase + "videos");
+            };
+            DataSvc.prototype.getAllImages = function () {
+                return this.http.get(this.urlBase + "images");
             };
             DataSvc.prototype.getAllAreasByGrouping = function (grouping) {
                 return this.http.get(this.urlBase + "areas/" + grouping);
             };
+            DataSvc.prototype.getAllVideosByGrouping = function (grouping) {
+                return this.http.get(this.urlBase + "videos/" + grouping);
+            };
+            DataSvc.prototype.getAllImagesByGrouping = function (grouping) {
+                return this.http.get(this.urlBase + "images/" + grouping);
+            };
             DataSvc.prototype.saveArea = function (areaentity) {
                 return this.http.post(this.urlBase + "area", areaentity);
+            };
+            DataSvc.prototype.saveVideo = function (videoentity) {
+                return this.http.post(this.urlBase + "video", videoentity);
+            };
+            DataSvc.prototype.saveImage = function (imageentity) {
+                return this.http.post(this.urlBase + "image", imageentity);
             };
             DataSvc.prototype.testCall = function () {
                 alert('DataSvc test call');

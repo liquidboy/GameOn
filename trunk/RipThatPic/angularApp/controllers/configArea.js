@@ -48,9 +48,7 @@ var Application;
             ConfigAreaCtrl.prototype.RefreshData = function () {
                 var __this = this;
                 this.dataSvc.getAllAreas().success(function (result) {
-                    //alert(result[0].PartitionKey);
                     __this.AreasList = result;
-                    __this.$scope.$apply();
                 }).error(function (err) {
                 });
             };

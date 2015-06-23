@@ -134,6 +134,9 @@
     <Content Include="angularApp\controllers\configComment.js">
       <DependentUpon>configComment.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\configImage.js">
+      <DependentUpon>configImage.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\configSession.js">
       <DependentUpon>configSession.ts</DependentUpon>
     </Content>
@@ -161,6 +164,7 @@
       <DependentUpon>serviceHelper.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\views\config\comment.html" />
+    <Content Include="angularApp\views\config\image.html" />
     <Content Include="angularApp\views\config\video.html" />
     <Content Include="angularApp\views\config\session.html" />
     <Content Include="angularApp\views\config\user.html" />
@@ -242,6 +246,9 @@
     </Content>
     <Content Include="angularApp\controllers\configVideo.js.map">
       <DependentUpon>configVideo.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configImage.js.map">
+      <DependentUpon>configImage.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -996,6 +1003,8 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AreaController.cs" />
+    <Compile Include="Controllers\ImagesController.cs" />
+    <Compile Include="Controllers\VideosController.cs" />
     <Compile Include="Controllers\AreasController.cs" />
     <Compile Include="Controllers\CloudService.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
@@ -1037,6 +1046,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configImage.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configVideo.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configUser.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configSession.ts" />

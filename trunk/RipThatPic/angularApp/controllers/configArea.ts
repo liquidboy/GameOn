@@ -44,10 +44,7 @@
 
             this.dataSvc
                 .getAllAreas()
-                .success(function (result: any) {
-                    //alert(result[0].PartitionKey);
-                    __this.AreasList = result;
-                    __this.$scope.$apply();})
+                .success(function (result: any) { __this.AreasList = result; })
                 .error(function (err) { });
         }
 

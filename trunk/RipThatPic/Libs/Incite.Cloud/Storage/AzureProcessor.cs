@@ -235,6 +235,14 @@ namespace Incite.Cloud.Storage
             return result.HttpStatusCode;
         }
 
+
+
+
+
+
+
+
+
         public async Task<int> DeleteAreaByDisplayId(Guid displayId)
         {
             var table = _tableClient.GetTableReference("Area");
@@ -252,6 +260,47 @@ namespace Incite.Cloud.Storage
             }
             return ret;
         }
+        public async Task<int> DeleteVideoByDisplayId(Guid displayId)
+        {
+            var table = _tableClient.GetTableReference("Video");
+            await table.CreateIfNotExistsAsync();
+            
+            var ret = 0;
+            TableQuery<RipThatPic.Controllers.VideoEntity> query = new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
+            var found = table.ExecuteQuery(query);
+            foreach (var item in found)
+            {
+                TableOperation op = TableOperation.Delete(item);
+                var result = await table.ExecuteAsync(op);
+                ret = result.HttpStatusCode;
+            }
+            return ret;
+        }
+        public async Task<int> DeleteImageByDisplayId(Guid displayId)
+        {
+            var table = _tableClient.GetTableReference("Image");
+            await table.CreateIfNotExistsAsync();
+            
+            var ret = 0;
+            TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
+            var found = table.ExecuteQuery(query);
+            foreach (var item in found)
+            {
+                TableOperation op = TableOperation.Delete(item);
+                var result = await table.ExecuteAsync(op);
+                ret = result.HttpStatusCode;
+            }
+            return ret;
+        }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -268,35 +317,111 @@ namespace Incite.Cloud.Storage
         }
 
 
+
+
+
+
+
+
+
+
+
+
         public IEnumerable<RipThatPic.Controllers.AreaEntity> RetrieveAllAreasByName(string name)
         {
             var table = _tableClient.GetTableReference("Area");
             //await table.CreateIfNotExistsAsync();
-            
             TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
-
+            return table.ExecuteQuery(query);
+        }
+        public IEnumerable<RipThatPic.Controllers.VideoEntity> RetrieveAllVideosByName(string name)
+        {
+            var table = _tableClient.GetTableReference("Video");
+            TableQuery<RipThatPic.Controllers.VideoEntity> query = new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
+            return table.ExecuteQuery(query);
+        }
+        public IEnumerable<RipThatPic.Controllers.ImageEntity> RetrieveAllImagesByName(string name)
+        {
+            var table = _tableClient.GetTableReference("Image");
+            TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
             return table.ExecuteQuery(query);
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
         public IEnumerable<RipThatPic.Controllers.AreaEntity> RetrieveAllAreas(string grouping)
         {
-            var table = _tableClient.GetTableReference("Area");
-            //await table.CreateIfNotExistsAsync();
-            
+            var table = _tableClient.GetTableReference("Area");    
             TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
-            
             return  table.ExecuteQuery(query);
         }
+        public IEnumerable<RipThatPic.Controllers.VideoEntity> RetrieveAllVideos(string grouping)
+        {
+            var table = _tableClient.GetTableReference("Video");
+            TableQuery<RipThatPic.Controllers.VideoEntity> query = new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
+            return table.ExecuteQuery(query);
+        }
+        public IEnumerable<RipThatPic.Controllers.ImageEntity> RetrieveAllImages(string grouping)
+        {
+            var table = _tableClient.GetTableReference("Image");
+            TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
+            return table.ExecuteQuery(query);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public IEnumerable<RipThatPic.Controllers.AreaEntity> RetrieveAllAreas()
         {
             var table = _tableClient.GetTableReference("Area");
             //await table.CreateIfNotExistsAsync();
-            
             TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
-
             return table.ExecuteQuery(query);
         }
+        public IEnumerable<RipThatPic.Controllers.VideoEntity> RetrieveAllVideos()
+        {
+            var table = _tableClient.GetTableReference("Video");
+            TableQuery<RipThatPic.Controllers.VideoEntity> query = new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
+            return table.ExecuteQuery(query);
+        }
+
+        public IEnumerable<RipThatPic.Controllers.ImageEntity> RetrieveAllImages()
+        {
+            var table = _tableClient.GetTableReference("Image");
+            TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
+            return table.ExecuteQuery(query);
+        }
+
+
+
+
+
+
+
+
+
+
 
 
 
