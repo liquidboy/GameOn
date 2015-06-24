@@ -152,6 +152,9 @@
     <Content Include="angularApp\controllers\configPage.js">
       <DependentUpon>configPage.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\configPermission.js">
+      <DependentUpon>configPermission.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\configPost.js">
       <DependentUpon>configPost.ts</DependentUpon>
     </Content>
@@ -186,6 +189,7 @@
     </Content>
     <Content Include="angularApp\views\config\comment.html" />
     <Content Include="angularApp\views\config\datacenter.html" />
+    <Content Include="angularApp\views\config\permission.html" />
     <Content Include="angularApp\views\config\post.html" />
     <Content Include="angularApp\views\config\list.html" />
     <Content Include="angularApp\views\config\page.html" />
@@ -298,6 +302,9 @@
     </Content>
     <Content Include="angularApp\controllers\configPost.js.map">
       <DependentUpon>configPost.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configPermission.js.map">
+      <DependentUpon>configPermission.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1055,6 +1062,8 @@
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\DataCenterController.cs" />
     <Compile Include="Controllers\DataCentersController.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\ListsController.cs" />
     <Compile Include="Controllers\PostController.cs" />
@@ -1112,6 +1121,7 @@
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configDatacenter.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configPermission.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configPost.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configList.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configPage.ts" />

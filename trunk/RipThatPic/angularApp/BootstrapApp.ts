@@ -25,6 +25,7 @@
             .when('/config/list', { controller: 'ConfigListCtrl', templateUrl: '/angularApp/views/config/list.html', controllerAs: 'configlist' })
             .when('/config/setting', { controller: 'ConfigSettingCtrl', templateUrl: '/angularApp/views/config/setting.html', controllerAs: 'configsetting' })
             .when('/config/page', { controller: 'ConfigPageCtrl', templateUrl: '/angularApp/views/config/page.html', controllerAs: 'configpage' })
+            .when('/config/permission', { controller: 'ConfigPermissionCtrl', templateUrl: '/angularApp/views/config/permission.html', controllerAs: 'configpermission' })
             .when('/config/post', { controller: 'ConfigPostCtrl', templateUrl: '/angularApp/views/config/post.html', controllerAs: 'configpost' })
             .when('/config/datacenter', { controller: 'ConfigDataCenterCtrl', templateUrl: '/angularApp/views/config/datacenter.html', controllerAs: 'configdatacenter' })
             .when('/error', { controller: 'ErrorCtrl',templateUrl: '/angularApp/views/shared/error.html' })
