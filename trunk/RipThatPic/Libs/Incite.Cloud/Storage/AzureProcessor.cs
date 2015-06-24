@@ -258,6 +258,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Image") found = table.ExecuteQuery(new TableQuery<ImageEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else if (type == "Video") found = table.ExecuteQuery(new TableQuery<VideoEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else if (type == "Area") found = table.ExecuteQuery(new TableQuery<AreaEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Setting") found = table.ExecuteQuery(new TableQuery<SettingEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else throw new NotImplementedException();
             
             
@@ -319,6 +320,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Image") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else if (type == "Video") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else if (type == "Area") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Setting") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.SettingEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else throw new NotImplementedException();
             
         }
@@ -337,6 +339,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Image") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else if (type == "Video") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else if (type == "Area") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Setting") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.SettingEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else throw new NotImplementedException();
 
         }
@@ -354,6 +357,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Image") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else if (type == "Video") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else if (type == "Area") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Setting") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.SettingEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else throw new NotImplementedException();
 
         }
