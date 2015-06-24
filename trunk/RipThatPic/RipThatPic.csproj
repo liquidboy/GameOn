@@ -134,6 +134,9 @@
     <Content Include="angularApp\controllers\configComment.js">
       <DependentUpon>configComment.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\configDatacenter.js" >
+      <DependentUpon>configDatacenter.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\configDocument.js">
       <DependentUpon>configDocument.ts</DependentUpon>
     </Content>
@@ -176,6 +179,7 @@
       <DependentUpon>serviceHelper.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\views\config\comment.html" />
+    <Content Include="angularApp\views\config\datacenter.html" />
     <Content Include="angularApp\views\config\page.html" />
     <Content Include="angularApp\views\config\link.html" />
     <Content Include="angularApp\views\config\image.html" />
@@ -277,6 +281,9 @@
     </Content>
     <Content Include="angularApp\controllers\configPage.js.map">
       <DependentUpon>configPage.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configDatacenter.js.map" >
+      <DependentUpon>configDatacenter.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1032,6 +1039,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\DataCenterController.cs" />
+    <Compile Include="Controllers\DataCentersController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\SettingController.cs" />
@@ -1084,6 +1093,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configDatacenter.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configPage.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configLink.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configImage.ts" />
