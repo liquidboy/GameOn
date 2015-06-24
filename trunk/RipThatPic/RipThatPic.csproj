@@ -134,11 +134,15 @@
     <Content Include="angularApp\controllers\configComment.js">
       <DependentUpon>configComment.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configDocument.js" />
+    <Content Include="angularApp\controllers\configDocument.js">
+      <DependentUpon>configDocument.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\configImage.js">
       <DependentUpon>configImage.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configLink.js" />
+    <Content Include="angularApp\controllers\configLink.js">
+      <DependentUpon>configLink.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\configSession.js">
       <DependentUpon>configSession.ts</DependentUpon>
     </Content>
@@ -254,8 +258,12 @@
     <Content Include="angularApp\controllers\configImage.js.map">
       <DependentUpon>configImage.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configDocument.js.map" />
-    <Content Include="angularApp\controllers\configLink.js.map" />
+    <Content Include="angularApp\controllers\configDocument.js.map">
+      <DependentUpon>configDocument.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configLink.js.map">
+      <DependentUpon>configLink.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
@@ -1009,6 +1017,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AreaController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\LinkController.cs" />
     <Compile Include="Controllers\LinksController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />

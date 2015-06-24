@@ -324,7 +324,22 @@ namespace Incite.Cloud.Storage
             }
             return ret;
         }
+        public async Task<int> DeleteCommentByDisplayId(Guid displayId)
+        {
+            var table = _tableClient.GetTableReference("Comment");
+            await table.CreateIfNotExistsAsync();
 
+            var ret = 0;
+            TableQuery<RipThatPic.Controllers.CommentEntity> query = new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
+            var found = table.ExecuteQuery(query);
+            foreach (var item in found)
+            {
+                TableOperation op = TableOperation.Delete(item);
+                var result = await table.ExecuteAsync(op);
+                ret = result.HttpStatusCode;
+            }
+            return ret;
+        }
 
 
 
@@ -391,7 +406,12 @@ namespace Incite.Cloud.Storage
             TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
             return table.ExecuteQuery(query);
         }
-
+        public IEnumerable<RipThatPic.Controllers.CommentEntity> RetrieveAllCommentsByName(string name)
+        {
+            var table = _tableClient.GetTableReference("Comment");
+            TableQuery<RipThatPic.Controllers.CommentEntity> query = new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
+            return table.ExecuteQuery(query);
+        }
 
 
 
@@ -433,7 +453,12 @@ namespace Incite.Cloud.Storage
             TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
             return table.ExecuteQuery(query);
         }
-
+        public IEnumerable<RipThatPic.Controllers.CommentEntity> RetrieveAllComments(string grouping)
+        {
+            var table = _tableClient.GetTableReference("Comment");
+            TableQuery<RipThatPic.Controllers.CommentEntity> query = new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
+            return table.ExecuteQuery(query);
+        }
 
 
 
@@ -479,7 +504,12 @@ namespace Incite.Cloud.Storage
             TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
             return table.ExecuteQuery(query);
         }
-
+        public IEnumerable<RipThatPic.Controllers.CommentEntity> RetrieveAllComments()
+        {
+            var table = _tableClient.GetTableReference("Comment");
+            TableQuery<RipThatPic.Controllers.CommentEntity> query = new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
+            return table.ExecuteQuery(query);
+        }
 
 
 

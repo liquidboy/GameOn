@@ -1,39 +1,44 @@
-﻿using System;
+﻿using Incite.Cloud.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace RipThatPic.Controllers
 {
     public class CommentsController : ApiController
     {
-        // GET: api/Comments
-        public IEnumerable<string> Get()
+        public IEnumerable<object> Get()
         {
-            return new string[] { "value1", "value2" };
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var result = processor.RetrieveAllComments();
+            return result.Select(x => new { x.Name, x.Grouping, x.LongName, x.Color, x.DisplayId }).AsEnumerable();
+
         }
 
-        // GET: api/Comments/5
-        public string Get(int id)
+
+        // GET: api/Comments/gaming 
+        // have not tested yet!
+        public IEnumerable<object> Get(string grouping)
         {
-            return "value";
+
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var result = processor.RetrieveAllComments(grouping);
+            return result.Select(x => new { x.Name, x.Grouping, x.LongName, x.Color, x.DisplayId }).AsEnumerable();
+
         }
 
-        // POST: api/Comments
-        public void Post([FromBody]string value)
-        {
-        }
 
-        // PUT: api/Comments/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
 
-        // DELETE: api/Comments/5
-        public void Delete(int id)
-        {
-        }
+
+
+
+
     }
+
+
 }
