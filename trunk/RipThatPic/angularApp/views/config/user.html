@@ -5,4 +5,60 @@
 
     <br />
 
+
+
+
+
+    <div>
+        <table>
+            <colgroup>
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <!--<col style="width:250px"  />-->
+                <col style="width:255px" />
+            </colgroup>
+
+            <tr>
+                <td><input type="text" ng-model="configuser.SelectedUser.Grouping" style="width:150px" /></td>
+                <td><input type="text" ng-model="configuser.SelectedUser.Name" style="width:150px" /></td>
+                <td><input type="text" ng-model="configuser.SelectedUser.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configuser.SelectedUser.Color" style="width:150px" /></td>
+                <!--<td><input type="text" ng-model="configuser.SelectedUser.DisplayId" style="width:250px" /></td>-->
+                <td>
+                    <input type="button" value="Save" ng-click="configuser.SaveUser()" />
+                    <input type="button" value="Delete" ng-click="configuser.DeleteUser()" />
+                    <input type="button" value="Clear" ng-click="configuser.ClearEntryFields()" />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <!--<td class="table-header">DisplayId</td>-->
+                <td></td>
+            </tr>
+
+            <tr ng-repeat="user in configuser.UsersList"
+                ng-include="'userlist.html'"
+                ng-click="configuser.SelectUserRow(user, $event)"
+                class="table-content-row"></tr>
+
+        </table>
+    </div>
+
+    <script type="text/ng-template" id="userlist.html">
+
+        <td>{{user.Grouping}} </td>
+        <td>{{user.Name}} </td>
+        <td>{{user.LongName}} </td>
+        <td>{{user.Color}} </td>
+        <!--<td>{{user.DisplayId}} </td>-->
+        <td></td>
+
+    </script>
 </div>
