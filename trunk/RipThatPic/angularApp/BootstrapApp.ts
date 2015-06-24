@@ -3,20 +3,6 @@
     var myapp: ng.IModule = angular.module('bootstrapApp', ['ngRoute', 'ngResource', 'ngAnimate', 'ngSanitize']);
     
 
-    //SERVICES
-    //myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location)
-    //    => new Application.Services.ServiceHelperSvc($http, $location)]);
-    //myapp.service("dataSvc", ["$http", "serviceHelperSvc", ($http, serviceHelperSvc)
-    //    => new Application.Services.DataSvc($http, serviceHelperSvc)]);
-
-
-    //DIRECTIVES
-    //myapp.directive("dBillboard", Application.Directives.BillboardDirective.prototype.injection());
-    //myapp.directive("dWorkarea", Application.Directives.WorkareaDirective.prototype.injection());
-
-
-    //CONTROLLERS
-    //myapp.controller("HomeCtrl", ["$scope", "$rootScope", Application.Controllers.HomeCtrl]);
 
 
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider: ng.IHttpProvider, $provide: any) {
@@ -43,6 +29,9 @@
             .otherwise({ redirectTo: '/home'});
 
     }]);
+
+
+
 
 
 
