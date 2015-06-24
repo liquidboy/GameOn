@@ -19,7 +19,7 @@
             var __this = this;
 
             this.dataSvc
-                .deleteImage(__this.SelectedImage.Name, __this.SelectedImage.Grouping)
+                .delete("image", __this.SelectedImage.Name, __this.SelectedImage.Grouping)
                 .success(function (result: any) { __this.RefreshData(); __this.InitSelectedImage(); })
                 .error(function (err: any) { alert('failure deleting..') });
             
@@ -43,7 +43,7 @@
             var __this = this;
 
             this.dataSvc
-                .getAllImages()
+                .getAll('image')
                 .success(function (result: any) { __this.ImagesList = result; })
                 .error(function (err) { });
         }
@@ -63,7 +63,7 @@
             var __this: any = this;
 
             __this.dataSvc
-                .saveImage(__this.SelectedImage)
+                .save('image', __this.SelectedImage)
                 .success(function (val) { __this.RefreshData(); __this.InitSelectedImage(); })
                 .error(function (val) { alert('Failed saving Image'); });
 

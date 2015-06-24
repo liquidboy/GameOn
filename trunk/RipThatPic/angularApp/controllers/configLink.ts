@@ -19,7 +19,7 @@
             var __this = this;
 
             this.dataSvc
-                .deleteLink(__this.SelectedLink.Name, __this.SelectedLink.Grouping)
+                .delete("link", __this.SelectedLink.Name, __this.SelectedLink.Grouping)
                 .success(function (result: any) { __this.RefreshData(); __this.InitSelectedLink(); })
                 .error(function (err: any) { alert('failure deleting..') });
             
@@ -43,7 +43,7 @@
             var __this = this;
 
             this.dataSvc
-                .getAllLinks()
+                .getAll('link')
                 .success(function (result: any) { __this.LinksList = result; })
                 .error(function (err) { });
         }
@@ -63,7 +63,7 @@
             var __this: any = this;
 
             __this.dataSvc
-                .saveLink(__this.SelectedLink)
+                .save('link', __this.SelectedLink)
                 .success(function (val) { __this.RefreshData(); __this.InitSelectedLink(); })
                 .error(function (val) { alert('Failed saving link'); });
 

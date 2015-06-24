@@ -19,7 +19,7 @@
             var __this = this;
 
             this.dataSvc
-                .deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping)
+                .delete("area", __this.SelectedArea.Name, __this.SelectedArea.Grouping)
                 .success(function (result:any) { __this.RefreshData(); __this.InitSelectedArea();})
                 .error(function (err:any) { alert('failure deleting..')});
             
@@ -43,7 +43,7 @@
             var __this = this;
 
             this.dataSvc
-                .getAllAreas()
+                .getAll('area')
                 .success(function (result: any) { __this.AreasList = result; })
                 .error(function (err) { });
         }
@@ -63,7 +63,7 @@
             var __this:any = this;
 
             __this.dataSvc
-                .saveArea(__this.SelectedArea)
+                .save('area', __this.SelectedArea)
                 .success(function (val) { __this.RefreshData(); __this.InitSelectedArea();})
                 .error(function (val) { alert('Failed saving area');});
 

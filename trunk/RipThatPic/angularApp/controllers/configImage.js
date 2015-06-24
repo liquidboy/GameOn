@@ -11,7 +11,7 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.DeleteImage = function () {
                     var __this = _this;
-                    _this.dataSvc.deleteImage(__this.SelectedImage.Name, __this.SelectedImage.Grouping).success(function (result) {
+                    _this.dataSvc.delete("image", __this.SelectedImage.Name, __this.SelectedImage.Grouping).success(function (result) {
                         __this.RefreshData();
                         __this.InitSelectedImage();
                     }).error(function (err) {
@@ -27,7 +27,7 @@ var Application;
                 };
                 this.SaveImage = function () {
                     var __this = _this;
-                    __this.dataSvc.saveImage(__this.SelectedImage).success(function (val) {
+                    __this.dataSvc.save('image', __this.SelectedImage).success(function (val) {
                         __this.RefreshData();
                         __this.InitSelectedImage();
                     }).error(function (val) {
@@ -47,7 +47,7 @@ var Application;
             };
             ConfigImageCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAllImages().success(function (result) {
+                this.dataSvc.getAll('image').success(function (result) {
                     __this.ImagesList = result;
                 }).error(function (err) {
                 });

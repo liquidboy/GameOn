@@ -19,7 +19,7 @@
             var __this = this;
 
             this.dataSvc
-                .deleteDocument(__this.SelectedDocument.Name, __this.SelectedDocument.Grouping)
+                .delete("document", __this.SelectedDocument.Name, __this.SelectedDocument.Grouping)
                 .success(function (result: any) { __this.RefreshData(); __this.InitSelectedDocument(); })
                 .error(function (err: any) { alert('failure deleting..') });
             
@@ -43,7 +43,7 @@
             var __this = this;
 
             this.dataSvc
-                .getAllDocuments()
+                .getAll('document')
                 .success(function (result: any) { __this.DocumentsList = result; })
                 .error(function (err) { });
         }
@@ -63,7 +63,7 @@
             var __this: any = this;
 
             __this.dataSvc
-                .saveDocument(__this.SelectedDocument)
+                .save('document', __this.SelectedDocument)
                 .success(function (val) { __this.RefreshData(); __this.InitSelectedDocument(); })
                 .error(function (val) { alert('Failed saving document'); });
 

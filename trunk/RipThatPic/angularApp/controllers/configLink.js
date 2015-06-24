@@ -11,7 +11,7 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.DeleteLink = function () {
                     var __this = _this;
-                    _this.dataSvc.deleteLink(__this.SelectedLink.Name, __this.SelectedLink.Grouping).success(function (result) {
+                    _this.dataSvc.delete("link", __this.SelectedLink.Name, __this.SelectedLink.Grouping).success(function (result) {
                         __this.RefreshData();
                         __this.InitSelectedLink();
                     }).error(function (err) {
@@ -27,7 +27,7 @@ var Application;
                 };
                 this.SaveLink = function () {
                     var __this = _this;
-                    __this.dataSvc.saveLink(__this.SelectedLink).success(function (val) {
+                    __this.dataSvc.save('link', __this.SelectedLink).success(function (val) {
                         __this.RefreshData();
                         __this.InitSelectedLink();
                     }).error(function (val) {
@@ -47,7 +47,7 @@ var Application;
             };
             ConfigLinkCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAllLinks().success(function (result) {
+                this.dataSvc.getAll('link').success(function (result) {
                     __this.LinksList = result;
                 }).error(function (err) {
                 });

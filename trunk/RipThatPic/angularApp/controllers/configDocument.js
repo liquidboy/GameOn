@@ -11,7 +11,7 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.DeleteDocument = function () {
                     var __this = _this;
-                    _this.dataSvc.deleteDocument(__this.SelectedDocument.Name, __this.SelectedDocument.Grouping).success(function (result) {
+                    _this.dataSvc.delete("document", __this.SelectedDocument.Name, __this.SelectedDocument.Grouping).success(function (result) {
                         __this.RefreshData();
                         __this.InitSelectedDocument();
                     }).error(function (err) {
@@ -27,7 +27,7 @@ var Application;
                 };
                 this.SaveDocument = function () {
                     var __this = _this;
-                    __this.dataSvc.saveDocument(__this.SelectedDocument).success(function (val) {
+                    __this.dataSvc.save('document', __this.SelectedDocument).success(function (val) {
                         __this.RefreshData();
                         __this.InitSelectedDocument();
                     }).error(function (val) {
@@ -47,7 +47,7 @@ var Application;
             };
             ConfigDocumentCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAllDocuments().success(function (result) {
+                this.dataSvc.getAll('document').success(function (result) {
                     __this.DocumentsList = result;
                 }).error(function (err) {
                 });

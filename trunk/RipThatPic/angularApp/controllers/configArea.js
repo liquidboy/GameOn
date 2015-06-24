@@ -11,7 +11,7 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.DeleteArea = function () {
                     var __this = _this;
-                    _this.dataSvc.deleteArea(__this.SelectedArea.Name, __this.SelectedArea.Grouping).success(function (result) {
+                    _this.dataSvc.delete("area", __this.SelectedArea.Name, __this.SelectedArea.Grouping).success(function (result) {
                         __this.RefreshData();
                         __this.InitSelectedArea();
                     }).error(function (err) {
@@ -27,7 +27,7 @@ var Application;
                 };
                 this.SaveArea = function () {
                     var __this = _this;
-                    __this.dataSvc.saveArea(__this.SelectedArea).success(function (val) {
+                    __this.dataSvc.save('area', __this.SelectedArea).success(function (val) {
                         __this.RefreshData();
                         __this.InitSelectedArea();
                     }).error(function (val) {
@@ -47,7 +47,7 @@ var Application;
             };
             ConfigAreaCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAllAreas().success(function (result) {
+                this.dataSvc.getAll('area').success(function (result) {
                     __this.AreasList = result;
                 }).error(function (err) {
                 });

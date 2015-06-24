@@ -11,7 +11,7 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.DeleteVideo = function () {
                     var __this = _this;
-                    _this.dataSvc.deleteVideo(__this.SelectedVideo.Name, __this.SelectedVideo.Grouping).success(function (result) {
+                    _this.dataSvc.delete("video", __this.SelectedVideo.Name, __this.SelectedVideo.Grouping).success(function (result) {
                         __this.RefreshData();
                         __this.InitSelectedVideo();
                     }).error(function (err) {
@@ -27,7 +27,7 @@ var Application;
                 };
                 this.SaveVideo = function () {
                     var __this = _this;
-                    __this.dataSvc.saveVideo(__this.SelectedVideo).success(function (val) {
+                    __this.dataSvc.save('video', __this.SelectedVideo).success(function (val) {
                         __this.RefreshData();
                         __this.InitSelectedVideo();
                     }).error(function (val) {
@@ -47,7 +47,7 @@ var Application;
             };
             ConfigVideoCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAllVideos().success(function (result) {
+                this.dataSvc.getAll('video').success(function (result) {
                     __this.VideosList = result;
                 }).error(function (err) {
                 });

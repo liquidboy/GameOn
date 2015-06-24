@@ -19,7 +19,7 @@
             var __this = this;
 
             this.dataSvc
-                .deleteVideo(__this.SelectedVideo.Name, __this.SelectedVideo.Grouping)
+                .delete("video", __this.SelectedVideo.Name, __this.SelectedVideo.Grouping)
                 .success(function (result: any) { __this.RefreshData(); __this.InitSelectedVideo(); })
                 .error(function (err: any) { alert('failure deleting..') });
             
@@ -43,7 +43,7 @@
             var __this = this;
 
             this.dataSvc
-                .getAllVideos()
+                .getAll('video')
                 .success(function (result: any) { __this.VideosList = result; })
                 .error(function (err) { });
         }
@@ -63,7 +63,7 @@
             var __this: any = this;
 
             __this.dataSvc
-                .saveVideo(__this.SelectedVideo)
+                .save('video', __this.SelectedVideo)
                 .success(function (val) { __this.RefreshData(); __this.InitSelectedVideo(); })
                 .error(function (val) { alert('Failed saving video'); });
 
