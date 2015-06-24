@@ -22,6 +22,7 @@
             .when('/config/image', { controller: 'ConfigImageCtrl', templateUrl: '/angularApp/views/config/image.html', controllerAs: 'configimage' })
             .when('/config/document', { controller: 'ConfigDocumentCtrl', templateUrl: '/angularApp/views/config/document.html', controllerAs: 'configdocument' })
             .when('/config/link', { controller: 'ConfigLinkCtrl', templateUrl: '/angularApp/views/config/link.html', controllerAs: 'configlink' })
+            .when('/config/list', { controller: 'ConfigListCtrl', templateUrl: '/angularApp/views/config/list.html', controllerAs: 'configlist' })
             .when('/config/setting', { controller: 'ConfigSettingCtrl', templateUrl: '/angularApp/views/config/setting.html', controllerAs: 'configsetting' })
             .when('/config/page', { controller: 'ConfigPageCtrl', templateUrl: '/angularApp/views/config/page.html', controllerAs: 'configpage' })
             .when('/config/datacenter', { controller: 'ConfigDataCenterCtrl', templateUrl: '/angularApp/views/config/datacenter.html', controllerAs: 'configdatacenter' })
