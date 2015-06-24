@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Incite.Cloud;
 using System.IO;
 using System;
+using RipThatPic.Controllers;
 
 namespace Incite.Cloud.Storage
 {
@@ -240,139 +241,38 @@ namespace Incite.Cloud.Storage
 
 
 
-
-
-
-        public async Task<int> DeleteAreaByDisplayId(Guid displayId)
+        
+        public async Task<int> DeleteByDisplayId(string type, Guid displayId)
         {
-            var table = _tableClient.GetTableReference("Area");
+            var table = _tableClient.GetTableReference(type);
             await table.CreateIfNotExistsAsync();
-
 
             var ret = 0;
-            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
-            var found = table.ExecuteQuery(query);
-            foreach (var item in found) {
-                
-                TableOperation op = TableOperation.Delete(item);
-                var result = await table.ExecuteAsync(op);
-                ret = result.HttpStatusCode;
-            }
-            return ret;
-        }
-        public async Task<int> DeleteVideoByDisplayId(Guid displayId)
-        {
-            var table = _tableClient.GetTableReference("Video");
-            await table.CreateIfNotExistsAsync();
+            IEnumerable<ITableEntity> found = null;
+
+            if (type == "Session") found = table.ExecuteQuery(new TableQuery<SessionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Link") found = table.ExecuteQuery(new TableQuery<LinkEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "User") found = table.ExecuteQuery(new TableQuery<UserEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Comment") found = table.ExecuteQuery(new TableQuery<CommentEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Document") found = table.ExecuteQuery(new TableQuery<DocumentEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Image") found = table.ExecuteQuery(new TableQuery<ImageEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Video") found = table.ExecuteQuery(new TableQuery<VideoEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Area") found = table.ExecuteQuery(new TableQuery<AreaEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else throw new NotImplementedException();
             
-            var ret = 0;
-            TableQuery<RipThatPic.Controllers.VideoEntity> query = new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
-            var found = table.ExecuteQuery(query);
-            foreach (var item in found)
-            {
-                TableOperation op = TableOperation.Delete(item);
-                var result = await table.ExecuteAsync(op);
-                ret = result.HttpStatusCode;
-            }
-            return ret;
-        }
-        public async Task<int> DeleteImageByDisplayId(Guid displayId)
-        {
-            var table = _tableClient.GetTableReference("Image");
-            await table.CreateIfNotExistsAsync();
             
-            var ret = 0;
-            TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
-            var found = table.ExecuteQuery(query);
-            foreach (var item in found)
+            if (found != null)
             {
-                TableOperation op = TableOperation.Delete(item);
-                var result = await table.ExecuteAsync(op);
-                ret = result.HttpStatusCode;
+                foreach (var item in found)
+                {
+                    TableOperation op = TableOperation.Delete(item);
+                    var result = await table.ExecuteAsync(op);
+                    ret = result.HttpStatusCode;
+                }
+
             }
             return ret;
         }
-        public async Task<int> DeleteDocumentByDisplayId(Guid displayId)
-        {
-            var table = _tableClient.GetTableReference("Document");
-            await table.CreateIfNotExistsAsync();
-
-            var ret = 0;
-            TableQuery<RipThatPic.Controllers.DocumentEntity> query = new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
-            var found = table.ExecuteQuery(query);
-            foreach (var item in found)
-            {
-                TableOperation op = TableOperation.Delete(item);
-                var result = await table.ExecuteAsync(op);
-                ret = result.HttpStatusCode;
-            }
-            return ret;
-        }
-        public async Task<int> DeleteLinkByDisplayId(Guid displayId)
-        {
-            var table = _tableClient.GetTableReference("Link");
-            await table.CreateIfNotExistsAsync();
-
-            var ret = 0;
-            TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
-            var found = table.ExecuteQuery(query);
-            foreach (var item in found)
-            {
-                TableOperation op = TableOperation.Delete(item);
-                var result = await table.ExecuteAsync(op);
-                ret = result.HttpStatusCode;
-            }
-            return ret;
-        }
-        public async Task<int> DeleteCommentByDisplayId(Guid displayId)
-        {
-            var table = _tableClient.GetTableReference("Comment");
-            await table.CreateIfNotExistsAsync();
-
-            var ret = 0;
-            TableQuery<RipThatPic.Controllers.CommentEntity> query = new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
-            var found = table.ExecuteQuery(query);
-            foreach (var item in found)
-            {
-                TableOperation op = TableOperation.Delete(item);
-                var result = await table.ExecuteAsync(op);
-                ret = result.HttpStatusCode;
-            }
-            return ret;
-        }
-        public async Task<int> DeleteUserByDisplayId(Guid displayId)
-        {
-            var table = _tableClient.GetTableReference("User");
-            await table.CreateIfNotExistsAsync();
-
-            var ret = 0;
-            TableQuery<RipThatPic.Controllers.UserEntity> query = new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
-            var found = table.ExecuteQuery(query);
-            foreach (var item in found)
-            {
-                TableOperation op = TableOperation.Delete(item);
-                var result = await table.ExecuteAsync(op);
-                ret = result.HttpStatusCode;
-            }
-            return ret;
-        }
-        public async Task<int> DeleteSessionByDisplayId(Guid displayId)
-        {
-            var table = _tableClient.GetTableReference("Session");
-            await table.CreateIfNotExistsAsync();
-
-            var ret = 0;
-            TableQuery<RipThatPic.Controllers.SessionEntity> query = new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
-            var found = table.ExecuteQuery(query);
-            foreach (var item in found)
-            {
-                TableOperation op = TableOperation.Delete(item);
-                var result = await table.ExecuteAsync(op);
-                ret = result.HttpStatusCode;
-            }
-            return ret;
-        }
-
 
 
 
@@ -400,183 +300,62 @@ namespace Incite.Cloud.Storage
             return result.Result;
         }
 
+        
 
+        
 
-
-
-
-
-
-
-
-
-
-        public IEnumerable<RipThatPic.Controllers.AreaEntity> RetrieveAllAreasByName(string name)
+        
+        
+        public IEnumerable<ITableEntity> RetrieveAllByName(string type, string name)
         {
-            var table = _tableClient.GetTableReference("Area");
-            //await table.CreateIfNotExistsAsync();
-            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.VideoEntity> RetrieveAllVideosByName(string name)
-        {
-            var table = _tableClient.GetTableReference("Video");
-            TableQuery<RipThatPic.Controllers.VideoEntity> query = new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.ImageEntity> RetrieveAllImagesByName(string name)
-        {
-            var table = _tableClient.GetTableReference("Image");
-            TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.DocumentEntity> RetrieveAllDocumentsByName(string name)
-        {
-            var table = _tableClient.GetTableReference("Document");
-            TableQuery<RipThatPic.Controllers.DocumentEntity> query = new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.LinkEntity> RetrieveAllLinksByName(string name)
-        {
-            var table = _tableClient.GetTableReference("Link");
-            TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.CommentEntity> RetrieveAllCommentsByName(string name)
-        {
-            var table = _tableClient.GetTableReference("Comment");
-            TableQuery<RipThatPic.Controllers.CommentEntity> query = new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.UserEntity> RetrieveAllUsersByName(string name)
-        {
-            var table = _tableClient.GetTableReference("User");
-            TableQuery<RipThatPic.Controllers.UserEntity> query = new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.SessionEntity> RetrieveAllSessionsByName(string name)
-        {
-            var table = _tableClient.GetTableReference("Session");
-            TableQuery<RipThatPic.Controllers.SessionEntity> query = new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
-            return table.ExecuteQuery(query);
+
+            var table = _tableClient.GetTableReference(type);
+
+            if (type == "Session") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "User") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Comment") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Link") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Document") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Image") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Video") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Area") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else throw new NotImplementedException();
+            
         }
 
-
-
-
-
-
-
-
-
-        public IEnumerable<RipThatPic.Controllers.AreaEntity> RetrieveAllAreas(string grouping)
+        
+        
+        public IEnumerable<ITableEntity> RetrieveAll(string type, string grouping)
         {
-            var table = _tableClient.GetTableReference("Area");    
-            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
-            return  table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.VideoEntity> RetrieveAllVideos(string grouping)
-        {
-            var table = _tableClient.GetTableReference("Video");
-            TableQuery<RipThatPic.Controllers.VideoEntity> query = new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.ImageEntity> RetrieveAllImages(string grouping)
-        {
-            var table = _tableClient.GetTableReference("Image");
-            TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.DocumentEntity> RetrieveAllDocuments(string grouping)
-        {
-            var table = _tableClient.GetTableReference("Document");
-            TableQuery<RipThatPic.Controllers.DocumentEntity> query = new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.LinkEntity> RetrieveAllLinks(string grouping)
-        {
-            var table = _tableClient.GetTableReference("Link");
-            TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.CommentEntity> RetrieveAllComments(string grouping)
-        {
-            var table = _tableClient.GetTableReference("Comment");
-            TableQuery<RipThatPic.Controllers.CommentEntity> query = new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.UserEntity> RetrieveAllUsers(string grouping)
-        {
-            var table = _tableClient.GetTableReference("User");
-            TableQuery<RipThatPic.Controllers.UserEntity> query = new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.SessionEntity> RetrieveAllSessions(string grouping)
-        {
-            var table = _tableClient.GetTableReference("Session");
-            TableQuery<RipThatPic.Controllers.SessionEntity> query = new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
-            return table.ExecuteQuery(query);
+            var table = _tableClient.GetTableReference(type);
+
+            if (type == "Session") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "User") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Comment") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Link") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Document") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Image") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Video") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Area") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else throw new NotImplementedException();
+
         }
 
-
-
-
-
-
-
-
-
-
-
-        public IEnumerable<RipThatPic.Controllers.AreaEntity> RetrieveAllAreas()
+        
+        
+        public IEnumerable<ITableEntity> RetrieveAll(string type)
         {
-            var table = _tableClient.GetTableReference("Area");
-            //await table.CreateIfNotExistsAsync();
-            TableQuery<RipThatPic.Controllers.AreaEntity> query = new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.VideoEntity> RetrieveAllVideos()
-        {
-            var table = _tableClient.GetTableReference("Video");
-            TableQuery<RipThatPic.Controllers.VideoEntity> query = new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
-            return table.ExecuteQuery(query);
-        }
+            var table = _tableClient.GetTableReference(type);
+            if (type == "Session") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "User") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Comment") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Link") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Document") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Image") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Video") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Area") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else throw new NotImplementedException();
 
-        public IEnumerable<RipThatPic.Controllers.ImageEntity> RetrieveAllImages()
-        {
-            var table = _tableClient.GetTableReference("Image");
-            TableQuery<RipThatPic.Controllers.ImageEntity> query = new TableQuery<RipThatPic.Controllers.ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.DocumentEntity> RetrieveAllDocuments()
-        {
-            var table = _tableClient.GetTableReference("Document");
-            TableQuery<RipThatPic.Controllers.DocumentEntity> query = new TableQuery<RipThatPic.Controllers.DocumentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.LinkEntity> RetrieveAllLinks()
-        {
-            var table = _tableClient.GetTableReference("Link");
-            TableQuery<RipThatPic.Controllers.LinkEntity> query = new TableQuery<RipThatPic.Controllers.LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.CommentEntity> RetrieveAllComments()
-        {
-            var table = _tableClient.GetTableReference("Comment");
-            TableQuery<RipThatPic.Controllers.CommentEntity> query = new TableQuery<RipThatPic.Controllers.CommentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.UserEntity> RetrieveAllUsers()
-        {
-            var table = _tableClient.GetTableReference("User");
-            TableQuery<RipThatPic.Controllers.UserEntity> query = new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
-            return table.ExecuteQuery(query);
-        }
-        public IEnumerable<RipThatPic.Controllers.SessionEntity> RetrieveAllSessions()
-        {
-            var table = _tableClient.GetTableReference("Session");
-            TableQuery<RipThatPic.Controllers.SessionEntity> query = new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
-            return table.ExecuteQuery(query);
         }
 
 

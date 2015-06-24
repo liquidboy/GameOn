@@ -26,7 +26,7 @@ namespace RipThatPic.Controllers
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var ret = await processor.CreateTable("Image");
-            return processor.RetrieveAllImagesByName(name);
+            return processor.RetrieveAllByName("Image", name);
         }
 
 
@@ -53,7 +53,7 @@ namespace RipThatPic.Controllers
         public async Task<int> Delete([FromUri]string displayid)
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
-            var result = await processor.DeleteImageByDisplayId(Guid.Parse(displayid));
+            var result = await processor.DeleteByDisplayId("Image", Guid.Parse(displayid));
             return result;
         }
 

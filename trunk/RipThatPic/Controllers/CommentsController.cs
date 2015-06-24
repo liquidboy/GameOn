@@ -15,8 +15,8 @@ namespace RipThatPic.Controllers
         public IEnumerable<object> Get()
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
-            var result = processor.RetrieveAllComments();
-            return result.Select(x => new { x.Name, x.Grouping, x.LongName, x.Color, x.DisplayId }).AsEnumerable();
+            var result = processor.RetrieveAll("Comment");
+            return result.AsEnumerable();
 
         }
 
@@ -27,15 +27,11 @@ namespace RipThatPic.Controllers
         {
 
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
-            var result = processor.RetrieveAllComments(grouping);
-            return result.Select(x => new { x.Name, x.Grouping, x.LongName, x.Color, x.DisplayId }).AsEnumerable();
+            var result = processor.RetrieveAll("Comment", grouping);
+            return result.AsEnumerable();
 
         }
-
-
-
-
-
+        
 
 
     }

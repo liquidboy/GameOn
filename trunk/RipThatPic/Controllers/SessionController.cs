@@ -26,7 +26,7 @@ namespace RipThatPic.Controllers
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var ret = await processor.CreateTable("Session");
-            return processor.RetrieveAllSessionsByName(name);
+            return processor.RetrieveAllByName("Session", name);
         }
 
 
@@ -53,7 +53,7 @@ namespace RipThatPic.Controllers
         public async Task<int> Delete([FromUri]string displayid)
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
-            var result = await processor.DeleteSessionByDisplayId(Guid.Parse(displayid));
+            var result = await processor.DeleteByDisplayId("Session", Guid.Parse(displayid));
             return result;
         }
 
@@ -73,7 +73,7 @@ namespace RipThatPic.Controllers
 
     }
 
-    public class SessionEntity : TableEntity
+    public class SessionEntity : TableEntity, ITableEntity
     {
         private string _name;
         public string Name { get { return _name; } set { _name = value; this.RowKey = value; } }
