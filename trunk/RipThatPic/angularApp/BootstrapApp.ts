@@ -37,6 +37,7 @@
             .when('/config/document', { controller: 'ConfigDocumentCtrl', templateUrl: '/angularApp/views/config/document.html', controllerAs: 'configdocument' })
             .when('/config/link', { controller: 'ConfigLinkCtrl', templateUrl: '/angularApp/views/config/link.html', controllerAs: 'configlink' })
             .when('/config/setting', { controller: 'ConfigSettingCtrl', templateUrl: '/angularApp/views/config/setting.html', controllerAs: 'configsetting' })
+            .when('/config/page', { controller: 'ConfigPageCtrl', templateUrl: '/angularApp/views/config/page.html', controllerAs: 'configpage' })
             .when('/error', { controller: 'ErrorCtrl',templateUrl: '/angularApp/views/shared/error.html' })
             .otherwise({ redirectTo: '/home'});
 

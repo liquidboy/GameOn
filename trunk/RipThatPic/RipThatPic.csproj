@@ -143,10 +143,13 @@
     <Content Include="angularApp\controllers\configLink.js">
       <DependentUpon>configLink.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\configPage.js">
+      <DependentUpon>configPage.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\configSession.js">
       <DependentUpon>configSession.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configSetting.js" >
+    <Content Include="angularApp\controllers\configSetting.js">
       <DependentUpon>configSetting.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\controllers\configUser.js">
@@ -173,6 +176,7 @@
       <DependentUpon>serviceHelper.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\views\config\comment.html" />
+    <Content Include="angularApp\views\config\page.html" />
     <Content Include="angularApp\views\config\link.html" />
     <Content Include="angularApp\views\config\image.html" />
     <Content Include="angularApp\views\config\document.html" />
@@ -268,8 +272,11 @@
     <Content Include="angularApp\controllers\configLink.js.map">
       <DependentUpon>configLink.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configSetting.js.map" >
+    <Content Include="angularApp\controllers\configSetting.js.map">
       <DependentUpon>configSetting.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configPage.js.map">
+      <DependentUpon>configPage.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1025,6 +1032,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SessionsController.cs" />
@@ -1075,6 +1084,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configPage.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configLink.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configImage.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configDocument.ts" />

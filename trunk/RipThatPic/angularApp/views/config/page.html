@@ -1,0 +1,64 @@
+﻿<div class="config">
+    <div>
+        <a href="/#/config">Configuration</a>
+    </div>
+
+    <br />
+
+
+
+
+
+    <div>
+        <table>
+            <colgroup>
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <!--<col style="width:250px"  />-->
+                <col style="width:255px" />
+            </colgroup>
+
+            <tr>
+                <td><input type="text" ng-model="configpage.SelectedPage.Grouping" style="width:150px" /></td>
+                <td><input type="text" ng-model="configpage.SelectedPage.Name" style="width:150px" /></td>
+                <td><input type="text" ng-model="configpage.SelectedPage.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configpage.SelectedPage.Color" style="width:150px" /></td>
+                <!--<td><input type="text" ng-model="configpage.SelectedPage.DisplayId" style="width:250px" /></td>-->
+                <td>
+                    <input type="button" value="Save" ng-click="configpage.SavePage()" />
+                    <input type="button" value="Delete" ng-click="configpage.DeletePage()" />
+                    <input type="button" value="Clear" ng-click="configpage.ClearEntryFields()" />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <!--<td class="table-header">DisplayId</td>-->
+                <td></td>
+            </tr>
+
+            <tr ng-repeat="page in configpage.PagesList"
+                ng-include="'pagelist.html'"
+                ng-click="configpage.SelectPageRow(page, $event)"
+                class="table-content-row"></tr>
+
+        </table>
+    </div>
+
+    <script type="text/ng-template" id="pagelist.html">
+
+        <td>{{page.Grouping}} </td>
+        <td>{{page.Name}} </td>
+        <td>{{page.LongName}} </td>
+        <td>{{page.Color}} </td>
+        <!--<td>{{page.DisplayId}} </td>-->
+        <td></td>
+
+    </script>
+</div>
