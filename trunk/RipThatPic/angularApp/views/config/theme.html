@@ -1,0 +1,64 @@
+﻿<div class="config">
+    <div>
+        <a href="/#/config">Configuration</a>
+    </div>
+
+    <br />
+
+
+
+
+
+    <div>
+        <table>
+            <colgroup>
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <!--<col style="width:250px"  />-->
+                <col style="width:255px" />
+            </colgroup>
+
+            <tr>
+                <td><input type="text" ng-model="configtheme.SelectedTheme.Grouping" style="width:150px" /></td>
+                <td><input type="text" ng-model="configtheme.SelectedTheme.Name" style="width:150px" /></td>
+                <td><input type="text" ng-model="configtheme.SelectedTheme.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configtheme.SelectedTheme.Color" style="width:150px" /></td>
+                <!--<td><input type="text" ng-model="configtheme.SelectedTheme.DisplayId" style="width:250px" /></td>-->
+                <td>
+                    <input type="button" value="Save" ng-click="configtheme.SaveTheme()" />
+                    <input type="button" value="Delete" ng-click="configtheme.DeleteTheme()" />
+                    <input type="button" value="Clear" ng-click="configtheme.ClearEntryFields()" />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <!--<td class="table-header">DisplayId</td>-->
+                <td></td>
+            </tr>
+
+            <tr ng-repeat="theme in configtheme.ThemesList"
+                ng-include="'themelist.html'"
+                ng-click="configtheme.SelectThemeRow(theme, $event)"
+                class="table-content-row"></tr>
+
+        </table>
+    </div>
+
+    <script type="text/ng-template" id="themelist.html">
+
+        <td>{{theme.Grouping}} </td>
+        <td>{{theme.Name}} </td>
+        <td>{{theme.LongName}} </td>
+        <td>{{theme.Color}} </td>
+        <!--<td>{{theme.DisplayId}} </td>-->
+        <td></td>
+
+    </script>
+</div>

@@ -266,6 +266,8 @@ namespace Incite.Cloud.Storage
             else if (type == "Permission") found = table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else if (type == "Map") found = table.ExecuteQuery(new TableQuery<MapEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else if (type == "Service") found = table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Extension") found = table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Theme") found = table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else throw new NotImplementedException();
             
             
@@ -335,6 +337,8 @@ namespace Incite.Cloud.Storage
             else if (type == "Permission") return table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else if (type == "Map") return table.ExecuteQuery(new TableQuery<MapEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else throw new NotImplementedException();
             
         }
@@ -361,6 +365,8 @@ namespace Incite.Cloud.Storage
             else if (type == "Permission") return table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else if (type == "Map") return table.ExecuteQuery(new TableQuery<MapEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else throw new NotImplementedException();
 
         }
@@ -386,6 +392,8 @@ namespace Incite.Cloud.Storage
             else if (type == "Permission") return table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else if (type == "Map") return table.ExecuteQuery(new TableQuery<MapEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else throw new NotImplementedException();
 
         }
