@@ -1018,6 +1018,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\SessionsController.cs" />
     <Compile Include="Controllers\LinkController.cs" />
     <Compile Include="Controllers\LinksController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />

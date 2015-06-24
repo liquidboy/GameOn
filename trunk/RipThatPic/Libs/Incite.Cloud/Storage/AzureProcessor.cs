@@ -356,6 +356,23 @@ namespace Incite.Cloud.Storage
             }
             return ret;
         }
+        public async Task<int> DeleteSessionByDisplayId(Guid displayId)
+        {
+            var table = _tableClient.GetTableReference("Session");
+            await table.CreateIfNotExistsAsync();
+
+            var ret = 0;
+            TableQuery<RipThatPic.Controllers.SessionEntity> query = new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
+            var found = table.ExecuteQuery(query);
+            foreach (var item in found)
+            {
+                TableOperation op = TableOperation.Delete(item);
+                var result = await table.ExecuteAsync(op);
+                ret = result.HttpStatusCode;
+            }
+            return ret;
+        }
+
 
 
 
@@ -437,7 +454,12 @@ namespace Incite.Cloud.Storage
             TableQuery<RipThatPic.Controllers.UserEntity> query = new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
             return table.ExecuteQuery(query);
         }
-
+        public IEnumerable<RipThatPic.Controllers.SessionEntity> RetrieveAllSessionsByName(string name)
+        {
+            var table = _tableClient.GetTableReference("Session");
+            TableQuery<RipThatPic.Controllers.SessionEntity> query = new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
+            return table.ExecuteQuery(query);
+        }
 
 
 
@@ -489,7 +511,12 @@ namespace Incite.Cloud.Storage
             TableQuery<RipThatPic.Controllers.UserEntity> query = new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
             return table.ExecuteQuery(query);
         }
-
+        public IEnumerable<RipThatPic.Controllers.SessionEntity> RetrieveAllSessions(string grouping)
+        {
+            var table = _tableClient.GetTableReference("Session");
+            TableQuery<RipThatPic.Controllers.SessionEntity> query = new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
+            return table.ExecuteQuery(query);
+        }
 
 
 
@@ -545,7 +572,12 @@ namespace Incite.Cloud.Storage
             TableQuery<RipThatPic.Controllers.UserEntity> query = new TableQuery<RipThatPic.Controllers.UserEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
             return table.ExecuteQuery(query);
         }
-
+        public IEnumerable<RipThatPic.Controllers.SessionEntity> RetrieveAllSessions()
+        {
+            var table = _tableClient.GetTableReference("Session");
+            TableQuery<RipThatPic.Controllers.SessionEntity> query = new TableQuery<RipThatPic.Controllers.SessionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
+            return table.ExecuteQuery(query);
+        }
 
 
 

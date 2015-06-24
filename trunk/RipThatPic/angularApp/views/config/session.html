@@ -5,4 +5,60 @@
 
     <br />
 
+
+
+
+
+    <div>
+        <table>
+            <colgroup>
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <!--<col style="width:250px"  />-->
+                <col style="width:255px" />
+            </colgroup>
+
+            <tr>
+                <td><input type="text" ng-model="configsession.SelectedSession.Grouping" style="width:150px" /></td>
+                <td><input type="text" ng-model="configsession.SelectedSession.Name" style="width:150px" /></td>
+                <td><input type="text" ng-model="configsession.SelectedSession.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configsession.SelectedSession.Color" style="width:150px" /></td>
+                <!--<td><input type="text" ng-model="configsession.SelectedSession.DisplayId" style="width:250px" /></td>-->
+                <td>
+                    <input type="button" value="Save" ng-click="configsession.SaveSession()" />
+                    <input type="button" value="Delete" ng-click="configsession.DeleteSession()" />
+                    <input type="button" value="Clear" ng-click="configsession.ClearEntryFields()" />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <!--<td class="table-header">DisplayId</td>-->
+                <td></td>
+            </tr>
+
+            <tr ng-repeat="session in configsession.SessionsList"
+                ng-include="'sessionlist.html'"
+                ng-click="configsession.SelectSessionRow(session, $event)"
+                class="table-content-row"></tr>
+
+        </table>
+    </div>
+
+    <script type="text/ng-template" id="sessionlist.html">
+
+        <td>{{session.Grouping}} </td>
+        <td>{{session.Name}} </td>
+        <td>{{session.LongName}} </td>
+        <td>{{session.Color}} </td>
+        <!--<td>{{session.DisplayId}} </td>-->
+        <td></td>
+
+    </script>
 </div>
