@@ -1,0 +1,64 @@
+﻿<div class="config">
+    <div>
+        <a href="/#/config">Configuration</a>
+    </div>
+
+    <br />
+
+
+
+
+
+    <div>
+        <table>
+            <colgroup>
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <!--<col style="width:250px"  />-->
+                <col style="width:255px" />
+            </colgroup>
+
+            <tr>
+                <td><input type="text" ng-model="configservice.SelectedService.Grouping" style="width:150px" /></td>
+                <td><input type="text" ng-model="configservice.SelectedService.Name" style="width:150px" /></td>
+                <td><input type="text" ng-model="configservice.SelectedService.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configservice.SelectedService.Color" style="width:150px" /></td>
+                <!--<td><input type="text" ng-model="configservice.SelectedService.DisplayId" style="width:250px" /></td>-->
+                <td>
+                    <input type="button" value="Save" ng-click="configservice.SaveService()" />
+                    <input type="button" value="Delete" ng-click="configservice.DeleteService()" />
+                    <input type="button" value="Clear" ng-click="configservice.ClearEntryFields()" />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <!--<td class="table-header">DisplayId</td>-->
+                <td></td>
+            </tr>
+
+            <tr ng-repeat="service in configservice.ServicesList"
+                ng-include="'servicelist.html'"
+                ng-click="configservice.SelectServiceRow(service, $event)"
+                class="table-content-row"></tr>
+
+        </table>
+    </div>
+
+    <script type="text/ng-template" id="servicelist.html">
+
+        <td>{{service.Grouping}} </td>
+        <td>{{service.Name}} </td>
+        <td>{{service.LongName}} </td>
+        <td>{{service.Color}} </td>
+        <!--<td>{{service.DisplayId}} </td>-->
+        <td></td>
+
+    </script>
+</div>
