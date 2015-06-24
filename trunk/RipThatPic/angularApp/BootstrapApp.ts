@@ -28,6 +28,7 @@
             .when('/config/permission', { controller: 'ConfigPermissionCtrl', templateUrl: '/angularApp/views/config/permission.html', controllerAs: 'configpermission' })
             .when('/config/post', { controller: 'ConfigPostCtrl', templateUrl: '/angularApp/views/config/post.html', controllerAs: 'configpost' })
             .when('/config/datacenter', { controller: 'ConfigDataCenterCtrl', templateUrl: '/angularApp/views/config/datacenter.html', controllerAs: 'configdatacenter' })
+            .when('/config/map', { controller: 'ConfigMapCtrl', templateUrl: '/angularApp/views/config/map.html', controllerAs: 'configmap' })
             .when('/error', { controller: 'ErrorCtrl',templateUrl: '/angularApp/views/shared/error.html' })
             .otherwise({ redirectTo: '/home'});
 

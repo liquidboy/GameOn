@@ -264,6 +264,7 @@ namespace Incite.Cloud.Storage
             else if (type == "List") found = table.ExecuteQuery(new TableQuery<ListEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else if (type == "Post") found = table.ExecuteQuery(new TableQuery<PostEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else if (type == "Permission") found = table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Map") found = table.ExecuteQuery(new TableQuery<MapEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else throw new NotImplementedException();
             
             
@@ -331,6 +332,7 @@ namespace Incite.Cloud.Storage
             else if (type == "List") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.ListEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else if (type == "Post") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.PostEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else if (type == "Permission") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.PermissionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Map") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.MapEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else throw new NotImplementedException();
             
         }
@@ -355,6 +357,7 @@ namespace Incite.Cloud.Storage
             else if (type == "List") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.ListEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else if (type == "Post") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.PostEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else if (type == "Permission") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.PermissionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Map") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.MapEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else throw new NotImplementedException();
 
         }
@@ -378,6 +381,7 @@ namespace Incite.Cloud.Storage
             else if (type == "List") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.ListEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else if (type == "Post") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.PostEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else if (type == "Permission") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.PermissionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Map") return table.ExecuteQuery(new TableQuery<RipThatPic.Controllers.MapEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else throw new NotImplementedException();
 
         }
