@@ -70,19 +70,24 @@
 }
 
 
-.config .table-header {
-    background-color:gray;
-    color:white;
-}
+.config {
 
-.config .table-content-row {
-    cursor:pointer;
 }
-.config .table-content-row:hover {
-    background-color:lightgray;
-}
+    .config .jf-data-grid {
+        height:150px;
+        overflow:auto;
+        border:1px dashed lightgray;
+    }
+    .config .table-header {
+        background-color:gray;
+        color:white;
+    }
 
-.config .jf-data-grid {
-    height:150px;
-    overflow:auto;
-}
+    .config .table-content-row {
+        cursor:pointer;
+    }
+    .config .table-content-row:hover {
+        background-color:lightgray;
+    }
+
+ 
