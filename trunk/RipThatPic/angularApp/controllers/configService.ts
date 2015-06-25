@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigServiceCtrl {
-
-        ServicesList: Array<any>;
-        SelectedService: any;
-
-
+        EntityType: string = "service";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteService = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("service", __this.SelectedService.Name, __this.SelectedService.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedService(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteServiceByDisplayId(__this.SelectedService.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedService();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedService();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedService();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('service')
-                .success(function (result: any) { __this.ServicesList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedService() {
-            this.SelectedService = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveService = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('service', __this.SelectedService)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedService(); })
-                .error(function (val) { alert('Failed saving service'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectServiceRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedService = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

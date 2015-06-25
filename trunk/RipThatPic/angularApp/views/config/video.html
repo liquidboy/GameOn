@@ -8,57 +8,77 @@
 
 
 
-
     <div>
-        <table>
-            <colgroup>
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <!--<col style="width:250px"  />-->
-                <col style="width:255px" />
-            </colgroup>
+        <div>
+            <table>
+                <colgroup>
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <!--<col style="width:250px"  />-->
+                    <col style="width:255px" />
+                </colgroup>
 
-            <tr>
-                <td><input type="text" ng-model="configvideo.SelectedVideo.Grouping" style="width:150px" /></td>
-                <td><input type="text" ng-model="configvideo.SelectedVideo.Name" style="width:150px" /></td>
-                <td><input type="text" ng-model="configvideo.SelectedVideo.LongName" style="width:150px" /></td>
-                <td><input type="text" ng-model="configvideo.SelectedVideo.Color" style="width:150px" /></td>
-                <!--<td><input type="text" ng-model="configvideo.SelectedVideo.DisplayId" style="width:250px" /></td>-->
-                <td>
-                    <input type="button" value="Save" ng-click="configvideo.SaveVideo()" />
-                    <input type="button" value="Delete" ng-click="configvideo.DeleteVideo()" />
-                    <input type="button" value="Clear" ng-click="configvideo.ClearEntryFields()" />
-                </td>
-            </tr>
+                <tr>
+                    <td><input type="text" ng-model="configvideo.SelectedItem.Grouping" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configvideo.SelectedItem.Name" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configvideo.SelectedItem.LongName" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configvideo.SelectedItem.Color" style="width:150px" /></td>
+                    <!--<td><input type="text" ng-model="configvideo.SelectedItem.DisplayId" style="width:250px" /></td>-->
+                    <td>
+                        <input type="button" value="Save" ng-click="configvideo.SaveItem()" />
+                        <input type="button" value="Delete" ng-click="configvideo.DeleteItem()" />
+                        <input type="button" value="Clear" ng-click="configvideo.ClearEntryFields()" />
+                    </td>
+                </tr>
 
 
-            <tr>
-                <td class="table-header">Grouping</td>
-                <td class="table-header">Name</td>
-                <td class="table-header">LongName</td>
-                <td class="table-header">Color</td>
-                <!--<td class="table-header">DisplayId</td>-->
-                <td></td>
-            </tr>
+                <tr>
+                    <td class="table-header">Grouping</td>
+                    <td class="table-header">Name</td>
+                    <td class="table-header">LongName</td>
+                    <td class="table-header">Color</td>
+                    <!--<td class="table-header">DisplayId</td>-->
+                    <td class="table-header">Actions</td>
+                </tr>
 
-            <tr ng-repeat="video in configvideo.VideosList"
-                ng-include="'videolist.html'"
-                ng-click="configvideo.SelectVideoRow(video, $event)"
-                class="table-content-row"></tr>
+                <tr>
+                    <td colspan="5">
+                        <div class="jf-data-grid">
+                            <table>
+                                <colgroup>
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
 
-        </table>
+                                </colgroup>
+
+                                <tr ng-repeat="item in configvideo.ItemsList"
+                                    ng-include="'itemlist.html'"
+                                    ng-click="configvideo.SelectItemRow(item, $event)"
+                                    class="table-content-row"></tr>
+                            </table>
+                        </div>
+
+                    </td>
+                </tr>
+
+
+
+
+            </table>
+        </div>
+
+        <script type="text/ng-template" id="itemlist.html">
+
+            <td>{{item.Grouping}} </td>
+            <td>{{item.Name}} </td>
+            <td>{{item.LongName}} </td>
+            <td>{{item.Color}} </td>
+            <!--<td>{{item.DisplayId}} </td>-->
+
+        </script>
     </div>
-
-    <script type="text/ng-template" id="videolist.html">
-
-        <td>{{video.Grouping}} </td>
-        <td>{{video.Name}} </td>
-        <td>{{video.LongName}} </td>
-        <td>{{video.Color}} </td>
-        <!--<td>{{video.DisplayId}} </td>-->
-        <td></td>
-
-    </script>
 </div>

@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigThemeCtrl {
-
-        ThemesList: Array<any>;
-        SelectedTheme: any;
-
-
+        EntityType: string = "theme";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteTheme = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("theme", __this.SelectedTheme.Name, __this.SelectedTheme.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedTheme(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteThemeByDisplayId(__this.SelectedTheme.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedTheme();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedTheme();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedTheme();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('theme')
-                .success(function (result: any) { __this.ThemesList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedTheme() {
-            this.SelectedTheme = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveTheme = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('theme', __this.SelectedTheme)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedTheme(); })
-                .error(function (val) { alert('Failed saving theme'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectThemeRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedTheme = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

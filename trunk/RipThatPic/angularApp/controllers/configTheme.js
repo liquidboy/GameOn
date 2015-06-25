@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteTheme = function () {
+                this.EntityType = "theme";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("theme", __this.SelectedTheme.Name, __this.SelectedTheme.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedTheme();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteThemeByDisplayId(__this.SelectedTheme.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedTheme();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedTheme();
+                    _this.InitSelectedItem();
                 };
-                this.SaveTheme = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('theme', __this.SelectedTheme).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedTheme();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving theme');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectThemeRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedTheme = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigThemeCtrl.prototype.init = function () {
-                this.InitSelectedTheme();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigThemeCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('theme').success(function (result) {
-                    __this.ThemesList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigThemeCtrl.prototype.InitSelectedTheme = function () {
-                this.SelectedTheme = {
+            ConfigThemeCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

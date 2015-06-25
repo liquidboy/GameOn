@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigVideoCtrl {
-
-        VideosList: Array<any>;
-        SelectedVideo: any;
-
-
+        EntityType: string = "video";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteVideo = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("video", __this.SelectedVideo.Name, __this.SelectedVideo.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedVideo(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteVideoByDisplayId(__this.SelectedVideo.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedVideo();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedVideo();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedVideo();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('video')
-                .success(function (result: any) { __this.VideosList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedVideo() {
-            this.SelectedVideo = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveVideo = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('video', __this.SelectedVideo)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedVideo(); })
-                .error(function (val) { alert('Failed saving video'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectVideoRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedVideo = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteLog = function () {
+                this.EntityType = "log";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("log", __this.SelectedLog.Name, __this.SelectedLog.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedLog();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteLogByDisplayId(__this.SelectedLog.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedLog();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedLog();
+                    _this.InitSelectedItem();
                 };
-                this.SaveLog = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('log', __this.SelectedLog).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedLog();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving log');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectLogRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedLog = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigLogCtrl.prototype.init = function () {
-                this.InitSelectedLog();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigLogCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('log').success(function (result) {
-                    __this.LogsList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigLogCtrl.prototype.InitSelectedLog = function () {
-                this.SelectedLog = {
+            ConfigLogCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

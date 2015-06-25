@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigListCtrl {
-
-        ListsList: Array<any>;
-        SelectedList: any;
-
-
+        EntityType: string = "list";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteList = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("list", __this.SelectedList.Name, __this.SelectedList.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedList(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteListByDisplayId(__this.SelectedList.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedList();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedList();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedList();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('list')
-                .success(function (result: any) { __this.ListsList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedList() {
-            this.SelectedList = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveList = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('list', __this.SelectedList)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedList(); })
-                .error(function (val) { alert('Failed saving list'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectListRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedList = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

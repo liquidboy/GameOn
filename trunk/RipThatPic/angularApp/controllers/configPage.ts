@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigPageCtrl {
-
-        PagesList: Array<any>;
-        SelectedPage: any;
-
-
+        EntityType: string = "page";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeletePage = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("page", __this.SelectedPage.Name, __this.SelectedPage.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedPage(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deletePageByDisplayId(__this.SelectedPage.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedPage();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedPage();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedPage();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('page')
-                .success(function (result: any) { __this.PagesList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedPage() {
-            this.SelectedPage = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SavePage = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('page', __this.SelectedPage)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedPage(); })
-                .error(function (val) { alert('Failed saving page'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectPageRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedPage = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

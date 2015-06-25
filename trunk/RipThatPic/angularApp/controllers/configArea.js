@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteArea = function () {
+                this.EntityType = "area";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("area", __this.SelectedArea.Name, __this.SelectedArea.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedArea();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteAreaByDisplayId(__this.SelectedArea.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedArea();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedArea();
+                    _this.InitSelectedItem();
                 };
-                this.SaveArea = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('area', __this.SelectedArea).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedArea();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving area');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectAreaRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedArea = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigAreaCtrl.prototype.init = function () {
-                this.InitSelectedArea();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigAreaCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('area').success(function (result) {
-                    __this.AreasList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigAreaCtrl.prototype.InitSelectedArea = function () {
-                this.SelectedArea = {
+            ConfigAreaCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

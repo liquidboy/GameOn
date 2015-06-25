@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigExtensionCtrl {
-
-        ExtensionsList: Array<any>;
-        SelectedExtension: any;
-
-
+        EntityType: string = "extension";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteExtension = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("extension", __this.SelectedExtension.Name, __this.SelectedExtension.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedExtension(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteExtensionByDisplayId(__this.SelectedExtension.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedExtension();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedExtension();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedExtension();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('extension')
-                .success(function (result: any) { __this.ExtensionsList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedExtension() {
-            this.SelectedExtension = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveExtension = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('extension', __this.SelectedExtension)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedExtension(); })
-                .error(function (val) { alert('Failed saving extension'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectExtensionRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedExtension = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

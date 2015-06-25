@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteUser = function () {
+                this.EntityType = "user";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("user", __this.SelectedUser.Name, __this.SelectedUser.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedUser();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteUserByDisplayId(__this.SelectedUser.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedUser();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedUser();
+                    _this.InitSelectedItem();
                 };
-                this.SaveUser = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('user', __this.SelectedUser).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedUser();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving user');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectUserRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedUser = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigUserCtrl.prototype.init = function () {
-                this.InitSelectedUser();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigUserCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('user').success(function (result) {
-                    __this.UsersList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigUserCtrl.prototype.InitSelectedUser = function () {
-                this.SelectedUser = {
+            ConfigUserCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

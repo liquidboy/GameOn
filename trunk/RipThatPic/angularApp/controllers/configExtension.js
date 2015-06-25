@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteExtension = function () {
+                this.EntityType = "extension";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("extension", __this.SelectedExtension.Name, __this.SelectedExtension.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedExtension();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteExtensionByDisplayId(__this.SelectedExtension.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedExtension();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedExtension();
+                    _this.InitSelectedItem();
                 };
-                this.SaveExtension = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('extension', __this.SelectedExtension).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedExtension();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving extension');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectExtensionRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedExtension = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigExtensionCtrl.prototype.init = function () {
-                this.InitSelectedExtension();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigExtensionCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('extension').success(function (result) {
-                    __this.ExtensionsList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigExtensionCtrl.prototype.InitSelectedExtension = function () {
-                this.SelectedExtension = {
+            ConfigExtensionCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

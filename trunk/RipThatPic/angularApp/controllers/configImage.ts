@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigImageCtrl {
-
-        ImagesList: Array<any>;
-        SelectedImage: any;
-
-
+        EntityType: string = "image";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteImage = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("image", __this.SelectedImage.Name, __this.SelectedImage.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedImage(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteImageByDisplayId(__this.SelectedImage.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedImage();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedImage();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedImage();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('image')
-                .success(function (result: any) { __this.ImagesList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedImage() {
-            this.SelectedImage = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveImage = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('image', __this.SelectedImage)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedImage(); })
-                .error(function (val) { alert('Failed saving Image'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectImageRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedImage = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

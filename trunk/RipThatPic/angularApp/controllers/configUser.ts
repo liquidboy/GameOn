@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigUserCtrl {
-
-        UsersList: Array<any>;
-        SelectedUser: any;
-
-
+        EntityType: string = "user";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteUser = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("user", __this.SelectedUser.Name, __this.SelectedUser.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedUser(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteUserByDisplayId(__this.SelectedUser.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedUser();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedUser();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedUser();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('user')
-                .success(function (result: any) { __this.UsersList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedUser() {
-            this.SelectedUser = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveUser = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('user', __this.SelectedUser)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedUser(); })
-                .error(function (val) { alert('Failed saving user'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectUserRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedUser = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

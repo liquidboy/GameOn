@@ -8,57 +8,77 @@
 
 
 
-
     <div>
-        <table>
-            <colgroup>
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <!--<col style="width:250px"  />-->
-                <col style="width:255px" />
-            </colgroup>
+        <div>
+            <table>
+                <colgroup>
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <!--<col style="width:250px"  />-->
+                    <col style="width:255px" />
+                </colgroup>
 
-            <tr>
-                <td><input type="text" ng-model="configmap.SelectedMap.Grouping" style="width:150px" /></td>
-                <td><input type="text" ng-model="configmap.SelectedMap.Name" style="width:150px" /></td>
-                <td><input type="text" ng-model="configmap.SelectedMap.LongName" style="width:150px" /></td>
-                <td><input type="text" ng-model="configmap.SelectedMap.Color" style="width:150px" /></td>
-                <!--<td><input type="text" ng-model="configmap.SelectedMap.DisplayId" style="width:250px" /></td>-->
-                <td>
-                    <input type="button" value="Save" ng-click="configmap.SaveMap()" />
-                    <input type="button" value="Delete" ng-click="configmap.DeleteMap()" />
-                    <input type="button" value="Clear" ng-click="configmap.ClearEntryFields()" />
-                </td>
-            </tr>
+                <tr>
+                    <td><input type="text" ng-model="configmap.SelectedItem.Grouping" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configmap.SelectedItem.Name" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configmap.SelectedItem.LongName" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configmap.SelectedItem.Color" style="width:150px" /></td>
+                    <!--<td><input type="text" ng-model="configmap.SelectedItem.DisplayId" style="width:250px" /></td>-->
+                    <td>
+                        <input type="button" value="Save" ng-click="configmap.SaveItem()" />
+                        <input type="button" value="Delete" ng-click="configmap.DeleteItem()" />
+                        <input type="button" value="Clear" ng-click="configmap.ClearEntryFields()" />
+                    </td>
+                </tr>
 
 
-            <tr>
-                <td class="table-header">Grouping</td>
-                <td class="table-header">Name</td>
-                <td class="table-header">LongName</td>
-                <td class="table-header">Color</td>
-                <!--<td class="table-header">DisplayId</td>-->
-                <td></td>
-            </tr>
+                <tr>
+                    <td class="table-header">Grouping</td>
+                    <td class="table-header">Name</td>
+                    <td class="table-header">LongName</td>
+                    <td class="table-header">Color</td>
+                    <!--<td class="table-header">DisplayId</td>-->
+                    <td class="table-header">Actions</td>
+                </tr>
 
-            <tr ng-repeat="map in configmap.MapsList"
-                ng-include="'maplist.html'"
-                ng-click="configmap.SelectMapRow(map, $event)"
-                class="table-content-row"></tr>
+                <tr>
+                    <td colspan="5">
+                        <div class="jf-data-grid">
+                            <table>
+                                <colgroup>
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
 
-        </table>
+                                </colgroup>
+
+                                <tr ng-repeat="item in configmap.ItemsList"
+                                    ng-include="'itemlist.html'"
+                                    ng-click="configmap.SelectItemRow(item, $event)"
+                                    class="table-content-row"></tr>
+                            </table>
+                        </div>
+
+                    </td>
+                </tr>
+
+
+
+
+            </table>
+        </div>
+
+        <script type="text/ng-template" id="itemlist.html">
+
+            <td>{{item.Grouping}} </td>
+            <td>{{item.Name}} </td>
+            <td>{{item.LongName}} </td>
+            <td>{{item.Color}} </td>
+            <!--<td>{{item.DisplayId}} </td>-->
+
+        </script>
     </div>
-
-    <script type="text/ng-template" id="maplist.html">
-
-        <td>{{map.Grouping}} </td>
-        <td>{{map.Name}} </td>
-        <td>{{map.LongName}} </td>
-        <td>{{map.Color}} </td>
-        <!--<td>{{map.DisplayId}} </td>-->
-        <td></td>
-
-    </script>
 </div>

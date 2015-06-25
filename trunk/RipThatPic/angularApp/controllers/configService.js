@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteService = function () {
+                this.EntityType = "service";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("service", __this.SelectedService.Name, __this.SelectedService.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedService();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteServiceByDisplayId(__this.SelectedService.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedService();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedService();
+                    _this.InitSelectedItem();
                 };
-                this.SaveService = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('service', __this.SelectedService).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedService();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving service');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectServiceRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedService = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigServiceCtrl.prototype.init = function () {
-                this.InitSelectedService();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigServiceCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('service').success(function (result) {
-                    __this.ServicesList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigServiceCtrl.prototype.InitSelectedService = function () {
-                this.SelectedService = {
+            ConfigServiceCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

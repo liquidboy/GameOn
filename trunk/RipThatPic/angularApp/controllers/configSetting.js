@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteSetting = function () {
+                this.EntityType = "setting";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("setting", __this.SelectedSetting.Name, __this.SelectedSetting.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedSetting();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteSettingByDisplayId(__this.SelectedSetting.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedSetting();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedSetting();
+                    _this.InitSelectedItem();
                 };
-                this.SaveSetting = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('setting', __this.SelectedSetting).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedSetting();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving setting');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectSettingRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedSetting = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigSettingCtrl.prototype.init = function () {
-                this.InitSelectedSetting();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigSettingCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('setting').success(function (result) {
-                    __this.SettingsList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigSettingCtrl.prototype.InitSelectedSetting = function () {
-                this.SelectedSetting = {
+            ConfigSettingCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

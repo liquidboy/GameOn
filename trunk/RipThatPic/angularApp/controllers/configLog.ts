@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigLogCtrl {
-
-        LogsList: Array<any>;
-        SelectedLog: any;
-
-
+        EntityType: string = "log";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteLog = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("log", __this.SelectedLog.Name, __this.SelectedLog.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedLog(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteLogByDisplayId(__this.SelectedLog.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedLog();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedLog();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedLog();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('log')
-                .success(function (result: any) { __this.LogsList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedLog() {
-            this.SelectedLog = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveLog = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('log', __this.SelectedLog)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedLog(); })
-                .error(function (val) { alert('Failed saving log'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectLogRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedLog = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

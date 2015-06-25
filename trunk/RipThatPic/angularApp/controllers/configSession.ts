@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigSessionCtrl {
-
-        SessionsList: Array<any>;
-        SelectedSession: any;
-
-
+        EntityType: string = "session";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteSession = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("session", __this.SelectedSession.Name, __this.SelectedSession.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedSession(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteSessionByDisplayId(__this.SelectedSession.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedSession();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedSession();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedSession();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('session')
-                .success(function (result: any) { __this.SessionsList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedSession() {
-            this.SelectedSession = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveSession = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('session', __this.SelectedSession)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedSession(); })
-                .error(function (val) { alert('Failed saving session'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectSessionRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedSession = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

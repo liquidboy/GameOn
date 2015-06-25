@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteList = function () {
+                this.EntityType = "list";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("list", __this.SelectedList.Name, __this.SelectedList.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedList();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteListByDisplayId(__this.SelectedList.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedList();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedList();
+                    _this.InitSelectedItem();
                 };
-                this.SaveList = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('list', __this.SelectedList).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedList();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving list');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectListRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedList = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigListCtrl.prototype.init = function () {
-                this.InitSelectedList();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigListCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('list').success(function (result) {
-                    __this.ListsList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigListCtrl.prototype.InitSelectedList = function () {
-                this.SelectedList = {
+            ConfigListCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

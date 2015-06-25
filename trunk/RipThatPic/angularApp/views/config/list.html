@@ -8,57 +8,77 @@
 
 
 
-
     <div>
-        <table>
-            <colgroup>
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <!--<col style="width:250px"  />-->
-                <col style="width:255px" />
-            </colgroup>
+        <div>
+            <table>
+                <colgroup>
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <!--<col style="width:250px"  />-->
+                    <col style="width:255px" />
+                </colgroup>
 
-            <tr>
-                <td><input type="text" ng-model="configlist.SelectedList.Grouping" style="width:150px" /></td>
-                <td><input type="text" ng-model="configlist.SelectedList.Name" style="width:150px" /></td>
-                <td><input type="text" ng-model="configlist.SelectedList.LongName" style="width:150px" /></td>
-                <td><input type="text" ng-model="configlist.SelectedList.Color" style="width:150px" /></td>
-                <!--<td><input type="text" ng-model="configlist.SelectedList.DisplayId" style="width:250px" /></td>-->
-                <td>
-                    <input type="button" value="Save" ng-click="configlist.SaveList()" />
-                    <input type="button" value="Delete" ng-click="configlist.DeleteList()" />
-                    <input type="button" value="Clear" ng-click="configlist.ClearEntryFields()" />
-                </td>
-            </tr>
+                <tr>
+                    <td><input type="text" ng-model="configlist.SelectedItem.Grouping" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configlist.SelectedItem.Name" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configlist.SelectedItem.LongName" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configlist.SelectedItem.Color" style="width:150px" /></td>
+                    <!--<td><input type="text" ng-model="configlist.SelectedItem.DisplayId" style="width:250px" /></td>-->
+                    <td>
+                        <input type="button" value="Save" ng-click="configlist.SaveItem()" />
+                        <input type="button" value="Delete" ng-click="configlist.DeleteItem()" />
+                        <input type="button" value="Clear" ng-click="configlist.ClearEntryFields()" />
+                    </td>
+                </tr>
 
 
-            <tr>
-                <td class="table-header">Grouping</td>
-                <td class="table-header">Name</td>
-                <td class="table-header">LongName</td>
-                <td class="table-header">Color</td>
-                <!--<td class="table-header">DisplayId</td>-->
-                <td></td>
-            </tr>
+                <tr>
+                    <td class="table-header">Grouping</td>
+                    <td class="table-header">Name</td>
+                    <td class="table-header">LongName</td>
+                    <td class="table-header">Color</td>
+                    <!--<td class="table-header">DisplayId</td>-->
+                    <td class="table-header">Actions</td>
+                </tr>
 
-            <tr ng-repeat="list in configlist.ListsList"
-                ng-include="'listlist.html'"
-                ng-click="configlist.SelectListRow(list, $event)"
-                class="table-content-row"></tr>
+                <tr>
+                    <td colspan="5">
+                        <div class="jf-data-grid">
+                            <table>
+                                <colgroup>
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
 
-        </table>
+                                </colgroup>
+
+                                <tr ng-repeat="item in configlist.ItemsList"
+                                    ng-include="'itemlist.html'"
+                                    ng-click="configlist.SelectItemRow(item, $event)"
+                                    class="table-content-row"></tr>
+                            </table>
+                        </div>
+
+                    </td>
+                </tr>
+
+
+
+
+            </table>
+        </div>
+
+        <script type="text/ng-template" id="itemlist.html">
+
+            <td>{{item.Grouping}} </td>
+            <td>{{item.Name}} </td>
+            <td>{{item.LongName}} </td>
+            <td>{{item.Color}} </td>
+            <!--<td>{{item.DisplayId}} </td>-->
+
+        </script>
     </div>
-
-    <script type="text/ng-template" id="listlist.html">
-
-        <td>{{list.Grouping}} </td>
-        <td>{{list.Name}} </td>
-        <td>{{list.LongName}} </td>
-        <td>{{list.Color}} </td>
-        <!--<td>{{list.DisplayId}} </td>-->
-        <td></td>
-
-    </script>
 </div>

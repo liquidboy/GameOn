@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteVideo = function () {
+                this.EntityType = "video";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("video", __this.SelectedVideo.Name, __this.SelectedVideo.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedVideo();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteVideoByDisplayId(__this.SelectedVideo.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedVideo();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedVideo();
+                    _this.InitSelectedItem();
                 };
-                this.SaveVideo = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('video', __this.SelectedVideo).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedVideo();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving video');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectVideoRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedVideo = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigVideoCtrl.prototype.init = function () {
-                this.InitSelectedVideo();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigVideoCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('video').success(function (result) {
-                    __this.VideosList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigVideoCtrl.prototype.InitSelectedVideo = function () {
-                this.SelectedVideo = {
+            ConfigVideoCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

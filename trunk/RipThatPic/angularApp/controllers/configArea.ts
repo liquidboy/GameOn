@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigAreaCtrl {
-
-        AreasList: Array<any>;
-        SelectedArea: any;
-
-
+        EntityType: string = "area";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteArea = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("area", __this.SelectedArea.Name, __this.SelectedArea.Grouping)
-                .success(function (result:any) { __this.RefreshData(); __this.InitSelectedArea();})
-                .error(function (err:any) { alert('failure deleting..')});
-            
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (err: any) { alert('failure deleting..') });
 
-            //this.dataSvc
-            //    .deleteAreaByDisplayId(__this.SelectedArea.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedArea();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedArea();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedArea();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('area')
-                .success(function (result: any) { __this.AreasList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedArea() {
-            this.SelectedArea = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,24 +51,24 @@
             };
         }
 
-        SaveArea = () => {
+        SaveItem = () => {
 
-            var __this:any = this;
+            var __this: any = this;
 
             __this.dataSvc
-                .save('area', __this.SelectedArea)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedArea();})
-                .error(function (val) { alert('Failed saving area');});
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectAreaRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedArea = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 
-        
+
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
     myapp.controller("ConfigAreaCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigAreaCtrl]);

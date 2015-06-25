@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteMap = function () {
+                this.EntityType = "map";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("map", __this.SelectedMap.Name, __this.SelectedMap.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedMap();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteMapByDisplayId(__this.SelectedMap.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedMap();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedMap();
+                    _this.InitSelectedItem();
                 };
-                this.SaveMap = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('map', __this.SelectedMap).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedMap();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving map');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectMapRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedMap = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigMapCtrl.prototype.init = function () {
-                this.InitSelectedMap();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigMapCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('map').success(function (result) {
-                    __this.MapsList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigMapCtrl.prototype.InitSelectedMap = function () {
-                this.SelectedMap = {
+            ConfigMapCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

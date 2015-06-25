@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigPermissionCtrl {
-
-        PermissionsList: Array<any>;
-        SelectedPermission: any;
-
-
+        EntityType: string = "permission";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeletePermission = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("permission", __this.SelectedPermission.Name, __this.SelectedPermission.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedPermission(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deletePermissionByDisplayId(__this.SelectedPermission.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedPermission();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedPermission();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedPermission();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('permission')
-                .success(function (result: any) { __this.PermissionsList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedPermission() {
-            this.SelectedPermission = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SavePermission = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('permission', __this.SelectedPermission)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedPermission(); })
-                .error(function (val) { alert('Failed saving permission'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectPermissionRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedPermission = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

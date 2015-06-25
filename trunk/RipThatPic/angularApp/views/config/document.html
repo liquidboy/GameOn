@@ -8,57 +8,77 @@
 
 
 
-
     <div>
-        <table>
-            <colgroup>
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <col style="width:155px" />
-                <!--<col style="width:250px"  />-->
-                <col style="width:255px" />
-            </colgroup>
+        <div>
+            <table>
+                <colgroup>
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <!--<col style="width:250px"  />-->
+                    <col style="width:255px" />
+                </colgroup>
 
-            <tr>
-                <td><input type="text" ng-model="configdocument.SelectedDocument.Grouping" style="width:150px" /></td>
-                <td><input type="text" ng-model="configdocument.SelectedDocument.Name" style="width:150px" /></td>
-                <td><input type="text" ng-model="configdocument.SelectedDocument.LongName" style="width:150px" /></td>
-                <td><input type="text" ng-model="configdocument.SelectedDocument.Color" style="width:150px" /></td>
-                <!--<td><input type="text" ng-model="configdocument.SelectedDocument.DisplayId" style="width:250px" /></td>-->
-                <td>
-                    <input type="button" value="Save" ng-click="configdocument.SaveDocument()" />
-                    <input type="button" value="Delete" ng-click="configdocument.DeleteDocument()" />
-                    <input type="button" value="Clear" ng-click="configdocument.ClearEntryFields()" />
-                </td>
-            </tr>
+                <tr>
+                    <td><input type="text" ng-model="configdocument.SelectedItem.Grouping" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configdocument.SelectedItem.Name" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configdocument.SelectedItem.LongName" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configdocument.SelectedItem.Color" style="width:150px" /></td>
+                    <!--<td><input type="text" ng-model="configdocument.SelectedItem.DisplayId" style="width:250px" /></td>-->
+                    <td>
+                        <input type="button" value="Save" ng-click="configdocument.SaveItem()" />
+                        <input type="button" value="Delete" ng-click="configdocument.DeleteItem()" />
+                        <input type="button" value="Clear" ng-click="configdocument.ClearEntryFields()" />
+                    </td>
+                </tr>
 
 
-            <tr>
-                <td class="table-header">Grouping</td>
-                <td class="table-header">Name</td>
-                <td class="table-header">LongName</td>
-                <td class="table-header">Color</td>
-                <!--<td class="table-header">DisplayId</td>-->
-                <td></td>
-            </tr>
+                <tr>
+                    <td class="table-header">Grouping</td>
+                    <td class="table-header">Name</td>
+                    <td class="table-header">LongName</td>
+                    <td class="table-header">Color</td>
+                    <!--<td class="table-header">DisplayId</td>-->
+                    <td class="table-header">Actions</td>
+                </tr>
 
-            <tr ng-repeat="document in configdocument.DocumentsList"
-                ng-include="'documentlist.html'"
-                ng-click="configdocument.SelectDocumentRow(document, $event)"
-                class="table-content-row"></tr>
+                <tr>
+                    <td colspan="5">
+                        <div class="jf-data-grid">
+                            <table>
+                                <colgroup>
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
 
-        </table>
+                                </colgroup>
+
+                                <tr ng-repeat="item in configdocument.ItemsList"
+                                    ng-include="'itemlist.html'"
+                                    ng-click="configdocument.SelectItemRow(item, $event)"
+                                    class="table-content-row"></tr>
+                            </table>
+                        </div>
+
+                    </td>
+                </tr>
+
+
+
+
+            </table>
+        </div>
+
+        <script type="text/ng-template" id="itemlist.html">
+
+            <td>{{item.Grouping}} </td>
+            <td>{{item.Name}} </td>
+            <td>{{item.LongName}} </td>
+            <td>{{item.Color}} </td>
+            <!--<td>{{item.DisplayId}} </td>-->
+
+        </script>
     </div>
-
-    <script type="text/ng-template" id="documentlist.html">
-
-        <td>{{document.Grouping}} </td>
-        <td>{{document.Name}} </td>
-        <td>{{document.LongName}} </td>
-        <td>{{document.Color}} </td>
-        <!--<td>{{document.DisplayId}} </td>-->
-        <td></td>
-
-    </script>
 </div>

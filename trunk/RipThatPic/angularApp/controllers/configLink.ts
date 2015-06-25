@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigLinkCtrl {
-
-        LinksList: Array<any>;
-        SelectedLink: any;
-
-
+        EntityType: string = "link";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteLink = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("link", __this.SelectedLink.Name, __this.SelectedLink.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedLink(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteLinkByDisplayId(__this.SelectedLink.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedLink();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedLink();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedLink();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('link')
-                .success(function (result: any) { __this.LinksList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedLink() {
-            this.SelectedLink = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveLink = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('link', __this.SelectedLink)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedLink(); })
-                .error(function (val) { alert('Failed saving link'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectLinkRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedLink = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 

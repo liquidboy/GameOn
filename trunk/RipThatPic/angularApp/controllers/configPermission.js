@@ -9,51 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeletePermission = function () {
+                this.EntityType = "permission";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("permission", __this.SelectedPermission.Name, __this.SelectedPermission.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedPermission();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deletePermissionByDisplayId(__this.SelectedPermission.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedPermission();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedPermission();
+                    _this.InitSelectedItem();
                 };
-                this.SavePermission = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('permission', __this.SelectedPermission).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedPermission();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving permission');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectPermissionRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedPermission = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigPermissionCtrl.prototype.init = function () {
-                this.InitSelectedPermission();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigPermissionCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('permission').success(function (result) {
-                    __this.PermissionsList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigPermissionCtrl.prototype.InitSelectedPermission = function () {
-                this.SelectedPermission = {
+            ConfigPermissionCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

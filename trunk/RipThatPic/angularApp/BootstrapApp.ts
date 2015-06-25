@@ -27,7 +27,7 @@
             .when('/config/page', { controller: 'ConfigPageCtrl', templateUrl: '/angularApp/views/config/page.html', controllerAs: 'configpage' })
             .when('/config/permission', { controller: 'ConfigPermissionCtrl', templateUrl: '/angularApp/views/config/permission.html', controllerAs: 'configpermission' })
             .when('/config/post', { controller: 'ConfigPostCtrl', templateUrl: '/angularApp/views/config/post.html', controllerAs: 'configpost' })
-            .when('/config/datacenter', { controller: 'ConfigDataCenterCtrl', templateUrl: '/angularApp/views/config/datacenter.html', controllerAs: 'configdatacenter' })
+            .when('/config/datacenter', { controller: 'ConfigDatacenterCtrl', templateUrl: '/angularApp/views/config/datacenter.html', controllerAs: 'configdatacenter' })
             .when('/config/map', { controller: 'ConfigMapCtrl', templateUrl: '/angularApp/views/config/map.html', controllerAs: 'configmap' })
             .when('/config/service', { controller: 'ConfigServiceCtrl', templateUrl: '/angularApp/views/config/service.html', controllerAs: 'configservice' })
             .when('/config/extension', { controller: 'ConfigExtensionCtrl', templateUrl: '/angularApp/views/config/extension.html', controllerAs: 'configextension' })

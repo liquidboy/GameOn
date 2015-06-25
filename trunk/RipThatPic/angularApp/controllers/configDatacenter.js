@@ -2,58 +2,55 @@ var Application;
 (function (Application) {
     var Controllers;
     (function (Controllers) {
-        var ConfigDataCenterCtrl = (function () {
-            function ConfigDataCenterCtrl($scope, $rootScope, serviceHelperSvc, dataSvc) {
+        var ConfigDatacenterCtrl = (function () {
+            function ConfigDatacenterCtrl($scope, $rootScope, serviceHelperSvc, dataSvc) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteDataCenter = function () {
+                this.EntityType = "datacenter";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("datacenter", __this.SelectedDataCenter.Name, __this.SelectedDataCenter.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedDataCenter();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
-                    //this.dataSvc
-                    //    .deleteDataCenterByDisplayId(__this.SelectedDataCenter.DisplayId)
-                    //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedDataCenter();})
-                    //    .error(function (err:any) { alert('failure deleting..')});
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedDataCenter();
+                    _this.InitSelectedItem();
                 };
-                this.SaveDataCenter = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('datacenter', __this.SelectedDataCenter).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedDataCenter();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving datacenter');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectDataCenterRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedDataCenter = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
-            ConfigDataCenterCtrl.prototype.init = function () {
-                this.InitSelectedDataCenter();
+            ConfigDatacenterCtrl.prototype.init = function () {
+                this.InitSelectedItem();
                 this.RefreshData();
             };
-            ConfigDataCenterCtrl.prototype.RefreshData = function () {
+            ConfigDatacenterCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('datacenter').success(function (result) {
-                    __this.DataCentersList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigDataCenterCtrl.prototype.InitSelectedDataCenter = function () {
-                this.SelectedDataCenter = {
+            ConfigDatacenterCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",
@@ -61,11 +58,11 @@ var Application;
                     DisplayId: ""
                 };
             };
-            return ConfigDataCenterCtrl;
+            return ConfigDatacenterCtrl;
         })();
-        Controllers.ConfigDataCenterCtrl = ConfigDataCenterCtrl;
+        Controllers.ConfigDatacenterCtrl = ConfigDatacenterCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigDataCenterCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigDataCenterCtrl]);
+        myapp.controller("ConfigDatacenterCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigDatacenterCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configDatacenter.js.map

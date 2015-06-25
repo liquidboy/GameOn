@@ -1,10 +1,8 @@
 ﻿module Application.Controllers {
     export class ConfigSettingCtrl {
-
-        SettingsList: Array<any>;
-        SelectedSetting: any;
-
-
+        EntityType: string = "setting";
+        ItemsList: Array<any>;
+        SelectedItem: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,28 +12,23 @@
             this.init();
         }
 
-        DeleteSetting = () => {
+        DeleteItem = () => {
 
             var __this = this;
 
             this.dataSvc
-                .delete("setting", __this.SelectedSetting.Name, __this.SelectedSetting.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedSetting(); })
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
-            
 
-            //this.dataSvc
-            //    .deleteSettingByDisplayId(__this.SelectedSetting.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedSetting();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {
-            this.InitSelectedSetting();
+            this.InitSelectedItem();
         }
 
         private init() {
-            this.InitSelectedSetting();
+            this.InitSelectedItem();
             this.RefreshData();
         }
 
@@ -43,13 +36,13 @@
             var __this = this;
 
             this.dataSvc
-                .getAll('setting')
-                .success(function (result: any) { __this.SettingsList = result; })
+                .getAll(__this.EntityType)
+                .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
 
-        private InitSelectedSetting() {
-            this.SelectedSetting = {
+        private InitSelectedItem() {
+            this.SelectedItem = {
                 Name: "",
                 LongName: "",
                 Grouping: "",
@@ -58,20 +51,20 @@
             };
         }
 
-        SaveSetting = () => {
+        SaveItem = () => {
 
             var __this: any = this;
 
             __this.dataSvc
-                .save('setting', __this.SelectedSetting)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedSetting(); })
-                .error(function (val) { alert('Failed saving setting'); });
+                .save(__this.EntityType, __this.SelectedItem)
+                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .error(function (val) { alert('Failed saving item'); });
 
         }
 
-        SelectSettingRow = (model, event) => {
+        SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedSetting = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);;
         }
 
 
