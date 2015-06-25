@@ -9,47 +9,48 @@ var Application;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
-                this.DeleteComment = function () {
+                this.EntityType = "comment";
+                this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete("comment", __this.SelectedComment.Name, __this.SelectedComment.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
                         __this.RefreshData();
-                        __this.InitSelectedComment();
+                        __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
                     });
                 };
                 this.ClearEntryFields = function () {
-                    _this.InitSelectedComment();
+                    _this.InitSelectedItem();
                 };
-                this.SaveComment = function () {
+                this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save('comment', __this.SelectedComment).success(function (val) {
+                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
                         __this.RefreshData();
-                        __this.InitSelectedComment();
+                        __this.InitSelectedItem();
                     }).error(function (val) {
-                        alert('Failed saving comment');
+                        alert('Failed saving item');
                     });
                 };
-                this.SelectCommentRow = function (model, event) {
+                this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
-                    _this.SelectedComment = jQuery.extend(true, {}, model);
+                    _this.SelectedItem = jQuery.extend(true, {}, model);
                     ;
                 };
                 this.init();
             }
             ConfigCommentCtrl.prototype.init = function () {
-                this.InitSelectedComment();
+                this.InitSelectedItem();
                 this.RefreshData();
             };
             ConfigCommentCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll('comment').success(function (result) {
-                    __this.CommentsList = result;
+                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    __this.ItemsList = result;
                 }).error(function (err) {
                 });
             };
-            ConfigCommentCtrl.prototype.InitSelectedComment = function () {
-                this.SelectedComment = {
+            ConfigCommentCtrl.prototype.InitSelectedItem = function () {
+                this.SelectedItem = {
                     Name: "",
                     LongName: "",
                     Grouping: "",

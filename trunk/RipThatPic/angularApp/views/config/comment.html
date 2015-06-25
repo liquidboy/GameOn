@@ -21,14 +21,14 @@
                 </colgroup>
 
                 <tr>
-                    <td><input type="text" ng-model="configcomment.SelectedComment.Grouping" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configcomment.SelectedComment.Name" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configcomment.SelectedComment.LongName" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configcomment.SelectedComment.Color" style="width:150px" /></td>
-                    <!--<td><input type="text" ng-model="configcomment.SelectedComment.DisplayId" style="width:250px" /></td>-->
+                    <td><input type="text" ng-model="configcomment.SelectedItem.Grouping" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configcomment.SelectedItem.Name" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configcomment.SelectedItem.LongName" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configcomment.SelectedItem.Color" style="width:150px" /></td>
+                    <!--<td><input type="text" ng-model="configcomment.SelectedItem.DisplayId" style="width:250px" /></td>-->
                     <td>
-                        <input type="button" value="Save" ng-click="configcomment.SaveComment()" />
-                        <input type="button" value="Delete" ng-click="configcomment.DeleteComment()" />
+                        <input type="button" value="Save" ng-click="configcomment.SaveItem()" />
+                        <input type="button" value="Delete" ng-click="configcomment.DeleteItem()" />
                         <input type="button" value="Clear" ng-click="configcomment.ClearEntryFields()" />
                     </td>
                 </tr>
@@ -55,9 +55,9 @@
 
                                 </colgroup>
 
-                                <tr ng-repeat="comment in configcomment.CommentsList"
-                                    ng-include="'commentlist.html'"
-                                    ng-click="configcomment.SelectCommentRow(comment, $event)"
+                                <tr ng-repeat="item in configcomment.ItemsList"
+                                    ng-include="'itemlist.html'"
+                                    ng-click="configcomment.SelectItemRow(item, $event)"
                                     class="table-content-row"></tr>
                             </table>
                         </div>
@@ -71,13 +71,13 @@
             </table>
         </div>
 
-        <script type="text/ng-template" id="commentlist.html">
+        <script type="text/ng-template" id="itemlist.html">
 
-            <td>{{comment.Grouping}} </td>
-            <td>{{comment.Name}} </td>
-            <td>{{comment.LongName}} </td>
-            <td>{{comment.Color}} </td>
-            <!--<td>{{comment.DisplayId}} </td>-->
+            <td>{{item.Grouping}} </td>
+            <td>{{item.Name}} </td>
+            <td>{{item.LongName}} </td>
+            <td>{{item.Color}} </td>
+            <!--<td>{{item.DisplayId}} </td>-->
             
         </script>
     </div>
