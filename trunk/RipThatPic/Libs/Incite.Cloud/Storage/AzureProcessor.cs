@@ -240,8 +240,29 @@ namespace Incite.Cloud.Storage
 
 
 
+        private IEnumerable<ITableEntity> ExecuteTableQuery(string type, CloudTable table, string where) {
+            if (type == "Session") return table.ExecuteQuery(new TableQuery<SessionEntity>().Where(where));
+            else if (type == "Link") return table.ExecuteQuery(new TableQuery<LinkEntity>().Where(where));
+            else if (type == "User") return table.ExecuteQuery(new TableQuery<UserEntity>().Where(where));
+            else if (type == "Comment") return table.ExecuteQuery(new TableQuery<CommentEntity>().Where(where));
+            else if (type == "Document") return table.ExecuteQuery(new TableQuery<DocumentEntity>().Where(where));
+            else if (type == "Image") return table.ExecuteQuery(new TableQuery<ImageEntity>().Where(where));
+            else if (type == "Video") return table.ExecuteQuery(new TableQuery<VideoEntity>().Where(where));
+            else if (type == "Area") return table.ExecuteQuery(new TableQuery<AreaEntity>().Where(where));
+            else if (type == "Setting") return table.ExecuteQuery(new TableQuery<SettingEntity>().Where(where));
+            else if (type == "Page") return table.ExecuteQuery(new TableQuery<PageEntity>().Where(where));
+            else if (type == "DataCenter") return table.ExecuteQuery(new TableQuery<DataCenterEntity>().Where(where));
+            else if (type == "List") return table.ExecuteQuery(new TableQuery<ListEntity>().Where(where));
+            else if (type == "Post") return table.ExecuteQuery(new TableQuery<PostEntity>().Where(where));
+            else if (type == "Permission") return table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(where));
+            else if (type == "Map") return table.ExecuteQuery(new TableQuery<MapEntity>().Where(where));
+            else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(where));
+            else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(where));
+            else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(where));
+            else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(where));
+            else throw new NotImplementedException();
+        }
 
-        
         public async Task<int> DeleteByDisplayId(string type, Guid displayId)
         {
             var table = _tableClient.GetTableReference(type);
@@ -250,27 +271,7 @@ namespace Incite.Cloud.Storage
             var ret = 0;
             IEnumerable<ITableEntity> found = null;
 
-            if (type == "Session") found = table.ExecuteQuery(new TableQuery<SessionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Link") found = table.ExecuteQuery(new TableQuery<LinkEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "User") found = table.ExecuteQuery(new TableQuery<UserEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Comment") found = table.ExecuteQuery(new TableQuery<CommentEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Document") found = table.ExecuteQuery(new TableQuery<DocumentEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Image") found = table.ExecuteQuery(new TableQuery<ImageEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Video") found = table.ExecuteQuery(new TableQuery<VideoEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Area") found = table.ExecuteQuery(new TableQuery<AreaEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Setting") found = table.ExecuteQuery(new TableQuery<SettingEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Page") found = table.ExecuteQuery(new TableQuery<PageEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "DataCenter") found = table.ExecuteQuery(new TableQuery<DataCenterEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "List") found = table.ExecuteQuery(new TableQuery<ListEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Post") found = table.ExecuteQuery(new TableQuery<PostEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Permission") found = table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Map") found = table.ExecuteQuery(new TableQuery<MapEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Service") found = table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Extension") found = table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Theme") found = table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else if (type == "Log") found = table.ExecuteQuery(new TableQuery<LogEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
-            else throw new NotImplementedException();
-            
+            found = ExecuteTableQuery(type, table, TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId));
             
             if (found != null)
             {
@@ -280,20 +281,27 @@ namespace Incite.Cloud.Storage
                     var result = await table.ExecuteAsync(op);
                     ret = result.HttpStatusCode;
                 }
-
             }
             return ret;
         }
-
-
-
-
-
-
-
-
-
-
+        
+        public IEnumerable<ITableEntity> RetrieveAllByName(string type, string name)
+        {
+            var table = _tableClient.GetTableReference(type);
+            return ExecuteTableQuery(type, table, TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
+        }
+        
+        public IEnumerable<ITableEntity> RetrieveAll(string type, string grouping)
+        {
+            var table = _tableClient.GetTableReference(type);
+            return ExecuteTableQuery(type, table, TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping));
+        }
+        
+        public IEnumerable<ITableEntity> RetrieveAll(string type)
+        {
+            var table = _tableClient.GetTableReference(type);
+            return ExecuteTableQuery(type, table, TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx"));
+        }
 
 
 
@@ -310,102 +318,6 @@ namespace Incite.Cloud.Storage
 
             return result.Result;
         }
-
-        
-
-        
-
-        
-        
-        public IEnumerable<ITableEntity> RetrieveAllByName(string type, string name)
-        {
-
-            var table = _tableClient.GetTableReference(type);
-
-            if (type == "Session") return table.ExecuteQuery(new TableQuery<SessionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "User") return table.ExecuteQuery(new TableQuery<UserEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Comment") return table.ExecuteQuery(new TableQuery<CommentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Link") return table.ExecuteQuery(new TableQuery<LinkEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Document") return table.ExecuteQuery(new TableQuery<DocumentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Image") return table.ExecuteQuery(new TableQuery<ImageEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Video") return table.ExecuteQuery(new TableQuery<VideoEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Area") return table.ExecuteQuery(new TableQuery<AreaEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Setting") return table.ExecuteQuery(new TableQuery<SettingEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Page") return table.ExecuteQuery(new TableQuery<PageEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "DataCenter") return table.ExecuteQuery(new TableQuery<DataCenterEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "List") return table.ExecuteQuery(new TableQuery<ListEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Post") return table.ExecuteQuery(new TableQuery<PostEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Permission") return table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Map") return table.ExecuteQuery(new TableQuery<MapEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
-            else throw new NotImplementedException();
-            
-        }
-
-        
-        
-        public IEnumerable<ITableEntity> RetrieveAll(string type, string grouping)
-        {
-            var table = _tableClient.GetTableReference(type);
-
-            if (type == "Session") return table.ExecuteQuery(new TableQuery<SessionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "User") return table.ExecuteQuery(new TableQuery<UserEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Comment") return table.ExecuteQuery(new TableQuery<CommentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Link") return table.ExecuteQuery(new TableQuery<LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Document") return table.ExecuteQuery(new TableQuery<DocumentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Image") return table.ExecuteQuery(new TableQuery<ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Video") return table.ExecuteQuery(new TableQuery<VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Area") return table.ExecuteQuery(new TableQuery<AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Setting") return table.ExecuteQuery(new TableQuery<SettingEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Page") return table.ExecuteQuery(new TableQuery<PageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "DataCenter") return table.ExecuteQuery(new TableQuery<DataCenterEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "List") return table.ExecuteQuery(new TableQuery<ListEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Post") return table.ExecuteQuery(new TableQuery<PostEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Permission") return table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Map") return table.ExecuteQuery(new TableQuery<MapEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
-            else throw new NotImplementedException();
-
-        }
-
-        
-        
-        public IEnumerable<ITableEntity> RetrieveAll(string type)
-        {
-            var table = _tableClient.GetTableReference(type);
-            if (type == "Session") return table.ExecuteQuery(new TableQuery<SessionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "User") return table.ExecuteQuery(new TableQuery<UserEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Comment") return table.ExecuteQuery(new TableQuery<CommentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Link") return table.ExecuteQuery(new TableQuery<LinkEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Document") return table.ExecuteQuery(new TableQuery<DocumentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Image") return table.ExecuteQuery(new TableQuery<ImageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Video") return table.ExecuteQuery(new TableQuery<VideoEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Area") return table.ExecuteQuery(new TableQuery<AreaEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Setting") return table.ExecuteQuery(new TableQuery<SettingEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Page") return table.ExecuteQuery(new TableQuery<PageEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "DataCenter") return table.ExecuteQuery(new TableQuery<DataCenterEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "List") return table.ExecuteQuery(new TableQuery<ListEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Post") return table.ExecuteQuery(new TableQuery<PostEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Permission") return table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Map") return table.ExecuteQuery(new TableQuery<MapEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
-            else throw new NotImplementedException();
-
-        }
-
-
-
-
-
 
 
 
