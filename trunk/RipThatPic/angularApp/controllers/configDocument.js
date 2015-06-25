@@ -3,12 +3,13 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigDocumentCtrl = (function () {
-            function ConfigDocumentCtrl($scope, $rootScope, serviceHelperSvc, dataSvc) {
+            function ConfigDocumentCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
+                this.instanceFactory = instanceFactory;
                 this.EntityType = "document";
                 this.DeleteItem = function () {
                     var __this = _this;
@@ -34,7 +35,8 @@ var Application;
                 this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
                     _this.SelectedItem = jQuery.extend(true, {}, model);
-                    ;
+                    _this.SelectedItem.NameIsReadOnly = true;
+                    _this.SelectedItem.GroupingIsReadOnly = true;
                 };
                 this.init();
             }
@@ -50,19 +52,13 @@ var Application;
                 });
             };
             ConfigDocumentCtrl.prototype.InitSelectedItem = function () {
-                this.SelectedItem = {
-                    Name: "",
-                    LongName: "",
-                    Grouping: "",
-                    Color: "",
-                    DisplayId: ""
-                };
+                this.SelectedItem = this.instanceFactory.getInstance("_object");
             };
             return ConfigDocumentCtrl;
         })();
         Controllers.ConfigDocumentCtrl = ConfigDocumentCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigDocumentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigDocumentCtrl]);
+        myapp.controller("ConfigDocumentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", ConfigDocumentCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configDocument.js.map

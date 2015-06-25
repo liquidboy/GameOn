@@ -3,12 +3,13 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigImageCtrl = (function () {
-            function ConfigImageCtrl($scope, $rootScope, serviceHelperSvc, dataSvc) {
+            function ConfigImageCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
+                this.instanceFactory = instanceFactory;
                 this.EntityType = "image";
                 this.DeleteItem = function () {
                     var __this = _this;
@@ -34,7 +35,8 @@ var Application;
                 this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
                     _this.SelectedItem = jQuery.extend(true, {}, model);
-                    ;
+                    _this.SelectedItem.NameIsReadOnly = true;
+                    _this.SelectedItem.GroupingIsReadOnly = true;
                 };
                 this.init();
             }
@@ -50,19 +52,13 @@ var Application;
                 });
             };
             ConfigImageCtrl.prototype.InitSelectedItem = function () {
-                this.SelectedItem = {
-                    Name: "",
-                    LongName: "",
-                    Grouping: "",
-                    Color: "",
-                    DisplayId: ""
-                };
+                this.SelectedItem = this.instanceFactory.getInstance("_object");
             };
             return ConfigImageCtrl;
         })();
         Controllers.ConfigImageCtrl = ConfigImageCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigImageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigImageCtrl]);
+        myapp.controller("ConfigImageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", ConfigImageCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configImage.js.map

@@ -8,7 +8,8 @@
             public $scope: ng.IScope,
             public $rootScope: any,
             public serviceHelperSvc: Application.Services.IServiceHelper,
-            public dataSvc: Application.Services.IData) {
+            public dataSvc: Application.Services.IData,
+            public instanceFactory: Application.Services.IInstanceFactory) {
             this.init();
         }
 
@@ -42,13 +43,7 @@
         }
 
         private InitSelectedItem() {
-            this.SelectedItem = {
-                Name: "",
-                LongName: "",
-                Grouping: "",
-                Color: "",
-                DisplayId: ""
-            };
+            this.SelectedItem = this.instanceFactory.getInstance("_object");
         }
 
         SaveItem = () => {
@@ -64,12 +59,14 @@
 
         SelectItemRow = (model, event) => {
             var trElement = event.currentTarget;
-            this.SelectedItem = jQuery.extend(true, {}, model);;
+            this.SelectedItem = jQuery.extend(true, {}, model);
+            this.SelectedItem.NameIsReadOnly = true;
+            this.SelectedItem.GroupingIsReadOnly = true;
         }
 
 
 
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ConfigLogCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigLogCtrl]);
+    myapp.controller("ConfigLogCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", ConfigLogCtrl]);
 }

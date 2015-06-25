@@ -3,12 +3,13 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigThemeCtrl = (function () {
-            function ConfigThemeCtrl($scope, $rootScope, serviceHelperSvc, dataSvc) {
+            function ConfigThemeCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
+                this.instanceFactory = instanceFactory;
                 this.EntityType = "theme";
                 this.DeleteItem = function () {
                     var __this = _this;
@@ -34,7 +35,8 @@ var Application;
                 this.SelectItemRow = function (model, event) {
                     var trElement = event.currentTarget;
                     _this.SelectedItem = jQuery.extend(true, {}, model);
-                    ;
+                    _this.SelectedItem.NameIsReadOnly = true;
+                    _this.SelectedItem.GroupingIsReadOnly = true;
                 };
                 this.init();
             }
@@ -50,19 +52,13 @@ var Application;
                 });
             };
             ConfigThemeCtrl.prototype.InitSelectedItem = function () {
-                this.SelectedItem = {
-                    Name: "",
-                    LongName: "",
-                    Grouping: "",
-                    Color: "",
-                    DisplayId: ""
-                };
+                this.SelectedItem = this.instanceFactory.getInstance("_object");
             };
             return ConfigThemeCtrl;
         })();
         Controllers.ConfigThemeCtrl = ConfigThemeCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigThemeCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigThemeCtrl]);
+        myapp.controller("ConfigThemeCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", ConfigThemeCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configTheme.js.map

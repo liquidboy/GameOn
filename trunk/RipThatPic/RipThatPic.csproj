@@ -199,6 +199,9 @@
     <Content Include="angularApp\services\dataService.js">
       <DependentUpon>dataService.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\services\instanceFactory.js" >
+      <DependentUpon>instanceFactory.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\services\serviceHelper.js">
       <DependentUpon>serviceHelper.ts</DependentUpon>
     </Content>
@@ -340,6 +343,9 @@
     </Content>
     <Content Include="angularApp\controllers\configLog.js.map">
       <DependentUpon>configLog.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\instanceFactory.js.map" >
+      <DependentUpon>instanceFactory.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1188,6 +1194,7 @@
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />
+    <TypeScriptCompile Include="angularApp\services\instanceFactory.ts" />
     <TypeScriptCompile Include="angularApp\services\serviceHelper.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />

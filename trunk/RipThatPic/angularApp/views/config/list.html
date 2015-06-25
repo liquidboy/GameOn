@@ -21,8 +21,8 @@
                 </colgroup>
 
                 <tr>
-                    <td><input type="text" ng-model="configlist.SelectedItem.Grouping" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configlist.SelectedItem.Name" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configlist.SelectedItem.Grouping" style="width:150px" ng-readonly="configlist.SelectedItem.GroupingIsReadOnly" /></td>
+                    <td><input type="text" ng-model="configlist.SelectedItem.Name" style="width:150px" ng-readonly="configlist.SelectedItem.NameIsReadOnly" /></td>
                     <td><input type="text" ng-model="configlist.SelectedItem.LongName" style="width:150px" /></td>
                     <td><input type="text" ng-model="configlist.SelectedItem.Color" style="width:150px" /></td>
                     <!--<td><input type="text" ng-model="configlist.SelectedItem.DisplayId" style="width:250px" /></td>-->
