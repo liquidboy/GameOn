@@ -10,14 +10,13 @@
 
     <div>
         <div>
-            <table>
+            <table class="jf-tbl">
                 <colgroup>
+                    <col style="width:157px" />
                     <col style="width:155px" />
                     <col style="width:155px" />
                     <col style="width:155px" />
-                    <col style="width:155px" />
-                    <!--<col style="width:250px"  />-->
-                    <col style="width:255px" />
+                    <col style="width:160px" />
                 </colgroup>
 
                 <tr>
@@ -25,7 +24,6 @@
                     <td><input type="text" ng-model="configlist.SelectedItem.Name" style="width:150px" ng-readonly="configlist.SelectedItem.NameIsReadOnly" /></td>
                     <td><input type="text" ng-model="configlist.SelectedItem.LongName" style="width:150px" /></td>
                     <td><input type="text" ng-model="configlist.SelectedItem.Color" style="width:150px" /></td>
-                    <!--<td><input type="text" ng-model="configlist.SelectedItem.DisplayId" style="width:250px" /></td>-->
                     <td>
                         <input type="button" value="Save" ng-click="configlist.SaveItem()" />
                         <input type="button" value="Delete" ng-click="configlist.DeleteItem()" />
@@ -39,20 +37,18 @@
                     <td class="table-header">Name</td>
                     <td class="table-header">LongName</td>
                     <td class="table-header">Color</td>
-                    <!--<td class="table-header">DisplayId</td>-->
                     <td class="table-header">Actions</td>
                 </tr>
 
                 <tr>
                     <td colspan="5">
                         <div class="jf-data-grid">
-                            <table>
+                            <table class="jf-tbl">
                                 <colgroup>
+                                    <col style="width:154px" />
                                     <col style="width:155px" />
                                     <col style="width:155px" />
                                     <col style="width:155px" />
-                                    <col style="width:155px" />
-
                                 </colgroup>
 
                                 <tr ng-repeat="item in configlist.ItemsList"
@@ -72,13 +68,10 @@
         </div>
 
         <script type="text/ng-template" id="itemlist.html">
-
             <td>{{item.Grouping}} </td>
             <td>{{item.Name}} </td>
             <td>{{item.LongName}} </td>
             <td>{{item.Color}} </td>
-            <!--<td>{{item.DisplayId}} </td>-->
-
         </script>
     </div>
 </div>
