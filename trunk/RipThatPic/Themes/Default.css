@@ -3,8 +3,7 @@
         body {
             background-color:whitesmoke;
             color:black;
-            font-family:Arial;
-            
+            font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;
         }
 
         .resized-full-area {
@@ -76,15 +75,16 @@
     .config .jf-data-grid {
         height:150px;
         overflow:auto;
-        border:1px solid lightgray;
+        border-top:1px solid lightgray;
+        border-bottom:1px solid lightgray;
     }
     .config .jf-tbl {
         cellpadding:0;
         cellspacing:2px;
     }
     .config .table-header {
-        background-color:gray;
-        color:white;
+        color:gray;
+        font-size:small;
     }
 
     .config .table-content-row {
