@@ -23,11 +23,6 @@
                 .success(function (result: any) { __this.RefreshData(); __this.InitSelectedComment(); })
                 .error(function (err: any) { alert('failure deleting..') });
             
-
-            //this.dataSvc
-            //    .deleteCommentByDisplayId(__this.SelectedComment.DisplayId)
-            //    .success(function (result: any) { __this.RefreshData(); __this.InitSelectedComment();})
-            //    .error(function (err:any) { alert('failure deleting..')});
         }
 
         ClearEntryFields = () => {

@@ -308,6 +308,9 @@ namespace Incite.Cloud.Storage
 
 
 
+
+
+
         public async Task<object> RetrieveFromTable(string tableName, string partition, string key)
         {
             var table = _tableClient.GetTableReference(tableName);

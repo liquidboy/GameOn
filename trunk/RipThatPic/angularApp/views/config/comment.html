@@ -8,7 +8,7 @@
 
 
 
-    <div class="jf-data-grid">
+    <div >
         <div>
             <table>
                 <colgroup>
@@ -40,13 +40,33 @@
                     <td class="table-header">LongName</td>
                     <td class="table-header">Color</td>
                     <!--<td class="table-header">DisplayId</td>-->
-                    <td></td>
+                    <td class="table-header">Actions</td>
                 </tr>
 
-                <tr ng-repeat="comment in configcomment.CommentsList"
-                    ng-include="'commentlist.html'"
-                    ng-click="configcomment.SelectCommentRow(comment, $event)"
-                    class="table-content-row"></tr>
+                <tr>
+                    <td colspan="5">
+                        <div class="jf-data-grid">
+                            <table>
+                                <colgroup>
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+
+                                </colgroup>
+
+                                <tr ng-repeat="comment in configcomment.CommentsList"
+                                    ng-include="'commentlist.html'"
+                                    ng-click="configcomment.SelectCommentRow(comment, $event)"
+                                    class="table-content-row"></tr>
+                            </table>
+                        </div>
+                       
+                    </td>
+                </tr>
+
+
+              
 
             </table>
         </div>
@@ -58,8 +78,7 @@
             <td>{{comment.LongName}} </td>
             <td>{{comment.Color}} </td>
             <!--<td>{{comment.DisplayId}} </td>-->
-            <td></td>
-
+            
         </script>
     </div>
 </div>
