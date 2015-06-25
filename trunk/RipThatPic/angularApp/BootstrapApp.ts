@@ -32,6 +32,7 @@
             .when('/config/service', { controller: 'ConfigServiceCtrl', templateUrl: '/angularApp/views/config/service.html', controllerAs: 'configservice' })
             .when('/config/extension', { controller: 'ConfigExtensionCtrl', templateUrl: '/angularApp/views/config/extension.html', controllerAs: 'configextension' })
             .when('/config/theme', { controller: 'ConfigThemeCtrl', templateUrl: '/angularApp/views/config/theme.html', controllerAs: 'configtheme' })
+            .when('/config/log', { controller: 'ConfigLogCtrl', templateUrl: '/angularApp/views/config/log.html', controllerAs: 'configlog' })
             .when('/error', { controller: 'ErrorCtrl',templateUrl: '/angularApp/views/shared/error.html' })
             .otherwise({ redirectTo: '/home'});
 

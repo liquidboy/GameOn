@@ -152,6 +152,9 @@
     <Content Include="angularApp\controllers\configList.js">
       <DependentUpon>configList.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\configLog.js">
+      <DependentUpon>configLog.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\configMap.js">
       <DependentUpon>configMap.ts</DependentUpon>
     </Content>
@@ -201,6 +204,7 @@
     </Content>
     <Content Include="angularApp\views\config\comment.html" />
     <Content Include="angularApp\views\config\datacenter.html" />
+    <Content Include="angularApp\views\config\log.html" />
     <Content Include="angularApp\views\config\extension.html" />
     <Content Include="angularApp\views\config\theme.html" />
     <Content Include="angularApp\views\config\service.html" />
@@ -333,6 +337,9 @@
     </Content>
     <Content Include="angularApp\controllers\configTheme.js.map">
       <DependentUpon>configTheme.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configLog.js.map">
+      <DependentUpon>configLog.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1090,6 +1097,8 @@
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\DataCenterController.cs" />
     <Compile Include="Controllers\DataCentersController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\ThemeController.cs" />
     <Compile Include="Controllers\ThemesController.cs" />
     <Compile Include="Controllers\ExtensionController.cs" />
@@ -1157,6 +1166,7 @@
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configDatacenter.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configLog.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configTheme.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configExtension.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configService.ts" />

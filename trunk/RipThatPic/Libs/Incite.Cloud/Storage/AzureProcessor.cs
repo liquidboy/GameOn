@@ -268,6 +268,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Service") found = table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else if (type == "Extension") found = table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else if (type == "Theme") found = table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
+            else if (type == "Log") found = table.ExecuteQuery(new TableQuery<LogEntity>().Where(TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)));
             else throw new NotImplementedException();
             
             
@@ -339,6 +340,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
+            else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name)));
             else throw new NotImplementedException();
             
         }
@@ -367,6 +369,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
+            else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, grouping)));
             else throw new NotImplementedException();
 
         }
@@ -394,6 +397,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
+            else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.NotEqual, "xxx")));
             else throw new NotImplementedException();
 
         }

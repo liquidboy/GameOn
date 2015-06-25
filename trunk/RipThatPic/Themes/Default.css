@@ -81,3 +81,7 @@
 .config .table-content-row:hover {
     background-color:lightgray;
 }
+
+.config .jf-data-grid {
+    height:200px;
+}
