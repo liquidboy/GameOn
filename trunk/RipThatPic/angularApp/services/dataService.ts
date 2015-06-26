@@ -46,7 +46,7 @@
 
         getByDisplayId(type: string, displayid: string) { return this.http.get(this.urlBase + type + "/" + displayid); }
         getAll(type: string) { return this.http.get(this.urlBase + type + "s"); }
-        getAllByGrouping(type: string, grouping: string) { return this.http.get(this.urlBase + type + "s/" + grouping); }
+        getAllByGrouping(type: string, grouping: string) { return this.http.get(this.urlBase + type + "s?grouping=" + grouping); }
 
         getGroupings(tablename: string) { return this.http.get(this.urlBase + "groupings?tablename=" + tablename); }
 

@@ -19,7 +19,9 @@ namespace RipThatPic.Controllers
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
             var result = await processor.RetrieveAllGroupingsFromTable(tablename);
 
-            return result.Select(x => new { name = x  }).AsEnumerable();
+            var ret = result.Select(x => new { name = x }).ToList();
+            ret.Insert(0, new { name = "-all-" });
+            return ret.AsEnumerable();
 
         }
 

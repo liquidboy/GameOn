@@ -59,7 +59,7 @@
                 </tr>
 
                 <tr class="table-filter">
-                    <td><select ng-model="configdatacenter.SelectedGrouping" ng-options="grouping.name for grouping in configdatacenter.GroupingsList"></select></td>
+                    <td><select ng-click="configdatacenter.GroupingChanged(item, $event)" ng-model="configdatacenter.SelectedGrouping" ng-options="grouping.name for grouping in configdatacenter.GroupingsList"></select></td>
                     <td></td>
                     <td></td>
                     <td></td>

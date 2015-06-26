@@ -28,7 +28,7 @@ var Application;
                 return this.http.get(this.urlBase + type + "s");
             };
             DataSvc.prototype.getAllByGrouping = function (type, grouping) {
-                return this.http.get(this.urlBase + type + "s/" + grouping);
+                return this.http.get(this.urlBase + type + "s?grouping=" + grouping);
             };
             DataSvc.prototype.getGroupings = function (tablename) {
                 return this.http.get(this.urlBase + "groupings?tablename=" + tablename);
