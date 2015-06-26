@@ -11,6 +11,30 @@ namespace RipThatPic.Controllers
     public class GroupingsController : ApiController
     {
 
+
+        public IEnumerable<object> Get()
+        {
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var result = processor.RetrieveAll("Grouping");
+            return result.AsEnumerable();
+
+        }
+
+
+        //// GET: api/Documents/gaming 
+        //// have not tested yet!
+        //public IEnumerable<object> Get(string grouping)
+        //{
+
+        //    AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+        //    var result = processor.RetrieveAll("Grouping", grouping);
+        //    return result.AsEnumerable();
+
+        //}
+
+
+
+
         // GET: api/groupings?name=groupname
         [HttpGet]
         public async Task<IEnumerable<object>> Get(string tablename)

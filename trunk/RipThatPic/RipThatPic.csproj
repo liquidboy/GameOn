@@ -143,6 +143,9 @@
     <Content Include="angularApp\controllers\configExtension.js">
       <DependentUpon>configExtension.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\configGrouping.js">
+      <DependentUpon>configGrouping.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\configImage.js">
       <DependentUpon>configImage.ts</DependentUpon>
     </Content>
@@ -213,6 +216,7 @@
     </Content>
     <Content Include="angularApp\views\config\comment.html" />
     <Content Include="angularApp\views\config\datacenter.html" />
+    <Content Include="angularApp\views\config\grouping.html" />
     <Content Include="angularApp\views\config\version.html" />
     <Content Include="angularApp\views\config\install.html" />
     <Content Include="angularApp\views\config\log.html" />
@@ -360,6 +364,9 @@
     </Content>
     <Content Include="angularApp\controllers\configVersion.js.map">
       <DependentUpon>configVersion.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configGrouping.js.map">
+      <DependentUpon>configGrouping.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1190,6 +1197,7 @@
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configDatacenter.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configGrouping.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configVersion.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configInstall.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configLog.ts" />

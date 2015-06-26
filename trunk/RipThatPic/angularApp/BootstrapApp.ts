@@ -35,6 +35,7 @@
             .when('/config/theme', { controller: 'ConfigThemeCtrl', templateUrl: '/angularApp/views/config/theme.html', controllerAs: 'configtheme' })
             .when('/config/log', { controller: 'ConfigLogCtrl', templateUrl: '/angularApp/views/config/log.html', controllerAs: 'configlog' })
             .when('/config/version', { controller: 'ConfigVersionCtrl', templateUrl: '/angularApp/views/config/version.html', controllerAs: 'configversion' })
+            .when('/config/grouping', { controller: 'ConfigGroupingCtrl', templateUrl: '/angularApp/views/config/grouping.html', controllerAs: 'configgrouping' })
             .when('/error', { controller: 'ErrorCtrl',templateUrl: '/angularApp/views/shared/error.html' })
             .otherwise({ redirectTo: '/home'});
 
