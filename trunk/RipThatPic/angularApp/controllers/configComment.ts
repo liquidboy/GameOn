@@ -44,6 +44,7 @@
         }
 
         private InitSelectedItem() {
+            this.UnSelect();
             this.SelectedItem = this.instanceFactory.getInstance("_object");
         }
 
@@ -59,12 +60,18 @@
         }
 
         SelectItemRow = (model, event) => {
+            this.UnSelect();
+
             var trElement = event.currentTarget;
             this.SelectedItem = jQuery.extend(true, {}, model);
             this.SelectedItem.NameIsReadOnly = true;
-            this.SelectedItem.GroupingIsReadOnly= true;
+            this.SelectedItem.GroupingIsReadOnly = true;
+            this.SelectedItem._Model = model;
+            this.SelectedItem._Model.IsSelected = true;
         }
 
+
+        private UnSelect() { if (this.SelectedItem != undefined) this.SelectedItem._Model.IsSelected = false; }
 
 
     }

@@ -26,7 +26,9 @@
                         Grouping: "",
                         GroupingIsReadOnly: false,
                         Color: "",
-                        DisplayId: ""
+                        DisplayId: "",
+                        IsSelected: false,
+                        _Model: {}
                 };
 
             return obj;

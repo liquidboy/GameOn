@@ -69,13 +69,10 @@
         </div>
 
         <script type="text/ng-template" id="itemlist.html">
-
-            <td>{{item.Grouping}} </td>
+            <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
             <td>{{item.Name}} </td>
             <td>{{item.LongName}} </td>
             <td>{{item.Color}} </td>
-            <!--<td>{{item.DisplayId}} </td>-->
-
         </script>
     </div>
 </div>

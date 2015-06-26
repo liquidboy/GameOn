@@ -95,4 +95,14 @@
         background-color:lightgray;
     }
 
+    .config .jf-col1 {
+        margin-left:-3px;
+        padding-left:3px;
+    }
+    .config .jf-col1.selected {
+        border-left:2px solid cyan;
+        padding-left:1px;
+        border-bottom:1px dashed cyan;
+    }
+
  

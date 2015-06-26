@@ -33,10 +33,13 @@ var Application;
                     });
                 };
                 this.SelectItemRow = function (model, event) {
+                    _this.UnSelect();
                     var trElement = event.currentTarget;
                     _this.SelectedItem = jQuery.extend(true, {}, model);
                     _this.SelectedItem.NameIsReadOnly = true;
                     _this.SelectedItem.GroupingIsReadOnly = true;
+                    _this.SelectedItem._Model = model;
+                    _this.SelectedItem._Model.IsSelected = true;
                 };
                 this.init();
             }
@@ -52,7 +55,12 @@ var Application;
                 });
             };
             ConfigAreaCtrl.prototype.InitSelectedItem = function () {
+                this.UnSelect();
                 this.SelectedItem = this.instanceFactory.getInstance("_object");
+            };
+            ConfigAreaCtrl.prototype.UnSelect = function () {
+                if (this.SelectedItem != undefined)
+                    this.SelectedItem._Model.IsSelected = false;
             };
             return ConfigAreaCtrl;
         })();
