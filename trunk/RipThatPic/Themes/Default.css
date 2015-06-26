@@ -58,6 +58,13 @@
 
 
 
+#renderCanvas {
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+
 .text-quote {
     font: italic 1.6em Georgia,"Times New Roman",Times,serif;
 }

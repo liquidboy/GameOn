@@ -238,9 +238,11 @@
     <Content Include="angularApp\views\config\area.html" />
     <Content Include="angularApp\views\config\config.html" />
     <Content Include="angularApp\views\home\home.html" />
+    <Content Include="Assets\Spaceship\0.png" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
+    <Content Include="babylon-example-index.js" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
@@ -266,6 +268,9 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\babylon.js" />
+    <Content Include="Scripts\babylon.max.js" />
+    <Content Include="Scripts\babylon.noworker.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -368,7 +373,9 @@
     <Content Include="angularApp\controllers\configGrouping.js.map">
       <DependentUpon>configGrouping.js</DependentUpon>
     </Content>
+    <Content Include="Assets\Spaceship\Spaceship.babylon" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\hand.minified-1.2.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-et.js" />
@@ -1114,6 +1121,8 @@
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\Oimo.js" />
+    <Content Include="Scripts\poly2tri.js" />
     <Content Include="Themes\Default.css" />
     <Content Include="Themes\office365stuff.css" />
     <Content Include="Web.config" />
