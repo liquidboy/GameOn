@@ -5,9 +5,6 @@
 
     <br />
 
-
-
-
     <div>
         <div>
             <table>
@@ -61,17 +58,15 @@
                     </td>
                 </tr>
 
-
-
-
             </table>
         </div>
 
-        <script type="text/ng-template" id="itemlist.html">
-            <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
-            <td>{{item.Name}} </td>
-            <td>{{item.LongName}} </td>
-            <td>{{item.Color}} </td>
-        </script>
     </div>
 </div>
+
+<script type="text/ng-template" id="itemlist.html">
+    <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
+    <td>{{item.Name}} </td>
+    <td>{{item.LongName}} </td>
+    <td>{{item.Color}} </td>
+</script>
