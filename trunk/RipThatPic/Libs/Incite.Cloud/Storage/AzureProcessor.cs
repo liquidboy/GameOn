@@ -260,6 +260,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Extension") return table.ExecuteQuery(new TableQuery<ExtensionEntity>().Where(where));
             else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(where));
             else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(where));
+            else if (type == "Version") return table.ExecuteQuery(new TableQuery<VersionEntity>().Where(where));
             else throw new NotImplementedException();
         }
 
