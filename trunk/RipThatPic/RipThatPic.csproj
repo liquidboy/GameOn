@@ -1117,6 +1117,7 @@
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\DataCenterController.cs" />
     <Compile Include="Controllers\DataCentersController.cs" />
+    <Compile Include="Controllers\GroupingController.cs" />
     <Compile Include="Controllers\VersionController.cs" />
     <Compile Include="Controllers\VersionsController.cs" />
     <Compile Include="Controllers\LogController.cs" />

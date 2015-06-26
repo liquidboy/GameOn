@@ -222,6 +222,23 @@ namespace Incite.Cloud.Storage
             TableOperation insertOp = TableOperation.InsertOrReplace(entity);
             var result = await table.ExecuteAsync(insertOp);
 
+            await UpdateGroupingTable(tableName, entity.PartitionKey);
+
+            return result.HttpStatusCode;
+        }
+
+
+        private async Task<int> UpdateGroupingTable(string tablename, string grouping) {
+
+            var groupingKey = grouping + tablename;
+            var table = _tableClient.GetTableReference("Grouping");
+            await table.CreateIfNotExistsAsync();
+
+            GroupingEntity entity = new GroupingEntity(groupingKey, "home-groups") { TableName = tablename, GroupingName = grouping };
+
+            TableOperation insertOp = TableOperation.InsertOrReplace(entity);
+            var result = await table.ExecuteAsync(insertOp);
+
             return result.HttpStatusCode;
         }
 
@@ -261,8 +278,12 @@ namespace Incite.Cloud.Storage
             else if (type == "Theme") return table.ExecuteQuery(new TableQuery<ThemeEntity>().Where(where));
             else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(where));
             else if (type == "Version") return table.ExecuteQuery(new TableQuery<VersionEntity>().Where(where));
+            else if (type == "Grouping") return table.ExecuteQuery(new TableQuery<GroupingEntity>().Where(where));
             else throw new NotImplementedException();
         }
+
+    
+
 
         public async Task<int> DeleteByDisplayId(string type, Guid displayId)
         {
@@ -310,7 +331,19 @@ namespace Incite.Cloud.Storage
 
 
 
+        public async Task<IEnumerable<string>> RetrieveAllGroupingsFromTable(string tableName)
+        {
+            var table = _tableClient.GetTableReference(tableName);
+            await table.CreateIfNotExistsAsync();
 
+            var result = table.ExecuteQuery(
+                new TableQuery<GroupingEntity>()
+                    .Where(TableQuery.GenerateFilterCondition("TableName", QueryComparisons.Equal, tableName))
+                    .Select(new string[] { "GroupingName" }));
+
+            return result.Select(x=>x.GroupingName).Distinct();
+
+        }
 
         public async Task<object> RetrieveFromTable(string tableName, string partition, string key)
         {

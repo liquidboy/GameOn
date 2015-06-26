@@ -10,6 +10,7 @@ using System.Web.Http;
 
 namespace RipThatPic.Controllers
 {
+    [RoutePrefix("api/comments")]
     public class CommentsController : ApiController
     {
         public IEnumerable<object> Get()
@@ -31,8 +32,19 @@ namespace RipThatPic.Controllers
             return result.AsEnumerable();
 
         }
-        
 
+        // GET: api/comments/groupings
+        [HttpGet]
+        [Route("groupings")]
+        public async Task<IEnumerable<string>> GetAllGroupings()
+        {
+
+            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var result =   await processor.RetrieveAllGroupingsFromTable("Comment");
+
+            return result.AsEnumerable();
+
+        }
 
     }
 
