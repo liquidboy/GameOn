@@ -91,6 +91,9 @@
         cursor:pointer;
         
     }
+    .config .table-filter select {
+        width:100%;
+    }
     .config .table-content-row:hover {
         background-color:lightgray;
     }

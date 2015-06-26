@@ -10,6 +10,8 @@
         getAllByGrouping(type:string, grouping: string): ng.IHttpPromise<{}>;        
         getByDisplayId(type: string, displayid: string): ng.IHttpPromise<{}>;
 
+        getGroupings(tablename: string): ng.IHttpPromise<{}>;
+
 
         save(type: string, entity: any): ng.IHttpPromise<{}>;
         //saveArea(name: string, grouping: string, color: string, longname: string, displayid: string ): ng.IHttpPromise<{}>;
@@ -46,6 +48,7 @@
         getAll(type: string) { return this.http.get(this.urlBase + type + "s"); }
         getAllByGrouping(type: string, grouping: string) { return this.http.get(this.urlBase + type + "s/" + grouping); }
 
+        getGroupings(tablename: string) { return this.http.get(this.urlBase + "groupings?tablename=" + tablename); }
 
 
         save(type: string, entity: any) { return this.http.post(this.urlBase + type , entity); }

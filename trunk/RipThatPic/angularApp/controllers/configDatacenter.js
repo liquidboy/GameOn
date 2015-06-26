@@ -14,7 +14,7 @@ var Application;
                 this.DeleteItem = function () {
                     var __this = _this;
                     _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
-                        __this.RefreshData();
+                        __this.RefreshGrid();
                         __this.InitSelectedItem();
                     }).error(function (err) {
                         alert('failure deleting..');
@@ -26,7 +26,7 @@ var Application;
                 this.SaveItem = function () {
                     var __this = _this;
                     __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
-                        __this.RefreshData();
+                        __this.RefreshGrid();
                         __this.InitSelectedItem();
                     }).error(function (val) {
                         alert('Failed saving item');
@@ -45,12 +45,20 @@ var Application;
             }
             ConfigDatacenterCtrl.prototype.init = function () {
                 this.InitSelectedItem();
-                this.RefreshData();
+                this.RefreshGrid();
+                this.RefreshGroupings();
             };
-            ConfigDatacenterCtrl.prototype.RefreshData = function () {
+            ConfigDatacenterCtrl.prototype.RefreshGrid = function () {
                 var __this = this;
                 this.dataSvc.getAll(__this.EntityType).success(function (result) {
                     __this.ItemsList = result;
+                }).error(function (err) {
+                });
+            };
+            ConfigDatacenterCtrl.prototype.RefreshGroupings = function () {
+                var __this = this;
+                this.dataSvc.getGroupings(__this.EntityType).success(function (result) {
+                    __this.GroupingsList = result;
                 }).error(function (err) {
                 });
             };

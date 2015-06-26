@@ -228,19 +228,7 @@ namespace Incite.Cloud.Storage
         }
 
 
-        private async Task<int> UpdateGroupingTable(string tablename, string grouping) {
-
-            var groupingKey = grouping + tablename;
-            var table = _tableClient.GetTableReference("Grouping");
-            await table.CreateIfNotExistsAsync();
-
-            GroupingEntity entity = new GroupingEntity(groupingKey, "home-groups") { TableName = tablename, GroupingName = grouping };
-
-            TableOperation insertOp = TableOperation.InsertOrReplace(entity);
-            var result = await table.ExecuteAsync(insertOp);
-
-            return result.HttpStatusCode;
-        }
+    
 
         public async Task<int> DeleteFromTable(string tableName, TableEntity entity)
         {
@@ -331,9 +319,28 @@ namespace Incite.Cloud.Storage
 
 
 
+        //==================
+        //start: GROUPING
+        //==================
+
+        private async Task<int> UpdateGroupingTable(string tablename, string grouping)
+        {
+
+            var groupingKey = grouping + tablename;
+            var table = _tableClient.GetTableReference("Grouping");
+            await table.CreateIfNotExistsAsync();
+
+            GroupingEntity entity = new GroupingEntity(groupingKey, "home-groups") { TableName = tablename.ToLower(), GroupingName = grouping };
+
+            TableOperation insertOp = TableOperation.InsertOrReplace(entity);
+            var result = await table.ExecuteAsync(insertOp);
+
+            return result.HttpStatusCode;
+        }
+
         public async Task<IEnumerable<string>> RetrieveAllGroupingsFromTable(string tableName)
         {
-            var table = _tableClient.GetTableReference(tableName);
+            var table = _tableClient.GetTableReference("Grouping");
             await table.CreateIfNotExistsAsync();
 
             var result = table.ExecuteQuery(
@@ -344,6 +351,17 @@ namespace Incite.Cloud.Storage
             return result.Select(x=>x.GroupingName).Distinct();
 
         }
+
+
+        //==================
+        //end: GROUPING
+        //==================
+
+
+
+
+
+
 
         public async Task<object> RetrieveFromTable(string tableName, string partition, string key)
         {

@@ -5,8 +5,8 @@ namespace RipThatPic.Controllers
 {
     public class GroupingController : ApiController
     {
-        
 
+     
 
     }
 

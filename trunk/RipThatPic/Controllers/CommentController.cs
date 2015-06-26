@@ -21,7 +21,7 @@ namespace RipThatPic.Controllers
             return await processor.RetrieveFromTable("Comment", grouping, name);
         }
 
-        // GET: api/Comment?grouping=groupname
+        // GET: api/Comment?name=groupname
         public async Task<IEnumerable<object>> Get(string name)
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);

@@ -2,7 +2,9 @@
     export class ConfigDatacenterCtrl {
         EntityType: string = "datacenter";
         ItemsList: Array<any>;
+        GroupingsList: Array<string>;
         SelectedItem: any;
+        SelectedGrouping: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -19,7 +21,7 @@
 
             this.dataSvc
                 .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .success(function (result: any) { __this.RefreshGrid(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
 
         }
@@ -30,15 +32,25 @@
 
         private init() {
             this.InitSelectedItem();
-            this.RefreshData();
+            this.RefreshGrid();
+            this.RefreshGroupings();
         }
 
-        private RefreshData() {
+        private RefreshGrid() {
             var __this = this;
 
             this.dataSvc
                 .getAll(__this.EntityType)
                 .success(function (result: any) { __this.ItemsList = result; })
+                .error(function (err) { });
+        }
+
+        private RefreshGroupings() {
+            var __this = this;
+
+            this.dataSvc
+                .getGroupings(__this.EntityType)
+                .success(function (result: any) { __this.GroupingsList = result;})
                 .error(function (err) { });
         }
 
@@ -53,7 +65,7 @@
 
             __this.dataSvc
                 .save(__this.EntityType, __this.SelectedItem)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .success(function (val) { __this.RefreshGrid(); __this.InitSelectedItem(); })
                 .error(function (val) { alert('Failed saving item'); });
 
         }
