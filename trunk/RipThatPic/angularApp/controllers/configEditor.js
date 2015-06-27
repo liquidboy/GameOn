@@ -4,12 +4,18 @@ var Application;
     (function (Controllers) {
         var ConfigEditorCtrl = (function () {
             function ConfigEditorCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory) {
+                var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
                 this.instanceFactory = instanceFactory;
                 this.localWindow = window;
+                this.LoadCode = function (code) {
+                    if (_this.localWindow.MonacoEditorIntegration != undefined) {
+                        _this.localWindow.MonacoEditorIntegration.setJavaScriptText(code); //$scope.selectedSample.code);
+                    }
+                };
                 this.init();
             }
             ConfigEditorCtrl.prototype.init = function () {

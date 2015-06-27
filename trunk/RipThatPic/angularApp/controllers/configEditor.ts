@@ -28,9 +28,9 @@
            
         }
         
-        LoadCode = () => {
+        LoadCode = (code: string) => {
             if (this.localWindow.MonacoEditorIntegration != undefined) {
-                this.localWindow.MonacoEditorIntegration.setJavaScriptText($scope.selectedSample.code);
+                this.localWindow.MonacoEditorIntegration.setJavaScriptText(code); //$scope.selectedSample.code);
             }
             
         }
