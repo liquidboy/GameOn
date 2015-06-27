@@ -131,6 +131,9 @@
     <Content Include="angularApp\controllers\configArea.js">
       <DependentUpon>configArea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\configBanner.js">
+      <DependentUpon>configBanner.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\configComment.js">
       <DependentUpon>configComment.ts</DependentUpon>
     </Content>
@@ -218,6 +221,7 @@
       <DependentUpon>serviceHelper.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\views\config\comment.html" />
+    <Content Include="angularApp\views\config\banner.html" />
     <Content Include="angularApp\views\config\datacenter.html" />
     <Content Include="angularApp\views\config\grouping.html" />
     <Content Include="angularApp\views\config\editor.html" />
@@ -380,6 +384,9 @@
     <Content Include="Assets\Spaceship\Spaceship.babylon" />
     <Content Include="angularApp\controllers\configEditor.js.map">
       <DependentUpon>configEditor.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\configBanner.js.map">
+      <DependentUpon>configBanner.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1285,7 +1292,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\BannerController.cs" />
     <Compile Include="Controllers\DataCenterController.cs" />
+    <Compile Include="Controllers\BannersController.cs" />
     <Compile Include="Controllers\DataCentersController.cs" />
     <Compile Include="Controllers\GroupingsController.cs" />
     <Compile Include="Controllers\GroupingController.cs" />
@@ -1359,6 +1368,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\configBanner.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configDatacenter.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configGrouping.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configEditor.ts" />

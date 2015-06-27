@@ -267,6 +267,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Log") return table.ExecuteQuery(new TableQuery<LogEntity>().Where(where));
             else if (type == "Version") return table.ExecuteQuery(new TableQuery<VersionEntity>().Where(where));
             else if (type == "Grouping") return table.ExecuteQuery(new TableQuery<GroupingEntity>().Where(where));
+            else if (type == "Banner") return table.ExecuteQuery(new TableQuery<BannerEntity>().Where(where));
             else throw new NotImplementedException();
         }
 
