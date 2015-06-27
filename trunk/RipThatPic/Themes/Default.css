@@ -106,6 +106,7 @@
     }
 
     .config .jf-col1 {
+        height:100%;
         margin-left:-3px;
         padding-left:3px;
     }
