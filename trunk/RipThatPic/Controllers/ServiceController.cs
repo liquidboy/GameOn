@@ -13,7 +13,7 @@ namespace RipThatPic.Controllers
     public class ServiceController : ApiController
     {
 
-        // GET: api/Service?name=servicename&grouping=groupname
+        // GET: api/Service?name=datacentername&grouping=groupname
         public async Task<object> Get(string name, string grouping)
         {
             AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);

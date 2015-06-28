@@ -2,7 +2,9 @@
     export class ConfigServiceCtrl {
         EntityType: string = "service";
         ItemsList: Array<any>;
+        GroupingsList: Array<string>;
         SelectedItem: any;
+        SelectedGrouping: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -19,7 +21,7 @@
 
             this.dataSvc
                 .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
-                .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .success(function (result: any) { __this.RefreshGrid(__this.SelectedGrouping); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
 
         }
@@ -30,15 +32,32 @@
 
         private init() {
             this.InitSelectedItem();
-            this.RefreshData();
+            this.RefreshGrid(this.SelectedGrouping);
+            this.RefreshGroupings();
         }
 
-        private RefreshData() {
+        private RefreshGrid(grouping: string) {
+            var __this = this;
+
+            if (grouping === undefined || grouping === "-all-")
+                this.dataSvc
+                    .getAll(__this.EntityType)
+                    .success(function (result: any) { __this.ItemsList = result; })
+                    .error(function (err) { });
+            else
+                this.dataSvc
+                    .getAllByGrouping(__this.EntityType, grouping)
+                    .success(function (result: any) { __this.ItemsList = result; })
+                    .error(function (err) { });
+
+        }
+
+        private RefreshGroupings() {
             var __this = this;
 
             this.dataSvc
-                .getAll(__this.EntityType)
-                .success(function (result: any) { __this.ItemsList = result; })
+                .getGroupings(__this.EntityType)
+                .success(function (result: any) { __this.GroupingsList = result; })
                 .error(function (err) { });
         }
 
@@ -53,7 +72,7 @@
 
             __this.dataSvc
                 .save(__this.EntityType, __this.SelectedItem)
-                .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                .success(function (val) { __this.RefreshGrid(__this.SelectedGrouping); __this.InitSelectedItem(); })
                 .error(function (val) { alert('Failed saving item'); });
 
         }
@@ -69,10 +88,12 @@
             this.SelectedItem._Model.IsSelected = true;
         }
 
+        GroupingChanged = (model, event) => {
+            var __this: any = this;
+            if (__this.SelectedGrouping != undefined) __this.RefreshGrid(__this.SelectedGrouping.name);
+        }
 
         private UnSelect() { if (this.SelectedItem != undefined) this.SelectedItem._Model.IsSelected = false; }
-
-
 
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');

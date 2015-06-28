@@ -32,11 +32,7 @@ namespace RipThatPic.Controllers
 
         }
 
-
-
-
-       
-
+  
 
     }
 
