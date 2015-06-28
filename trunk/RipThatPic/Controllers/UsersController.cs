@@ -10,11 +10,11 @@ using System.Web.Http;
 
 namespace RipThatPic.Controllers
 {
-    public class UsersController : ApiController
+    public class UsersController : _BaseController
     {
         public IEnumerable<object> Get()
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = processor.RetrieveAll("User");
             return result.AsEnumerable();
 
@@ -26,7 +26,7 @@ namespace RipThatPic.Controllers
         public IEnumerable<object> Get(string grouping)
         {
 
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = processor.RetrieveAll("User", grouping);
             return result.AsEnumerable();
 

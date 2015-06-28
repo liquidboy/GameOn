@@ -10,13 +10,13 @@ using System.Web.Http;
 
 namespace RipThatPic.Controllers
 {
-    public class VersionController : ApiController
+    public class VersionController : _BaseController
     {
 
         // GET: api/Version?name=versionname&grouping=groupname
         public async Task<object> Get(string name, string grouping)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Version");
             return await processor.RetrieveFromTable("Version", grouping, name);
         }
@@ -24,7 +24,7 @@ namespace RipThatPic.Controllers
         // GET: api/Version?grouping=groupname
         public async Task<IEnumerable<object>> Get(string name)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Version");
             return processor.RetrieveAllByName("Version", name);
         }
@@ -38,7 +38,7 @@ namespace RipThatPic.Controllers
         public async Task<int> Post([FromBody]VersionEntity data)
         {
             if (data.DisplayId == Guid.Empty) data.DisplayId = Guid.NewGuid();
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Version");
             return await processor.AddToTable("Version", data);
         }
@@ -52,7 +52,7 @@ namespace RipThatPic.Controllers
         [HttpDelete]
         public async Task<int> Delete([FromUri]string displayid)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = await processor.DeleteByDisplayId("Version", Guid.Parse(displayid));
             return result;
         }
@@ -62,7 +62,7 @@ namespace RipThatPic.Controllers
         [HttpDelete]
         public async Task<int> Delete([FromUri]string grouping, [FromUri]string name)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             VersionEntity entity = new VersionEntity(name, grouping);
             entity.ETag = "*";
             var result = await processor.DeleteFromTable("Version", entity);

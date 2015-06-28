@@ -10,13 +10,13 @@ using System.Web.Http;
 
 namespace RipThatPic.Controllers
 {
-    public class LinkController : ApiController
+    public class LinkController : _BaseController
     {
 
         // GET: api/Link?name=linkname&grouping=groupname
         public async Task<object> Get(string name, string grouping)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Link");
             return await processor.RetrieveFromTable("Link", grouping, name);
         }
@@ -24,7 +24,7 @@ namespace RipThatPic.Controllers
         // GET: api/Link?grouping=groupname
         public async Task<IEnumerable<object>> Get(string name)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Link");
             return processor.RetrieveAllByName("Link", name);
         }
@@ -38,7 +38,7 @@ namespace RipThatPic.Controllers
         public async Task<int> Post([FromBody]LinkEntity data)
         {
             if (data.DisplayId == Guid.Empty) data.DisplayId = Guid.NewGuid();
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Link");
             return await processor.AddToTable("Link", data);
         }
@@ -52,7 +52,7 @@ namespace RipThatPic.Controllers
         [HttpDelete]
         public async Task<int> Delete([FromUri]string displayid)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = await processor.DeleteByDisplayId("Link", Guid.Parse(displayid));
             return result;
         }
@@ -62,7 +62,7 @@ namespace RipThatPic.Controllers
         [HttpDelete]
         public async Task<int> Delete([FromUri]string grouping, [FromUri]string name)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             LinkEntity entity = new LinkEntity(name, grouping);
             entity.ETag = "*";
             var result = await processor.DeleteFromTable("Link", entity);

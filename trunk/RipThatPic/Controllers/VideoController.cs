@@ -10,13 +10,13 @@ using System.Web.Http;
 
 namespace RipThatPic.Controllers
 {
-    public class VideoController : ApiController
+    public class VideoController : _BaseController
     {
 
         // GET: api/Video?name=videoname&grouping=groupname
         public async Task<object> Get(string name, string grouping)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Video");
             return await processor.RetrieveFromTable("Video", grouping, name);
         }
@@ -24,7 +24,7 @@ namespace RipThatPic.Controllers
         // GET: api/Video?grouping=groupname
         public async Task<IEnumerable<object>> Get(string name)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Video");
             return processor.RetrieveAllByName("Video", name);
         }
@@ -38,7 +38,7 @@ namespace RipThatPic.Controllers
         public async Task<int> Post([FromBody]VideoEntity data)
         {
             if (data.DisplayId == Guid.Empty) data.DisplayId = Guid.NewGuid();
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Video");
             return await processor.AddToTable("Video", data);
         }
@@ -52,7 +52,7 @@ namespace RipThatPic.Controllers
         [HttpDelete]
         public async Task<int> Delete([FromUri]string displayid)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = await processor.DeleteByDisplayId("Video", Guid.Parse(displayid));
             return result;
         }
@@ -62,7 +62,7 @@ namespace RipThatPic.Controllers
         [HttpDelete]
         public async Task<int> Delete([FromUri]string grouping, [FromUri]string name)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             VideoEntity entity = new VideoEntity(name, grouping);
             entity.ETag = "*";
             var result = await processor.DeleteFromTable("Video", entity);

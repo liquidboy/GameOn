@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace RipThatPic.Controllers
 {
-    public class AreaController : ApiController
+    public class AreaController : _BaseController
     {
 
 
@@ -18,7 +18,7 @@ namespace RipThatPic.Controllers
         // GET: api/Area?name=areaname&grouping=groupname
         public async Task<object> Get(string name, string grouping)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Area");
             return await processor.RetrieveFromTable("Area", grouping, name);
         }
@@ -26,7 +26,7 @@ namespace RipThatPic.Controllers
         // GET: api/Area?grouping=groupname
         public async Task<IEnumerable<object>> Get(string name)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Area");
             return processor.RetrieveAllByName("Area", name);
         }
@@ -40,7 +40,7 @@ namespace RipThatPic.Controllers
         public async Task<int> Post([FromBody]AreaEntity data)
         {
             if (data.DisplayId == Guid.Empty) data.DisplayId = Guid.NewGuid();
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Area");
             return await processor.AddToTable("Area", data);
         }
@@ -54,7 +54,7 @@ namespace RipThatPic.Controllers
         [HttpDelete]
         public async Task<int> Delete([FromUri]string displayid)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = await processor.DeleteByDisplayId("Area", Guid.Parse(displayid));
             return result;
         }
@@ -64,7 +64,7 @@ namespace RipThatPic.Controllers
         [HttpDelete]
         public async Task<int> Delete([FromUri]string grouping, [FromUri]string name)
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             AreaEntity entity = new AreaEntity(name, grouping);
             entity.ETag = "*";
             var result = await processor.DeleteFromTable("Area", entity);

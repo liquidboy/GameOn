@@ -50,6 +50,9 @@ namespace Incite.Cloud.Storage
             Netherlands, //Netherlands Netherlands
         }  //http://azure.microsoft.com/en-us/regions/
 
+        public AzureProcessor(string accountName, string accountKey) {
+            InitBlobClient(accountName, accountKey, string.Empty, string.Empty);
+        }
 
         public AzureProcessor(Location location)
         {
@@ -320,9 +323,9 @@ namespace Incite.Cloud.Storage
 
 
 
-        //==================
-        //start: GROUPING
-        //==================
+
+        #region GROUPING
+        
 
         private async Task<int> UpdateGroupingTable(string tablename, string grouping)
         {
@@ -354,9 +357,8 @@ namespace Incite.Cloud.Storage
         }
 
 
-        //==================
-        //end: GROUPING
-        //==================
+        #endregion
+
 
 
 

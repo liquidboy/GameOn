@@ -1290,6 +1290,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\_BaseController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\BannerController.cs" />

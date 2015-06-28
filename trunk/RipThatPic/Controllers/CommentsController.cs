@@ -11,11 +11,11 @@ using System.Web.Http;
 namespace RipThatPic.Controllers
 {
     [RoutePrefix("api/comments")]
-    public class CommentsController : ApiController
+    public class CommentsController : _BaseController
     {
         public IEnumerable<object> Get()
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = processor.RetrieveAll("Comment");
             return result.AsEnumerable();
 
@@ -27,7 +27,7 @@ namespace RipThatPic.Controllers
         public IEnumerable<object> Get(string grouping)
         {
 
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = processor.RetrieveAll("Comment", grouping);
             return result.AsEnumerable();
 

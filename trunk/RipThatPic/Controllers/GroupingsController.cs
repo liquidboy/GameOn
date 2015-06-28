@@ -8,13 +8,13 @@ using System.Web.Http;
 namespace RipThatPic.Controllers
 {
     [RoutePrefix("api/groupings")]
-    public class GroupingsController : ApiController
+    public class GroupingsController : _BaseController
     {
 
 
         public IEnumerable<object> Get()
         {
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = processor.RetrieveAll("Grouping");
             return result.AsEnumerable();
 
@@ -26,7 +26,7 @@ namespace RipThatPic.Controllers
         //public IEnumerable<object> Get(string grouping)
         //{
 
-        //    AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+        //    var processor = GetAzureProcessor();
         //    var result = processor.RetrieveAll("Grouping", grouping);
         //    return result.AsEnumerable();
 
@@ -40,7 +40,7 @@ namespace RipThatPic.Controllers
         public async Task<IEnumerable<object>> Get(string tablename)
         {
 
-            AzureProcessor processor = new AzureProcessor(AzureProcessor.Location.Sydney);
+            var processor = GetAzureProcessor();
             var result = await processor.RetrieveAllGroupingsFromTable(tablename);
 
             var ret = result.Select(x => new { name = x }).ToList();
