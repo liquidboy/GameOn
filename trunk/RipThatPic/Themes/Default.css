@@ -79,6 +79,8 @@
 .config {
 
 }
+
+
     .config .jf-data-grid {
         height:150px;
         overflow:auto;
@@ -115,5 +117,16 @@
         padding-left:1px;
         border-bottom:1px dashed cyan;
     }
+
+
+    .config .jf-tbldetail {
+        margin-top:30px;
+    }
+
+        .config .jf-tbldetail .label {
+            font-size:10px;
+            text-align:right;
+            width:200px;
+        }
 
  
