@@ -163,7 +163,7 @@
 /* ======== */
 .ui.menu {
     padding-bottom:10px;
-    border-bottom:1px dashed lightgray;
+    border-bottom:0 dashed lightgray;
     margin-bottom:10px;
 }
     .ui.menu .item {
