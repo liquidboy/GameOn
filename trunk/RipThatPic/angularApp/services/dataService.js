@@ -30,8 +30,11 @@ var Application;
             DataSvc.prototype.getAllByGrouping = function (type, grouping) {
                 return this.http.get(this.urlBase + type + "s?grouping=" + grouping);
             };
-            DataSvc.prototype.getGroupings = function (tablename) {
-                return this.http.get(this.urlBase + "groupings?tablename=" + tablename);
+            DataSvc.prototype.getGroupings = function (type) {
+                return this.http.get(this.urlBase + "groupings?tablename=" + type);
+            };
+            DataSvc.prototype.get = function (type, grouping, name) {
+                return this.http.get(this.urlBase + type + "?grouping=" + grouping + "&name=" + name);
             };
             DataSvc.prototype.save = function (type, entity) {
                 return this.http.post(this.urlBase + type, entity);
