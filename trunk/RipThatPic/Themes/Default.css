@@ -14,7 +14,7 @@
         }
 
 
-        .Absolute-Center-headphones {
+        /*.Absolute-Center-headphones {
           width: 150px;
           height: 150px;
           overflow: auto;
@@ -31,7 +31,7 @@
           margin: auto;
           position: absolute;
           top: 100px; left: 0; bottom: 0; right: 0;
-        }
+        }*/
 
 
         .rtp-billboard {
@@ -95,10 +95,10 @@
 
 }
     .config .jf-data-grid {
-        height:150px;
+        height:250px;
         overflow:auto;
-        border-top:1px solid lightgray;
-        border-bottom:1px solid lightgray;
+        border-top:1px dashed lightgray;
+        border-bottom:1px dashed lightgray;
     }
     .config .jf-tbl {
         cellpadding:0;
@@ -126,9 +126,10 @@
         padding-left:3px;
     }
     .config .jf-col1.selected {
-        border-left:2px solid cyan;
+        border-left:2px solid orange;
         padding-left:1px;
-        border-bottom:1px dashed cyan;
+        border-bottom:1px dashed orange;
+        background-color: #fed892;
     }
 
 
@@ -362,7 +363,7 @@
     .ui.menu .item.active.ico-link {
       background-image: url('/content/icons/link-white.png');
     }
-    .ui.menu .item.active.ico-lilst {
+    .ui.menu .item.active.ico-list {
       background-image: url('/content/icons/list-white.png');
     }
     .ui.menu .item.active.ico-install {
