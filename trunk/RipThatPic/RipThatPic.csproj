@@ -206,7 +206,7 @@
     <Content Include="angularApp\directives\billboard.js">
       <DependentUpon>billboard.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\directives\configMenu.js" >
+    <Content Include="angularApp\directives\configMenu.js">
       <DependentUpon>configMenu.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\directives\workarea.js">
@@ -255,10 +255,60 @@
     <Content Include="angularApp\views\home\home.html" />
     <Content Include="Assets\Spaceship\0.png" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
+    <Content Include="Content\icons\area-black.png" />
+    <Content Include="Content\icons\area-white.png" />
+    <Content Include="Content\icons\Banner-black.png" />
+    <Content Include="Content\icons\Banner-white.png" />
+    <Content Include="Content\icons\comment-black.png" />
+    <Content Include="Content\icons\comment-white.png" />
+    <Content Include="Content\icons\datacenter-black.png" />
+    <Content Include="Content\icons\datacenter-white.png" />
+    <Content Include="Content\icons\document-black.png" />
+    <Content Include="Content\icons\document-white.png" />
+    <Content Include="Content\icons\editor-black.png" />
+    <Content Include="Content\icons\editor-white.png" />
+    <Content Include="Content\icons\extension-black.png" />
+    <Content Include="Content\icons\extension-white.png" />
+    <Content Include="Content\icons\group-black.png" />
+    <Content Include="Content\icons\group-white.png" />
     <Content Include="Content\icons\House-black.png" />
     <Content Include="Content\icons\House-white.png" />
+    <Content Include="Content\icons\Image-black.png" />
+    <Content Include="Content\icons\Image-white.png" />
+    <Content Include="Content\icons\install-black.png" />
+    <Content Include="Content\icons\install-white.png" />
+    <Content Include="Content\icons\link-black.png" />
+    <Content Include="Content\icons\link-white.png" />
+    <Content Include="Content\icons\list-black.png" />
+    <Content Include="Content\icons\list-white.png" />
+    <Content Include="Content\icons\log-black.png" />
+    <Content Include="Content\icons\log-white.png" />
+    <Content Include="Content\icons\map-black.png" />
+    <Content Include="Content\icons\map-white.png" />
+    <Content Include="Content\icons\music-black.png" />
+    <Content Include="Content\icons\music-white.png" />
+    <Content Include="Content\icons\page-black.png" />
+    <Content Include="Content\icons\page-white.png" />
+    <Content Include="Content\icons\post-black.png" />
+    <Content Include="Content\icons\post-white.png" />
+    <Content Include="Content\icons\security-black.png" />
+    <Content Include="Content\icons\security-white.png" />
+    <Content Include="Content\icons\service-black.png" />
+    <Content Include="Content\icons\service-white.png" />
+    <Content Include="Content\icons\session-black.png" />
+    <Content Include="Content\icons\session-white.png" />
+    <Content Include="Content\icons\setting-black.png" />
+    <Content Include="Content\icons\setting-white.png" />
+    <Content Include="Content\icons\Settings-black.png" />
+    <Content Include="Content\icons\Settings-white.png" />
+    <Content Include="Content\icons\theme-black.png" />
+    <Content Include="Content\icons\theme-white.png" />
     <Content Include="Content\icons\User-Male-black.png" />
     <Content Include="Content\icons\User-Male-white.png" />
+    <Content Include="Content\icons\version-black.png" />
+    <Content Include="Content\icons\version-white.png" />
+    <Content Include="Content\icons\Video-black.png" />
+    <Content Include="Content\icons\Video-White.png" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
     <Content Include="babylon-example-index.js" />
@@ -402,7 +452,7 @@
     <Content Include="angularApp\services\authService.js.map">
       <DependentUpon>authService.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\directives\configMenu.js.map" >
+    <Content Include="angularApp\directives\configMenu.js.map">
       <DependentUpon>configMenu.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
