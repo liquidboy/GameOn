@@ -211,7 +211,7 @@
     </Content>
     <Content Include="angularApp\partials\workarea.html" />
     <Content Include="angularApp\partials\billboard.html" />
-    <Content Include="angularApp\services\authService.js" >
+    <Content Include="angularApp\services\authService.js">
       <DependentUpon>authService.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\services\dataService.js">
@@ -251,6 +251,10 @@
     <Content Include="angularApp\views\home\home.html" />
     <Content Include="Assets\Spaceship\0.png" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
+    <Content Include="Content\icons\House-black.png" />
+    <Content Include="Content\icons\House-white.png" />
+    <Content Include="Content\icons\User-Male-black.png" />
+    <Content Include="Content\icons\User-Male-white.png" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
     <Content Include="babylon-example-index.js" />
@@ -391,7 +395,7 @@
     <Content Include="angularApp\controllers\configBanner.js.map">
       <DependentUpon>configBanner.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\services\authService.js.map" >
+    <Content Include="angularApp\services\authService.js.map">
       <DependentUpon>authService.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />

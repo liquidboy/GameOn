@@ -76,11 +76,15 @@
 }
 
 
+
+
+
+/* ====== */
+/* CONFIG */
+/* ====== */
 .config {
 
 }
-
-
     .config .jf-data-grid {
         height:150px;
         overflow:auto;
@@ -129,4 +133,67 @@
             width:157px;
         }
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======== */
+/* TOP MENU */
+/* ======== */
+.ui.menu {
+
+}
+    .ui.menu .item {
+      background-color: whitesmoke;
+      padding: 5px;
+      font-size: small;
+      text-decoration: none;
+      line-height: 35px;
+      color: black;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .ui.menu .item.ico-home {
+      background-image: url('/content/icons/House-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-user {
+      background-image: url('/content/User-Male-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.active {
+      background-color: black;
+      color: white;
+    }
+    .ui.menu .item.active.ico-home {
+      background-image: url('/content/icons/House-white.png');
+    }
+    .ui.menu .item.active.ico-user {
+      background-image: url('/content/icons/User-Male-white.png');
+    }
+    .ui.menu .item:hover {
+      background-color: #e8e8e8;
+    }
+    .ui.menu .item:hover.active {
+      background-color: black;
+      color: white;
+      cursor: default;
+    }
+    .ui.menu .right {
+      float: right;
+    }
