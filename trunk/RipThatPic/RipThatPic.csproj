@@ -211,6 +211,9 @@
     </Content>
     <Content Include="angularApp\partials\workarea.html" />
     <Content Include="angularApp\partials\billboard.html" />
+    <Content Include="angularApp\services\authService.js" >
+      <DependentUpon>authService.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\services\dataService.js">
       <DependentUpon>dataService.ts</DependentUpon>
     </Content>
@@ -387,6 +390,9 @@
     </Content>
     <Content Include="angularApp\controllers\configBanner.js.map">
       <DependentUpon>configBanner.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\authService.js.map" >
+      <DependentUpon>authService.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1397,6 +1403,7 @@
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />
+    <TypeScriptCompile Include="angularApp\services\authService.ts" />
     <TypeScriptCompile Include="angularApp\services\instanceFactory.ts" />
     <TypeScriptCompile Include="angularApp\services\serviceHelper.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />

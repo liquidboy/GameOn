@@ -15,28 +15,28 @@ var Application;
                     }
                 ];
             };
-            DataSvc.prototype.delete = function (type, name, grouping) {
+            DataSvc.prototype.delete = function (type, name, grouping, sessionid) {
                 return this.http.delete(this.urlBase + type + "?" + "grouping=" + grouping + "&name=" + name);
             };
-            DataSvc.prototype.deleteByDisplayId = function (type, displayid) {
+            DataSvc.prototype.deleteByDisplayId = function (type, displayid, sessionid) {
                 return this.http.delete(this.urlBase + type + "?displayid=" + displayid);
             };
-            DataSvc.prototype.getByDisplayId = function (type, displayid) {
+            DataSvc.prototype.getByDisplayId = function (type, displayid, sessionid) {
                 return this.http.get(this.urlBase + type + "/" + displayid);
             };
-            DataSvc.prototype.getAll = function (type) {
+            DataSvc.prototype.getAll = function (type, sessionid) {
                 return this.http.get(this.urlBase + type + "s");
             };
-            DataSvc.prototype.getAllByGrouping = function (type, grouping) {
+            DataSvc.prototype.getAllByGrouping = function (type, grouping, sessionid) {
                 return this.http.get(this.urlBase + type + "s?grouping=" + grouping);
             };
-            DataSvc.prototype.getGroupings = function (type) {
+            DataSvc.prototype.getGroupings = function (type, sessionid) {
                 return this.http.get(this.urlBase + "groupings?tablename=" + type);
             };
-            DataSvc.prototype.get = function (type, grouping, name) {
+            DataSvc.prototype.get = function (type, grouping, name, sessionid) {
                 return this.http.get(this.urlBase + type + "?grouping=" + grouping + "&name=" + name);
             };
-            DataSvc.prototype.save = function (type, entity) {
+            DataSvc.prototype.save = function (type, entity, sessionid) {
                 return this.http.post(this.urlBase + type, entity);
             };
             DataSvc.prototype.testCall = function () {

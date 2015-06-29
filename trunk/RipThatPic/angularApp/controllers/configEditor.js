@@ -3,13 +3,14 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigEditorCtrl = (function () {
-            function ConfigEditorCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory) {
+            function ConfigEditorCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
                 this.instanceFactory = instanceFactory;
+                this.authService = authService;
                 this.localWindow = window;
                 this.LoadCode = function (code) {
                     if (_this.localWindow.MonacoEditorIntegration != undefined) {
@@ -33,7 +34,7 @@ var Application;
         })();
         Controllers.ConfigEditorCtrl = ConfigEditorCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigEditorCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", ConfigEditorCtrl]);
+        myapp.controller("ConfigEditorCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigEditorCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configEditor.js.map

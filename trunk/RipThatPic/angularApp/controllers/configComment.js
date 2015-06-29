@@ -3,17 +3,18 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigCommentCtrl = (function () {
-            function ConfigCommentCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory) {
+            function ConfigCommentCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
                 this.instanceFactory = instanceFactory;
+                this.authService = authService;
                 this.EntityType = "comment";
                 this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping, __this.authService.sessionId).success(function (result) {
                         __this.RefreshData();
                         __this.InitSelectedItem();
                     }).error(function (err) {
@@ -49,7 +50,7 @@ var Application;
             };
             ConfigCommentCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                this.dataSvc.getAll(__this.EntityType, __this.authService.sessionId).success(function (result) {
                     __this.ItemsList = result;
                 }).error(function (err) {
                 });
@@ -66,7 +67,7 @@ var Application;
         })();
         Controllers.ConfigCommentCtrl = ConfigCommentCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigCommentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", ConfigCommentCtrl]);
+        myapp.controller("ConfigCommentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigCommentCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configComment.js.map

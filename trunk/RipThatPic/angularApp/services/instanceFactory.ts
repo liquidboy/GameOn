@@ -3,7 +3,7 @@
         getInstance(instanceName: string): Object;
     }
 
-    export class InstanceFactory {
+    export class InstanceFactory implements IInstanceFactory {
         location: ng.ILocationService;
 
 

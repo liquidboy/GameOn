@@ -8,7 +8,8 @@
             public $rootScope: any,
             public serviceHelperSvc: Application.Services.IServiceHelper,
             public dataSvc: Application.Services.IData,
-            public instanceFactory: Application.Services.IInstanceFactory) {
+            public instanceFactory: Application.Services.IInstanceFactory,
+            public authService: Application.Services.IAuthService) {
             this.init();
         }
 
@@ -38,5 +39,5 @@
 
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ConfigEditorCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", ConfigEditorCtrl]);
+    myapp.controller("ConfigEditorCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigEditorCtrl]);
 }

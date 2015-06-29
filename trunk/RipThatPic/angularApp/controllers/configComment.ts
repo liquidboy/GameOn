@@ -9,7 +9,8 @@
             public $rootScope: any,
             public serviceHelperSvc: Application.Services.IServiceHelper,
             public dataSvc: Application.Services.IData,
-            public instanceFactory: Application.Services.IInstanceFactory
+            public instanceFactory: Application.Services.IInstanceFactory,
+            public authService: Application.Services.IAuthService
             ) {
             this.init();
         }
@@ -19,7 +20,7 @@
             var __this = this;
 
             this.dataSvc
-                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping)
+                .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping, __this.authService.sessionId)
                 .success(function (result: any) { __this.RefreshData(); __this.InitSelectedItem(); })
                 .error(function (err: any) { alert('failure deleting..') });
             
@@ -38,7 +39,7 @@
             var __this = this;
 
             this.dataSvc
-                .getAll(__this.EntityType)
+                .getAll(__this.EntityType, __this.authService.sessionId)
                 .success(function (result: any) { __this.ItemsList = result; })
                 .error(function (err) { });
         }
@@ -76,5 +77,5 @@
 
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ConfigCommentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", ConfigCommentCtrl]);
+    myapp.controller("ConfigCommentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigCommentCtrl]);
 }

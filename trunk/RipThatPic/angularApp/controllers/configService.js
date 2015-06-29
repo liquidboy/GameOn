@@ -3,17 +3,18 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigServiceCtrl = (function () {
-            function ConfigServiceCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory) {
+            function ConfigServiceCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
                 this.instanceFactory = instanceFactory;
+                this.authService = authService;
                 this.EntityType = "service";
                 this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping).success(function (result) {
+                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping, __this.authService.sessionId).success(function (result) {
                         __this.RefreshGrid(__this.SelectedGrouping);
                         __this.InitSelectedItem();
                     }).error(function (err) {
@@ -25,7 +26,7 @@ var Application;
                 };
                 this.SaveItem = function () {
                     var __this = _this;
-                    __this.dataSvc.save(__this.EntityType, __this.SelectedItem).success(function (val) {
+                    _this.dataSvc.save(__this.EntityType, __this.SelectedItem, __this.authService.sessionId).success(function (val) {
                         __this.RefreshGrid(__this.SelectedGrouping);
                         __this.InitSelectedItem();
                     }).error(function (val) {
@@ -56,19 +57,19 @@ var Application;
             ConfigServiceCtrl.prototype.RefreshGrid = function (grouping) {
                 var __this = this;
                 if (grouping === undefined || grouping === "-all-")
-                    this.dataSvc.getAll(__this.EntityType).success(function (result) {
+                    this.dataSvc.getAll(__this.EntityType, __this.authService.sessionId).success(function (result) {
                         __this.ItemsList = result;
                     }).error(function (err) {
                     });
                 else
-                    this.dataSvc.getAllByGrouping(__this.EntityType, grouping).success(function (result) {
+                    this.dataSvc.getAllByGrouping(__this.EntityType, grouping, __this.authService.sessionId).success(function (result) {
                         __this.ItemsList = result;
                     }).error(function (err) {
                     });
             };
             ConfigServiceCtrl.prototype.RefreshGroupings = function () {
                 var __this = this;
-                this.dataSvc.getGroupings(__this.EntityType).success(function (result) {
+                this.dataSvc.getGroupings(__this.EntityType, __this.authService.sessionId).success(function (result) {
                     __this.GroupingsList = result;
                 }).error(function (err) {
                 });
@@ -85,7 +86,7 @@ var Application;
         })();
         Controllers.ConfigServiceCtrl = ConfigServiceCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigServiceCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", ConfigServiceCtrl]);
+        myapp.controller("ConfigServiceCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigServiceCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configService.js.map
