@@ -11,6 +11,7 @@ var Application;
                 this.templateUrl = '/angularApp/partials/configmenu.html';
                 this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', ConfigMenuController];
                 this.link = function ($scope, element, attributes, controller) {
+                    //eg. http://dotnetspeak.com/2013/12/angular-and-dom-manipulations-in-directives
                     var selectedTab = "";
                     if (attributes.$attr["daSelectedTab"]) {
                         selectedTab = element.attr(attributes.$attr["daSelectedTab"]);

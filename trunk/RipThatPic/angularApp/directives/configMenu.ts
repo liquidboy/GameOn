@@ -31,9 +31,11 @@
             this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', ConfigMenuController];
             this.link = ($scope: IConfigMenuController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: ConfigMenuController) =>
             {
+                //eg. http://dotnetspeak.com/2013/12/angular-and-dom-manipulations-in-directives
+
                 var selectedTab: string = "";
                 if (attributes.$attr["daSelectedTab"]) {
-                    selectedTab = element.attr(<string>attributes.$attr["daSelectedTab"]);
+                    selectedTab = element.attr(<string>attributes.$attr["daSelectedTab"]); 
                 }
                 
                 var foundTab = element.find('a[data-id="' + selectedTab + '"]');
