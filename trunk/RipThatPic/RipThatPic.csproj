@@ -203,6 +203,9 @@
     <Content Include="angularApp\controllers\home.js">
       <DependentUpon>home.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\page.js">
+      <DependentUpon>page.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\billboard.js">
       <DependentUpon>billboard.ts</DependentUpon>
     </Content>
@@ -253,6 +256,7 @@
     <Content Include="angularApp\views\config\area.html" />
     <Content Include="angularApp\views\config\config.html" />
     <Content Include="angularApp\views\home\home.html" />
+    <Content Include="angularApp\views\page\page.html" />
     <Content Include="Assets\Spaceship\0.png" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
     <Content Include="Content\icons\area-black.png" />
@@ -454,6 +458,9 @@
     </Content>
     <Content Include="angularApp\directives\configMenu.js.map">
       <DependentUpon>configMenu.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\page.js.map">
+      <DependentUpon>page.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1435,6 +1442,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\page.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configBanner.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configDatacenter.ts" />
