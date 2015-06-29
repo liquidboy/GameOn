@@ -12,7 +12,7 @@
 
         
         $routeProvider
-            .when('/home', { controller: 'HomeCtrl', templateUrl: '/angularApp/views/home/home.html', controllerAs: 'home'})
+            .when('/home', { controller: 'HomeCtrl', templateUrl: '/angularApp/views/home/home.html', controllerAs: 'home' })
             .when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html', controllerAs: 'config' })
             .when('/config/area', { controller: 'ConfigAreaCtrl', templateUrl: '/angularApp/views/config/area.html', controllerAs: 'configarea' })
             .when('/config/comment', { controller: 'ConfigCommentCtrl', templateUrl: '/angularApp/views/config/comment.html', controllerAs: 'configcomment' })

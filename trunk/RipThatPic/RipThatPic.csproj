@@ -206,9 +206,13 @@
     <Content Include="angularApp\directives\billboard.js">
       <DependentUpon>billboard.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\configMenu.js" >
+      <DependentUpon>configMenu.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\partials\configmenu.html" />
     <Content Include="angularApp\partials\workarea.html" />
     <Content Include="angularApp\partials\billboard.html" />
     <Content Include="angularApp\services\authService.js">
@@ -397,6 +401,9 @@
     </Content>
     <Content Include="angularApp\services\authService.js.map">
       <DependentUpon>authService.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\configMenu.js.map" >
+      <DependentUpon>configMenu.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1404,6 +1411,7 @@
     <TypeScriptCompile Include="angularApp\controllers\configComment.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
+    <TypeScriptCompile Include="angularApp\directives\configMenu.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />

@@ -55,6 +55,9 @@
             padding:10px;
         }
 
+.hidden {
+    display:none;
+}
 
 
 
@@ -68,7 +71,11 @@
 .text-quote {
     font: italic 1.6em Georgia,"Times New Roman",Times,serif;
 }
-
+.slash {
+    font-size:20px;
+    font-weight:bold;
+    margin-left:10px;
+}
 
 
 .areaslist .col {
