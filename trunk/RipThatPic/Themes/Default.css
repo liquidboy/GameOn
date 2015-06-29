@@ -161,7 +161,9 @@
 /* TOP MENU */
 /* ======== */
 .ui.menu {
-
+    padding-bottom:10px;
+    border-bottom:1px dashed lightgray;
+    margin-bottom:10px;
 }
     .ui.menu .item {
       background-color: whitesmoke;
@@ -180,7 +182,7 @@
       padding-left: 25px;
     }
     .ui.menu .item.ico-user {
-      background-image: url('/content/User-Male-black.png');
+      background-image: url('/content/icons/User-Male-black.png');
       background-size: 25px;
       background-repeat: no-repeat;
       padding-left: 25px;
