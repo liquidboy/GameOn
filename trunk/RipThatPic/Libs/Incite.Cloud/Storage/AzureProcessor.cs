@@ -366,15 +366,40 @@ namespace Incite.Cloud.Storage
 
 
 
-        public async Task<object> RetrieveFromTable(string tableName, string partition, string key)
+        public async Task<T> RetrieveFromTable<T>(string type, string partition, string key)
         {
-            var table = _tableClient.GetTableReference(tableName);
-            await table.CreateIfNotExistsAsync();
+            var table = _tableClient.GetTableReference(type);
+            //await table.CreateIfNotExistsAsync();
 
-            TableOperation retrieveOp = TableOperation.Retrieve(partition, key);
+            TableOperation retrieveOp;
+
+            if (type == "Session") retrieveOp = TableOperation.Retrieve<SessionEntity>(partition, key);
+            else if (type == "Link") retrieveOp = TableOperation.Retrieve<LinkEntity>(partition, key);
+            else if (type == "User") retrieveOp = TableOperation.Retrieve<UserEntity>(partition, key);
+            else if (type == "Comment") retrieveOp = TableOperation.Retrieve<CommentEntity>(partition, key);
+            else if (type == "Document") retrieveOp = TableOperation.Retrieve<DocumentEntity>(partition, key);
+            else if (type == "Image") retrieveOp = TableOperation.Retrieve<ImageEntity>(partition, key);
+            else if (type == "Video") retrieveOp = TableOperation.Retrieve<VideoEntity>(partition, key);
+            else if (type == "Area") retrieveOp = TableOperation.Retrieve<AreaEntity>(partition, key);
+            else if (type == "Setting") retrieveOp = TableOperation.Retrieve<SettingEntity>(partition, key);
+            else if (type == "Page") retrieveOp = TableOperation.Retrieve<PageEntity>(partition, key);
+            else if (type == "DataCenter") retrieveOp = TableOperation.Retrieve<DataCenterEntity>(partition, key);
+            else if (type == "List") retrieveOp = TableOperation.Retrieve<ListEntity>(partition, key);
+            else if (type == "Post") retrieveOp = TableOperation.Retrieve<PostEntity>(partition, key);
+            else if (type == "Permission") retrieveOp = TableOperation.Retrieve<PermissionEntity>(partition, key);
+            else if (type == "Map") retrieveOp = TableOperation.Retrieve<MapEntity>(partition, key);
+            else if (type == "Service") retrieveOp = TableOperation.Retrieve<ServiceEntity>(partition, key);
+            else if (type == "Extension") retrieveOp = TableOperation.Retrieve<ExtensionEntity>(partition, key);
+            else if (type == "Theme") retrieveOp = TableOperation.Retrieve<ThemeEntity>(partition, key);
+            else if (type == "Log") retrieveOp = TableOperation.Retrieve<LogEntity>(partition, key);
+            else if (type == "Version") retrieveOp = TableOperation.Retrieve<VersionEntity>(partition, key);
+            else if (type == "Grouping") retrieveOp = TableOperation.Retrieve<GroupingEntity>(partition, key);
+            else if (type == "Banner") retrieveOp = TableOperation.Retrieve<BannerEntity>(partition, key);
+            else throw new NotImplementedException();
+            
             var result = await table.ExecuteAsync(retrieveOp);
-
-            return result.Result;
+            
+            return (T)result.Result;
         }
 
 

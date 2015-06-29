@@ -10,15 +10,17 @@ using System.Web.Http;
 
 namespace RipThatPic.Controllers
 {
+    //http://www.bizcoder.com/returning-raw-json-content-from-asp-net-web-api
+
     public class ServiceController : _BaseController
     {
 
         // GET: api/Service?name=servicename&grouping=groupname
-        public async Task<object> Get(string name, string grouping)
+        public async Task<ServiceEntity> Get(string name, string grouping)
         {
             var processor = GetAzureProcessor();
-            var ret = await processor.CreateTable("Service");
-            return await processor.RetrieveFromTable("Service", grouping, name);
+            //var table = await processor.CreateTable("Service");
+            return await processor.RetrieveFromTable<ServiceEntity>("Service", grouping, name);
         }
 
         // GET: api/Service?grouping=groupname

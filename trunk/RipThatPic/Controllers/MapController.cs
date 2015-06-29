@@ -14,11 +14,11 @@ namespace RipThatPic.Controllers
     {
 
         // GET: api/Map?name=mapname&grouping=groupname
-        public async Task<object> Get(string name, string grouping)
+        public async Task<MapEntity> Get(string name, string grouping)
         {
             var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Map");
-            return await processor.RetrieveFromTable("Map", grouping, name);
+            return await processor.RetrieveFromTable<MapEntity>("Map", grouping, name);
         }
 
         // GET: api/Map?grouping=groupname
