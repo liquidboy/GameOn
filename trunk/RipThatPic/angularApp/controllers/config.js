@@ -19,7 +19,7 @@ var Application;
                 var __this = this;
                 var ctl = $('.list-of-pages');
                 var pages = dataSvc.getAll('page', '').success(function (result) {
-                    __this.ItemsList = result;
+                    __this.PageList = result;
                 }).error(function () {
                 });
             }

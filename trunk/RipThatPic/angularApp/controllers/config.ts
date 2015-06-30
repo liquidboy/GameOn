@@ -2,7 +2,7 @@
     export class ConfigCtrl {
 
 
-        ItemsList: Array<any>;
+        PageList: Array<any>;
 
         constructor(
             public $scope: ng.IScope,
@@ -15,7 +15,7 @@
             
 
             var pages = dataSvc.getAll('page', '')
-                .success((result: any) => { __this.ItemsList = result; })
+                .success((result: any) => { __this.PageList = result; })
                 .error(() => { });
 
         }
