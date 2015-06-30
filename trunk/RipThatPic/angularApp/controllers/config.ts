@@ -2,9 +2,21 @@
     export class ConfigCtrl {
 
 
+        ItemsList: Array<any>;
 
+        constructor(
+            public $scope: ng.IScope,
+            public $rootScope: any,
+            public serviceHelperSvc: Application.Services.IServiceHelper,
+            public dataSvc: Application.Services.IData) {
 
-        constructor(public $scope: ng.IScope, public $rootScope: any, public serviceHelperSvc: Application.Services.IServiceHelper, public dataSvc: Application.Services.IData) {
+            var __this = this;
+            var ctl = $('.list-of-pages');
+            
+
+            var pages = dataSvc.getAll('page', '')
+                .success((result: any) => { __this.ItemsList = result; })
+                .error(() => { });
 
         }
         

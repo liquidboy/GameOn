@@ -16,6 +16,12 @@ var Application;
                     //    })
                     //    .error(function (err) { });
                 };
+                var __this = this;
+                var ctl = $('.list-of-pages');
+                var pages = dataSvc.getAll('page', '').success(function (result) {
+                    __this.ItemsList = result;
+                }).error(function () {
+                });
             }
             return ConfigCtrl;
         })();

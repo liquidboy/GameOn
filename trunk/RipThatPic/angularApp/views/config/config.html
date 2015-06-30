@@ -1,1 +1,18 @@
 ﻿<d-config-menu da-selected-tab="config"></d-config-menu>
+
+
+<style type="text/css">
+    .base-tile { width: 100px; height: 100px; position:relative; float:left; margin-right:5px; cursor:pointer; }
+</style>
+<div ng-repeat="item in config.ItemsList" ng-include="'itemlist.html'"></div>
+
+<script type="text/ng-template" id="itemlist.html">    
+    <style type="text/css">
+        .jf{{item.DisplayId}}{  background-color:lightgray; } 
+        .jf{{item.DisplayId}}:hover{  background-color:{{item.Color}}; } 
+    </style>
+    <div class="base-tile jf{{item.DisplayId}}" >
+        <div style="font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 5px;  left: 5px; color:white;">{{item.LongName}} </div>
+    </div>
+</script>
+
