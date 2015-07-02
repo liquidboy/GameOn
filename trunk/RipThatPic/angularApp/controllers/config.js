@@ -30,6 +30,14 @@ var Application;
                     __this.AreaList = result;
                 }).error(function () {
                 });
+                dataSvc.getAll('datacenter', '').success(function (result) {
+                    __this.DatacenterList = result;
+                }).error(function () {
+                });
+                dataSvc.getAll('service', '').success(function (result) {
+                    __this.ServiceList = result;
+                }).error(function () {
+                });
             }
             return ConfigCtrl;
         })();

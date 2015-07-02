@@ -1,14 +1,24 @@
 ﻿
 <style type="text/css">
-    .base-page-tile { width: 150px; height: 70px; position: relative; float: left; margin-right: 5px; cursor: pointer; }
-    .base-banner-tile { width: 150px; height: 70px; position: relative; float: left; margin-right: 5px; cursor: pointer; }
-    .base-area-tile { width: 150px; height: 70px; position: relative; float: left; margin-right: 5px; cursor: pointer; }
+    
 
-    .base-label-top-left1 { font-size:10px; overflow: auto; margin: auto ; position: absolute; top: 5px;  left: 5px; color:white; }
-    .base-label-bottom-left2 { font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 20px;  left: 5px; color:white; }
-    .base-label-bottom-left1 { font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 5px;  left: 5px; color:white; }
-    .base-label-bottom-right2 { font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 20px;  right: 5px; color:white; }
-    .base-label-bottom-right1 { font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 5px;  right: 5px; color:white; }
+    .base-tile-page { min-width: 150px; height: 70px;  }
+    .base-tile-banner { min-width: 150px; height: 70px; }
+    .base-tile-area { min-width: 150px; height: 70px; }
+    .base-tile-datacenter { min-width: 170px; height: 60px; }
+    .base-tile-service { min-width: 190px; height: 70px; }
+
+
+    .base-label-tile { color:black; position: relative; float: left; margin-right: 5px; cursor: pointer;}
+    .base-label-tile:hover { color:white;}
+
+    .base-label { font-size:10px; overflow: auto; margin: auto ; position: absolute; }
+
+    .base-label-top-left1 { top: 5px;  left: 5px; }
+    .base-label-bottom-left2 { bottom: 20px;  left: 5px; }
+    .base-label-bottom-left1 { bottom: 5px;  left: 5px; }
+    .base-label-bottom-right2 { bottom: 20px;  right: 5px; }
+    .base-label-bottom-right1 { bottom: 5px;  right: 5px;  }
     
     .div-row {float:left; width:100%; margin-left:10px;}
 </style>
@@ -32,38 +42,66 @@
         <div ng-repeat="item in config.BannerList" ng-include="'bannerlist.html'"></div>
     </div>
 
+    <div class="div-row">
+        <h2>Datacenters</h2>
+        <div ng-repeat="item in config.DatacenterList" ng-include="'datacenterlist.html'"></div>
+    </div>
 
+    <div class="div-row">
+        <h2>Services</h2>
+        <div ng-repeat="item in config.ServiceList" ng-include="'servicelist.html'"></div>
+    </div>
 </div>
 
 
 
 <script type="text/ng-template" id="pagelist.html">    
     <style type="text/css">
-        .jf-old{{item.DisplayId}}{ background-color:lightgray; } 
-        .jf-old{{item.DisplayId}}:hover{ background-color:{{item.Color}}; } 
-
-        .jf{{item.DisplayId}}{ background-color:{{item.Color}}; } 
+        .jf{{item.DisplayId}}{ border-left:10px solid {{item.Color}}; background-color: lightgray;  } 
+        .jf{{item.DisplayId}}:hover{ background-color:{{item.Color}}; } 
     </style>
-    <div class="base-page-tile jf{{item.DisplayId}}" >
-        <div class="base-label-top-left1">{{item.LongName}} </div>
-        <div class="base-label-bottom-right1">{{item.Grouping}}||{{item.Name}}</div>
+    <div class="base-label-tile base-tile-page jf{{item.DisplayId}}" >
+        <div class="base-label base-label-top-left1">{{item.LongName}} </div>
+        <div class="base-label base-label-bottom-right1">{{item.Grouping}}||{{item.Name}}</div>
     </div>
 </script>
 <script type="text/ng-template" id="bannerlist.html">    
     <style type="text/css">
-        .jf{{item.DisplayId}}{ background-color:{{item.Color}}; } 
+        .jf{{item.DisplayId}}{ border-left:10px solid {{item.Color}}; background-color: lightgray;  } 
+        .jf{{item.DisplayId}}:hover{ background-color:{{item.Color}}; } 
     </style>
-    <div class="base-banner-tile jf{{item.DisplayId}}" >
-        <div class="base-label-top-left1">{{item.LongName}} </div>
-        <div class="base-label-bottom-right1">{{item.Grouping}}||{{item.Name}} </div>
+    <div class="base-label-tile base-tile-banner jf{{item.DisplayId}}" >
+        <div class="base-label base-label-top-left1">{{item.LongName}} </div>
+        <div class="base-label base-label-bottom-right1">{{item.Grouping}}||{{item.Name}} </div>
     </div>
 </script>
 <script type="text/ng-template" id="arealist.html">    
     <style type="text/css">
-        .jf{{item.DisplayId}}{ background-color:{{item.Color}}; } 
+        .jf{{item.DisplayId}}{ border-left:10px solid {{item.Color}}; background-color: lightgray;  } 
+        .jf{{item.DisplayId}}:hover{ background-color:{{item.Color}}; } 
     </style>
-    <div class="base-area-tile jf{{item.DisplayId}}" >
-        <div class="base-label-top-left1">{{item.LongName}} </div>
-        <div class="base-label-bottom-right1">{{item.Grouping}}||{{item.Name}} </div>
+    <div class="base-label-tile base-tile-area jf{{item.DisplayId}}" >
+        <div class="base-label base-label-top-left1">{{item.LongName}} </div>
+        <div class="base-label base-label-bottom-right1">{{item.Grouping}}||{{item.Name}} </div>
+    </div>
+</script>
+<script type="text/ng-template" id="datacenterlist.html">    
+    <style type="text/css">
+        .jf{{item.DisplayId}}{ border-left:10px solid {{item.Color}}; background-color: lightgray;  } 
+        .jf{{item.DisplayId}}:hover{ background-color:{{item.Color}}; } 
+    </style>
+    <div class="base-label-tile base-tile-datacenter jf{{item.DisplayId}}" >
+        <div class="base-label base-label-top-left1">{{item.LongName}} </div>
+        <div class="base-label base-label-bottom-right1">{{item.Grouping}}||{{item.Name}} </div>
+    </div>
+</script>
+<script type="text/ng-template" id="servicelist.html">    
+    <style type="text/css">
+        .jf{{item.DisplayId}}{ border-left:10px solid {{item.Color}}; background-color: lightgray;  } 
+        .jf{{item.DisplayId}}:hover{ background-color:{{item.Color}}; } 
+    </style>
+    <div class="base-label-tile base-tile-service jf{{item.DisplayId}}" >
+        <div class="base-label base-label-top-left1">{{item.LongName}} </div>
+        <div class="base-label base-label-bottom-right1">{{item.Grouping}}||{{item.Name}} </div>
     </div>
 </script>

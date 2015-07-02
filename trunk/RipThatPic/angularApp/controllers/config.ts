@@ -5,6 +5,8 @@
         PageList: Array<any>;
         BannerList: Array<any>;
         AreaList: Array<any>;
+        DatacenterList: Array<any>;
+        ServiceList: Array<any>;
 
         constructor(
             public $scope: ng.IScope,
@@ -26,6 +28,14 @@
 
             dataSvc.getAll('area', '')
                 .success((result: any) => { __this.AreaList = result; })
+                .error(() => { });
+
+            dataSvc.getAll('datacenter', '')
+                .success((result: any) => { __this.DatacenterList = result; })
+                .error(() => { });
+
+            dataSvc.getAll('service', '')
+                .success((result: any) => { __this.ServiceList = result; })
                 .error(() => { });
         }
         
