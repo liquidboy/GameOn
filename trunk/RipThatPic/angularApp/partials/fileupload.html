@@ -1,5 +1,15 @@
-﻿<div class="file-upload">
+﻿<div class="file-upload" >
     <!-- \\modern\common\components\nps-file-upload.js  -->
     <!-- \\controls\filetransfer\ucFileUploadAll.ascx  -->
+
+    <div id="drop_area" class="uploaderContainer clearfix" ng-cloak>
+        <button id="browse_button" disabled="">Attach Files</button>
+        <div class="separator"></div>
+
+        <span class="drag-drop-label">Drop files here</span>
+
+        <button id="details_button" class="hiding-details" title="Show / Hide Details" ng-class="{'showing-details': showingDetails, 'hiding-details': !showingDetails}"><span></span></button>
+    </div>
+
 </div>
 
