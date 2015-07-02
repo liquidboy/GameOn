@@ -94,6 +94,9 @@
 .config {
 
 }
+    .config h2 {
+        font-size:12px;
+    }
     .config .jf-data-grid {
         height:250px;
         overflow:auto;

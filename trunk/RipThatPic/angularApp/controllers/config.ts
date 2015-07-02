@@ -3,6 +3,7 @@
 
 
         PageList: Array<any>;
+        BannerList: Array<any>;
 
         constructor(
             public $scope: ng.IScope,
@@ -14,10 +15,13 @@
             var ctl = $('.list-of-pages');
             
 
-            var pages = dataSvc.getAll('page', '')
+            dataSvc.getAll('page', '')
                 .success((result: any) => { __this.PageList = result; })
                 .error(() => { });
 
+            dataSvc.getAll('banner', '')
+                .success((result: any) => { __this.BannerList = result; })
+                .error(() => { });
         }
         
 

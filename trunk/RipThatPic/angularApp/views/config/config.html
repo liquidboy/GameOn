@@ -1,18 +1,56 @@
-﻿<d-config-menu da-selected-tab="config"></d-config-menu>
-
-
+﻿
 <style type="text/css">
-    .base-tile { width: 100px; height: 100px; position:relative; float:left; margin-right:5px; cursor:pointer; }
-</style>
-<div ng-repeat="item in config.PageList" ng-include="'itemlist.html'"></div>
+    .base-page-tile { width: 150px; height: 70px; position: relative; float: left; margin-right: 5px; cursor: pointer; }
+    .base-banner-tile { width: 150px; height: 70px; position: relative; float: left; margin-right: 5px; cursor: pointer; }
 
-<script type="text/ng-template" id="itemlist.html">    
+    .base-label-top-left1 { font-size:10px; overflow: auto; margin: auto ; position: absolute; top: 5px;  left: 5px; color:white; }
+    .base-label-bottom-left2 { font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 20px;  left: 5px; color:white; }
+    .base-label-bottom-left1 { font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 5px;  left: 5px; color:white; }
+    .base-label-bottom-right2 { font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 20px;  right: 5px; color:white; }
+    .base-label-bottom-right1 { font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 5px;  right: 5px; color:white; }
+
+    .div-row {float:left; width:100%; margin-left:10px;}
+</style>
+
+<div class="config">
+    <d-config-menu da-selected-tab="config"></d-config-menu>
+
+    <div class="div-row">
+        <h2>Pages</h2>
+        <div ng-repeat="item in config.PageList" ng-include="'pagelist.html'"></div>
+    </div>
+
+
+    <div class="div-row">
+        <h2>Banners</h2>
+        <div ng-repeat="item in config.BannerList" ng-include="'bannerlist.html'"></div>
+    </div>
+</div>
+
+
+
+<script type="text/ng-template" id="pagelist.html">    
     <style type="text/css">
-        .jf{{item.DisplayId}}{ background-color:lightgray; } 
-        .jf{{item.DisplayId}}:hover{ background-color:{{item.Color}}; } 
+        .jf-old{{item.DisplayId}}{ background-color:lightgray; } 
+        .jf-old{{item.DisplayId}}:hover{ background-color:{{item.Color}}; } 
+
+        .jf{{item.DisplayId}}{ background-color:{{item.Color}}; } 
     </style>
-    <div class="base-tile jf{{item.DisplayId}}" >
-        <div style="font-size:10px; overflow: auto; margin: auto ; position: absolute; bottom: 5px;  left: 5px; color:white;">{{item.LongName}} </div>
+    <div class="base-page-tile jf{{item.DisplayId}}" >
+        <div class="base-label-top-left1">{{item.LongName}} </div>
+        
+        <div class="base-label-bottom-right1">{{item.Grouping}}||{{item.Name}}</div>
     </div>
 </script>
+<script type="text/ng-template" id="bannerlist.html">    
+    <style type="text/css">
+        .jf{{item.DisplayId}}{ background-color:{{item.Color}}; } 
+    </style>
+    <div class="base-banner-tile jf{{item.DisplayId}}" >
+        <div class="base-label-top-left1">{{item.LongName}} </div>
 
+
+        <div class="base-label-bottom-right1">{{item.Grouping}}||{{item.Name}} </div>
+        
+    </div>
+</script>

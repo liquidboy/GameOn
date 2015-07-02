@@ -18,8 +18,12 @@ var Application;
                 };
                 var __this = this;
                 var ctl = $('.list-of-pages');
-                var pages = dataSvc.getAll('page', '').success(function (result) {
+                dataSvc.getAll('page', '').success(function (result) {
                     __this.PageList = result;
+                }).error(function () {
+                });
+                dataSvc.getAll('banner', '').success(function (result) {
+                    __this.BannerList = result;
                 }).error(function () {
                 });
             }
