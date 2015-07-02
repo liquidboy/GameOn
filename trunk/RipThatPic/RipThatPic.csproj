@@ -212,9 +212,13 @@
     <Content Include="angularApp\directives\configMenu.js">
       <DependentUpon>configMenu.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\fileUpload.js" >
+      <DependentUpon>fileUpload.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\partials\fileupload.html" />
     <Content Include="angularApp\partials\configmenu.html" />
     <Content Include="angularApp\partials\workarea.html" />
     <Content Include="angularApp\partials\billboard.html" />
@@ -464,6 +468,9 @@
     </Content>
     <Content Include="angularApp\controllers\page.js.map">
       <DependentUpon>page.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\fileUpload.js.map" >
+      <DependentUpon>fileUpload.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1536,6 +1543,7 @@
     <TypeScriptCompile Include="angularApp\controllers\configComment.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
+    <TypeScriptCompile Include="angularApp\directives\fileUpload.ts" />
     <TypeScriptCompile Include="angularApp\directives\configMenu.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />
