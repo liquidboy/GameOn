@@ -26,6 +26,10 @@ var Application;
                     __this.BannerList = result;
                 }).error(function () {
                 });
+                dataSvc.getAll('area', '').success(function (result) {
+                    __this.AreaList = result;
+                }).error(function () {
+                });
             }
             return ConfigCtrl;
         })();

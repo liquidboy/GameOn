@@ -4,6 +4,7 @@
 
         PageList: Array<any>;
         BannerList: Array<any>;
+        AreaList: Array<any>;
 
         constructor(
             public $scope: ng.IScope,
@@ -21,6 +22,10 @@
 
             dataSvc.getAll('banner', '')
                 .success((result: any) => { __this.BannerList = result; })
+                .error(() => { });
+
+            dataSvc.getAll('area', '')
+                .success((result: any) => { __this.AreaList = result; })
                 .error(() => { });
         }
         
