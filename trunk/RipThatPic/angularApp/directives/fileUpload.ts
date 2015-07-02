@@ -27,8 +27,7 @@
             this.templateUrl = '/angularApp/partials/fileupload.html';
             this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileUploadController];
             this.link = ($scope: IFileUploadController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: FileUploadController) =>
-            {
-                
+            {                
                 //var selectedTab: string = "";
                 //if (attributes.$attr["daSelectedTab"]) {
                 //    selectedTab = element.attr(<string>attributes.$attr["daSelectedTab"]); 
