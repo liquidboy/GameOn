@@ -12,31 +12,23 @@
             public $scope: ng.IScope,
             public $rootScope: any,
             public serviceHelperSvc: Application.Services.IServiceHelper,
-            public dataSvc: Application.Services.IData) {
+            public dataSvc: Application.Services.IData,
+            public instanceFactory: Application.Services.IInstanceFactory,
+            public authService: Application.Services.IAuthService) {
 
             var __this = this;
             var ctl = $('.list-of-pages');
             
-
-            dataSvc.getAll('page', '')
-                .success((result: any) => { __this.PageList = result; })
-                .error(() => { });
-
-            dataSvc.getAll('banner', '')
-                .success((result: any) => { __this.BannerList = result; })
-                .error(() => { });
-
-            dataSvc.getAll('area', '')
-                .success((result: any) => { __this.AreaList = result; })
-                .error(() => { });
-
-            dataSvc.getAll('datacenter', '')
-                .success((result: any) => { __this.DatacenterList = result; })
-                .error(() => { });
-
-            dataSvc.getAll('service', '')
-                .success((result: any) => { __this.ServiceList = result; })
-                .error(() => { });
+            dataSvc.getAllConfig(this.authService.sessionId)
+                .success((result: any) => {
+                    __this.PageList = result.Pages;
+                    __this.BannerList = result.Banners;
+                    __this.AreaList = result.Areas;
+                    __this.DatacenterList = result.Datacenters;
+                    __this.ServiceList = result.Services;
+                })
+                .error((err) => { });
+            
         }
         
 
@@ -52,5 +44,5 @@
         
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ConfigCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigCtrl]);
+    myapp.controller("ConfigCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigCtrl]);
 }

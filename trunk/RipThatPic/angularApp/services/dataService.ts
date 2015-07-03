@@ -7,6 +7,7 @@
         deleteByDisplayId(type: string, displayid: string, sessionid: string): ng.IHttpPromise<{}>;
         
         getAll(type: string, sessionid: string): ng.IHttpPromise<{}>;
+        getAllConfig(sessionid: string): ng.IHttpPromise<{}>;
         getAllByGrouping(type: string, grouping: string, sessionid: string): ng.IHttpPromise<{}>;        
         getByDisplayId(type: string, displayid: string, sessionid: string): ng.IHttpPromise<{}>;
 
@@ -48,6 +49,7 @@
         getByDisplayId(type: string, displayid: string, sessionid: string) { return this.http.get(this.urlBase + type + "/" + displayid); }
         getAll(type: string, sessionid: string) { return this.http.get(this.urlBase + type + "s"); }
         getAllByGrouping(type: string, grouping: string, sessionid: string) { return this.http.get(this.urlBase + type + "s?grouping=" + grouping); }
+        getAllConfig(sessionid: string) { return this.http.get(this.urlBase + "config"); }
 
         getGroupings(type: string, sessionid: string) { return this.http.get(this.urlBase + "groupings?tablename=" + type); }
         get(type: string, grouping: string, name: string, sessionid: string) { return this.http.get(this.urlBase + type + "?grouping=" + grouping + "&name=" + name);}

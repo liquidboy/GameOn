@@ -18,7 +18,6 @@ namespace RipThatPic.Controllers
             var processor = GetAzureProcessor();
             var result = processor.RetrieveAll("Comment");
             return result.AsEnumerable();
-
         }
 
 

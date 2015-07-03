@@ -3,11 +3,13 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigCtrl = (function () {
-            function ConfigCtrl($scope, $rootScope, serviceHelperSvc, dataSvc) {
+            function ConfigCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService) {
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
+                this.instanceFactory = instanceFactory;
+                this.authService = authService;
                 this.testclick = function () {
                     //this.serviceHelperSvc.testCall();
                     //this.dataSvc.getAllAreasByGrouping("gaming")
@@ -18,32 +20,20 @@ var Application;
                 };
                 var __this = this;
                 var ctl = $('.list-of-pages');
-                dataSvc.getAll('page', '').success(function (result) {
-                    __this.PageList = result;
-                }).error(function () {
-                });
-                dataSvc.getAll('banner', '').success(function (result) {
-                    __this.BannerList = result;
-                }).error(function () {
-                });
-                dataSvc.getAll('area', '').success(function (result) {
-                    __this.AreaList = result;
-                }).error(function () {
-                });
-                dataSvc.getAll('datacenter', '').success(function (result) {
-                    __this.DatacenterList = result;
-                }).error(function () {
-                });
-                dataSvc.getAll('service', '').success(function (result) {
-                    __this.ServiceList = result;
-                }).error(function () {
+                dataSvc.getAllConfig(this.authService.sessionId).success(function (result) {
+                    __this.PageList = result.Pages;
+                    __this.BannerList = result.Banners;
+                    __this.AreaList = result.Areas;
+                    __this.DatacenterList = result.Datacenters;
+                    __this.ServiceList = result.Services;
+                }).error(function (err) {
                 });
             }
             return ConfigCtrl;
         })();
         Controllers.ConfigCtrl = ConfigCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", ConfigCtrl]);
+        myapp.controller("ConfigCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=config.js.map

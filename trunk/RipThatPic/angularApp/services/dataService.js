@@ -30,6 +30,9 @@ var Application;
             DataSvc.prototype.getAllByGrouping = function (type, grouping, sessionid) {
                 return this.http.get(this.urlBase + type + "s?grouping=" + grouping);
             };
+            DataSvc.prototype.getAllConfig = function (sessionid) {
+                return this.http.get(this.urlBase + "config");
+            };
             DataSvc.prototype.getGroupings = function (type, sessionid) {
                 return this.http.get(this.urlBase + "groupings?tablename=" + type);
             };
