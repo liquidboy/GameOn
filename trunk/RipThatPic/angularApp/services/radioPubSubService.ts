@@ -9,8 +9,7 @@
 
         http: ng.IHttpService;
         location: ng.ILocationService;
-        radio: any;
-
+        _radio: any;
 
         public injection(): Array<any> {
             return [
@@ -20,16 +19,19 @@
         constructor($http: ng.IHttpService, $location: ng.ILocationService) {
             this.http = $http;
             this.location = $location;
+            var localWindow: any = window;
 
+            //radio is injected in the app in the bootstrapapp
+            this._radio = localWindow['radio'];
         }
-
+        
        
         publish = (topic: string, message: any) => {
-            this.radio(topic).broadcast(message);
+            this._radio(topic).broadcast(message);
         }
 
         subscribe = (topic: string, handler: Function, scope: any) =>  {
-            this.radio(topic).subscribe(handler);
+            this._radio(topic).subscribe(handler);
             // if we have a scope then unsubscribe the handler
             // when the scope is destroyed
             var __this = this;
@@ -41,7 +43,7 @@
         }
 
         unsubscribe = (topic: string, handler: Function) => {
-            this.radio(topic).unsubscribe(handler);
+            this._radio(topic).unsubscribe(handler);
         }
        
 

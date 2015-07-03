@@ -4,10 +4,11 @@
 
         public injection(): Array<any> {
             return [
-                () => { return new ConfigMenuDirective(); }
+                "radioPubSubSvc",
+                (radioPubSubSvc) => { return new ConfigMenuDirective(radioPubSubSvc); }
             ];
         }
-        public static $inject: any[] = [() => { return new ConfigMenuDirective(); }];
+        public static $inject: any[] = [(radioPubSubSvc) => { return new ConfigMenuDirective(radioPubSubSvc); }];
 
         public templateUrl: string;
         public restrict: string;
@@ -22,7 +23,7 @@
 
 
 
-        constructor() {
+        constructor(public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
 
 
             this.restrict = 'E';
@@ -32,7 +33,7 @@
             this.link = ($scope: IConfigMenuController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: ConfigMenuController) =>
             {
                 //eg. http://dotnetspeak.com/2013/12/angular-and-dom-manipulations-in-directives
-
+                var __this = this;
                 var selectedTab: string = "";
                 if (attributes.$attr["daSelectedTab"]) {
                     selectedTab = element.attr(<string>attributes.$attr["daSelectedTab"]); 
@@ -45,12 +46,20 @@
                     var menuConfig = element.find('span[data-id="menu-config"]');
                     menuConfig.addClass('hidden');
                 }
+
+                
+                var testElement = element.find('a[data-id="test"]');
+                $(testElement).on('click',() => {
+                    __this.radioPubSubSvc.publish("jose-test2", "test");
+                });
+
             };
 
 
         }
 
 
+        
 
     }
 
@@ -88,4 +97,5 @@
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
     myapp.directive("dConfigMenu", ConfigMenuDirective.prototype.injection());
+
 }

@@ -14,11 +14,17 @@
             public serviceHelperSvc: Application.Services.IServiceHelper,
             public dataSvc: Application.Services.IData,
             public instanceFactory: Application.Services.IInstanceFactory,
-            public authService: Application.Services.IAuthService) {
+            public authService: Application.Services.IAuthService,
+            public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
 
             var __this = this;
             var ctl = $('.list-of-pages');
             
+
+            radioPubSubSvc.subscribe("jose-test1", __this.test1, undefined);
+            radioPubSubSvc.subscribe("jose-test2", __this.test2, undefined);
+
+
             dataSvc.getAllConfig(this.authService.sessionId)
                 .success((result: any) => {
                     __this.PageList = result.Pages;
@@ -29,7 +35,17 @@
                 })
                 .error((err) => { });
             
+
+            $scope.$on('$destroy', function () {
+                radioPubSubSvc.unsubscribe("jose-test1", __this.test1);
+                radioPubSubSvc.unsubscribe("jose-test2", __this.test2);
+            });
+
         }
+
+        
+        test1 = (topic: string, message: any) => { alert('test1' + topic);}
+        test2 = (topic: string, message: any) => { alert('test2' + topic);}
         
 
         testclick = () => {
@@ -44,5 +60,5 @@
         
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ConfigCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigCtrl]);
+    myapp.controller("ConfigCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", ConfigCtrl]);
 }

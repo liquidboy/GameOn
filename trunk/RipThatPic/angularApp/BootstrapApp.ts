@@ -2,7 +2,7 @@
     var localWindow: any = window;
     var myapp: ng.IModule = angular.module('bootstrapApp', ['ngRoute', 'ngResource', 'ngAnimate', 'ngSanitize']);
     
-
+    export var radio: any;
 
 
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider: ng.IHttpProvider, $provide: any) {
@@ -46,12 +46,15 @@
     }]).run(['$rootScope', 'radioPubSubSvc', function ($rootScope) { }]);
 
 
+    
+    //localWindow.app = myapp;
+    //localWindow['app'] = myapp;
+    //myapp['radio'] = radio;
 
-
-
-
-    localWindow.app = myapp;
     //localWindow.utilities = angular.module("custom-utilities", []);
 
 
-}
+} 
+
+//weird way to pass thru the js library "radio" into the module ... find a better approach!!!
+eval('BootstrapApp.radio = radio');

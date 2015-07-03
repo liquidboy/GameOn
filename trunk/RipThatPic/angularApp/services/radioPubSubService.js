@@ -6,10 +6,10 @@ var Application;
             function RadioPubSubSvc($http, $location) {
                 var _this = this;
                 this.publish = function (topic, message) {
-                    _this.radio(topic).broadcast(message);
+                    _this._radio(topic).broadcast(message);
                 };
                 this.subscribe = function (topic, handler, scope) {
-                    _this.radio(topic).subscribe(handler);
+                    _this._radio(topic).subscribe(handler);
                     // if we have a scope then unsubscribe the handler
                     // when the scope is destroyed
                     var __this = _this;
@@ -20,10 +20,13 @@ var Application;
                     }
                 };
                 this.unsubscribe = function (topic, handler) {
-                    _this.radio(topic).unsubscribe(handler);
+                    _this._radio(topic).unsubscribe(handler);
                 };
                 this.http = $http;
                 this.location = $location;
+                var localWindow = window;
+                //radio is injected in the app in the bootstrapapp
+                this._radio = localWindow['radio'];
             }
             RadioPubSubSvc.prototype.injection = function () {
                 return [

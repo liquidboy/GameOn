@@ -4,7 +4,9 @@ var Application;
     (function (Directives) {
         //'use strict';
         var ConfigMenuDirective = (function () {
-            function ConfigMenuDirective() {
+            function ConfigMenuDirective(radioPubSubSvc) {
+                var _this = this;
+                this.radioPubSubSvc = radioPubSubSvc;
                 this.scope = {};
                 this.restrict = 'E';
                 this.replace = true;
@@ -12,6 +14,7 @@ var Application;
                 this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', ConfigMenuController];
                 this.link = function ($scope, element, attributes, controller) {
                     //eg. http://dotnetspeak.com/2013/12/angular-and-dom-manipulations-in-directives
+                    var __this = _this;
                     var selectedTab = "";
                     if (attributes.$attr["daSelectedTab"]) {
                         selectedTab = element.attr(attributes.$attr["daSelectedTab"]);
@@ -22,17 +25,22 @@ var Application;
                         var menuConfig = element.find('span[data-id="menu-config"]');
                         menuConfig.addClass('hidden');
                     }
+                    var testElement = element.find('a[data-id="test"]');
+                    $(testElement).on('click', function () {
+                        __this.radioPubSubSvc.publish("jose-test2", "test");
+                    });
                 };
             }
             ConfigMenuDirective.prototype.injection = function () {
                 return [
-                    function () {
-                        return new ConfigMenuDirective();
+                    "radioPubSubSvc",
+                    function (radioPubSubSvc) {
+                        return new ConfigMenuDirective(radioPubSubSvc);
                     }
                 ];
             };
-            ConfigMenuDirective.$inject = [function () {
-                return new ConfigMenuDirective();
+            ConfigMenuDirective.$inject = [function (radioPubSubSvc) {
+                return new ConfigMenuDirective(radioPubSubSvc);
             }];
             return ConfigMenuDirective;
         })();
