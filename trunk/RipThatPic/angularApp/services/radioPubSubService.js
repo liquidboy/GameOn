@@ -4,11 +4,23 @@ var Application;
     (function (Services) {
         var RadioPubSubSvc = (function () {
             function RadioPubSubSvc($http, $location) {
+                var _this = this;
                 this.publish = function (topic, message) {
+                    _this.radio(topic).broadcast(message);
                 };
-                this.subscribe = function (topic, handler) {
+                this.subscribe = function (topic, handler, scope) {
+                    _this.radio(topic).subscribe(handler);
+                    // if we have a scope then unsubscribe the handler
+                    // when the scope is destroyed
+                    var __this = _this;
+                    if (scope && scope.$on) {
+                        scope.$on('$destroy', function () {
+                            __this.unsubscribe(topic, handler);
+                        });
+                    }
                 };
-                this.ubsubscribe = function (topic, handler) {
+                this.unsubscribe = function (topic, handler) {
+                    _this.radio(topic).unsubscribe(handler);
                 };
                 this.http = $http;
                 this.location = $location;

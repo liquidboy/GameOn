@@ -1,14 +1,15 @@
 ﻿module Application.Services {
     export interface IRadioPubSubSvc {
         publish(topic: string, message: any);
-        subscribe(topic: string, handler: Function);
-        ubsubscribe(topic: string, handler: Function);
+        subscribe(topic: string, handler: Function, scope: any);
+        unsubscribe(topic: string, handler: Function);
     }
 
     export class RadioPubSubSvc {
 
         http: ng.IHttpService;
         location: ng.ILocationService;
+        radio: any;
 
 
         public injection(): Array<any> {
@@ -23,14 +24,24 @@
         }
 
        
-        publish = function (topic: string, message: any) {
-
+        publish = (topic: string, message: any) => {
+            this.radio(topic).broadcast(message);
         }
-        subscribe = function (topic: string, handler: Function) {
 
+        subscribe = (topic: string, handler: Function, scope: any) =>  {
+            this.radio(topic).subscribe(handler);
+            // if we have a scope then unsubscribe the handler
+            // when the scope is destroyed
+            var __this = this;
+            if (scope && scope.$on) {
+                scope.$on('$destroy', function () {
+                    __this.unsubscribe(topic, handler);
+                });
+            }
         }
-        ubsubscribe = function (topic: string, handler: Function) {
 
+        unsubscribe = (topic: string, handler: Function) => {
+            this.radio(topic).unsubscribe(handler);
         }
        
 
