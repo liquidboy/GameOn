@@ -43,7 +43,7 @@
             .when('/error', { controller: 'ErrorCtrl',templateUrl: '/angularApp/views/shared/error.html' })
             .otherwise({ redirectTo: '/home'});
 
-    }]);
+    }]).run(['$rootScope', 'radioPubSubSvc', function ($rootScope) { }]);
 
 
 
