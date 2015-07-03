@@ -36,11 +36,7 @@
                 .error((err) => { });
             
 
-            $scope.$on('$destroy', function () {
-                radioPubSubSvc.unsubscribe("jose-test1", __this.test1);
-                radioPubSubSvc.unsubscribe("jose-test2", __this.test2);
-            });
-
+            $scope.$on('$destroy', __this.destructor);
         }
 
         
@@ -48,14 +44,10 @@
         test2 = (topic: string, message: any) => { alert('test2' + topic);}
         
 
-        testclick = () => {
-            //this.serviceHelperSvc.testCall();
-            
-            //this.dataSvc.getAllAreasByGrouping("gaming")
-            //    .success(function (result: any) {
-            //        alert(result.length);
-            //    })
-            //    .error(function (err) { });
+        destructor = () => {
+            var __this = this;
+            this.radioPubSubSvc.unsubscribe("jose-test1", __this.test1);
+            this.radioPubSubSvc.unsubscribe("jose-test2", __this.test2);
         }
         
     }

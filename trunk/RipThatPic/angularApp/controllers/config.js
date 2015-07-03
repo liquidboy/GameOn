@@ -4,6 +4,7 @@ var Application;
     (function (Controllers) {
         var ConfigCtrl = (function () {
             function ConfigCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService, radioPubSubSvc) {
+                var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
@@ -17,13 +18,10 @@ var Application;
                 this.test2 = function (topic, message) {
                     alert('test2' + topic);
                 };
-                this.testclick = function () {
-                    //this.serviceHelperSvc.testCall();
-                    //this.dataSvc.getAllAreasByGrouping("gaming")
-                    //    .success(function (result: any) {
-                    //        alert(result.length);
-                    //    })
-                    //    .error(function (err) { });
+                this.destructor = function () {
+                    var __this = _this;
+                    _this.radioPubSubSvc.unsubscribe("jose-test1", __this.test1);
+                    _this.radioPubSubSvc.unsubscribe("jose-test2", __this.test2);
                 };
                 var __this = this;
                 var ctl = $('.list-of-pages');
@@ -37,10 +35,7 @@ var Application;
                     __this.ServiceList = result.Services;
                 }).error(function (err) {
                 });
-                $scope.$on('$destroy', function () {
-                    radioPubSubSvc.unsubscribe("jose-test1", __this.test1);
-                    radioPubSubSvc.unsubscribe("jose-test2", __this.test2);
-                });
+                $scope.$on('$destroy', __this.destructor);
             }
             return ConfigCtrl;
         })();
