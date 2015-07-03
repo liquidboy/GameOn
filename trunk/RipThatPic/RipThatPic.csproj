@@ -234,6 +234,9 @@
     <Content Include="angularApp\services\instanceFactory.js">
       <DependentUpon>instanceFactory.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\services\radioPubSubService.js" >
+      <DependentUpon>radioPubSubService.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\services\serviceHelper.js">
       <DependentUpon>serviceHelper.ts</DependentUpon>
     </Content>
@@ -478,6 +481,9 @@
     </Content>
     <Content Include="angularApp\controllers\explorer.js.map">
       <DependentUpon>explorer.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\radioPubSubService.js.map" >
+      <DependentUpon>radioPubSubService.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1560,6 +1566,7 @@
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />
     <TypeScriptCompile Include="angularApp\services\authService.ts" />
     <TypeScriptCompile Include="angularApp\services\instanceFactory.ts" />
+    <TypeScriptCompile Include="angularApp\services\radioPubSubService.ts" />
     <TypeScriptCompile Include="angularApp\services\serviceHelper.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
