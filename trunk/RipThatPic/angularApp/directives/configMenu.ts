@@ -4,11 +4,12 @@
 
         public injection(): Array<any> {
             return [
+                "pubSubConstants",
                 "radioPubSubSvc",
-                (radioPubSubSvc) => { return new ConfigMenuDirective(radioPubSubSvc); }
+                (pubSubConstants, radioPubSubSvc) => { return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc); }
             ];
         }
-        public static $inject: any[] = [(radioPubSubSvc) => { return new ConfigMenuDirective(radioPubSubSvc); }];
+        public static $inject: any[] = [(pubSubConstants, radioPubSubSvc) => { return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc); }];
 
         public templateUrl: string;
         public restrict: string;
@@ -23,7 +24,7 @@
 
 
 
-        constructor(public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
+        constructor(public pubSubConstants: Application.Constants.PubSubConstants, public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
 
 
             this.restrict = 'E';
@@ -50,7 +51,7 @@
                 
                 var testElement = element.find('a[data-id="test"]');
                 $(testElement).on('click',() => {
-                    __this.radioPubSubSvc.publish("jose-test2", "test");
+                    __this.radioPubSubSvc.publish(__this.pubSubConstants.MessageSample001, "test");
                 });
 
             };

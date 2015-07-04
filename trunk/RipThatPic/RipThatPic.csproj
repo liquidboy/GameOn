@@ -125,6 +125,9 @@
     <Content Include="angularApp\BootstrapApp.js">
       <DependentUpon>BootstrapApp.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\Constants.js">
+      <DependentUpon>Constants.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\config.js">
       <DependentUpon>config.ts</DependentUpon>
     </Content>
@@ -234,7 +237,7 @@
     <Content Include="angularApp\services\instanceFactory.js">
       <DependentUpon>instanceFactory.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\services\radioPubSubService.js" >
+    <Content Include="angularApp\services\radioPubSubService.js">
       <DependentUpon>radioPubSubService.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\services\serviceHelper.js">
@@ -482,8 +485,11 @@
     <Content Include="angularApp\controllers\explorer.js.map">
       <DependentUpon>explorer.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\services\radioPubSubService.js.map" >
+    <Content Include="angularApp\services\radioPubSubService.js.map">
       <DependentUpon>radioPubSubService.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\Constants.js.map">
+      <DependentUpon>Constants.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1531,6 +1537,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
+    <TypeScriptCompile Include="angularApp\Constants.ts" />
     <TypeScriptCompile Include="angularApp\controllers\explorer.ts" />
     <TypeScriptCompile Include="angularApp\controllers\page.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />

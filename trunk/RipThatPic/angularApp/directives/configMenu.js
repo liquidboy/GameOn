@@ -4,8 +4,9 @@ var Application;
     (function (Directives) {
         //'use strict';
         var ConfigMenuDirective = (function () {
-            function ConfigMenuDirective(radioPubSubSvc) {
+            function ConfigMenuDirective(pubSubConstants, radioPubSubSvc) {
                 var _this = this;
+                this.pubSubConstants = pubSubConstants;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.scope = {};
                 this.restrict = 'E';
@@ -27,20 +28,21 @@ var Application;
                     }
                     var testElement = element.find('a[data-id="test"]');
                     $(testElement).on('click', function () {
-                        __this.radioPubSubSvc.publish("jose-test2", "test");
+                        __this.radioPubSubSvc.publish(__this.pubSubConstants.MessageSample001, "test");
                     });
                 };
             }
             ConfigMenuDirective.prototype.injection = function () {
                 return [
+                    "pubSubConstants",
                     "radioPubSubSvc",
-                    function (radioPubSubSvc) {
-                        return new ConfigMenuDirective(radioPubSubSvc);
+                    function (pubSubConstants, radioPubSubSvc) {
+                        return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc);
                     }
                 ];
             };
-            ConfigMenuDirective.$inject = [function (radioPubSubSvc) {
-                return new ConfigMenuDirective(radioPubSubSvc);
+            ConfigMenuDirective.$inject = [function (pubSubConstants, radioPubSubSvc) {
+                return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc);
             }];
             return ConfigMenuDirective;
         })();
