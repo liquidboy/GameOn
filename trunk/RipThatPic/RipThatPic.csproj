@@ -1544,6 +1544,7 @@
     <Compile Include="Libs\Incite.Cloud\Logging\AzureLogger.cs" />
     <Compile Include="Libs\Incite.Cloud\Storage\AzureProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Realtime\ChatHub.cs" />
     <Compile Include="StartUp.cs" />
   </ItemGroup>
   <ItemGroup>
