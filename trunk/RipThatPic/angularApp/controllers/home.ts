@@ -1,8 +1,6 @@
 ﻿module Application.Controllers {
     export class HomeCtrl {
-
-
-
+        
         constructor(
             public $scope: ng.IScope,
             public $rootScope: any,
@@ -20,10 +18,9 @@
             //this.$rootScope.$on("show-serviced",(evt, area) => {
             //    $("#dRequirements").show();
             //    $("#dWizard").show();
-
             //    this.$rootScope.$broadcast("wizard-step-selected", "step8");
-
             //});
+
             this.radioPubSubSvc.subscribe(
                 this.pubSubConstants.NotificationMessageRecieved,
                 this.NotificationMessageRecieved,
@@ -31,8 +28,8 @@
 
             this.$scope.$on('$destroy', __this.destructor);
 
-            $('#sendmessage').click(function () {
-                __this.notificationHub.send($('#message').val());
+            $('#butTestNotifications').click(function () {
+                __this.notificationHub.send( Date.now().toString() );
             });
 
         }

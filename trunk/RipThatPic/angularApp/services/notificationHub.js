@@ -1,3 +1,9 @@
+//http://www.asp.net/signalr/overview/getting-started/tutorial-getting-started-with-signalr
+//http://www.asp.net/signalr/overview/deployment/using-signalr-with-azure-web-sites#deploying
+//http://www.asp.net/signalr/overview/performance/scaleout-with-redis
+//http://www.leggetter.co.uk/2013/12/09/choosing-realtime-web-app-tech-stack.html
+//asp.net vNext
+//http://davidfowl.com/asp-net-vnext-architecture/
 var Application;
 (function (Application) {
     var Services;
