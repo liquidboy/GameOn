@@ -1,0 +1,347 @@
+﻿
+.config {
+
+}
+    .config h2 {
+        font-size:12px;
+    }
+    .config .jf-data-grid {
+        height:250px;
+        overflow:auto;
+        border-top:1px dashed lightgray;
+        border-bottom:1px dashed lightgray;
+    }
+    .config .jf-tbl {
+        cellpadding:0;
+        cellspacing:2px;
+    }
+    .config .table-header {
+        color:gray;
+        font-size:small;
+    }
+
+    .config .table-content-row {
+        cursor:pointer;
+        
+    }
+    .config .table-filter select {
+        width:100%;
+    }
+    .config .table-content-row:hover {
+        background-color:lightgray;
+    }
+
+    .config .jf-col1 {
+        height:100%;
+        margin-left:-3px;
+        padding-left:3px;
+    }
+    .config .jf-col1.selected {
+        border-left:2px solid orange;
+        padding-left:1px;
+        border-bottom:1px dashed orange;
+        background-color: #fed892;
+    }
+
+
+    .config .jf-tbldetail {
+        margin-top:30px;
+    }
+
+        .config .jf-tbldetail .label {
+            font-size:10px;
+            text-align:right;
+            width:157px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======== */
+/* TOP MENU */
+/* ======== */
+.ui.menu {
+    padding-bottom:10px;
+    border-bottom:0 dashed lightgray;
+    margin-bottom:10px;
+}
+    .ui.menu .item {
+      background-color: whitesmoke;
+      padding: 5px;
+      font-size: small;
+      text-decoration: none;
+      line-height: 35px;
+      color: black;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .ui.menu .item.ico-home {
+      background-image: url('/content/icons/House-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-image {
+      background-image: url('/content/icons/Image-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-user {
+      background-image: url('/content/icons/User-Male-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-config {
+      background-image: url('/content/icons/Settings-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    } 
+    .ui.menu .item.ico-music {
+      background-image: url('/content/icons/music-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-service {
+      background-image: url('/content/icons/service-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-video {
+      background-image: url('/content/icons/Video-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-document {
+      background-image: url('/content/icons/document-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-session {
+      background-image: url('/content/icons/session-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-datacenter {
+      background-image: url('/content/icons/datacenter-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-setting {
+      background-image: url('/content/icons/Settings-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-theme {
+      background-image: url('/content/icons/theme-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-comment {
+      background-image: url('/content/icons/comment-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-banner {
+      background-image: url('/content/icons/Banner-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-editor {
+      background-image: url('/content/icons/editor-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-extension {
+      background-image: url('/content/icons/extension-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-version {
+      background-image: url('/content/icons/version-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-group {
+      background-image: url('/content/icons/group-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-install {
+      background-image: url('/content/icons/install-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-link {
+      background-image: url('/content/icons/link-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-list {
+      background-image: url('/content/icons/list-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-security {
+      background-image: url('/content/icons/security-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-area {
+      background-image: url('/content/icons/area-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    } 
+    .ui.menu .item.ico-map{
+      background-image: url('/content/icons/map-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-log {
+      background-image: url('/content/icons/log-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-page {
+      background-image: url('/content/icons/page-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.ico-post {
+      background-image: url('/content/icons/post-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
+    .ui.menu .item.active {
+      background-color: black;
+      color: white;
+    }
+    .ui.menu .item.active.ico-post {
+      background-image: url('/content/icons/post-white.png');
+    }
+    .ui.menu .item.active.ico-page {
+      background-image: url('/content/icons/page-white.png');
+    }
+    .ui.menu .item.active.ico-map {
+      background-image: url('/content/icons/map-white.png');
+    }
+    .ui.menu .item.active.ico-log {
+      background-image: url('/content/icons/log-white.png');
+    }
+    .ui.menu .item.active.ico-area {
+      background-image: url('/content/icons/area-white.png');
+    }
+    .ui.menu .item.active.ico-security {
+      background-image: url('/content/icons/security-white.png');
+    }
+    .ui.menu .item.active.ico-link {
+      background-image: url('/content/icons/link-white.png');
+    }
+    .ui.menu .item.active.ico-list {
+      background-image: url('/content/icons/list-white.png');
+    }
+    .ui.menu .item.active.ico-install {
+      background-image: url('/content/icons/install-white.png');
+    }
+    .ui.menu .item.active.ico-group {
+      background-image: url('/content/icons/group-white.png');
+    }
+    .ui.menu .item.active.ico-comment {
+      background-image: url('/content/icons/comment-white.png');
+    }
+    .ui.menu .item.active.ico-version {
+      background-image: url('/content/icons/version-white.png');
+    }
+    .ui.menu .item.active.ico-home {
+      background-image: url('/content/icons/House-white.png');
+    }
+    .ui.menu .item.active.ico-extension {
+      background-image: url('/content/icons/extension-white.png');
+    }
+    .ui.menu .item.active.ico-editor {
+      background-image: url('/content/icons/editor-white.png');
+    }
+    .ui.menu .item.active.ico-banner {
+      background-image: url('/content/icons/Banner-white.png');
+    }
+    .ui.menu .item.active.ico-document {
+      background-image: url('/content/icons/document-white.png');
+    }
+    .ui.menu .item.active.ico-user {
+      background-image: url('/content/icons/User-Male-white.png');
+    }
+    .ui.menu .item.active.ico-config {
+      background-image: url('/content/icons/Settings-white.png');
+    }
+    .ui.menu .item.active.ico-music {
+      background-image: url('/content/icons/music-white.png');
+    }
+    .ui.menu .item.active.ico-service {
+      background-image: url('/content/icons/service-white.png');
+    }
+    .ui.menu .item.active.ico-video {
+      background-image: url('/content/icons/Video-White.png');
+    }
+    .ui.menu .item.active.ico-image {
+      background-image: url('/content/icons/Image-White.png');
+    }
+    .ui.menu .item.active.ico-session {
+      background-image: url('/content/icons/session-white.png');
+    }
+    .ui.menu .item.active.ico-datacenter {
+      background-image: url('/content/icons/datacenter-white.png');
+    }
+    .ui.menu .item.active.ico-setting {
+      background-image: url('/content/icons/Settings-white.png');
+    }
+    .ui.menu .item.active.ico-theme {
+      background-image: url('/content/icons/theme-white.png');
+    }
+    .ui.menu .item:hover {
+      background-color: #e8e8e8;
+    }
+    .ui.menu .item:hover.active {
+      background-color: black;
+      color: white;
+      cursor: default;
+    }
+    .ui.menu .right {
+      float: right;
+    }

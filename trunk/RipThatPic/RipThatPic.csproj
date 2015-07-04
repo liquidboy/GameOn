@@ -1490,6 +1490,9 @@
     <Content Include="script\vs\nls.js" />
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
+    <Content Include="Themes\ConfigMenu.css" />
+    <Content Include="Themes\Configuration.css" />
+    <Content Include="Themes\Notifications.css" />
     <Content Include="Themes\Default.css" />
     <Content Include="Themes\Office.css" />
     <Content Include="Themes\office365stuff.css" />
