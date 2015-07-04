@@ -12,6 +12,7 @@
 
         
         $routeProvider
+            .when('/splash', { controller: 'SplashCtrl', templateUrl: '/angularApp/views/splash/splash.html', controllerAs: 'splash' })
             .when('/home', { controller: 'HomeCtrl', templateUrl: '/angularApp/views/home/home.html', controllerAs: 'home' })
             .when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html', controllerAs: 'config' })
             .when('/explorer', { controller: 'ExplorerCtrl', templateUrl: '/angularApp/views/explorer/explorer.html', controllerAs: 'explorer' })
@@ -40,10 +41,10 @@
             .when('/config/grouping', { controller: 'ConfigGroupingCtrl', templateUrl: '/angularApp/views/config/grouping.html', controllerAs: 'configgrouping' })
             .when('/config/editor', { controller: 'ConfigEditorCtrl', templateUrl: '/angularApp/views/config/editor.html', controllerAs: 'configeditor' })
             .when('/config/banner', { controller: 'ConfigBannerCtrl', templateUrl: '/angularApp/views/config/banner.html', controllerAs: 'configbanner' })
-            .when('/error', { controller: 'ErrorCtrl',templateUrl: '/angularApp/views/shared/error.html' })
-            .otherwise({ redirectTo: '/home'});
+            .when('/error', { controller: 'ErrorCtrl', templateUrl: '/angularApp/views/shared/error.html' })
+            .otherwise({ redirectTo: '/splash'});
 
-    }]).run(['$rootScope', 'radioPubSubSvc', function ($rootScope) { }]);
+    }]).run(['$rootScope', 'radioPubSubSvc', 'notificationHub', function ($rootScope, radioPubSubSvc, notificationHub) { }]);
 
 
     

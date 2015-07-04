@@ -22,9 +22,6 @@
             var ctl = $('.list-of-pages');
             
 
-            radioPubSubSvc.subscribe(pubSubConstants.MessageSample001 , __this.test1, undefined);
-            radioPubSubSvc.subscribe(pubSubConstants.MessageSample002, __this.test2, undefined);
-
 
             dataSvc.getAllConfig(this.authService.sessionId)
                 .success((result: any) => {
@@ -40,15 +37,12 @@
             $scope.$on('$destroy', __this.destructor);
         }
 
-        
-        test1 = (topic: string, message: any) => { alert('test1' + topic);}
-        test2 = (topic: string, message: any) => { alert('test2' + topic);}
+
         
 
         destructor = () => {
             var __this = this;
-            this.radioPubSubSvc.unsubscribe(__this.pubSubConstants.MessageSample001, __this.test1);
-            this.radioPubSubSvc.unsubscribe(__this.pubSubConstants.MessageSample002, __this.test2);
+
         }
         
     }

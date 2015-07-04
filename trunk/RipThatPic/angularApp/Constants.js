@@ -6,6 +6,7 @@ var Application;
             function PubSubConstants() {
                 this.MessageSample001 = "Message1";
                 this.MessageSample002 = "Message2";
+                this.NotificationMessageRecieved = "NotificationMessageRecieved";
             }
             return PubSubConstants;
         })();

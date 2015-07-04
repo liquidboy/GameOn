@@ -13,21 +13,11 @@ var Application;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.pubSubConstants = pubSubConstants;
-                this.test1 = function (topic, message) {
-                    alert('test1' + topic);
-                };
-                this.test2 = function (topic, message) {
-                    alert('test2' + topic);
-                };
                 this.destructor = function () {
                     var __this = _this;
-                    _this.radioPubSubSvc.unsubscribe(__this.pubSubConstants.MessageSample001, __this.test1);
-                    _this.radioPubSubSvc.unsubscribe(__this.pubSubConstants.MessageSample002, __this.test2);
                 };
                 var __this = this;
                 var ctl = $('.list-of-pages');
-                radioPubSubSvc.subscribe(pubSubConstants.MessageSample001, __this.test1, undefined);
-                radioPubSubSvc.subscribe(pubSubConstants.MessageSample002, __this.test2, undefined);
                 dataSvc.getAllConfig(this.authService.sessionId).success(function (result) {
                     __this.PageList = result.Pages;
                     __this.BannerList = result.Banners;

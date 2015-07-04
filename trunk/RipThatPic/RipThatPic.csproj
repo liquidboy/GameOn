@@ -236,6 +236,9 @@
     <Content Include="angularApp\controllers\page.js">
       <DependentUpon>page.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\splash.js">
+      <DependentUpon>splash.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\billboard.js">
       <DependentUpon>billboard.ts</DependentUpon>
     </Content>
@@ -260,6 +263,9 @@
     </Content>
     <Content Include="angularApp\services\instanceFactory.js">
       <DependentUpon>instanceFactory.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\notificationHub.js">
+      <DependentUpon>notificationHub.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\services\radioPubSubService.js">
       <DependentUpon>radioPubSubService.ts</DependentUpon>
@@ -295,6 +301,7 @@
     <Content Include="angularApp\views\explorer\explorer.html" />
     <Content Include="angularApp\views\home\home.html" />
     <Content Include="angularApp\views\page\page.html" />
+    <Content Include="angularApp\views\splash\splash.html" />
     <Content Include="Assets\Spaceship\0.png" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
     <Content Include="Content\icons\area-black.png" />
@@ -514,6 +521,12 @@
     </Content>
     <Content Include="angularApp\Constants.js.map">
       <DependentUpon>Constants.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\notificationHub.js.map">
+      <DependentUpon>notificationHub.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\splash.js.map">
+      <DependentUpon>splash.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1544,6 +1557,7 @@
     <Compile Include="Libs\Incite.Cloud\Logging\AzureLogger.cs" />
     <Compile Include="Libs\Incite.Cloud\Storage\AzureProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Realtime\NotificationHub.cs" />
     <Compile Include="Realtime\ChatHub.cs" />
     <Compile Include="StartUp.cs" />
   </ItemGroup>
@@ -1567,6 +1581,7 @@
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\Constants.ts" />
     <TypeScriptCompile Include="angularApp\controllers\explorer.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\splash.ts" />
     <TypeScriptCompile Include="angularApp\controllers\page.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />
     <TypeScriptCompile Include="angularApp\controllers\configBanner.ts" />
@@ -1601,6 +1616,7 @@
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />
     <TypeScriptCompile Include="angularApp\services\authService.ts" />
     <TypeScriptCompile Include="angularApp\services\instanceFactory.ts" />
+    <TypeScriptCompile Include="angularApp\services\notificationHub.ts" />
     <TypeScriptCompile Include="angularApp\services\radioPubSubService.ts" />
     <TypeScriptCompile Include="angularApp\services\serviceHelper.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
