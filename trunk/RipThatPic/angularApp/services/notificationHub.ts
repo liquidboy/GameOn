@@ -1,7 +1,7 @@
 ﻿
 module Application.Services {
     export interface INotificationHub {
-        send(sessionId: string, message: string);
+        send(message: string);
     }
 
     export class NotificationHub implements INotificationHub{
@@ -9,7 +9,7 @@ module Application.Services {
         $: any = jQuery;
         chat: any;
 
-        constructor(public $http: ng.IHttpService, public $location: ng.ILocationService, public radioPubSubSvc: Application.Services.IRadioPubSubSvc, public pubSubConstants: Application.Constants.PubSubConstants ) {
+        constructor(public $http: ng.IHttpService, public $location: ng.ILocationService, public radioPubSubSvc: Application.Services.IRadioPubSubSvc, public pubSubConstants: Application.Constants.PubSubConstants, public authSvc: Application.Services.IAuthService ) {
             
             this.chat = this.$.connection.notificationHub;
             this.chat.client.broadcastMessage = this.received;
@@ -20,15 +20,11 @@ module Application.Services {
 
         }
         
-        send = (sessionId: string, message: string) => {
-            this.chat.server.send(sessionId, message);
-        }
-
-        received = (sessionId: string, message: string) => {
-            this.radioPubSubSvc.publish(this.pubSubConstants.NotificationMessageRecieved, message);
-        }
+        send = (message: string) => { this.chat.server.send(this.authSvc.sessionId , message); }
+        received = (sessionId: string, message: string) => { this.radioPubSubSvc.publish(this.pubSubConstants.NotificationMessageRecieved, message); }
+        ping = () => { this.chat.server.send(this.authSvc.sessionId, 'ping'); }
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.service("notificationHub", ["$http", "$location", "radioPubSubSvc", "pubSubConstants", ($http, $location, radioPubSubSvc, pubSubConstants) => new NotificationHub($http, $location, radioPubSubSvc, pubSubConstants)]);
+    myapp.service("notificationHub", ["$http", "$location", "radioPubSubSvc", "pubSubConstants", "authSvc", ($http, $location, radioPubSubSvc, pubSubConstants, authSvc) => new NotificationHub($http, $location, radioPubSubSvc, pubSubConstants, authSvc)]);
 } 

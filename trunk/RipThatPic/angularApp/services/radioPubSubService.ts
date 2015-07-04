@@ -10,12 +10,14 @@
         http: ng.IHttpService;
         location: ng.ILocationService;
         _radio: any;
+        _refCount: number = 0;
 
-        public injection(): Array<any> {
-            return [
-                () => { return [RadioPubSubSvc]; }
-            ];
-        }
+        //public injection(): Array<any> {
+        //    return [
+        //        () => { return [RadioPubSubSvc]; }
+        //    ];
+        //}
+
         constructor($http: ng.IHttpService, $location: ng.ILocationService) {
             this.http = $http;
             this.location = $location;
@@ -30,7 +32,8 @@
             this._radio(topic).broadcast(message);
         }
 
-        subscribe = (topic: string, handler: Function, scope: any) =>  {
+        subscribe = (topic: string, handler: Function, scope: any) => {
+            this._refCount++;
             this._radio(topic).subscribe(handler);
             // if we have a scope then unsubscribe the handler
             // when the scope is destroyed
@@ -43,6 +46,7 @@
         }
 
         unsubscribe = (topic: string, handler: Function) => {
+            this._refCount--;
             this._radio(topic).unsubscribe(handler);
         }
        
@@ -50,5 +54,5 @@
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.service("radioPubSubSvc", ["$http", "$location", ($http, $location) => new RadioPubSubSvc($http, $location)]);
+    myapp.service("radioPubSubSvc", ["$http", "$location", RadioPubSubSvc]); //($http, $location) => new RadioPubSubSvc($http, $location)]);
 } 

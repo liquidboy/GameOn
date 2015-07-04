@@ -30,7 +30,7 @@ var Application;
                 this.radioPubSubSvc.subscribe(this.pubSubConstants.NotificationMessageRecieved, this.NotificationMessageRecieved, undefined);
                 this.$scope.$on('$destroy', __this.destructor);
                 $('#sendmessage').click(function () {
-                    __this.notificationHub.send($('#displayname').val(), $('#message').val());
+                    __this.notificationHub.send($('#message').val());
                 });
             };
             return HomeCtrl;
