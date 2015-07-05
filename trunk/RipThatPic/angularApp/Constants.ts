@@ -4,6 +4,9 @@
         NotificationMessageRecieved: string = "NotificationMessageRecieved";
         NotificationHubConnected: string = "NotificationHubConnected";
 
+        LoginSuccessful: string = "LoginSuccessful";
+        LoginFailed: string = "LoginFailed";
+
         constructor() {
             
         }

@@ -6,6 +6,8 @@ var Application;
             function PubSubConstants() {
                 this.NotificationMessageRecieved = "NotificationMessageRecieved";
                 this.NotificationHubConnected = "NotificationHubConnected";
+                this.LoginSuccessful = "LoginSuccessful";
+                this.LoginFailed = "LoginFailed";
             }
             return PubSubConstants;
         })();

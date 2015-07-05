@@ -42,6 +42,9 @@ var Application;
             DataSvc.prototype.save = function (type, entity, sessionid) {
                 return this.http.post(this.urlBase + type, entity);
             };
+            DataSvc.prototype.login = function (username, password) {
+                return this.http.post(this.urlBase + 'login', { "username": username, "password": password });
+            };
             DataSvc.prototype.testCall = function () {
                 alert('DataSvc test call');
             };

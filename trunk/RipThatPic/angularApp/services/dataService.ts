@@ -18,6 +18,8 @@
         save(type: string, entity: any, sessionid: string): ng.IHttpPromise<{}>;
         //saveArea(name: string, grouping: string, color: string, longname: string, displayid: string ): ng.IHttpPromise<{}>;
 
+        login(username: string, password: string): ng.IHttpPromise<{}>;
+
         testCall();
     }
     export interface ISuccessResponse { data: any; status: any }
@@ -56,6 +58,7 @@
 
         save(type: string, entity: any, sessionid: string) { return this.http.post(this.urlBase + type , entity); }
 
+        login(username: string, password: string) { return this.http.post(this.urlBase + 'login', {"username": username, "password": password}); }
 
 
 

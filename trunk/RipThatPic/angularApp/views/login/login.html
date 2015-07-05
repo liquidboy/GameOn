@@ -1,2 +1,34 @@
 ﻿<d-config-menu da-selected-tab="login"></d-config-menu>
 
+<style type="text/css">
+    .login { }
+        .login .login-label {
+            text-align:right;
+        }
+        .login .login-input {
+            width:100%;
+        }
+</style>
+
+<div class="login">
+
+    <table ng-hide="login.IsLoggedIn">
+        <colgroup>
+            <col style="width:200px;" />
+            <col style="width:300px;" />
+        </colgroup>
+        <tr>
+            <td class="login-label">login :</td>
+            <td><input type="text" class="login-input" ng-model="login.UserName" /></td>
+        </tr>
+        <tr>
+            <td class="login-label">password :</td>
+            <td><input type="password" class="login-input" ng-model="login.Password" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input id="butLogin" type="button" value="Login" ng-click="login.AttemptLogin()" /></td>
+        </tr>
+    </table>
+</div>
+
