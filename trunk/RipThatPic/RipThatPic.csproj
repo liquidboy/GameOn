@@ -233,6 +233,9 @@
     <Content Include="angularApp\controllers\home.js">
       <DependentUpon>home.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\login.js">
+      <DependentUpon>login.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\page.js">
       <DependentUpon>page.ts</DependentUpon>
     </Content>
@@ -300,6 +303,7 @@
     <Content Include="angularApp\views\config\config.html" />
     <Content Include="angularApp\views\explorer\explorer.html" />
     <Content Include="angularApp\views\home\home.html" />
+    <Content Include="angularApp\views\login\login.html" />
     <Content Include="angularApp\views\page\page.html" />
     <Content Include="angularApp\views\splash\splash.html" />
     <Content Include="Assets\Spaceship\0.png" />
@@ -527,6 +531,9 @@
     </Content>
     <Content Include="angularApp\services\realtimeDataService.js.map">
       <DependentUpon>realtimeDataService.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\login.js.map">
+      <DependentUpon>login.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1584,6 +1591,7 @@
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\Constants.ts" />
     <TypeScriptCompile Include="angularApp\controllers\explorer.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\login.ts" />
     <TypeScriptCompile Include="angularApp\controllers\splash.ts" />
     <TypeScriptCompile Include="angularApp\controllers\page.ts" />
     <TypeScriptCompile Include="angularApp\controllers\config.ts" />

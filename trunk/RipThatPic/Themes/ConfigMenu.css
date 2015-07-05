@@ -14,6 +14,10 @@
       cursor: pointer;
       white-space: nowrap;
     }
+    .ui.menu .item-right {
+        float:right;
+        right:0;
+    }
     .ui.menu .item.ico-home {
       background-image: url('/content/icons/House-black.png');
       background-size: 25px;
@@ -26,7 +30,7 @@
       background-repeat: no-repeat;
       padding-left: 25px;
     }
-    .ui.menu .item.ico-user {
+    .ui.menu .ico-user {
       background-image: url('/content/icons/User-Male-black.png');
       background-size: 25px;
       background-repeat: no-repeat;
@@ -231,7 +235,7 @@
     .ui.menu .item.active.ico-document {
       background-image: url('/content/icons/document-white.png');
     }
-    .ui.menu .item.active.ico-user {
+    .ui.menu .active.ico-user {
       background-image: url('/content/icons/User-Male-white.png');
     }
     .ui.menu .item.active.ico-config {

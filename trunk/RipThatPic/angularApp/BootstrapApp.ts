@@ -14,6 +14,7 @@
         $routeProvider
             .when('/splash', { controller: 'SplashCtrl', templateUrl: '/angularApp/views/splash/splash.html', controllerAs: 'splash' })
             .when('/home', { controller: 'HomeCtrl', templateUrl: '/angularApp/views/home/home.html', controllerAs: 'home' })
+            .when('/login', { controller: 'LoginCtrl', templateUrl: '/angularApp/views/login/login.html', controllerAs: 'login' })
             .when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html', controllerAs: 'config' })
             .when('/explorer', { controller: 'ExplorerCtrl', templateUrl: '/angularApp/views/explorer/explorer.html', controllerAs: 'explorer' })
             .when('/page', { controller: 'PageCtrl', templateUrl: '/angularApp/views/page/page.html', controllerAs: 'page' })

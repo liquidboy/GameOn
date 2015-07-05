@@ -26,10 +26,10 @@ var Application;
                         var menuConfig = element.find('span[data-id="menu-config"]');
                         menuConfig.addClass('hidden');
                     }
-                    //var testElement = element.find('a[data-id="test"]');
-                    //$(testElement).on('click',() => {
-                    //    __this.radioPubSubSvc.publish(__this.pubSubConstants.MessageSample001, "test");
-                    //});
+                    else if (selectedTab === 'login') {
+                        var menuConfig = element.find('span[data-id="menu-config"]');
+                        menuConfig.addClass('hidden');
+                    }
                 };
             }
             ConfigMenuDirective.prototype.injection = function () {

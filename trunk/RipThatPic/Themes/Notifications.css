@@ -2,9 +2,9 @@
 .notifications-right {
     padding: 0;
     margin: auto;
-    right:0;
-    top:0;
-    bottom:0;
+    right:10px;
+    /*top:0;*/
+    bottom:10px;
     width:300px;
     position:absolute;
 }
