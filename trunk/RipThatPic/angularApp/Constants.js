@@ -5,6 +5,7 @@ var Application;
         var PubSubConstants = (function () {
             function PubSubConstants() {
                 this.NotificationMessageRecieved = "NotificationMessageRecieved";
+                this.NotificationHubConnected = "NotificationHubConnected";
             }
             return PubSubConstants;
         })();

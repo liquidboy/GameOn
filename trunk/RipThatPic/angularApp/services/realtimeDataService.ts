@@ -30,6 +30,7 @@ module Application.Services {
 
             this.$.connection.hub.start().done(function () {
                 //connection established
+                radioPubSubSvc.publish(pubSubConstants.NotificationHubConnected, undefined);
             });
 
         }

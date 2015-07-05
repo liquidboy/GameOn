@@ -2,6 +2,7 @@
     export class PubSubConstants {
 
         NotificationMessageRecieved: string = "NotificationMessageRecieved";
+        NotificationHubConnected: string = "NotificationHubConnected";
 
         constructor() {
             

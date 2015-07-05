@@ -30,6 +30,7 @@ var Application;
                 this.nh.client.broadcastMessage = this.received;
                 this.$.connection.hub.start().done(function () {
                     //connection established
+                    radioPubSubSvc.publish(pubSubConstants.NotificationHubConnected, undefined);
                 });
             }
             return RealtimeDataService;
