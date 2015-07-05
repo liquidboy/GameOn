@@ -264,11 +264,11 @@
     <Content Include="angularApp\services\instanceFactory.js">
       <DependentUpon>instanceFactory.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\services\notificationHub.js">
-      <DependentUpon>notificationHub.ts</DependentUpon>
-    </Content>
     <Content Include="angularApp\services\radioPubSubService.js">
       <DependentUpon>radioPubSubService.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\realtimeDataService.js">
+      <DependentUpon>realtimeDataService.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\services\serviceHelper.js">
       <DependentUpon>serviceHelper.ts</DependentUpon>
@@ -522,11 +522,11 @@
     <Content Include="angularApp\Constants.js.map">
       <DependentUpon>Constants.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\services\notificationHub.js.map">
-      <DependentUpon>notificationHub.js</DependentUpon>
-    </Content>
     <Content Include="angularApp\controllers\splash.js.map">
       <DependentUpon>splash.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\services\realtimeDataService.js.map">
+      <DependentUpon>realtimeDataService.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1619,7 +1619,7 @@
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />
     <TypeScriptCompile Include="angularApp\services\authService.ts" />
     <TypeScriptCompile Include="angularApp\services\instanceFactory.ts" />
-    <TypeScriptCompile Include="angularApp\services\notificationHub.ts" />
+    <TypeScriptCompile Include="angularApp\services\realtimeDataService.ts" />
     <TypeScriptCompile Include="angularApp\services\radioPubSubService.ts" />
     <TypeScriptCompile Include="angularApp\services\serviceHelper.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />

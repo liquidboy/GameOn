@@ -4,7 +4,7 @@
         constructor(
             public $scope: ng.IScope,
             public $rootScope: any,
-            public notificationHub: Application.Services.INotificationHub,
+            public realtimeDataService: Application.Services.IRealtimeDataService,
             public radioPubSubSvc: Application.Services.IRadioPubSubSvc,
             public pubSubConstants: Application.Constants.PubSubConstants) {
 
@@ -28,10 +28,10 @@
 
             this.$scope.$on('$destroy', __this.destructor);
 
-            ////dummy call
-            //$('#butTestNotifications').click(function () {
-            //    __this.notificationHub.send( Date.now().toString() );
-            //});
+            //dummy call
+            $('#butTestNotifications').click(function () {
+                __this.realtimeDataService.send( Date.now().toString() );
+            });
 
         }
 
@@ -46,5 +46,5 @@
         }
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("HomeCtrl", ["$scope", "$rootScope", "notificationHub", "radioPubSubSvc", "pubSubConstants", HomeCtrl]); 
+    myapp.controller("HomeCtrl", ["$scope", "$rootScope", "realtimeDataService", "radioPubSubSvc", "pubSubConstants", HomeCtrl]); 
 }

@@ -44,7 +44,7 @@
             .when('/error', { controller: 'ErrorCtrl', templateUrl: '/angularApp/views/shared/error.html' })
             .otherwise({ redirectTo: '/splash'});
 
-    }]).run(['$rootScope', 'radioPubSubSvc', 'notificationHub', function ($rootScope, radioPubSubSvc, notificationHub) { }]);
+    }]).run(['$rootScope', 'radioPubSubSvc', 'realtimeDataService', function ($rootScope, radioPubSubSvc, realtimeDataService) { }]);
 
 
     

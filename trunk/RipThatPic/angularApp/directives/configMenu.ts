@@ -49,10 +49,10 @@
                 }
 
                 
-                var testElement = element.find('a[data-id="test"]');
-                $(testElement).on('click',() => {
-                    __this.radioPubSubSvc.publish(__this.pubSubConstants.MessageSample001, "test");
-                });
+                //var testElement = element.find('a[data-id="test"]');
+                //$(testElement).on('click',() => {
+                //    __this.radioPubSubSvc.publish(__this.pubSubConstants.MessageSample001, "test");
+                //});
 
             };
 

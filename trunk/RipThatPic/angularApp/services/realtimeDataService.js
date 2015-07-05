@@ -8,8 +8,8 @@ var Application;
 (function (Application) {
     var Services;
     (function (Services) {
-        var NotificationHub = (function () {
-            function NotificationHub($http, $location, radioPubSubSvc, pubSubConstants, authSvc) {
+        var RealtimeDataService = (function () {
+            function RealtimeDataService($http, $location, radioPubSubSvc, pubSubConstants, authSvc) {
                 var _this = this;
                 this.$http = $http;
                 this.$location = $location;
@@ -18,25 +18,25 @@ var Application;
                 this.authSvc = authSvc;
                 this.$ = jQuery;
                 this.send = function (message) {
-                    _this.chat.server.send(_this.authSvc.sessionId, message);
+                    _this.nh.server.send(_this.authSvc.sessionId, message);
                 };
                 this.received = function (sessionId, message) {
                     _this.radioPubSubSvc.publish(_this.pubSubConstants.NotificationMessageRecieved, message);
                 };
                 this.ping = function () {
-                    _this.chat.server.send(_this.authSvc.sessionId, 'ping');
+                    _this.nh.server.send(_this.authSvc.sessionId, 'ping');
                 };
-                this.chat = this.$.connection.notificationHub;
-                this.chat.client.broadcastMessage = this.received;
+                this.nh = this.$.connection.notificationHub;
+                this.nh.client.broadcastMessage = this.received;
                 this.$.connection.hub.start().done(function () {
                     //connection established
                 });
             }
-            return NotificationHub;
+            return RealtimeDataService;
         })();
-        Services.NotificationHub = NotificationHub;
+        Services.RealtimeDataService = RealtimeDataService;
         var myapp = angular.module('bootstrapApp');
-        myapp.service("notificationHub", ["$http", "$location", "radioPubSubSvc", "pubSubConstants", "authSvc", function ($http, $location, radioPubSubSvc, pubSubConstants, authSvc) { return new NotificationHub($http, $location, radioPubSubSvc, pubSubConstants, authSvc); }]);
+        myapp.service("realtimeDataService", ["$http", "$location", "radioPubSubSvc", "pubSubConstants", "authSvc", function ($http, $location, radioPubSubSvc, pubSubConstants, authSvc) { return new RealtimeDataService($http, $location, radioPubSubSvc, pubSubConstants, authSvc); }]);
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=notificationHub.js.map
+//# sourceMappingURL=realtimeDataService.js.map

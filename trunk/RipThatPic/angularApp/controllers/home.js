@@ -3,11 +3,11 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var HomeCtrl = (function () {
-            function HomeCtrl($scope, $rootScope, notificationHub, radioPubSubSvc, pubSubConstants) {
+            function HomeCtrl($scope, $rootScope, realtimeDataService, radioPubSubSvc, pubSubConstants) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
-                this.notificationHub = notificationHub;
+                this.realtimeDataService = realtimeDataService;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.pubSubConstants = pubSubConstants;
                 this.NotificationMessageRecieved = function (message) {
@@ -29,16 +29,16 @@ var Application;
                 //});
                 this.radioPubSubSvc.subscribe(this.pubSubConstants.NotificationMessageRecieved, this.NotificationMessageRecieved, undefined);
                 this.$scope.$on('$destroy', __this.destructor);
-                ////dummy call
-                //$('#butTestNotifications').click(function () {
-                //    __this.notificationHub.send( Date.now().toString() );
-                //});
+                //dummy call
+                $('#butTestNotifications').click(function () {
+                    __this.realtimeDataService.send(Date.now().toString());
+                });
             };
             return HomeCtrl;
         })();
         Controllers.HomeCtrl = HomeCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("HomeCtrl", ["$scope", "$rootScope", "notificationHub", "radioPubSubSvc", "pubSubConstants", HomeCtrl]);
+        myapp.controller("HomeCtrl", ["$scope", "$rootScope", "realtimeDataService", "radioPubSubSvc", "pubSubConstants", HomeCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=home.js.map

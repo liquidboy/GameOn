@@ -1,9 +1,6 @@
 ﻿module Application.Constants {
     export class PubSubConstants {
 
-        MessageSample001: string = "Message1";
-        MessageSample002: string = "Message2";
-
         NotificationMessageRecieved: string = "NotificationMessageRecieved";
 
         constructor() {
