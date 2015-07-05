@@ -12,7 +12,7 @@ var Application;
                 this.pubSubConstants = pubSubConstants;
                 this.NotificationMessageRecieved = function (message) {
                     var encodedMsg = $('<div />').text(message).html();
-                    $('#discussion').append('<li>' + encodedMsg + '</li>');
+                    $('#alerts').append('<li>' + encodedMsg + '</li>'); //i need to clean this up as this "alerts" element sits in index.html
                 };
                 this.destructor = function () {
                     var __this = _this;
@@ -29,9 +29,10 @@ var Application;
                 //});
                 this.radioPubSubSvc.subscribe(this.pubSubConstants.NotificationMessageRecieved, this.NotificationMessageRecieved, undefined);
                 this.$scope.$on('$destroy', __this.destructor);
-                $('#butTestNotifications').click(function () {
-                    __this.notificationHub.send(Date.now().toString());
-                });
+                ////dummy call
+                //$('#butTestNotifications').click(function () {
+                //    __this.notificationHub.send( Date.now().toString() );
+                //});
             };
             return HomeCtrl;
         })();

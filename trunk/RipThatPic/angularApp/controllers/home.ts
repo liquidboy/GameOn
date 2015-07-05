@@ -28,15 +28,16 @@
 
             this.$scope.$on('$destroy', __this.destructor);
 
-            $('#butTestNotifications').click(function () {
-                __this.notificationHub.send( Date.now().toString() );
-            });
+            ////dummy call
+            //$('#butTestNotifications').click(function () {
+            //    __this.notificationHub.send( Date.now().toString() );
+            //});
 
         }
 
         NotificationMessageRecieved = ( message: any) => {
             var encodedMsg = $('<div />').text(message).html();
-            $('#discussion').append('<li>' + encodedMsg + '</li>');
+            $('#alerts').append('<li>' + encodedMsg + '</li>');  //i need to clean this up as this "alerts" element sits in index.html
         }
         
         destructor = () => {
