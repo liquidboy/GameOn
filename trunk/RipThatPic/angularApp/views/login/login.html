@@ -1,31 +1,7 @@
-﻿<d-config-menu da-selected-tab="login"></d-config-menu>
+﻿<link rel="stylesheet" href="/Themes/Login.css" />
 
-<style type="text/css">
-    .login {
-        margin-left: 5px;
-    }
+<d-config-menu da-selected-tab="login"></d-config-menu>
 
-        .login .login-label {
-            text-align: right;
-        }
-
-        .login .login-input {
-            width: 100%;
-        }
-
-        .login .login-name {
-            font-weight: bold;
-            background-color: black;
-            color: white;
-            padding: 5px;
-        }
-        .login .login-session {
-            margin-top:20px;
-            font-weight: lighter;
-            font-style:italic;
-            color: lightgray;
-        }
-</style>
 
 <div class="login">
     <div ng-show="login.IsLoggedIn">

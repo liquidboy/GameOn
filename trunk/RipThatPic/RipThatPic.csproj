@@ -1497,6 +1497,7 @@
     <Content Include="script\vs\nls.js" />
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
+    <Content Include="Themes\Login.css" />
     <Content Include="Themes\ConfigMenu.css" />
     <Content Include="Themes\Configuration.css" />
     <Content Include="Themes\Notifications.css" />
