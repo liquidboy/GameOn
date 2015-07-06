@@ -4,49 +4,190 @@ var Application;
     (function (Directives) {
         //'use strict';
         var FileUploadDirective = (function () {
-            function FileUploadDirective() {
+            function FileUploadDirective(pubSubConstants) {
+                var _this = this;
+                this.pubSubConstants = pubSubConstants;
+                this.localWindow = window;
+                this.plupload = this.localWindow.plupload;
+                this.httpConfiguration = {
+                    timeout: 120000 // 2 minutes
+                };
+                this.buildDefaultConfig = function () {
+                    return {
+                        //button : '',
+                        //url : '',
+                        //beforeFileUpload: function (uploader, file){},
+                        //postInitialisation: function (uploader)
+                        headers: {},
+                        bodyParams: {},
+                        runtimes: 1,
+                        preventDuplicates: true,
+                        maxFileSize: 0,
+                        maxFileAutoRetryAttempts: 4,
+                        timeout: 0,
+                        flash_swf_url: '/scripts/plupload/moxie.swf',
+                        silverlight_xap_url: '/scripts/plupload/moxie.xap'
+                    };
+                };
                 this.scope = {};
+                this.initUploader = function () {
+                    var uploadConfig = {
+                        button: _this.scope.browseButton,
+                        dropArea: _this.scope.dropArea,
+                        url: '/api/Upload',
+                        headers: {},
+                        bodyParams: {},
+                        beforeFileUpload: function () {
+                        },
+                        postInitialisation: function () {
+                        },
+                        filesAdded: function () {
+                        },
+                        filesRemoved: function () {
+                        },
+                        fileUploaded: function () {
+                        },
+                        fileFiltered: function () {
+                        },
+                        attachCustomPropertiesToFile: function () {
+                        },
+                        uploadComplete: function () {
+                        },
+                        uploadProgress: function () {
+                        },
+                        stateChanged: function () {
+                        },
+                        canRetryFiles: function () {
+                        },
+                        error: function () {
+                        },
+                        browse: function () {
+                        },
+                        timeout: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadTimeout, _this.httpConfiguration.timeout),
+                        runtimes: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRuntimes, 'html5,flash,html4'),
+                        chunk_size: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadChunkSize, 1024),
+                        maxFileAutoRetryAttempts: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRetries, 4) //uploadFileService.defaults.maxFileAutoRetryAttempts)
+                    };
+                    if (!_this.scope.browseButton) {
+                        alert('Browse button not specified');
+                        return;
+                    }
+                    $('#' + _this.scope.browseButton).removeAttr('disabled');
+                    //uploadConfig.bodyParams[$scope.formsCookieName] = $scope.formsCookieValue;
+                    //uploadConfig.bodyParams[$scope.sessionCookieName] = $scope.sessionCookieValue;
+                    _this.uploader = _this.newUploadInstance(uploadConfig);
+                    //uploadFileDataService.setHttpConfiguration(httpConfiguration);
+                    //uploadFileDataService.setMessageId($scope.messageId);
+                };
+                this.getSetting = function (key, defaultValue) {
+                    return defaultValue;
+                };
+                this.newUploadInstance = function (config) {
+                    config = $.extend(_this.buildDefaultConfig(), config);
+                    var __this = _this;
+                    try {
+                        _this.uploader = new _this.plupload.Uploader({
+                            browse_button: config.button,
+                            drop_element: config.dropArea,
+                            url: config.url,
+                            runtimes: config.runtimes,
+                            //headers: undefined, - according with documentation 'headers' works in flash only using some special options - e.g. urlstream_upload
+                            send_chunk_number: false,
+                            multipart_params: config.bodyParams,
+                            chunk_size: config.chunk_size,
+                            max_retries: config.max_retries,
+                            flash_swf_url: config.flash_swf_url,
+                            silverlight_xap_url: config.silverlight_xap_url,
+                            filters: {
+                                max_file_size: config.maxFileSize,
+                                prevent_duplicates: config.preventDuplicates
+                            },
+                            // PreInit events, bound before any internal events
+                            preinit: {
+                                Init: function (up, info) {
+                                },
+                                UploadFile: function (up, file) {
+                                }
+                            },
+                            // Post init events, bound after the internal events
+                            init: {
+                                postInit: function (up) {
+                                },
+                                Browse: function (up) {
+                                    //up.log.log('[Browse]');
+                                    //if (config.browse) {
+                                    //    config.browse(up.wrapper);
+                                    //}
+                                },
+                                //Refresh: refresh,
+                                StateChanged: function (up) {
+                                },
+                                //QueueChanged: queueChanged,
+                                //OptionChange: optionChanged,
+                                //BeforeUpload: beforeUpload,
+                                UploadProgress: function (up, file) {
+                                },
+                                FileFiltered: function (up, file) {
+                                },
+                                FilesAdded: function (up, files) {
+                                    _this.plupload.each(files, function (file) {
+                                        //adjustFilenameForiPad(file);
+                                        //attachCustomPropertiesToFile(file);
+                                        //if (isHtml4) {
+                                        //    file.npsProperties.timeout = undefined;
+                                        //}
+                                    });
+                                },
+                                FilesRemvoed: function (up, files) {
+                                },
+                                FileUploaded: function (up, file, info) {
+                                },
+                                ChunkUploaded: function (up, file, info) {
+                                },
+                                UploadComplete: function (up, files) {
+                                },
+                                //Destry: destroy,
+                                Error: function (up, args) {
+                                }
+                            }
+                        });
+                        _this.uploader.init();
+                    }
+                    catch (ex) {
+                        alert(ex.message);
+                    }
+                    //this.uploader.timeout = config.timeout;
+                    //this.uploader.maxFileAutoRetryAttempts = config.maxFileAutoRetryAttempts;
+                    //this.uploader.defaultLog = this.uploader.log = log;
+                };
                 this.restrict = 'E';
                 this.replace = true;
                 this.templateUrl = '/angularApp/partials/fileupload.html';
                 this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileUploadController];
                 this.link = function ($scope, element, attributes, controller) {
-                    //var selectedTab: string = "";
-                    //if (attributes.$attr["daSelectedTab"]) {
-                    //    selectedTab = element.attr(<string>attributes.$attr["daSelectedTab"]); 
-                    //}
-                    //var foundTab = element.find('a[data-id="' + selectedTab + '"]');
-                    //foundTab.addClass("active");
-                    //if (selectedTab === 'home') {
-                    //    var menuConfig = element.find('span[data-id="menu-config"]');
-                    //    menuConfig.addClass('hidden');
-                    //}
+                    _this.scope = $scope;
+                    _this.scope.browseButton = 'browse_button';
+                    _this.scope.dropArea = 'drop_area';
+                    _this.initUploader();
                 };
             }
             FileUploadDirective.prototype.injection = function () {
                 return [
-                    function () {
-                        return new FileUploadDirective();
+                    "pubSubConstants",
+                    function (pubSubConstants) {
+                        return new FileUploadDirective(pubSubConstants);
                     }
                 ];
             };
-            FileUploadDirective.$inject = [function () {
-                return new FileUploadDirective();
-            }];
             return FileUploadDirective;
         })();
         Directives.FileUploadDirective = FileUploadDirective;
         var FileUploadController = (function () {
             function FileUploadController($scope, $routeParams, $rootScope, $injector) {
-                //$scope.Title = "Search Serviced";
                 this.$scope = $scope;
                 this.$routeParams = $routeParams;
                 this.$rootScope = $rootScope;
                 this.$injector = $injector;
-                //this.$rootScope.$on("load-step",(evt, step) => {
-                //    //$scope.SubTitle = "";
-                //    $scope.$apply();
-                //});
             }
             return FileUploadController;
         })();
@@ -54,4 +195,24 @@ var Application;
         myapp.directive("dFileUpload", FileUploadDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+// config.button - browse button to trigger file selection(s)
+// config.url - url to upload the file to 
+// config.beforeFileUpload(uploader, file) - function called before each file is uploaded
+// config.bodyParams{} - hash of the parameters and values to send to the server with each file being sent
+// config.runtimes - list of runtimes to use as the uploading component, default: "html5,flash,html4"
+// config.preventDuplicates - allow duplicates to be in the queue. default: true
+// config.maxFileSize - maximum file size to allow to be uploaded in bytes, 0 for unlimited, default: 2147483647
+// config.postInitialisation(uploader) - function called when uploader has initialised, Post init events, bound after the internal events
+// config.maxFileAutoRetryAttempts - number of automatic retry attempts to upload a file, default: 3,
+// config.stateChanged(uploader) - function called when state of the queue is changed
+// config.uploadProgress(uploader, file) - function called while a file is being uploaded
+// config.fileFiltered(uploader, file) - function called file has passed all the filters
+// config.filesAdded(uploader, files) - function called when files are added to the queue
+// config.filesRemoved(uploader, files) - function called when files are removed from the queue
+// config.fileUploaded(uploader, file, info) - function called when file has been uploaded
+// config.uploadComplete(upload, files) - function called when all files have been uploaded or failed
+// config.error(uploader, args) - function called when error occurs
+// config.attachCustomPropertiesToFile(file, customProperties) - function called when a file is added to the queue
+// config.timeout - milliseconds without response from server before failing the upload. 0 = inifinate
+// config.canRetryFiles(files) - return false to cancel automatic retry of files
 //# sourceMappingURL=fileUpload.js.map

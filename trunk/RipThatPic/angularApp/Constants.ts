@@ -7,6 +7,12 @@
         LoginSuccessful: string = "LoginSuccessful";
         LoginFailed: string = "LoginFailed";
 
+
+        CookieSettings_FileUploadTimeout: string = "FileUploadTimeout";
+        CookieSettings_FileUploadRuntimes: string = "FileUploadRuntimes";
+        CookieSettings_FileUploadChunkSize: string = "FileUploadChunkSize";
+        CookieSettings_FileUploadRetries: string = "FileUploadRetries";
+
         constructor() {
             
         }

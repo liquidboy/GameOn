@@ -8,6 +8,10 @@ var Application;
                 this.NotificationHubConnected = "NotificationHubConnected";
                 this.LoginSuccessful = "LoginSuccessful";
                 this.LoginFailed = "LoginFailed";
+                this.CookieSettings_FileUploadTimeout = "FileUploadTimeout";
+                this.CookieSettings_FileUploadRuntimes = "FileUploadRuntimes";
+                this.CookieSettings_FileUploadChunkSize = "FileUploadChunkSize";
+                this.CookieSettings_FileUploadRetries = "FileUploadRetries";
             }
             return PubSubConstants;
         })();

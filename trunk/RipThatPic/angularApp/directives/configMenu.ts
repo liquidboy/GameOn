@@ -19,10 +19,7 @@
 
         };
         public link: ($scope: IConfigMenuController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: ConfigMenuController) => void;
-        public nextImage: (controller: ConfigMenuController, element: ng.IAugmentedJQuery) => void;
-        public setImage: (element: ng.IAugmentedJQuery, url: string) => void;
-
-
+        
 
         constructor(public pubSubConstants: Application.Constants.PubSubConstants, public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
 
