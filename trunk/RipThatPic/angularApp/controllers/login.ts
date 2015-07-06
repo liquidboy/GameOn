@@ -31,8 +31,6 @@
                 this.IsLoggedIn = authService.IsLoggedIn;
                 this.LoggedInEntity = jQuery.extend(true, {}, authService.LoginEntity);
             }
-
-          
         }
         
         AttemptLogin = () => {

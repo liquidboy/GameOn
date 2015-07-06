@@ -152,79 +152,79 @@
     <Content Include="angularApp\Constants.js">
       <DependentUpon>Constants.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\config.js">
+    <Content Include="angularApp\controllers\Config\config.js">
       <DependentUpon>config.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configArea.js">
+    <Content Include="angularApp\controllers\Config\configArea.js">
       <DependentUpon>configArea.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configBanner.js">
+    <Content Include="angularApp\controllers\Config\configBanner.js">
       <DependentUpon>configBanner.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configComment.js">
+    <Content Include="angularApp\controllers\Config\configComment.js">
       <DependentUpon>configComment.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configDatacenter.js">
+    <Content Include="angularApp\controllers\Config\configDatacenter.js">
       <DependentUpon>configDatacenter.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configDocument.js">
+    <Content Include="angularApp\controllers\Config\configDocument.js">
       <DependentUpon>configDocument.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configEditor.js">
+    <Content Include="angularApp\controllers\Config\configEditor.js">
       <DependentUpon>configEditor.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configExtension.js">
+    <Content Include="angularApp\controllers\Config\configExtension.js">
       <DependentUpon>configExtension.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configGrouping.js">
+    <Content Include="angularApp\controllers\Config\configGrouping.js">
       <DependentUpon>configGrouping.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configImage.js">
+    <Content Include="angularApp\controllers\Config\configImage.js">
       <DependentUpon>configImage.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configInstall.js">
+    <Content Include="angularApp\controllers\Config\configInstall.js">
       <DependentUpon>configInstall.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configLink.js">
+    <Content Include="angularApp\controllers\Config\configLink.js">
       <DependentUpon>configLink.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configList.js">
+    <Content Include="angularApp\controllers\Config\configList.js">
       <DependentUpon>configList.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configLog.js">
+    <Content Include="angularApp\controllers\Config\configLog.js">
       <DependentUpon>configLog.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configMap.js">
+    <Content Include="angularApp\controllers\Config\configMap.js">
       <DependentUpon>configMap.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configPage.js">
+    <Content Include="angularApp\controllers\Config\configPage.js">
       <DependentUpon>configPage.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configPermission.js">
+    <Content Include="angularApp\controllers\Config\configPermission.js">
       <DependentUpon>configPermission.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configPost.js">
+    <Content Include="angularApp\controllers\Config\configPost.js">
       <DependentUpon>configPost.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configService.js">
+    <Content Include="angularApp\controllers\Config\configService.js">
       <DependentUpon>configService.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configSession.js">
+    <Content Include="angularApp\controllers\Config\configSession.js">
       <DependentUpon>configSession.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configSetting.js">
+    <Content Include="angularApp\controllers\Config\configSetting.js">
       <DependentUpon>configSetting.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configTheme.js">
+    <Content Include="angularApp\controllers\Config\configTheme.js">
       <DependentUpon>configTheme.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configUser.js">
+    <Content Include="angularApp\controllers\Config\configUser.js">
       <DependentUpon>configUser.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configVersion.js">
+    <Content Include="angularApp\controllers\Config\configVersion.js">
       <DependentUpon>configVersion.ts</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configVideo.js">
+    <Content Include="angularApp\controllers\Config\configVideo.js">
       <DependentUpon>configVideo.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\controllers\explorer.js">
@@ -426,83 +426,83 @@
     <Content Include="angularApp\directives\workarea.js.map">
       <DependentUpon>workarea.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\config.js.map">
+    <Content Include="angularApp\controllers\Config\config.js.map">
       <DependentUpon>config.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configArea.js.map">
+    <Content Include="angularApp\controllers\Config\configArea.js.map">
       <DependentUpon>configArea.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configComment.js.map">
+    <Content Include="angularApp\controllers\Config\configComment.js.map">
       <DependentUpon>configComment.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configSession.js.map">
+    <Content Include="angularApp\controllers\Config\configSession.js.map">
       <DependentUpon>configSession.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configUser.js.map">
+    <Content Include="angularApp\controllers\Config\configUser.js.map">
       <DependentUpon>configUser.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configVideo.js.map">
+    <Content Include="angularApp\controllers\Config\configVideo.js.map">
       <DependentUpon>configVideo.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configImage.js.map">
+    <Content Include="angularApp\controllers\Config\configImage.js.map">
       <DependentUpon>configImage.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configDocument.js.map">
+    <Content Include="angularApp\controllers\Config\configDocument.js.map">
       <DependentUpon>configDocument.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configLink.js.map">
+    <Content Include="angularApp\controllers\Config\configLink.js.map">
       <DependentUpon>configLink.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configSetting.js.map">
+    <Content Include="angularApp\controllers\Config\configSetting.js.map">
       <DependentUpon>configSetting.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configPage.js.map">
+    <Content Include="angularApp\controllers\Config\configPage.js.map">
       <DependentUpon>configPage.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configDatacenter.js.map">
+    <Content Include="angularApp\controllers\Config\configDatacenter.js.map">
       <DependentUpon>configDatacenter.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configList.js.map">
+    <Content Include="angularApp\controllers\Config\configList.js.map">
       <DependentUpon>configList.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configPost.js.map">
+    <Content Include="angularApp\controllers\Config\configPost.js.map">
       <DependentUpon>configPost.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configPermission.js.map">
+    <Content Include="angularApp\controllers\Config\configPermission.js.map">
       <DependentUpon>configPermission.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configMap.js.map">
+    <Content Include="angularApp\controllers\Config\configMap.js.map">
       <DependentUpon>configMap.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configService.js.map">
+    <Content Include="angularApp\controllers\Config\configService.js.map">
       <DependentUpon>configService.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configExtension.js.map">
+    <Content Include="angularApp\controllers\Config\configExtension.js.map">
       <DependentUpon>configExtension.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configTheme.js.map">
+    <Content Include="angularApp\controllers\Config\configTheme.js.map">
       <DependentUpon>configTheme.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configLog.js.map">
+    <Content Include="angularApp\controllers\Config\configLog.js.map">
       <DependentUpon>configLog.js</DependentUpon>
     </Content>
     <Content Include="angularApp\services\instanceFactory.js.map">
       <DependentUpon>instanceFactory.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configInstall.js.map">
+    <Content Include="angularApp\controllers\Config\configInstall.js.map">
       <DependentUpon>configInstall.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configVersion.js.map">
+    <Content Include="angularApp\controllers\Config\configVersion.js.map">
       <DependentUpon>configVersion.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configGrouping.js.map">
+    <Content Include="angularApp\controllers\Config\configGrouping.js.map">
       <DependentUpon>configGrouping.js</DependentUpon>
     </Content>
     <Content Include="Assets\Spaceship\Spaceship.babylon" />
-    <Content Include="angularApp\controllers\configEditor.js.map">
+    <Content Include="angularApp\controllers\Config\configEditor.js.map">
       <DependentUpon>configEditor.js</DependentUpon>
     </Content>
-    <Content Include="angularApp\controllers\configBanner.js.map">
+    <Content Include="angularApp\controllers\Config\configBanner.js.map">
       <DependentUpon>configBanner.js</DependentUpon>
     </Content>
     <Content Include="angularApp\services\authService.js.map">
@@ -1596,31 +1596,31 @@
     <TypeScriptCompile Include="angularApp\controllers\login.ts" />
     <TypeScriptCompile Include="angularApp\controllers\splash.ts" />
     <TypeScriptCompile Include="angularApp\controllers\page.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\config.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configBanner.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configDatacenter.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configGrouping.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configEditor.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configVersion.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configInstall.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configLog.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configTheme.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configExtension.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configService.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configMap.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configPermission.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configPost.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configList.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configPage.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configLink.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configImage.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configDocument.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configSetting.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configVideo.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configUser.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configSession.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configComment.ts" />
-    <TypeScriptCompile Include="angularApp\controllers\configArea.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\config.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configBanner.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configDatacenter.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configGrouping.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configEditor.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configVersion.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configInstall.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configLog.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configTheme.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configExtension.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configService.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configMap.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configPermission.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configPost.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configList.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configPage.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configLink.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configImage.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configDocument.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configSetting.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configVideo.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configUser.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configSession.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configComment.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileUpload.ts" />
     <TypeScriptCompile Include="angularApp\directives\configMenu.ts" />
