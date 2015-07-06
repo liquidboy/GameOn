@@ -408,7 +408,6 @@
     <Content Include="Flash\Moxie.min.2.0.0.swf" />
     <Content Include="Global.asax" />
     <Content Include="Index.cshtml" />
-    <None Include="Index.html.old" />
     <Content Include="babylon-example-index.js" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
