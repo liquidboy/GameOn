@@ -20,11 +20,15 @@ namespace RipThatPic.Controllers
         public LoginEntity Post([FromBody]LoginEntity loginEntity)
         {
             loginEntity.IsSuccessful = false;
+            loginEntity.LoginErrorMessage = string.Empty;
             loginEntity.SessionId = Guid.Empty;
             loginEntity.DisplayName = string.Empty;
 
 
-            if (string.IsNullOrEmpty(loginEntity.Username) || string.IsNullOrEmpty(loginEntity.Password)) return loginEntity;
+            if (string.IsNullOrEmpty(loginEntity.Username) || string.IsNullOrEmpty(loginEntity.Password)) {
+                loginEntity.LoginErrorMessage = "did not provide username/password";
+                return loginEntity;
+            }
 
             //var processor = GetAzureProcessor();
             //var ret = await processor.CreateTable("Login");
@@ -33,6 +37,8 @@ namespace RipThatPic.Controllers
             loginEntity.SessionId = Guid.NewGuid();
             loginEntity.IsSuccessful = true;
             loginEntity.DisplayName = "Anonymous";
+            loginEntity.Username = ""; //clear these out
+            loginEntity.Password = ""; //clear these out
 
             return loginEntity;
 
@@ -52,6 +58,8 @@ namespace RipThatPic.Controllers
     public class LoginEntity 
     {
         public bool IsSuccessful { get; set; }
+        public string LoginErrorMessage { get; set; }
+
         public Guid SessionId { get; set; }
 
         public string DisplayName { get; set; }
@@ -59,6 +67,7 @@ namespace RipThatPic.Controllers
         public string Username { get; set; }
         public string Password { get; set; }
 
+        
 
         public LoginEntity() { }
     

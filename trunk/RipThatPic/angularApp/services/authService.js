@@ -8,6 +8,7 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.pubSubConstants = pubSubConstants;
+                this.IsLoggedIn = false;
                 this.sessionId = "";
             }
             AuthService.prototype.injection = function () {
@@ -22,10 +23,19 @@ var Application;
                 //todo: do actual authentication call, still need to work out what approach to take
                 this.sessionId = 'xxxx-xxxx-xxxx-xxxx-xxxx';
                 this.dataSvc.login(username, userpwd).success(function (result) {
-                    _this.sessionId = result.SessionId;
-                    _this.radioPubSubSvc.publish(_this.pubSubConstants.LoginSuccessful, result);
+                    if (result.IsSuccessful) {
+                        _this.sessionId = result.SessionId;
+                        _this.LoginEntity = result;
+                        _this.IsLoggedIn = true;
+                        _this.radioPubSubSvc.publish(_this.pubSubConstants.LoginSuccessful, result);
+                    }
+                    else {
+                        _this.IsLoggedIn = false;
+                        _this.radioPubSubSvc.publish(_this.pubSubConstants.LoginFailed, result.LoginErrorMessage);
+                    }
                 }).error(function (err) {
                     alert(err.Message);
+                    _this.IsLoggedIn = false;
                     _this.radioPubSubSvc.publish(_this.pubSubConstants.LoginFailed, err);
                 });
             };

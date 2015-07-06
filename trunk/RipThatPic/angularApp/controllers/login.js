@@ -25,16 +25,25 @@ var Application;
                 };
                 this.loginSuccessful = function (data) {
                     _this.IsLoggedIn = true;
+                    _this.LoginEntity = data;
+                    _this.$scope.$apply();
                 };
                 this.loginFailed = function (error) {
                     _this.IsLoggedIn = false;
+                    _this.LoginEntity = {};
                 };
                 var grouping = location.search()["grouping"];
                 var name = location.search()["name"];
-                var __this = this;
-                this.$scope.$on('$destroy', __this.destructor);
-                this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginSuccessful, this.loginSuccessful, undefined);
-                this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginFailed, this.loginFailed, undefined);
+                if (!authService.IsLoggedIn) {
+                    var __this = this;
+                    this.$scope.$on('$destroy', __this.destructor);
+                    this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginSuccessful, this.loginSuccessful, undefined);
+                    this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginFailed, this.loginFailed, undefined);
+                }
+                else {
+                    this.IsLoggedIn = authService.IsLoggedIn;
+                    this.LoginEntity = jQuery.extend(true, {}, authService.LoginEntity);
+                }
             }
             return LoginCtrl;
         })();

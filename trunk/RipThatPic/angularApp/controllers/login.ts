@@ -6,6 +6,8 @@
         Password: string;
         IsLoggedIn: boolean = false;
 
+        LoginEntity: any;
+
         constructor(
             public $scope: ng.IScope,
             public $rootScope: any,
@@ -20,11 +22,17 @@
             var grouping: string = location.search()["grouping"];
             var name: string = location.search()["name"];
 
-            var __this = this;
-            this.$scope.$on('$destroy', __this.destructor);
+            if (!authService.IsLoggedIn) {
+                var __this = this;
+                this.$scope.$on('$destroy', __this.destructor);
+                this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginSuccessful, this.loginSuccessful, undefined);
+                this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginFailed, this.loginFailed, undefined);
+            } else {
+                this.IsLoggedIn = authService.IsLoggedIn;
+                this.LoginEntity = jQuery.extend(true, {}, authService.LoginEntity);
+            }
 
-            this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginSuccessful, this.loginSuccessful, undefined);
-            this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginFailed, this.loginFailed, undefined);
+          
         }
         
         AttemptLogin = () => {
@@ -37,8 +45,8 @@
             this.radioPubSubSvc.unsubscribe(__this.pubSubConstants.LoginFailed, __this.loginFailed);
         }
 
-        loginSuccessful = (data: any) => { this.IsLoggedIn = true;}
-        loginFailed = (error: any) => { this.IsLoggedIn = false;}
+        loginSuccessful = (data: any) => { this.IsLoggedIn = true; this.LoginEntity = data; this.$scope.$apply();}
+        loginFailed = (error: any) => { this.IsLoggedIn = false; this.LoginEntity = {};}
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
     myapp.controller("LoginCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "$location", "radioPubSubSvc", "pubSubConstants", LoginCtrl]);
