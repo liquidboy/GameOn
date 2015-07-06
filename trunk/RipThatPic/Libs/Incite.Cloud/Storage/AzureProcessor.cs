@@ -10,6 +10,7 @@ using Incite.Cloud;
 using System.IO;
 using System;
 using RipThatPic.Controllers;
+using System.Globalization;
 
 namespace Incite.Cloud.Storage
 {
@@ -561,6 +562,30 @@ namespace Incite.Cloud.Storage
         }
 
 
+
+        //Creates a SAS URI for the blob container.
+        public string GetSaSForBlobContainer(CloudBlobContainer blobContainer, SharedAccessBlobPermissions permission)
+        {
+            var sas = blobContainer.GetSharedAccessSignature(new SharedAccessBlobPolicy()
+            {
+                Permissions = permission,
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),//SAS Start time is back by 5 minutes to take clock skewness into consideration
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(15),
+            });
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", blobContainer.Uri, sas);
+        }
+
+        //Creates a SAS URI for the blob.
+        public string GetSaSForBlob(CloudBlockBlob blob, SharedAccessBlobPermissions permission)
+        {
+            var sas = blob.GetSharedAccessSignature(new SharedAccessBlobPolicy()
+            {
+                Permissions = permission,
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(15),
+            });
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", blob.Uri, sas);
+        }
 
 
 
