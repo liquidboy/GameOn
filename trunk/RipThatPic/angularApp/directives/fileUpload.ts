@@ -48,7 +48,7 @@
 
         constructor(public pubSubConstants: Application.Constants.PubSubConstants) {
 
-
+            
             this.restrict = 'E';
             this.replace = true;
             this.templateUrl = '/angularApp/partials/fileupload.html';
@@ -58,14 +58,25 @@
                 this.scope = $scope;
                 this.scope.browseButton = 'browse_button';
                 this.scope.dropArea = 'drop_area';
+                this.scope.startButton = 'start_button';
+
                 this.initUploader();
+
+                element.find('#start_button').on('click', this.startUpload);
              
             };
 
 
         }
 
+        startUpload = () => {
+            var __this = this;
+            __this.uploader.start();
+        }
+
         initUploader = () => {
+            var __this = this;
+
             var uploadConfig = {
                 button: this.scope.browseButton,
                 dropArea: this.scope.dropArea,
@@ -102,7 +113,7 @@
             //uploadConfig.bodyParams[$scope.formsCookieName] = $scope.formsCookieValue;
             //uploadConfig.bodyParams[$scope.sessionCookieName] = $scope.sessionCookieValue;
 
-            this.uploader = this.newUploadInstance(uploadConfig);
+            this.newUploadInstance(uploadConfig);
 
             //uploadFileDataService.setHttpConfiguration(httpConfiguration);
             //uploadFileDataService.setMessageId($scope.messageId);
@@ -112,12 +123,13 @@
             return defaultValue;
         }
 
-
+        
+        
         newUploadInstance = (config: any) => {
             config = $.extend(this.buildDefaultConfig(), config);
             var __this = this;
             try {
-                this.uploader = new this.plupload.Uploader({
+                __this.uploader = new __this.plupload.Uploader({
                     browse_button: config.button,
                     drop_element: config.dropArea,
                     url: config.url,
@@ -162,6 +174,8 @@
                                 //if (isHtml4) {
                                 //    file.npsProperties.timeout = undefined;
                                 //}
+                                $('#' + __this.scope.startButton).removeAttr('disabled');
+
                             });
                         },
                         FilesRemvoed: (up, files) => { },
@@ -173,7 +187,7 @@
                     }
                 });
                 
-                this.uploader.init();
+                __this.uploader.init();
             }
             catch (ex) { alert(ex.message);}
 

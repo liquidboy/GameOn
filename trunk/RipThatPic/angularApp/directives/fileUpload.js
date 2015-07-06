@@ -30,7 +30,12 @@ var Application;
                     };
                 };
                 this.scope = {};
+                this.startUpload = function () {
+                    var __this = _this;
+                    __this.uploader.start();
+                };
                 this.initUploader = function () {
+                    var __this = _this;
                     var uploadConfig = {
                         button: _this.scope.browseButton,
                         dropArea: _this.scope.dropArea,
@@ -75,7 +80,7 @@ var Application;
                     $('#' + _this.scope.browseButton).removeAttr('disabled');
                     //uploadConfig.bodyParams[$scope.formsCookieName] = $scope.formsCookieValue;
                     //uploadConfig.bodyParams[$scope.sessionCookieName] = $scope.sessionCookieValue;
-                    _this.uploader = _this.newUploadInstance(uploadConfig);
+                    _this.newUploadInstance(uploadConfig);
                     //uploadFileDataService.setHttpConfiguration(httpConfiguration);
                     //uploadFileDataService.setMessageId($scope.messageId);
                 };
@@ -86,7 +91,7 @@ var Application;
                     config = $.extend(_this.buildDefaultConfig(), config);
                     var __this = _this;
                     try {
-                        _this.uploader = new _this.plupload.Uploader({
+                        __this.uploader = new __this.plupload.Uploader({
                             browse_button: config.button,
                             drop_element: config.dropArea,
                             url: config.url,
@@ -136,6 +141,7 @@ var Application;
                                         //if (isHtml4) {
                                         //    file.npsProperties.timeout = undefined;
                                         //}
+                                        $('#' + __this.scope.startButton).removeAttr('disabled');
                                     });
                                 },
                                 FilesRemvoed: function (up, files) {
@@ -151,7 +157,7 @@ var Application;
                                 }
                             }
                         });
-                        _this.uploader.init();
+                        __this.uploader.init();
                     }
                     catch (ex) {
                         alert(ex.message);
@@ -168,7 +174,9 @@ var Application;
                     _this.scope = $scope;
                     _this.scope.browseButton = 'browse_button';
                     _this.scope.dropArea = 'drop_area';
+                    _this.scope.startButton = 'start_button';
                     _this.initUploader();
+                    element.find('#start_button').on('click', _this.startUpload);
                 };
             }
             FileUploadDirective.prototype.injection = function () {
