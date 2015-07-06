@@ -72,6 +72,9 @@
     <script src="/angularApp/controllers/explorer.js"></script>
     <script src="/angularApp/controllers/page.js"></script>
 
+    <script src="~/config/controllers-js-libraries"></script>
+    
+    <!--
     <script src="/angularApp/controllers/Config/config.js"></script>
     <script src="/angularApp/controllers/Config/configArea.js"></script>
     <script src="/angularApp/controllers/Config/configComment.js"></script>
@@ -97,7 +100,7 @@
     <script src="/angularApp/controllers/Config/configGrouping.js"></script>
     <script src="/angularApp/controllers/Config/configEditor.js"></script>
     <script src="/angularApp/controllers/Config/configBanner.js"></script>
-    
+    -->
 
 
     <!-- DIRECTIVES -->
