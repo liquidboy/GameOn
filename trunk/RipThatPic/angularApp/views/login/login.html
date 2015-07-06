@@ -5,8 +5,8 @@
 
 <div class="login">
     <div ng-show="login.IsLoggedIn">
-        Welcome <span class="login-name">{{login.LoginEntity.DisplayName}}</span>
-        <div class="login-session">SessionId : {{login.LoginEntity.SessionId}}</div>
+        Welcome <span class="login-name">{{login.LoggedInEntity.DisplayName}}</span>
+        <div class="login-session">SessionId : {{login.LoggedInEntity.SessionId}}</div>
     </div>
 
     <table ng-hide="login.IsLoggedIn">

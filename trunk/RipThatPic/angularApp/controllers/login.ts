@@ -6,7 +6,7 @@
         Password: string;
         IsLoggedIn: boolean = false;
 
-        LoginEntity: any;
+        LoggedInEntity: any;
 
         constructor(
             public $scope: ng.IScope,
@@ -29,7 +29,7 @@
                 this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginFailed, this.loginFailed, undefined);
             } else {
                 this.IsLoggedIn = authService.IsLoggedIn;
-                this.LoginEntity = jQuery.extend(true, {}, authService.LoginEntity);
+                this.LoggedInEntity = jQuery.extend(true, {}, authService.LoginEntity);
             }
 
           
@@ -45,8 +45,8 @@
             this.radioPubSubSvc.unsubscribe(__this.pubSubConstants.LoginFailed, __this.loginFailed);
         }
 
-        loginSuccessful = (data: any) => { this.IsLoggedIn = true; this.LoginEntity = data; this.$scope.$apply();}
-        loginFailed = (error: any) => { this.IsLoggedIn = false; this.LoginEntity = {};}
+        loginSuccessful = (data: any) => { this.IsLoggedIn = true; this.LoggedInEntity = data; this.$scope.$apply();}
+        loginFailed = (error: any) => { this.IsLoggedIn = false; this.LoggedInEntity = {};}
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
     myapp.controller("LoginCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "$location", "radioPubSubSvc", "pubSubConstants", LoginCtrl]);

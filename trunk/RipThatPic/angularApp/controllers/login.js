@@ -25,12 +25,12 @@ var Application;
                 };
                 this.loginSuccessful = function (data) {
                     _this.IsLoggedIn = true;
-                    _this.LoginEntity = data;
+                    _this.LoggedInEntity = data;
                     _this.$scope.$apply();
                 };
                 this.loginFailed = function (error) {
                     _this.IsLoggedIn = false;
-                    _this.LoginEntity = {};
+                    _this.LoggedInEntity = {};
                 };
                 var grouping = location.search()["grouping"];
                 var name = location.search()["name"];
@@ -42,7 +42,7 @@ var Application;
                 }
                 else {
                     this.IsLoggedIn = authService.IsLoggedIn;
-                    this.LoginEntity = jQuery.extend(true, {}, authService.LoginEntity);
+                    this.LoggedInEntity = jQuery.extend(true, {}, authService.LoginEntity);
                 }
             }
             return LoginCtrl;
