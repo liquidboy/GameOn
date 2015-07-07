@@ -9,6 +9,7 @@ var Application;
                 this.pubSubConstants = pubSubConstants;
                 this.localWindow = window;
                 this.plupload = this.localWindow.plupload;
+                this.FileUploadRefCounter = 0;
                 this.httpConfiguration = {
                     timeout: 120000 // 2 minutes
                 };
@@ -137,17 +138,18 @@ var Application;
                                 },
                                 FilesAdded: function (up, files) {
                                     _this.plupload.each(files, function (file) {
-                                        //adjustFilenameForiPad(file);
-                                        //attachCustomPropertiesToFile(file);
+                                        __this.FileUploadRefCounter++;
+                                        __this.EnableDisableStartButton();
                                         //if (isHtml4) {
                                         //    file.npsProperties.timeout = undefined;
                                         //}
-                                        $('#' + __this.scope.startButton).removeAttr('disabled');
                                     });
                                 },
-                                FilesRemvoed: function (up, files) {
+                                FilesRemoved: function (up, files) {
                                 },
                                 FileUploaded: function (up, file, info) {
+                                    __this.FileUploadRefCounter--;
+                                    __this.EnableDisableStartButton();
                                 },
                                 ChunkUploaded: function (up, file, info) {
                                 },
@@ -166,6 +168,12 @@ var Application;
                     //this.uploader.timeout = config.timeout;
                     //this.uploader.maxFileAutoRetryAttempts = config.maxFileAutoRetryAttempts;
                     //this.uploader.defaultLog = this.uploader.log = log;
+                };
+                this.EnableDisableStartButton = function () {
+                    if (_this.FileUploadRefCounter > 0)
+                        $('#' + _this.scope.startButton).removeAttr('disabled');
+                    else
+                        $('#' + _this.scope.startButton).attr('disabled', '');
                 };
                 this.restrict = 'E';
                 this.replace = true;

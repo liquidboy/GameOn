@@ -2,9 +2,9 @@
     //'use strict';
     export class FileUploadDirective implements ng.IDirective {
 
-        localWindow: any = window;
-        plupload = this.localWindow.plupload;
-
+        private localWindow: any = window;
+        private plupload = this.localWindow.plupload;
+        public FileUploadRefCounter: number = 0;
 
         public httpConfiguration = {
             timeout: 120000 // 2 minutes
@@ -170,17 +170,16 @@
                         FileFiltered: (up, file) => { },
                         FilesAdded: (up, files) => {
                             this.plupload.each(files, function (file) {
-                                //adjustFilenameForiPad(file);
-                                //attachCustomPropertiesToFile(file);
+                                __this.FileUploadRefCounter++;
+                                __this.EnableDisableStartButton();
+     
                                 //if (isHtml4) {
                                 //    file.npsProperties.timeout = undefined;
                                 //}
-                                $('#' + __this.scope.startButton).removeAttr('disabled');
-
                             });
                         },
-                        FilesRemvoed: (up, files) => { },
-                        FileUploaded: (up, file, info) => { },
+                        FilesRemoved: (up, files) => { },
+                        FileUploaded: (up, file, info) => { __this.FileUploadRefCounter--; __this.EnableDisableStartButton();},
                         ChunkUploaded: (up, file, info) => { },
                         UploadComplete: (up, files) => { },
                         //Destry: destroy,
@@ -200,7 +199,16 @@
 
 
         }
+
+        
+        EnableDisableStartButton = () => {
+            if (this.FileUploadRefCounter > 0) $('#' + this.scope.startButton).removeAttr('disabled');
+            else $('#' + this.scope.startButton).attr('disabled', '');
+        }
     }
+
+
+
 
     interface IFileUploadController extends ng.IScope {
  

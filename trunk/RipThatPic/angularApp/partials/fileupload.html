@@ -1,17 +1,51 @@
-﻿<div class="file-upload" >
-    <!-- \\modern\common\components\nps-file-upload.js  -->
-    <!-- \\controls\filetransfer\ucFileUploadAll.ascx  -->
+﻿<div>
+    <style type="text/css">
+        .file-upload {
+            width: 100%;
+        }
 
-    <div id="drop_area" class="uploaderContainer clearfix" ng-cloak>
-        <button id="browse_button" disabled="">Attach Files</button>
-        <div class="separator"></div>
+            .file-upload .uploaderContainer {
+                width: 100%;
+                height: 60px;
+                padding-top:10px;
+                padding-bottom:10px;
+                background-color: Highlight;
+                color: white;
+                text-align: center;
+            }
+            .file-upload .uploaderContainer {
+            }
 
-        <span class="drag-drop-label">Drop files here</span>
+            .file-upload .footerContainer {
+                width: 100%;
+                height: 50px;
+                padding-top:10px;
+                padding-bottom:10px;
+                color: white;
+                text-align: center;
+            }
+    </style>
+
+    <div class="file-upload">
+        <!-- \\modern\common\components\nps-file-upload.js  -->
+        <!-- \\controls\filetransfer\ucFileUploadAll.ascx  -->
+
+        <div id="drop_area" class="uploaderContainer clearfix" ng-cloak>
+            <button id="browse_button" disabled="">Attach Files</button>
+            <div class="separator"></div>
+
+            <span class="drag-drop-label">Drop files here</span>
+
+        </div>
+
+        <div class="footerContainer">
+            <button id="start_button" disabled="">Start Upload</button>
+        </div>
+
+        
 
     </div>
 
-
-    <button id="start_button" disabled="">Start Upload</button>
-
 </div>
+
 
