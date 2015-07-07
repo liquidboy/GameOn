@@ -14,14 +14,14 @@
                 </colgroup>
 
                 <tr>
-                    <td><input type="text" ng-model="configlog.SelectedItem.Grouping" style="width:150px" ng-readonly="configlog.SelectedItem.GroupingIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configlog.SelectedItem.Name" style="width:150px" ng-readonly="configlog.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configlog.SelectedItem.OriginalFileName" style="width:250px" /></td>
-                    <td><input type="text" ng-model="configlog.SelectedItem.ContentType" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configfilestorage.SelectedItem.Grouping" style="width:150px" ng-readonly="configfilestorage.SelectedItem.GroupingIsReadOnly" /></td>
+                    <td><input type="text" ng-model="configfilestorage.SelectedItem.Name" style="width:150px" ng-readonly="configfilestorage.SelectedItem.NameIsReadOnly" /></td>
+                    <td><input type="text" ng-model="configfilestorage.SelectedItem.OriginalFileName" style="width:250px" /></td>
+                    <td><input type="text" ng-model="configfilestorage.SelectedItem.ContentType" style="width:150px" /></td>
                     <td>
-                        <input type="button" value="Save" ng-click="configlog.SaveItem()" />
-                        <input type="button" value="Delete" ng-click="configlog.DeleteItem()" />
-                        <input type="button" value="Clear" ng-click="configlog.ClearEntryFields()" />
+                        <input type="button" value="Save" ng-click="configfilestorage.SaveItem()" />
+                        <input type="button" value="Delete" ng-click="configfilestorage.DeleteItem()" />
+                        <input type="button" value="Clear" ng-click="configfilestorage.ClearEntryFields()" />
                     </td>
                 </tr>
 
@@ -45,9 +45,9 @@
                                     <col style="width:155px" />
                                 </colgroup>
 
-                                <tr ng-repeat="item in configlog.ItemsList"
+                                <tr ng-repeat="item in configfilestorage.ItemsList"
                                     ng-include="'itemlist.html'"
-                                    ng-click="configlog.SelectItemRow(item, $event)"
+                                    ng-click="configfilestorage.SelectItemRow(item, $event)"
                                     class="table-content-row"></tr>
                             </table>
                         </div>
