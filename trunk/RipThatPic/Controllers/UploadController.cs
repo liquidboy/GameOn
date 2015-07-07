@@ -23,6 +23,7 @@ namespace RipThatPic.Controllers
         //using memorystream
         //http://forums.asp.net/t/1842441.aspx?File+upload+using+MultipartMemoryStreamProvider
 
+        private const string _groupingUpload = "temp-upload";
 
 
         // POST: api/Upload
@@ -35,17 +36,15 @@ namespace RipThatPic.Controllers
             {
                 var processor = GetAzureProcessor();
 
+                ////pluploader chunks
                 //var fileWriterProvider = new PlUploadMultipartFileStreamProvider(uploadPath, Guid.NewGuid(), processor);
                 //await Request.Content.ReadAsMultipartAsync(fileWriterProvider);
 
                 ////delete all container data first
                 //var items = processor.GetListOfContainers();
-                //foreach (var item in items)
-                //{
-                //    processor.DeleteContainer(item.Name);
-                //}
-
+                //foreach (var item in items) processor.DeleteContainer(item.Name);
                 //return Request.CreateResponse(HttpStatusCode.OK);
+
 
 
                 var streamProvider = new MultipartMemoryStreamProvider();
@@ -62,9 +61,8 @@ namespace RipThatPic.Controllers
                         {
                             var uniqueId = Guid.NewGuid().ToString();
                             //processor.CreateContainer(uniqueId);
-
-
-                            var uf = new UploadFileEntity(uniqueId, "temp");
+                            
+                            var uf = new UploadFileEntity(uniqueId, _groupingUpload);
                             uf.ContentType = ContentType.MediaType;
                             uf.Size =  ContentLength.HasValue? ContentLength.Value: 0;
                             uf.OriginalFileName = OriginalFileName;
@@ -73,19 +71,13 @@ namespace RipThatPic.Controllers
                             await processor.AddToTable("FileStorage", uf);
 
                             //content (blob storage)
-                            await processor.UploadBlobIntoContainerAsync(stream, "temp", uniqueId, OriginalFileName, ContentType.MediaType);
+                            await processor.UploadBlobIntoContainerAsync(stream, _groupingUpload, uniqueId, OriginalFileName, ContentType.MediaType);
                         }
                     }
                     
                 }
                 return Request.CreateResponse(HttpStatusCode.OK);
-
-
-
-
-
-                return Request.CreateResponse(HttpStatusCode.OK);
-
+                
             }
             return Request.CreateResponse(HttpStatusCode.NotAcceptable, "this request is not properly formated");
         }
