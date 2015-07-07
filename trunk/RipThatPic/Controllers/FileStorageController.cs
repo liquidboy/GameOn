@@ -90,10 +90,9 @@ namespace RipThatPic.Controllers
 
         public FileStorageEntity() { }
 
-        public string LongName { get; set; }
-        public string Color { get; set; }
-        public string Url { get; set; }
-        public string Description { get; set; }
+        public string OriginalFileName { get; set; }
+        public string ContentType { get; set; }
+        public long Size { get; set; }
 
         public Guid DisplayId { get; set; }
     }

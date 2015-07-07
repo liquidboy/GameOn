@@ -8,7 +8,7 @@
                 <colgroup>
                     <col style="width:157px" />
                     <col style="width:155px" />
-                    <col style="width:155px" />
+                    <col style="width:255px" />
                     <col style="width:155px" />
                     <col style="width:180px" />
                 </colgroup>
@@ -16,8 +16,8 @@
                 <tr>
                     <td><input type="text" ng-model="configlog.SelectedItem.Grouping" style="width:150px" ng-readonly="configlog.SelectedItem.GroupingIsReadOnly" /></td>
                     <td><input type="text" ng-model="configlog.SelectedItem.Name" style="width:150px" ng-readonly="configlog.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configlog.SelectedItem.LongName" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configlog.SelectedItem.Color" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configlog.SelectedItem.OriginalFileName" style="width:250px" /></td>
+                    <td><input type="text" ng-model="configlog.SelectedItem.ContentType" style="width:150px" /></td>
                     <td>
                         <input type="button" value="Save" ng-click="configlog.SaveItem()" />
                         <input type="button" value="Delete" ng-click="configlog.DeleteItem()" />
@@ -29,8 +29,8 @@
                 <tr>
                     <td class="table-header">Grouping</td>
                     <td class="table-header">Name</td>
-                    <td class="table-header">LongName</td>
-                    <td class="table-header">Color</td>
+                    <td class="table-header">OriginalFileName</td>
+                    <td class="table-header">ContentType</td>
                     <td class="table-header">Actions</td>
                 </tr>
 
@@ -41,7 +41,7 @@
                                 <colgroup>
                                     <col style="width:154px" />
                                     <col style="width:155px" />
-                                    <col style="width:155px" />
+                                    <col style="width:255px" />
                                     <col style="width:155px" />
                                 </colgroup>
 
@@ -63,6 +63,6 @@
 <script type="text/ng-template" id="itemlist.html">
     <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
     <td>{{item.Name}} </td>
-    <td>{{item.LongName}} </td>
-    <td>{{item.Color}} </td>
+    <td>{{item.OriginalFileName}} </td>
+    <td>{{item.ContentType}} </td>
 </script>

@@ -63,11 +63,12 @@ namespace RipThatPic.Controllers
                         using (var stream = await fileData.ReadAsStreamAsync())
                         {
                             //processor.CreateContainer(uniqueId);
-                            
-                            var uf = new UploadFileEntity(uniqueId, _groupingUpload);
+                            var uf = new FileStorageEntity(uniqueId, _groupingUpload);
                             uf.ContentType = ContentType.MediaType;
-                            uf.Size =  ContentLength.HasValue? ContentLength.Value: 0;
+                            uf.Size = ContentLength.HasValue ? ContentLength.Value : 0;
                             uf.OriginalFileName = OriginalFileName;
+                            uf.DisplayId = Guid.Parse(uniqueId);
+
 
                             //metadata (table storage)
                             await processor.AddToTable("FileStorage", uf);
@@ -150,28 +151,28 @@ namespace RipThatPic.Controllers
 
 
 
-    public class UploadFileEntity : TableEntity, ITableEntity
-    {
-        private string _name;
-        public string Name { get { return _name; } set { _name = value; this.RowKey = value; } }
+    //public class UploadFileEntity : TableEntity, ITableEntity
+    //{
+    //    private string _name;
+    //    public string Name { get { return _name; } set { _name = value; this.RowKey = value; } }
 
 
-        private string _grouping;
-        public string Grouping { get { return _grouping; } set { _grouping = value; this.PartitionKey = value; } }
+    //    private string _grouping;
+    //    public string Grouping { get { return _grouping; } set { _grouping = value; this.PartitionKey = value; } }
 
-        public UploadFileEntity(string name, string grouping)
-        {
-            this.Name = name;
-            this.Grouping = grouping;
-        }
+    //    public UploadFileEntity(string name, string grouping)
+    //    {
+    //        this.Name = name;
+    //        this.Grouping = grouping;
+    //    }
 
-        public UploadFileEntity() { }
+    //    public UploadFileEntity() { }
 
-        public string OriginalFileName { get; set; }
-        public string ContentType { get; set; }
-        public long Size { get; set; }
+    //    public string OriginalFileName { get; set; }
+    //    public string ContentType { get; set; }
+    //    public long Size { get; set; }
 
-    }
+    //}
 
 
 
