@@ -59,6 +59,30 @@
         </div>
 
     </div>
+
+    <!-- SELECTED ITEM DETAILS AREA -->
+    <div>
+        <table class="jf-tbldetail">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tr><td class="label">Grouping :</td><td>{{configfilestorage.SelectedItem.Grouping}}</td></tr>
+            <tr><td class="label">Name :</td><td>{{configfilestorage.SelectedItem.Name}}</td></tr>
+            <tr><td class="label">OriginalFileName :</td><td>{{configfilestorage.SelectedItem.OriginalFileName}}</td></tr>
+            <tr><td class="label">ContentType :</td><td>{{configfilestorage.SelectedItem.ContentType}}</td></tr>
+            <tr><td class="label">DisplayId :</td><td>{{configfilestorage.SelectedItem.DisplayId}}</td></tr>
+            <tr><td class="label">Size :</td><td><input type="text" ng-model="configfilestorage.SelectedItem.Size" style="width:250px" /></td></tr>
+            <tr><td colspan="2"><br /></td></tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configfilestorage.SaveItem()" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
 </div>
 <script type="text/ng-template" id="itemlist.html">
     <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
