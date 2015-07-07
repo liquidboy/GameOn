@@ -180,6 +180,12 @@
       background-repeat: no-repeat;
       padding-left: 25px;
     }
+    .ui.menu .item.ico-filestorage {
+      background-image: url('/content/icons/filestorage-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
     .ui.menu .item.active {
       background-color: black;
       color: white;
@@ -264,6 +270,9 @@
     }
     .ui.menu .item.active.ico-theme {
       background-image: url('/content/icons/theme-white.png');
+    }
+    .ui.menu .item.active.ico-filestorage {
+      background-image: url('/content/icons/filestorage-white.png');
     }
     .ui.menu .item:hover {
       background-color: #e8e8e8;

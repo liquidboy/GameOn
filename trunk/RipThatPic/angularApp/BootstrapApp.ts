@@ -25,6 +25,7 @@
             .when('/config/video', { controller: 'ConfigVideoCtrl', templateUrl: '/angularApp/views/config/video.html', controllerAs: 'configvideo' })
             .when('/config/install', { controller: 'ConfigInstallCtrl', templateUrl: '/angularApp/views/config/install.html', controllerAs: 'configinstall' })
             .when('/config/image', { controller: 'ConfigImageCtrl', templateUrl: '/angularApp/views/config/image.html', controllerAs: 'configimage' })
+            .when('/config/filestorage', { controller: 'ConfigFileStorageCtrl', templateUrl: '/angularApp/views/config/filestorage.html', controllerAs: 'configfilestorage' })
             .when('/config/document', { controller: 'ConfigDocumentCtrl', templateUrl: '/angularApp/views/config/document.html', controllerAs: 'configdocument' })
             .when('/config/link', { controller: 'ConfigLinkCtrl', templateUrl: '/angularApp/views/config/link.html', controllerAs: 'configlink' })
             .when('/config/list', { controller: 'ConfigListCtrl', templateUrl: '/angularApp/views/config/list.html', controllerAs: 'configlist' })

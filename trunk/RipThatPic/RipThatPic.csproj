@@ -217,6 +217,9 @@
     <Content Include="angularApp\controllers\Config\configExtension.js">
       <DependentUpon>configExtension.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\Config\configFilestorage.js">
+      <DependentUpon>configFileStorage.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\Config\configGrouping.js">
       <DependentUpon>configGrouping.ts</DependentUpon>
     </Content>
@@ -322,6 +325,7 @@
     <Content Include="angularApp\views\config\datacenter.html" />
     <Content Include="angularApp\views\config\grouping.html" />
     <Content Include="angularApp\views\config\editor.html" />
+    <Content Include="angularApp\views\config\filestorage.html" />
     <Content Include="angularApp\views\config\version.html" />
     <Content Include="angularApp\views\config\install.html" />
     <Content Include="angularApp\views\config\log.html" />
@@ -363,6 +367,8 @@
     <Content Include="Content\icons\editor-white.png" />
     <Content Include="Content\icons\extension-black.png" />
     <Content Include="Content\icons\extension-white.png" />
+    <Content Include="Content\icons\filestorage-black.png" />
+    <Content Include="Content\icons\filestorage-white.png" />
     <Content Include="Content\icons\group-black.png" />
     <Content Include="Content\icons\group-white.png" />
     <Content Include="Content\icons\House-black.png" />
@@ -575,6 +581,9 @@
     </Content>
     <Content Include="angularApp\controllers\login.js.map">
       <DependentUpon>login.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\Config\configFilestorage.js.map">
+      <DependentUpon>configFilestorage.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1637,6 +1646,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\Constants.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configFileStorage.ts" />
     <TypeScriptCompile Include="angularApp\controllers\explorer.ts" />
     <TypeScriptCompile Include="angularApp\controllers\login.ts" />
     <TypeScriptCompile Include="angularApp\controllers\splash.ts" />
