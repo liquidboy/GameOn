@@ -17,8 +17,14 @@ namespace RipThatPic.Controllers
 {
     public class UploadController : _BaseController
     {
+        //using a file
+        //http://stackoverflow.com/questions/13732766/using-multipartformdatastreamprovider-and-readasmultipartasync
 
-       
+        //using memorystream
+        //http://forums.asp.net/t/1842441.aspx?File+upload+using+MultipartMemoryStreamProvider
+
+        private const string _groupingUpload = "temp-upload";
+        private const int _thumbSize = 240;
 
 
         // POST: api/Upload
@@ -29,21 +35,149 @@ namespace RipThatPic.Controllers
 
             if (Request.Content.IsMimeMultipartContent())
             {
-                var fileWriterProvider = new PlUploadMultipartFileStreamProvider(uploadPath, Guid.NewGuid());
-                await Request.Content.ReadAsMultipartAsync(fileWriterProvider);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                var processor = GetAzureProcessor();
 
+                ////pluploader chunks
+                //var fileWriterProvider = new PlUploadMultipartFileStreamProvider(uploadPath, Guid.NewGuid(), processor);
+                //await Request.Content.ReadAsMultipartAsync(fileWriterProvider);
+
+                ////delete all container data first
+                //var items = processor.GetListOfContainers();
+                //foreach (var item in items) processor.DeleteContainer(item.Name);
+                //return Request.CreateResponse(HttpStatusCode.OK);
+
+
+
+                var streamProvider = new MultipartMemoryStreamProvider();
+                await Request.Content.ReadAsMultipartAsync(streamProvider);
+                foreach (HttpContent fileData in streamProvider.Contents)
+                {
+                    var OriginalFileName = fileData.Headers.ContentDisposition.FileName;
+                    var ContentType = fileData.Headers.ContentType;
+                    var ContentLength = fileData.Headers.ContentLength;
+
+                    if(!string.IsNullOrEmpty(OriginalFileName))
+                    {
+                        var uniqueId = Guid.NewGuid().ToString();
+
+                        using (var stream = await fileData.ReadAsStreamAsync())
+                        {
+                            //processor.CreateContainer(uniqueId);
+                            
+                            var uf = new UploadFileEntity(uniqueId, _groupingUpload);
+                            uf.ContentType = ContentType.MediaType;
+                            uf.Size =  ContentLength.HasValue? ContentLength.Value: 0;
+                            uf.OriginalFileName = OriginalFileName;
+
+                            //metadata (table storage)
+                            await processor.AddToTable("FileStorage", uf);
+
+                            //content (blob storage)
+                            await processor.UploadBlobIntoContainerAsync(stream, _groupingUpload, uniqueId, OriginalFileName, ContentType.MediaType);
+
+
+                            //thumbnail if applicable
+                            var ctmt = ContentType.MediaType.ToLower();
+                            if (ctmt.Contains("jpeg") || ctmt.Contains("gif") ||
+                                ctmt.Contains("jpg") || ctmt.Contains("png") ||
+                                ctmt.Contains("bmp") || ctmt.Contains("tiff"))
+                            {
+                                stream.Seek(0, SeekOrigin.Begin);
+                                using (var img = System.Drawing.Image.FromStream(stream))
+                                {
+                                    var thumbDimension = ResizeImageForThumb(img.Width, img.Height, _thumbSize, _thumbSize);
+                                    using (var thumbnailImage = img.GetThumbnailImage(thumbDimension.Width, thumbDimension.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero))
+                                    using (var imageThumbStream = new MemoryStream())
+                                    {
+                                        thumbnailImage.Save(imageThumbStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                        imageThumbStream.Seek(0, SeekOrigin.Begin);
+                                        await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUpload, uniqueId + "-thumb", OriginalFileName, "image/jpeg");
+                                    }
+                                }
+                            }
+                            
+                           
+                        }
+
+
+
+                    }
+                    
+                }
+                return Request.CreateResponse(HttpStatusCode.OK);
+                
             }
-            return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            return Request.CreateResponse(HttpStatusCode.NotAcceptable, "this request is not properly formated");
+        }
+
+
+        private System.Drawing.Rectangle ResizeImageForThumb(double originalWidth, double originalHeight, double requiredWidth, double requiredHeight) {
+
+
+            double imageHeight = 0;
+            double imageWidth = 0;
+
+            double scale = 1;
+
+            if (originalHeight > requiredHeight)
+            {
+                scale = (double)(requiredHeight / originalHeight);
+                imageHeight = requiredHeight;
+                imageWidth = (int)(originalHeight * scale);
+            }
+
+            if (imageWidth > requiredWidth)
+            {
+                scale = requiredWidth / imageWidth;
+                imageWidth = requiredWidth;
+                imageHeight = (int)(imageHeight * scale);
+            }
+
+            return new System.Drawing.Rectangle(0, 0, (int)(originalWidth * scale), (int)(originalHeight * scale));
+
+
+        }
+
+        private bool ThumbnailCallback()
+        {
+            return true;
         }
 
 
 
 
-        
+    }
 
+
+
+    public class UploadFileEntity : TableEntity, ITableEntity
+    {
+        private string _name;
+        public string Name { get { return _name; } set { _name = value; this.RowKey = value; } }
+
+
+        private string _grouping;
+        public string Grouping { get { return _grouping; } set { _grouping = value; this.PartitionKey = value; } }
+
+        public UploadFileEntity(string name, string grouping)
+        {
+            this.Name = name;
+            this.Grouping = grouping;
+        }
+
+        public UploadFileEntity() { }
+
+        public string OriginalFileName { get; set; }
+        public string ContentType { get; set; }
+        public long Size { get; set; }
 
     }
+
+
+
+
+
+
 
 
     public class PlUploadMultipartFileStreamProvider : MultipartStreamProvider
@@ -52,6 +186,7 @@ namespace RipThatPic.Controllers
         private readonly string _rootPath;
         private bool _formDataRead;
         private const int DefaultBufferSize = 0x1000;
+        private AzureProcessor _ap;
 
 
         protected int BufferSize
@@ -59,19 +194,24 @@ namespace RipThatPic.Controllers
             get { return DefaultBufferSize; }
         }
 
-        public PlUploadMultipartFileStreamProvider(string rootPath, Guid fileGuid)
+        public PlUploadMultipartFileStreamProvider(string rootPath, Guid fileGuid, AzureProcessor ap)
         {
             if (fileGuid == Guid.Empty)
             {
                 throw new ArgumentException("File guid is empty");
             }
-            if (rootPath == null)
+            //if (rootPath == null)
+            //{
+            //    throw new ArgumentNullException("rootPath");
+            //}
+            if (ap == null)
             {
-                throw new ArgumentNullException("rootPath");
+                throw new ArgumentNullException("Azure Processor is null");
             }
 
+            _ap = ap;
             _fileGuid = fileGuid;
-            _rootPath = Path.GetFullPath(rootPath);
+            //_rootPath = Path.GetFullPath(rootPath);
             FormData = new NameValueCollection(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -87,10 +227,10 @@ namespace RipThatPic.Controllers
                 throw new ArgumentNullException("headers");
             }
 
-            if (MultipartFormDataStreamProviderHelper.IsFileContent(parent, headers))
-            {
-                return GetUploadFileStream(headers);
-            }
+            //if (MultipartFormDataStreamProviderHelper.IsFileContent(parent, headers))
+            //{
+            //    return GetUploadFileStream(headers);
+            //}
 
             return new MemoryStream();
         }
@@ -121,7 +261,7 @@ namespace RipThatPic.Controllers
             }
 
 
-            // we have chunking            
+            //we have chunking            
             //var chunkNumber = int.Parse(FormData["chunk"]);
             //var noOfChunks = int.Parse(FormData["chunks"]);            
             var offset = int.Parse(FormData["offset"]);

@@ -98,8 +98,9 @@
                 browse: () => { },
                 timeout: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadTimeout, this.httpConfiguration.timeout),
                 runtimes: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadRuntimes, 'html5,flash,html4'), //uploadFileService.defaults.runtimes),
-                chunk_size: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadChunkSize, 1024), //uploadFileService.defaults.chunkSize),
-                maxFileAutoRetryAttempts: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadRetries, 4)  //uploadFileService.defaults.maxFileAutoRetryAttempts)
+                chunk_size: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadChunkSize, 0), //uploadFileService.defaults.chunkSize),
+                maxFileAutoRetryAttempts: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadRetries, 4),  //uploadFileService.defaults.maxFileAutoRetryAttempts)
+                maxFileSize: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, 2147483647)
             };
 
             if (!this.scope.browseButton) {

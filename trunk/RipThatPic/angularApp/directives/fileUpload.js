@@ -70,8 +70,9 @@ var Application;
                         },
                         timeout: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadTimeout, _this.httpConfiguration.timeout),
                         runtimes: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRuntimes, 'html5,flash,html4'),
-                        chunk_size: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadChunkSize, 1024),
-                        maxFileAutoRetryAttempts: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRetries, 4) //uploadFileService.defaults.maxFileAutoRetryAttempts)
+                        chunk_size: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadChunkSize, 0),
+                        maxFileAutoRetryAttempts: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRetries, 4),
+                        maxFileSize: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, 2147483647)
                     };
                     if (!_this.scope.browseButton) {
                         alert('Browse button not specified');

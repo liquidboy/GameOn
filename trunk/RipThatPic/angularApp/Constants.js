@@ -12,6 +12,7 @@ var Application;
                 this.CookieSettings_FileUploadRuntimes = "FileUploadRuntimes";
                 this.CookieSettings_FileUploadChunkSize = "FileUploadChunkSize";
                 this.CookieSettings_FileUploadRetries = "FileUploadRetries";
+                this.CookieSettings_FileUploadMaxFileSize = "FileUploadMaxFileSize";
             }
             return PubSubConstants;
         })();

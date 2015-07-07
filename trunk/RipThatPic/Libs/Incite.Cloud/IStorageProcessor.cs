@@ -5,8 +5,8 @@ namespace Incite.Cloud
 {
     public interface IStorageProcessor
     {
-        Task<string> UploadBlobIntoContainerAsync(System.IO.Stream fileStream, string containerName, string fileName);
-        string UploadBlobIntoContainer(System.IO.Stream fileStream, string containerName, string fileName);
+        Task<string> UploadBlobIntoContainerAsync(System.IO.Stream fileStream, string containerName, string fileName, string contentType, string originalFileName);
+        string UploadBlobIntoContainer(System.IO.Stream fileStream, string containerName, string fileName, string contentType, string originalFileName);
         bool CreateContainer(string containerName);
         Task<bool> DownloadFile(string folderPathToSaveUrn, string containerName, string containerFileName, string folderPrefix, long singleFileSizeInMB);
         List<Container> GetListOfContainers();
