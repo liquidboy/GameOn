@@ -24,6 +24,7 @@ namespace RipThatPic.Controllers
         //http://forums.asp.net/t/1842441.aspx?File+upload+using+MultipartMemoryStreamProvider
 
         private const string _groupingUpload = "temp-upload";
+        private const int _thumbSize = 240;
 
 
         // POST: api/Upload
@@ -74,35 +75,34 @@ namespace RipThatPic.Controllers
                             //content (blob storage)
                             await processor.UploadBlobIntoContainerAsync(stream, _groupingUpload, uniqueId, OriginalFileName, ContentType.MediaType);
 
-
+                            
                             //thumbnail
                             stream.Seek(0, SeekOrigin.Begin);
-                            using (var img = System.Drawing.Image.FromStream(stream))
-                            using (var thumbnailImage = img.GetThumbnailImage(120, 120, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero))
-                            using (var imageThumbStream = new MemoryStream())
-                            {
-                                thumbnailImage.Save(imageThumbStream, System.Drawing.Imaging.ImageFormat.Jpeg);
-                                imageThumbStream.Seek(0, SeekOrigin.Begin);
-                                await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUpload, uniqueId + "-thumb", OriginalFileName, "image/jpeg");
+                            using (var img = System.Drawing.Image.FromStream(stream)) {
+                                var thumbDimension = ResizeImageForThumb(img.Width, img.Height, _thumbSize, _thumbSize);
+                                using (var thumbnailImage = img.GetThumbnailImage(thumbDimension.Width, thumbDimension.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero))
+                                using (var imageThumbStream = new MemoryStream())
+                                {
+                                    thumbnailImage.Save(imageThumbStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                    imageThumbStream.Seek(0, SeekOrigin.Begin);
+                                    await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUpload, uniqueId + "-thumb", OriginalFileName, "image/jpeg");
+                                }
                             }
+                           
+                            
 
+                            //var gr = System.Drawing.Graphics.FromImage(img);
+                            //gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                            //gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                            //gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                            //var rectDestination = ResizeImageForThumb(img.Width, img.Height, 120, 120);
+
+                            //gr.DrawImage(image, rectDestination, (int)startXPosition, (int)startYPosition, (int)screenWidth, (int)screenHeight, GraphicsUnit.Pixel);
 
                         }
 
-                        //using (var stream = await fileData.ReadAsStreamAsync())
-                        //{
-                        //    //thumbnail
-                        //    stream.Seek(0, SeekOrigin.Begin);
-                        //    using (var img = System.Drawing.Image.FromStream(stream))
-                        //    using (var thumbnailImage = img.GetThumbnailImage(64, 64, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero))
-                        //    using (var imageThumbStream = new MemoryStream())
-                        //    {
-                        //        thumbnailImage.Save(imageThumbStream, System.Drawing.Imaging.ImageFormat.Jpeg);
-                        //        await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUpload, uniqueId + "-thumb", OriginalFileName, "image/jpeg");
-                        //    }
-                        //}
 
-                       
+
                     }
                     
                 }
@@ -112,6 +112,33 @@ namespace RipThatPic.Controllers
             return Request.CreateResponse(HttpStatusCode.NotAcceptable, "this request is not properly formated");
         }
 
+
+        private System.Drawing.Rectangle ResizeImageForThumb(double originalWidth, double originalHeight, double requiredWidth, double requiredHeight) {
+
+
+            double imageHeight = 0;
+            double imageWidth = 0;
+
+            double scale = 1;
+
+            if (originalHeight > requiredHeight)
+            {
+                scale = (double)(requiredHeight / originalHeight);
+                imageHeight = requiredHeight;
+                imageWidth = (int)(originalHeight * scale);
+            }
+
+            if (imageWidth > requiredWidth)
+            {
+                scale = requiredWidth / imageWidth;
+                imageWidth = requiredWidth;
+                imageHeight = (int)(imageHeight * scale);
+            }
+
+            return new System.Drawing.Rectangle(0, 0, (int)(originalWidth * scale), (int)(originalHeight * scale));
+
+
+        }
 
         private bool ThumbnailCallback()
         {
