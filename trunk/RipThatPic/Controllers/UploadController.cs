@@ -57,9 +57,10 @@ namespace RipThatPic.Controllers
 
                     if(!string.IsNullOrEmpty(OriginalFileName))
                     {
+                        var uniqueId = Guid.NewGuid().ToString();
+
                         using (var stream = await fileData.ReadAsStreamAsync())
                         {
-                            var uniqueId = Guid.NewGuid().ToString();
                             //processor.CreateContainer(uniqueId);
                             
                             var uf = new UploadFileEntity(uniqueId, _groupingUpload);
@@ -72,7 +73,36 @@ namespace RipThatPic.Controllers
 
                             //content (blob storage)
                             await processor.UploadBlobIntoContainerAsync(stream, _groupingUpload, uniqueId, OriginalFileName, ContentType.MediaType);
+
+
+                            //thumbnail
+                            stream.Seek(0, SeekOrigin.Begin);
+                            using (var img = System.Drawing.Image.FromStream(stream))
+                            using (var thumbnailImage = img.GetThumbnailImage(120, 120, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero))
+                            using (var imageThumbStream = new MemoryStream())
+                            {
+                                thumbnailImage.Save(imageThumbStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                imageThumbStream.Seek(0, SeekOrigin.Begin);
+                                await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUpload, uniqueId + "-thumb", OriginalFileName, "image/jpeg");
+                            }
+
+
                         }
+
+                        //using (var stream = await fileData.ReadAsStreamAsync())
+                        //{
+                        //    //thumbnail
+                        //    stream.Seek(0, SeekOrigin.Begin);
+                        //    using (var img = System.Drawing.Image.FromStream(stream))
+                        //    using (var thumbnailImage = img.GetThumbnailImage(64, 64, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero))
+                        //    using (var imageThumbStream = new MemoryStream())
+                        //    {
+                        //        thumbnailImage.Save(imageThumbStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        //        await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUpload, uniqueId + "-thumb", OriginalFileName, "image/jpeg");
+                        //    }
+                        //}
+
+                       
                     }
                     
                 }
@@ -83,9 +113,12 @@ namespace RipThatPic.Controllers
         }
 
 
+        private bool ThumbnailCallback()
+        {
+            return true;
+        }
 
 
-        
 
 
     }

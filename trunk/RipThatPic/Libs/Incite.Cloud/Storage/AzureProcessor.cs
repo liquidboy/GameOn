@@ -664,10 +664,10 @@ namespace Incite.Cloud.Storage
             var key = fileName;
             var blockBlob = container.GetBlockBlobReference(key);
             
-            using (fileStream)
-            {
+            //using (fileStream)
+            //{
                 await blockBlob.UploadFromStreamAsync(fileStream);    
-            }
+            //}
 
             //blockBlob.Metadata.Add("file-name", originalFileName);
             //await blockBlob.SetMetadataAsync();
