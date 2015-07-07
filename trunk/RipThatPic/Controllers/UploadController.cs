@@ -24,6 +24,7 @@ namespace RipThatPic.Controllers
         //http://forums.asp.net/t/1842441.aspx?File+upload+using+MultipartMemoryStreamProvider
 
         private const string _groupingUpload = "temp-upload";
+        private const string _groupingUploadThumb = _groupingUpload + "-thumb";
         private const int _thumbSize = 240;
 
 
@@ -58,6 +59,12 @@ namespace RipThatPic.Controllers
 
                     if(!string.IsNullOrEmpty(OriginalFileName))
                     {
+                        //clean originalfilename
+                        OriginalFileName = OriginalFileName.Replace("\"", "");
+                        var ofnParts = OriginalFileName.Split("\\".ToCharArray());
+                        OriginalFileName = ofnParts.Last();
+
+
                         var uniqueId = Guid.NewGuid().ToString();
 
                         using (var stream = await fileData.ReadAsStreamAsync())
@@ -74,7 +81,7 @@ namespace RipThatPic.Controllers
                             await processor.AddToTable("FileStorage", uf);
 
                             //content (blob storage)
-                            await processor.UploadBlobIntoContainerAsync(stream, _groupingUpload, uniqueId, OriginalFileName, ContentType.MediaType);
+                            await processor.UploadBlobIntoContainerAsync(stream, _groupingUpload, uniqueId, OriginalFileName, ContentType.MediaType, false);
 
 
                             //thumbnail if applicable
@@ -92,7 +99,7 @@ namespace RipThatPic.Controllers
                                     {
                                         thumbnailImage.Save(imageThumbStream, System.Drawing.Imaging.ImageFormat.Jpeg);
                                         imageThumbStream.Seek(0, SeekOrigin.Begin);
-                                        await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUpload, uniqueId + "-thumb", OriginalFileName, "image/jpeg");
+                                        await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUploadThumb, uniqueId, OriginalFileName, "image/jpeg", true);
                                     }
                                 }
                             }

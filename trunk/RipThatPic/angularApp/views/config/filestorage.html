@@ -8,7 +8,7 @@
                 <colgroup>
                     <col style="width:157px" />
                     <col style="width:155px" />
-                    <col style="width:255px" />
+                    <col style="width:355px" />
                     <col style="width:155px" />
                     <col style="width:180px" />
                 </colgroup>
@@ -16,7 +16,7 @@
                 <tr>
                     <td><input type="text" ng-model="configfilestorage.SelectedItem.Grouping" style="width:150px" ng-readonly="configfilestorage.SelectedItem.GroupingIsReadOnly" /></td>
                     <td><input type="text" ng-model="configfilestorage.SelectedItem.Name" style="width:150px" ng-readonly="configfilestorage.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configfilestorage.SelectedItem.OriginalFileName" style="width:250px" /></td>
+                    <td><input type="text" ng-model="configfilestorage.SelectedItem.OriginalFileName" style="width:350px" /></td>
                     <td><input type="text" ng-model="configfilestorage.SelectedItem.ContentType" style="width:150px" /></td>
                     <td>
                         <input type="button" value="Save" ng-click="configfilestorage.SaveItem()" />
@@ -41,7 +41,7 @@
                                 <colgroup>
                                     <col style="width:154px" />
                                     <col style="width:155px" />
-                                    <col style="width:255px" />
+                                    <col style="width:355px" />
                                     <col style="width:155px" />
                                 </colgroup>
 
@@ -73,6 +73,10 @@
             <tr><td class="label">ContentType :</td><td>{{configfilestorage.SelectedItem.ContentType}}</td></tr>
             <tr><td class="label">DisplayId :</td><td>{{configfilestorage.SelectedItem.DisplayId}}</td></tr>
             <tr><td class="label">Size :</td><td><input type="text" ng-model="configfilestorage.SelectedItem.Size" style="width:250px" /></td></tr>
+            <tr><td class="label">Thumb :</td><td><img src="http://austoragetest.blob.core.windows.net/temp-upload-thumb/{{configfilestorage.SelectedItem.Name}}" style="height:180px" /></td></tr>
+
+
+            
             <tr><td colspan="2"><br /></td></tr>
             <tr>
                 <td></td>

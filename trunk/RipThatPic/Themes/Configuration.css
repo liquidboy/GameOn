@@ -47,11 +47,15 @@
     .config .jf-tbldetail {
         margin-top:30px;
     }
-
+        .config .jf-tbldetail td {
+            vertical-align:top;
+            padding-top:5px;
+        }
         .config .jf-tbldetail .label {
             font-size:10px;
             text-align:right;
             width:157px;
+            padding-top:10px;
         }
 
 

@@ -131,7 +131,7 @@ namespace Incite.Cloud.Storage
             return true;
         }
 
-        public async Task<string> UploadBlobIntoContainerAsync(System.IO.Stream fileStream, string containerName, string fileName, string originalFileName, string contentType)
+        public async Task<string> UploadBlobIntoContainerAsync(System.IO.Stream fileStream, string containerName, string fileName, string originalFileName, string contentType, bool publicAccess = false)
         {
             var success = false;
             var successPermission = false;
@@ -141,7 +141,7 @@ namespace Incite.Cloud.Storage
             try
             {
                 success = await DoUpload(fileName, fileStream, containerName, contentType, originalFileName, false);
-                successPermission = await DoChangeObjectsACL(containerName, BlobContainerPublicAccessType.Off);
+                successPermission = await DoChangeObjectsACL(containerName, publicAccess? BlobContainerPublicAccessType.Blob: BlobContainerPublicAccessType.Off);
                 uri = _blobEndpoint + containerName + "/" + fileName;
             }
             catch(Exception ex)
@@ -178,7 +178,7 @@ namespace Incite.Cloud.Storage
         }
 
 
-        public string UploadBlobIntoContainer(System.IO.Stream fileStream, string containerName, string fileName, string originalFileName, string contentType)
+        public string UploadBlobIntoContainer(System.IO.Stream fileStream, string containerName, string fileName, string originalFileName, string contentType, bool publicAccess = false)
         {
             var success = false;
             var successPermission = false;
@@ -188,7 +188,7 @@ namespace Incite.Cloud.Storage
             try
             {
                 success = DoUpload(fileName, fileStream, containerName, contentType, originalFileName, false).Result;
-                successPermission = DoChangeObjectsACL(containerName, BlobContainerPublicAccessType.Off).Result;
+                successPermission = DoChangeObjectsACL(containerName, publicAccess? BlobContainerPublicAccessType.Blob: BlobContainerPublicAccessType.Off).Result;
                 uri = _blobEndpoint + containerName + "/" + fileName;
             }
             catch (Exception ex)
