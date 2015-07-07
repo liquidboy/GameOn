@@ -1562,6 +1562,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BundleConfig.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
+    <Compile Include="Controllers\FileStorageController.cs" />
+    <Compile Include="Controllers\FileStoragesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\_BaseController.cs" />
