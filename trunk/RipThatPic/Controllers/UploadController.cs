@@ -75,30 +75,28 @@ namespace RipThatPic.Controllers
                             //content (blob storage)
                             await processor.UploadBlobIntoContainerAsync(stream, _groupingUpload, uniqueId, OriginalFileName, ContentType.MediaType);
 
-                            
-                            //thumbnail
-                            stream.Seek(0, SeekOrigin.Begin);
-                            using (var img = System.Drawing.Image.FromStream(stream)) {
-                                var thumbDimension = ResizeImageForThumb(img.Width, img.Height, _thumbSize, _thumbSize);
-                                using (var thumbnailImage = img.GetThumbnailImage(thumbDimension.Width, thumbDimension.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero))
-                                using (var imageThumbStream = new MemoryStream())
+
+                            //thumbnail if applicable
+                            var ctmt = ContentType.MediaType.ToLower();
+                            if (ctmt.Contains("jpeg") || ctmt.Contains("gif") ||
+                                ctmt.Contains("jpg") || ctmt.Contains("png") ||
+                                ctmt.Contains("bmp") || ctmt.Contains("tiff"))
+                            {
+                                stream.Seek(0, SeekOrigin.Begin);
+                                using (var img = System.Drawing.Image.FromStream(stream))
                                 {
-                                    thumbnailImage.Save(imageThumbStream, System.Drawing.Imaging.ImageFormat.Jpeg);
-                                    imageThumbStream.Seek(0, SeekOrigin.Begin);
-                                    await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUpload, uniqueId + "-thumb", OriginalFileName, "image/jpeg");
+                                    var thumbDimension = ResizeImageForThumb(img.Width, img.Height, _thumbSize, _thumbSize);
+                                    using (var thumbnailImage = img.GetThumbnailImage(thumbDimension.Width, thumbDimension.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero))
+                                    using (var imageThumbStream = new MemoryStream())
+                                    {
+                                        thumbnailImage.Save(imageThumbStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                        imageThumbStream.Seek(0, SeekOrigin.Begin);
+                                        await processor.UploadBlobIntoContainerAsync(imageThumbStream, _groupingUpload, uniqueId + "-thumb", OriginalFileName, "image/jpeg");
+                                    }
                                 }
                             }
-                           
                             
-
-                            //var gr = System.Drawing.Graphics.FromImage(img);
-                            //gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                            //gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                            //gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-                            //var rectDestination = ResizeImageForThumb(img.Width, img.Height, 120, 120);
-
-                            //gr.DrawImage(image, rectDestination, (int)startXPosition, (int)startYPosition, (int)screenWidth, (int)screenHeight, GraphicsUnit.Pixel);
-
+                           
                         }
 
 
