@@ -131,7 +131,7 @@ namespace Incite.Cloud.Storage
             return true;
         }
 
-        public async Task<string> UploadBlobIntoContainerAsync(System.IO.Stream fileStream, string containerName, string fileName)
+        public async Task<string> UploadBlobIntoContainerAsync(System.IO.Stream fileStream, string containerName, string fileName, string originalFileName, string contentType)
         {
             var success = false;
             var successPermission = false;
@@ -140,7 +140,7 @@ namespace Incite.Cloud.Storage
 
             try
             {
-                success = await DoUpload(fileName, fileStream, containerName, false);
+                success = await DoUpload(fileName, fileStream, containerName, contentType, originalFileName, false);
                 successPermission = await DoChangeObjectsACL(containerName, BlobContainerPublicAccessType.Off);
                 uri = _blobEndpoint + containerName + "/" + fileName;
             }
@@ -178,7 +178,7 @@ namespace Incite.Cloud.Storage
         }
 
 
-        public string UploadBlobIntoContainer(System.IO.Stream fileStream, string containerName, string fileName)
+        public string UploadBlobIntoContainer(System.IO.Stream fileStream, string containerName, string fileName, string originalFileName, string contentType)
         {
             var success = false;
             var successPermission = false;
@@ -187,7 +187,7 @@ namespace Incite.Cloud.Storage
 
             try
             {
-                success = DoUpload(fileName, fileStream, containerName, false).Result;
+                success = DoUpload(fileName, fileStream, containerName, contentType, originalFileName, false).Result;
                 successPermission = DoChangeObjectsACL(containerName, BlobContainerPublicAccessType.Off).Result;
                 uri = _blobEndpoint + containerName + "/" + fileName;
             }
@@ -658,7 +658,7 @@ namespace Incite.Cloud.Storage
             return blockBlob;
         }
 
-        private async Task<bool> DoUpload(string fileName, System.IO.Stream fileStream, string containerName,  bool containerIsNew = false)
+        private async Task<bool> DoUpload(string fileName, System.IO.Stream fileStream, string containerName, string contentType, string originalFileName,  bool containerIsNew = false)
         {
             var container = containerIsNew ? DoCreateContainer(containerName): DoGetContainer(containerName);
             var key = fileName;
@@ -667,8 +667,16 @@ namespace Incite.Cloud.Storage
             using (fileStream)
             {
                 await blockBlob.UploadFromStreamAsync(fileStream);    
-                
             }
+
+            //blockBlob.Metadata.Add("file-name", originalFileName);
+            //await blockBlob.SetMetadataAsync();
+            //blockBlob.SetMetadata();
+            blockBlob.Properties.ContentType = contentType;
+            //await blockBlob.SetPropertiesAsync();
+            blockBlob.SetProperties();
+
+
             return true;
         }
 

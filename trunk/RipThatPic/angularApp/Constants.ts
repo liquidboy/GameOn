@@ -12,6 +12,7 @@
         CookieSettings_FileUploadRuntimes: string = "FileUploadRuntimes";
         CookieSettings_FileUploadChunkSize: string = "FileUploadChunkSize";
         CookieSettings_FileUploadRetries: string = "FileUploadRetries";
+        CookieSettings_FileUploadMaxFileSize: string = "FileUploadMaxFileSize";
 
         constructor() {
             

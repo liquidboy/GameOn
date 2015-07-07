@@ -17,8 +17,12 @@ namespace RipThatPic.Controllers
 {
     public class UploadController : _BaseController
     {
+        //using a file
+        //http://stackoverflow.com/questions/13732766/using-multipartformdatastreamprovider-and-readasmultipartasync
 
-       
+        //using memorystream
+        //http://forums.asp.net/t/1842441.aspx?File+upload+using+MultipartMemoryStreamProvider
+
 
 
         // POST: api/Upload
@@ -29,12 +33,61 @@ namespace RipThatPic.Controllers
 
             if (Request.Content.IsMimeMultipartContent())
             {
-                var fileWriterProvider = new PlUploadMultipartFileStreamProvider(uploadPath, Guid.NewGuid());
-                await Request.Content.ReadAsMultipartAsync(fileWriterProvider);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                var processor = GetAzureProcessor();
+
+                //var fileWriterProvider = new PlUploadMultipartFileStreamProvider(uploadPath, Guid.NewGuid(), processor);
+                //await Request.Content.ReadAsMultipartAsync(fileWriterProvider);
+
+                ////delete all container data first
+                //var items = processor.GetListOfContainers();
+                //foreach (var item in items)
+                //{
+                //    processor.DeleteContainer(item.Name);
+                //}
+
+                //return Request.CreateResponse(HttpStatusCode.OK);
+
+
+                var streamProvider = new MultipartMemoryStreamProvider();
+                await Request.Content.ReadAsMultipartAsync(streamProvider);
+                foreach (HttpContent fileData in streamProvider.Contents)
+                {
+                    var OriginalFileName = fileData.Headers.ContentDisposition.FileName;
+                    var ContentType = fileData.Headers.ContentType;
+                    var ContentLength = fileData.Headers.ContentLength;
+
+                    if(!string.IsNullOrEmpty(OriginalFileName))
+                    {
+                        using (var stream = await fileData.ReadAsStreamAsync())
+                        {
+                            var uniqueId = Guid.NewGuid().ToString();
+                            //processor.CreateContainer(uniqueId);
+
+
+                            var uf = new UploadFileEntity(uniqueId, "temp");
+                            uf.ContentType = ContentType.MediaType;
+                            uf.Size =  ContentLength.HasValue? ContentLength.Value: 0;
+                            uf.OriginalFileName = OriginalFileName;
+
+                            //metadata (table storage)
+                            await processor.AddToTable("FileStorage", uf);
+
+                            //content (blob storage)
+                            await processor.UploadBlobIntoContainerAsync(stream, "temp", uniqueId, OriginalFileName, ContentType.MediaType);
+                        }
+                    }
+                    
+                }
+                return Request.CreateResponse(HttpStatusCode.OK);
+
+
+
+
+
+                return Request.CreateResponse(HttpStatusCode.OK);
 
             }
-            return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            return Request.CreateResponse(HttpStatusCode.NotAcceptable, "this request is not properly formated");
         }
 
 
@@ -46,12 +99,44 @@ namespace RipThatPic.Controllers
     }
 
 
+
+    public class UploadFileEntity : TableEntity, ITableEntity
+    {
+        private string _name;
+        public string Name { get { return _name; } set { _name = value; this.RowKey = value; } }
+
+
+        private string _grouping;
+        public string Grouping { get { return _grouping; } set { _grouping = value; this.PartitionKey = value; } }
+
+        public UploadFileEntity(string name, string grouping)
+        {
+            this.Name = name;
+            this.Grouping = grouping;
+        }
+
+        public UploadFileEntity() { }
+
+        public string OriginalFileName { get; set; }
+        public string ContentType { get; set; }
+        public long Size { get; set; }
+
+    }
+
+
+
+
+
+
+
+
     public class PlUploadMultipartFileStreamProvider : MultipartStreamProvider
     {
         private readonly Guid _fileGuid;
         private readonly string _rootPath;
         private bool _formDataRead;
         private const int DefaultBufferSize = 0x1000;
+        private AzureProcessor _ap;
 
 
         protected int BufferSize
@@ -59,19 +144,24 @@ namespace RipThatPic.Controllers
             get { return DefaultBufferSize; }
         }
 
-        public PlUploadMultipartFileStreamProvider(string rootPath, Guid fileGuid)
+        public PlUploadMultipartFileStreamProvider(string rootPath, Guid fileGuid, AzureProcessor ap)
         {
             if (fileGuid == Guid.Empty)
             {
                 throw new ArgumentException("File guid is empty");
             }
-            if (rootPath == null)
+            //if (rootPath == null)
+            //{
+            //    throw new ArgumentNullException("rootPath");
+            //}
+            if (ap == null)
             {
-                throw new ArgumentNullException("rootPath");
+                throw new ArgumentNullException("Azure Processor is null");
             }
 
+            _ap = ap;
             _fileGuid = fileGuid;
-            _rootPath = Path.GetFullPath(rootPath);
+            //_rootPath = Path.GetFullPath(rootPath);
             FormData = new NameValueCollection(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -87,10 +177,10 @@ namespace RipThatPic.Controllers
                 throw new ArgumentNullException("headers");
             }
 
-            if (MultipartFormDataStreamProviderHelper.IsFileContent(parent, headers))
-            {
-                return GetUploadFileStream(headers);
-            }
+            //if (MultipartFormDataStreamProviderHelper.IsFileContent(parent, headers))
+            //{
+            //    return GetUploadFileStream(headers);
+            //}
 
             return new MemoryStream();
         }
@@ -121,7 +211,7 @@ namespace RipThatPic.Controllers
             }
 
 
-            // we have chunking            
+            //we have chunking            
             //var chunkNumber = int.Parse(FormData["chunk"]);
             //var noOfChunks = int.Parse(FormData["chunks"]);            
             var offset = int.Parse(FormData["offset"]);
