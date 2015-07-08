@@ -54,6 +54,8 @@ namespace RipThatPic.Controllers
         {
             var processor = GetAzureProcessor();
             var result = await processor.DeleteByDisplayId("FileStorage", Guid.Parse(displayid));
+            await processor.DeleteBlobAsync("temp-upload", displayid);
+            await processor.DeleteBlobAsync("temp-upload-thumb", displayid);
             return result;
         }
 
@@ -66,7 +68,8 @@ namespace RipThatPic.Controllers
             FileStorageEntity entity = new FileStorageEntity(name, grouping);
             entity.ETag = "*";
             var result = await processor.DeleteFromTable("FileStorage", entity);
-
+            await processor.DeleteBlobAsync("temp-upload", name);
+            await processor.DeleteBlobAsync("temp-upload-thumb", name);
             return result;
         }
 

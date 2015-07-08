@@ -13,6 +13,8 @@ namespace Incite.Cloud
         List<Blob> GetListOfBlobs(string containerName);
         bool DeleteContainer(string containerName);
         Task<bool> DeleteContainerAsync(string containerName);
+        bool DeleteBlob(string containerName, string blobName);
+        Task<bool> DeleteBlobAsync(string containerName, string blobName);
         Task<string> GenerateSharedAccessBlobUrlAsync(string containerName, string fileName, int minsToExpire);
         string GenerateSharedAccessBlobUrl(string containerName, string fileName, int minsToExpire);
         bool RestoreToVanilla();

@@ -437,6 +437,22 @@ namespace Incite.Cloud.Storage
             return true;
         }
 
+        public bool DeleteBlob(string containerName, string blobName)
+        {
+            var container = DoGetContainer(containerName);
+            var blob = container.GetBlobReference(blobName);
+            blob.DeleteIfExists(DeleteSnapshotsOption.IncludeSnapshots);
+            return true;
+        }
+
+        public async Task<bool> DeleteBlobAsync(string containerName, string blobName)
+        {
+            var container = DoGetContainer(containerName);
+            var blob = container.GetBlobReference(blobName);
+            await blob.DeleteIfExistsAsync();
+            return true;
+        }
+
         public async Task<bool> DeleteTable(string tableName)
         {
             var table = _tableClient.GetTableReference(tableName);
