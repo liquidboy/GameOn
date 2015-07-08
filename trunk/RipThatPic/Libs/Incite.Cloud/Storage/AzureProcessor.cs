@@ -66,48 +66,48 @@ namespace Incite.Cloud.Storage
             switch (location)
             {
                 case Location.Singapore:
-                    accountname = "asestoragetest";
-                    accountkey = "vet6Q5BYB/nJ8ES5kw3qfQNpm32rUx3wE8vQ/vvKlL7c631I1YdFPw6gMxHxPva7+tAhrS+iBohHKYcaX8hIoQ==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.HongKong:
-                    accountname = "asiaestoragetest";
-                    accountkey = "dCsj9lN7LdeFDIfytGL1FGnGMVoemIVK1dFLVUhIBJi+a418LMPRDlxi+MXSczgpTsXtZsc9KgV9h3G/RShO7w==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.SaitamaPrefecture:
-                    accountname = "japstoragetest";
-                    accountkey = "cmrZ6OcOASCRMQyYzEx9R6rr1xdvqHpG9bJ2jeXFtGRnrhM0pQ2/4GvL3FKoP2RIIW3kmSWh+nYeFi1SZ6MOHQ==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.OsakaPrefecture:
-                    accountname = "japwstoragetest";
-                    accountkey = "AV/NVtrOIleIRdloo4ttWmqUwJs7kToCJRpRT5rNbKALfCagKFZxs7WJTaDO5k4wyUkHfj386XqgNGmvsGCyGQ==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.Ireland:
-                    accountname = "neustoragetest";
-                    accountkey = "ZAjJ5LWhwl8MIupAmsPQQqm6VXzPE/q2mMLOMf4yD3/nQubLpj5hpRjqMs24KUywtRIXSeSRY1mZREg+Lc87Wg==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.Netherlands:
-                    accountname = "weustoragetest";
-                    accountkey = "UBUcJ40JBWZoI/Z2FNk/9l81IwKXQBUKAeHhkgNUESccMkW4WXoqi4Yv0+4sDS/iNtA6I7MkRWci5FFGnJpLqA==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.California:
-                    accountname = "usstoragetest";
-                    accountkey = "ycn0kN42kmHvBPdlN5UN9UZIOQu+jlywKrZQhxWYCZHyseU5Kpnn9oL0N2e3Jswowm69fvoaufBkmiP6fjfJKg==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.Illinois:
-                    accountname = "usncstoragetest";
-                    accountkey = "M8lce1XuHtF0BVNMdrw8L7ZB9aJlJvW9NitMaH+H4+7WT3EAbdrdWbuL+5+9zUr4qmkrkIZbGSrQyJ+3JxbhhA==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.Virginia:
-                    accountname = "usestoragetest";
-                    accountkey = "pGSe/qGuRenpfMq/4COH8h++/DrRXs3kabCPGWRZPf/ZJCurYsFmIn+d6nDHXWXOc8GLYbFUCAxPR4aoZw2xVA==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.Victoria:
-                    accountname = "ausestoragetest";
-                    accountkey = "LJZftWko66Da4JSDDv6FSAKeVamJOlwqLYDaWAt9AS3xnnIVQoaSBR7cpOfx1eO+ztGpxppIeVMuxTBvHCLyMw==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.SydneyPublic:
-                    accountname = "austoragetestpublic";
-                    accountkey = "RLxuq7fosdtd5useZCgHlRzbUm52cnjMYnLj2loiDhmLYF1X6d/9JhGfaWUPzr/+OiTUyHRo2nRn9lfUtVYtSA==";
+                    accountname = "??";
+                    accountkey = "??";
                     break;
                 case Location.Sydney:
                 default:
