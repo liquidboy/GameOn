@@ -273,6 +273,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Grouping") return table.ExecuteQuery(new TableQuery<GroupingEntity>().Where(where));
             else if (type == "Banner") return table.ExecuteQuery(new TableQuery<BannerEntity>().Where(where));
             else if (type == "FileStorage") return table.ExecuteQuery(new TableQuery<FileStorageEntity>().Where(where));
+            else if (type == "Font") return table.ExecuteQuery(new TableQuery<FontEntity>().Where(where));
             else throw new NotImplementedException();
         }
 
@@ -398,6 +399,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Grouping") retrieveOp = TableOperation.Retrieve<GroupingEntity>(partition, key);
             else if (type == "Banner") retrieveOp = TableOperation.Retrieve<BannerEntity>(partition, key);
             else if (type == "FileStorage") retrieveOp = TableOperation.Retrieve<FileStorageEntity>(partition, key);
+            else if (type == "Font") retrieveOp = TableOperation.Retrieve<FontEntity>(partition, key);
             else throw new NotImplementedException();
             
             var result = await table.ExecuteAsync(retrieveOp);

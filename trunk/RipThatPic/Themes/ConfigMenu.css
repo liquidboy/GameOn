@@ -36,6 +36,12 @@
       background-repeat: no-repeat;
       padding-left: 20px;
     }
+    .ui.menu .ico-font {
+      background-image: url('/content/icons/User-Male-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 20px;
+    }
     .ui.menu .ico-user {
       background-image: url('/content/icons/User-Male-black.png');
       background-size: 25px;
@@ -210,6 +216,9 @@
     }
     .ui.menu .item.active.ico-area {
       background-image: url('/content/icons/area-white.png');
+    }
+    .ui.menu .item.active.ico-font {
+      background-image: url('/content/icons/User-Male-white.png');
     }
     .ui.menu .item.active.ico-security {
       background-image: url('/content/icons/security-white.png');

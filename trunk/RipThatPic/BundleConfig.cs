@@ -28,6 +28,7 @@ namespace RipThatPic
                    "~/angularApp/controllers/Config/configDocument.js",
                    "~/angularApp/controllers/Config/configLink.js",
                    "~/angularApp/controllers/Config/configFilestorage.js",
+                   "~/angularApp/controllers/Config/configFont.js",
                    "~/angularApp/controllers/Config/configSession.js",
                    "~/angularApp/controllers/Config/configSetting.js",
                    "~/angularApp/controllers/Config/configUser.js",
