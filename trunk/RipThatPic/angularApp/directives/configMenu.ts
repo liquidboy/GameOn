@@ -40,10 +40,7 @@
                 var foundTab = element.find('a[data-id="' + selectedTab + '"]');
                 foundTab.addClass("active");
 
-                if (selectedTab === 'home') {
-                    var menuConfig = element.find('span[data-id="menu-config"]');
-                    menuConfig.addClass('hidden');
-                } else if (selectedTab === 'login') {
+                if (selectedTab === 'home' || selectedTab === 'login' || selectedTab === 'explorer' ) {
                     var menuConfig = element.find('span[data-id="menu-config"]');
                     menuConfig.addClass('hidden');
                 }
@@ -72,15 +69,6 @@
             private $routeParams: any,
             private $rootScope: any,
             private $injector: any) {
-
-            //$scope.Title = "Search Serviced";
-
-            //this.$rootScope.$on("load-step",(evt, step) => {
-
-            //    //$scope.SubTitle = "";
-   
-            //    $scope.$apply();
-            //});
 
         }
 

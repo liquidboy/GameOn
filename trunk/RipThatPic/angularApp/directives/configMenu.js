@@ -22,11 +22,7 @@ var Application;
                     }
                     var foundTab = element.find('a[data-id="' + selectedTab + '"]');
                     foundTab.addClass("active");
-                    if (selectedTab === 'home') {
-                        var menuConfig = element.find('span[data-id="menu-config"]');
-                        menuConfig.addClass('hidden');
-                    }
-                    else if (selectedTab === 'login') {
+                    if (selectedTab === 'home' || selectedTab === 'login' || selectedTab === 'explorer') {
                         var menuConfig = element.find('span[data-id="menu-config"]');
                         menuConfig.addClass('hidden');
                     }
@@ -49,15 +45,10 @@ var Application;
         Directives.ConfigMenuDirective = ConfigMenuDirective;
         var ConfigMenuController = (function () {
             function ConfigMenuController($scope, $routeParams, $rootScope, $injector) {
-                //$scope.Title = "Search Serviced";
                 this.$scope = $scope;
                 this.$routeParams = $routeParams;
                 this.$rootScope = $rootScope;
                 this.$injector = $injector;
-                //this.$rootScope.$on("load-step",(evt, step) => {
-                //    //$scope.SubTitle = "";
-                //    $scope.$apply();
-                //});
             }
             return ConfigMenuController;
         })();
