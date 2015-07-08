@@ -1,9 +1,11 @@
 ﻿.file-storage-list {
         overflow:auto;
-        border:1px dashed lightgray;
+        border:1px solid #e5e5e5;
+        background-color:#e5e5e5;
         margin:auto;
         position:absolute;
         left:0; top:0;right:0;bottom:0;
+        padding-left:5px; padding-right:5px; padding-top:7px; padding-bottom:7px;
     }
     .file-storage-list .item {
         float:left;
