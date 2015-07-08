@@ -17,16 +17,20 @@ var Application;
                         _this.localWindow.MonacoEditorIntegration.setJavaScriptText(code); //$scope.selectedSample.code);
                     }
                 };
-                this.init();
+                try {
+                    this.init();
+                }
+                catch (e) {
+                }
             }
             ConfigEditorCtrl.prototype.init = function () {
                 //// Update to full path if word is not at the root folder
                 if (this.localWindow.MonacoEditorIntegration != undefined) {
                     this.localWindow.MonacoEditorIntegration.initializeJsEditor('TxtRichApiScript', [
-                        "script/EditorIntelliSense/WordLatest.txt",
-                        "script/EditorIntelliSense/Office.Runtime.txt",
-                        "script/EditorIntelliSense/Helpers.txt",
-                        "script/EditorIntelliSense/jquery.txt",
+                        "/script/EditorIntelliSense/WordLatest.txt",
+                        "/script/EditorIntelliSense/Office.Runtime.txt",
+                        "/script/EditorIntelliSense/Helpers.txt",
+                        "/script/EditorIntelliSense/jquery.txt",
                     ]);
                 }
             };

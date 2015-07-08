@@ -10,7 +10,11 @@
             public dataSvc: Application.Services.IData,
             public instanceFactory: Application.Services.IInstanceFactory,
             public authService: Application.Services.IAuthService) {
-            this.init();
+
+            try {
+                this.init();
+            } catch (e) { }
+
         }
 
       
@@ -20,23 +24,19 @@
             //// Update to full path if word is not at the root folder
             if (this.localWindow.MonacoEditorIntegration != undefined) {
                 this.localWindow.MonacoEditorIntegration.initializeJsEditor('TxtRichApiScript', [
-                    "script/EditorIntelliSense/WordLatest.txt",
-                    "script/EditorIntelliSense/Office.Runtime.txt",
-                    "script/EditorIntelliSense/Helpers.txt",
-                    "script/EditorIntelliSense/jquery.txt",
+                    "/script/EditorIntelliSense/WordLatest.txt",
+                    "/script/EditorIntelliSense/Office.Runtime.txt",
+                    "/script/EditorIntelliSense/Helpers.txt",
+                    "/script/EditorIntelliSense/jquery.txt",
                 ]);
             }
-           
         }
         
         LoadCode = (code: string) => {
             if (this.localWindow.MonacoEditorIntegration != undefined) {
                 this.localWindow.MonacoEditorIntegration.setJavaScriptText(code); //$scope.selectedSample.code);
             }
-            
         }
-
-
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
     myapp.controller("ConfigEditorCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigEditorCtrl]);
