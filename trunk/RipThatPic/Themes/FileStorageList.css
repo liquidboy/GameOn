@@ -6,6 +6,7 @@
         margin-right:5px;
         margin-bottom:5px;
         position:relative;
+        cursor:pointer;
     }
 
         .file-storage-list .item .sz {

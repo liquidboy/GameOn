@@ -15,6 +15,8 @@ var Application;
                 this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileStorageListController];
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
+                    if (attributes.$attr["daHeight"])
+                        _this.scope.Height = element.attr(attributes.$attr["daHeight"]);
                     _this.init();
                 };
             }
