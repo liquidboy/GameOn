@@ -1,11 +1,11 @@
-﻿<div class="file-storage-list">
+﻿<div class="file-storage-list" style="bottom:{{Bottom}};top:{{Top}};">
 
     <div ng-repeat="item in ItemsList" ng-include="'itemlist.html'"></div>
 
 
     <script type="text/ng-template" id="itemlist.html">
         <div class="item">
-            <img src="http://austoragetest.blob.core.windows.net/temp-upload-thumb/{{item.Name}}" style="height:{{Height}}" />
+            <img src="http://austoragetest.blob.core.windows.net/temp-upload-thumb/{{item.Name}}" style="height:{{ItemHeight}}" />
             <div class="sz">{{item.SizeKB}}KB</div>
             <div class="ct">{{item.ContentType}}</div>
         </div>

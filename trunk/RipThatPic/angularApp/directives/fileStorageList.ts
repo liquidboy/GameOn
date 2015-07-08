@@ -30,7 +30,9 @@
             this.link = ($scope: IFileStorageListController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileStorageListController) =>
             {                
                 this.scope = $scope;
-                if (attributes.$attr["daHeight"]) this.scope.Height =  element.attr(<string>attributes.$attr["daHeight"])  ;
+                if (attributes.$attr["daBottom"]) this.scope.Bottom = element.attr(<string>attributes.$attr["daBottom"]);
+                if (attributes.$attr["daTop"]) this.scope.Top = element.attr(<string>attributes.$attr["daTop"]);
+                if (attributes.$attr["daItemHeight"]) this.scope.ItemHeight = element.attr(<string>attributes.$attr["daItemHeight"]);
 
                 this.init();
                
@@ -64,7 +66,9 @@
 
     interface IFileStorageListController extends ng.IScope {
         ItemsList: Array<any>;
-        Height: string;
+        Bottom: string;
+        Top: string;
+        ItemHeight: string;
     }
     class FileStorageListController {
       
