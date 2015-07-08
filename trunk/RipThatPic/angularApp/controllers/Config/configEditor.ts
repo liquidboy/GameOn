@@ -11,9 +11,9 @@
             public instanceFactory: Application.Services.IInstanceFactory,
             public authService: Application.Services.IAuthService) {
 
-            try {
+            //try {
                 this.init();
-            } catch (e) { }
+            //} catch (e) { }
 
         }
 
