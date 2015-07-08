@@ -59,6 +59,11 @@
                 this.scope.DropAreaId = 'drop_area';
                 this.scope.StartButtonId = 'start_button';
                 this.scope.FileUploadRefCounter = 0;
+                this.scope.Dock = 'top';
+                
+                if (attributes.$attr["daDock"]) this.scope.Dock = element.attr(<string>attributes.$attr["daDock"]);
+                element.addClass('fu-dock-' + this.scope.Dock);
+                
 
                 this.initUploader();
 
@@ -216,6 +221,7 @@
         BrowseButtonId: string;
         DropAreaId: string ;
         StartButtonId: string;
+        Dock: string;
     }
     class FileUploadController {
       

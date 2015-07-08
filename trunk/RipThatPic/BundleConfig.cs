@@ -98,7 +98,8 @@ namespace RipThatPic
                    "~/Themes/Default.css",
                    "~/Themes/ConfigMenu.css",
                    "~/Themes/Configuration.css",
-                   "~/Themes/Notifications.css"
+                   "~/Themes/Notifications.css",
+                   "~/Themes/FileUpload.css"
                ));
 
 

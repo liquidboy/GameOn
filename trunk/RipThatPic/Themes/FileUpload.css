@@ -1,0 +1,50 @@
+﻿.file-upload {
+        width: 100%;
+    }
+    .file-upload .browse_button {
+    }
+    .file-upload .start_button {
+
+    }
+    .file-upload .upload-tble {
+        width:100%;
+    }
+    .file-upload .uploaderContainer {
+        width: 100%;
+        padding-top:10px;
+        padding-bottom:10px;
+        background-color: Highlight;
+        color: white;
+        text-align: center;
+    }
+    .file-upload .drag-drop-label {
+        font-size:14px;
+        font-weight:bold;
+        margin-left:30px; 
+        margin-right:30px;
+        color:#b0e4f7;
+    }
+    .file-upload .upload-count {
+        font-size:10px;
+        font-weight:normal;
+        margin-left:10px;
+    }
+
+.fu-dock-bottom {
+    /*width: 100%;*/
+    overflow: auto; margin: auto; position: absolute;
+    left: 0; bottom: 0; right: 0;
+    /*top: 0;*/ 
+}
+.fu-dock-bottomright {
+    /*width: 100%;*/
+    overflow: auto; margin: auto; position: absolute;
+    bottom: 0; right: 0;
+    /*left: 0; top: 0;*/ 
+}
+.fu-dock-bottomleft{
+    /*width: 100%;*/
+    overflow: auto; margin: auto; position: absolute;
+    bottom: 0; left: 0;
+    /*right: 0; top: 0;*/ 
+}

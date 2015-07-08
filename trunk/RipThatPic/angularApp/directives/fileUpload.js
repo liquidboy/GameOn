@@ -184,6 +184,10 @@ var Application;
                     _this.scope.DropAreaId = 'drop_area';
                     _this.scope.StartButtonId = 'start_button';
                     _this.scope.FileUploadRefCounter = 0;
+                    _this.scope.Dock = 'top';
+                    if (attributes.$attr["daDock"])
+                        _this.scope.Dock = element.attr(attributes.$attr["daDock"]);
+                    element.addClass('fu-dock-' + _this.scope.Dock);
                     _this.initUploader();
                     element.find('#start_button').on('click', _this.startUpload);
                 };
