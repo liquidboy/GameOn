@@ -4,8 +4,7 @@
 
         private localWindow: any = window;
         private plupload = this.localWindow.plupload;
-        public FileUploadRefCounter: number = 0;
-
+        
         public httpConfiguration = {
             timeout: 120000 // 2 minutes
         };
@@ -41,7 +40,7 @@
         public restrict: string;
         public replace: boolean;
         public controller: any;
-        public scope: any = {};
+        public scope: IFileUploadController ;
 
         public link: ($scope: IFileUploadController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileUploadController) => void;
 
@@ -56,9 +55,10 @@
             this.link = ($scope: IFileUploadController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileUploadController) =>
             {                
                 this.scope = $scope;
-                this.scope.browseButton = 'browse_button';
-                this.scope.dropArea = 'drop_area';
-                this.scope.startButton = 'start_button';
+                this.scope.BrowseButtonId = 'browse_button';
+                this.scope.DropAreaId = 'drop_area';
+                this.scope.StartButtonId = 'start_button';
+                this.scope.FileUploadRefCounter = 0;
 
                 this.initUploader();
 
@@ -78,8 +78,8 @@
             var __this = this;
 
             var uploadConfig = {
-                button: this.scope.browseButton,
-                dropArea: this.scope.dropArea,
+                button: this.scope.BrowseButtonId,
+                dropArea: this.scope.DropAreaId,
                 url: '/api/Upload',
                 headers: {},
                 bodyParams: {},
@@ -103,12 +103,12 @@
                 maxFileSize: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, 2147483647)
             };
 
-            if (!this.scope.browseButton) {
+            if (!this.scope.BrowseButtonId) {
                 alert('Browse button not specified');
                 return;
             }
 
-            $('#' + this.scope.browseButton).removeAttr('disabled');
+            $('#' + this.scope.BrowseButtonId).removeAttr('disabled');
 
 
             //uploadConfig.bodyParams[$scope.formsCookieName] = $scope.formsCookieValue;
@@ -170,16 +170,15 @@
                         FileFiltered: (up, file) => { },
                         FilesAdded: (up, files) => {
                             this.plupload.each(files, function (file) {
-                                __this.FileUploadRefCounter++;
+                                __this.scope.FileUploadRefCounter++;
                                 __this.EnableDisableStartButton();
-     
                                 //if (isHtml4) {
                                 //    file.npsProperties.timeout = undefined;
                                 //}
                             });
                         },
                         FilesRemoved: (up, files) => { },
-                        FileUploaded: (up, file, info) => { __this.FileUploadRefCounter--; __this.EnableDisableStartButton();},
+                        FileUploaded: (up, file, info) => { __this.scope.FileUploadRefCounter--; __this.EnableDisableStartButton();},
                         ChunkUploaded: (up, file, info) => { },
                         UploadComplete: (up, files) => { },
                         //Destry: destroy,
@@ -202,8 +201,10 @@
 
         
         EnableDisableStartButton = () => {
-            if (this.FileUploadRefCounter > 0) $('#' + this.scope.startButton).removeAttr('disabled');
-            else $('#' + this.scope.startButton).attr('disabled', '');
+            if (this.scope.FileUploadRefCounter > 0) $('#' + this.scope.StartButtonId).removeAttr('disabled');
+            else $('#' + this.scope.StartButtonId).attr('disabled', '');
+
+            this.scope.$apply();
         }
     }
 
@@ -211,8 +212,10 @@
 
 
     interface IFileUploadController extends ng.IScope {
- 
-        
+        FileUploadRefCounter: number;
+        BrowseButtonId: string;
+        DropAreaId: string ;
+        StartButtonId: string;
     }
     class FileUploadController {
       

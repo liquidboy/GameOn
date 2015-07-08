@@ -9,7 +9,6 @@ var Application;
                 this.pubSubConstants = pubSubConstants;
                 this.localWindow = window;
                 this.plupload = this.localWindow.plupload;
-                this.FileUploadRefCounter = 0;
                 this.httpConfiguration = {
                     timeout: 120000 // 2 minutes
                 };
@@ -30,7 +29,6 @@ var Application;
                         silverlight_xap_url: '/scripts/plupload/moxie.xap'
                     };
                 };
-                this.scope = {};
                 this.startUpload = function () {
                     var __this = _this;
                     __this.uploader.start();
@@ -38,8 +36,8 @@ var Application;
                 this.initUploader = function () {
                     var __this = _this;
                     var uploadConfig = {
-                        button: _this.scope.browseButton,
-                        dropArea: _this.scope.dropArea,
+                        button: _this.scope.BrowseButtonId,
+                        dropArea: _this.scope.DropAreaId,
                         url: '/api/Upload',
                         headers: {},
                         bodyParams: {},
@@ -75,11 +73,11 @@ var Application;
                         maxFileAutoRetryAttempts: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRetries, 4),
                         maxFileSize: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, 2147483647)
                     };
-                    if (!_this.scope.browseButton) {
+                    if (!_this.scope.BrowseButtonId) {
                         alert('Browse button not specified');
                         return;
                     }
-                    $('#' + _this.scope.browseButton).removeAttr('disabled');
+                    $('#' + _this.scope.BrowseButtonId).removeAttr('disabled');
                     //uploadConfig.bodyParams[$scope.formsCookieName] = $scope.formsCookieValue;
                     //uploadConfig.bodyParams[$scope.sessionCookieName] = $scope.sessionCookieValue;
                     _this.newUploadInstance(uploadConfig);
@@ -138,7 +136,7 @@ var Application;
                                 },
                                 FilesAdded: function (up, files) {
                                     _this.plupload.each(files, function (file) {
-                                        __this.FileUploadRefCounter++;
+                                        __this.scope.FileUploadRefCounter++;
                                         __this.EnableDisableStartButton();
                                         //if (isHtml4) {
                                         //    file.npsProperties.timeout = undefined;
@@ -148,7 +146,7 @@ var Application;
                                 FilesRemoved: function (up, files) {
                                 },
                                 FileUploaded: function (up, file, info) {
-                                    __this.FileUploadRefCounter--;
+                                    __this.scope.FileUploadRefCounter--;
                                     __this.EnableDisableStartButton();
                                 },
                                 ChunkUploaded: function (up, file, info) {
@@ -170,10 +168,11 @@ var Application;
                     //this.uploader.defaultLog = this.uploader.log = log;
                 };
                 this.EnableDisableStartButton = function () {
-                    if (_this.FileUploadRefCounter > 0)
-                        $('#' + _this.scope.startButton).removeAttr('disabled');
+                    if (_this.scope.FileUploadRefCounter > 0)
+                        $('#' + _this.scope.StartButtonId).removeAttr('disabled');
                     else
-                        $('#' + _this.scope.startButton).attr('disabled', '');
+                        $('#' + _this.scope.StartButtonId).attr('disabled', '');
+                    _this.scope.$apply();
                 };
                 this.restrict = 'E';
                 this.replace = true;
@@ -181,9 +180,10 @@ var Application;
                 this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileUploadController];
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
-                    _this.scope.browseButton = 'browse_button';
-                    _this.scope.dropArea = 'drop_area';
-                    _this.scope.startButton = 'start_button';
+                    _this.scope.BrowseButtonId = 'browse_button';
+                    _this.scope.DropAreaId = 'drop_area';
+                    _this.scope.StartButtonId = 'start_button';
+                    _this.scope.FileUploadRefCounter = 0;
                     _this.initUploader();
                     element.find('#start_button').on('click', _this.startUpload);
                 };
