@@ -295,12 +295,20 @@
     <Content Include="angularApp\directives\configMenu.js">
       <DependentUpon>configMenu.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\fileStorageList.js">
+      <DependentUpon>fileStorageList.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\fileStoragePicker.js">
+      <DependentUpon>fileStoragePicker.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\fileUpload.js">
       <DependentUpon>fileUpload.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\partials\file-storage-picker.html" />
+    <Content Include="angularApp\partials\file-storage-list.html" />
     <Content Include="angularApp\partials\fileupload.html" />
     <Content Include="angularApp\partials\configmenu.html" />
     <Content Include="angularApp\partials\workarea.html" />
@@ -591,6 +599,12 @@
     </Content>
     <Content Include="angularApp\controllers\Config\configFont.js.map">
       <DependentUpon>configFont.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\fileStoragePicker.js.map">
+      <DependentUpon>fileStoragePicker.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\fileStorageList.js.map">
+      <DependentUpon>fileStorageList.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1554,6 +1568,8 @@
     <Content Include="script\vs\nls.js" />
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
+    <Content Include="Themes\FileStoragePicker.css" />
+    <Content Include="Themes\FileStorageList.css" />
     <Content Include="Themes\FileUpload.css" />
     <Content Include="Themes\Login.css" />
     <Content Include="Themes\ConfigMenu.css" />
@@ -1690,6 +1706,8 @@
     <TypeScriptCompile Include="angularApp\controllers\Config\configComment.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Config\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
+    <TypeScriptCompile Include="angularApp\directives\fileStoragePicker.ts" />
+    <TypeScriptCompile Include="angularApp\directives\fileStorageList.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileUpload.ts" />
     <TypeScriptCompile Include="angularApp\directives\configMenu.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
