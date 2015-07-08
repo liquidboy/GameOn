@@ -33,6 +33,8 @@
                 if (attributes.$attr["daBottom"]) this.scope.Bottom = element.attr(<string>attributes.$attr["daBottom"]);
                 if (attributes.$attr["daTop"]) this.scope.Top = element.attr(<string>attributes.$attr["daTop"]);
                 if (attributes.$attr["daItemHeight"]) this.scope.ItemHeight = element.attr(<string>attributes.$attr["daItemHeight"]);
+                if (attributes.$attr["daLeft"]) this.scope.Left = element.attr(<string>attributes.$attr["daLeft"]);
+                if (attributes.$attr["daRight"]) this.scope.Right = element.attr(<string>attributes.$attr["daRight"]);
 
                 this.init();
                
@@ -68,6 +70,8 @@
         ItemsList: Array<any>;
         Bottom: string;
         Top: string;
+        Left: string;
+        Right: string;
         ItemHeight: string;
     }
     class FileStorageListController {

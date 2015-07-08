@@ -21,6 +21,10 @@ var Application;
                         _this.scope.Top = element.attr(attributes.$attr["daTop"]);
                     if (attributes.$attr["daItemHeight"])
                         _this.scope.ItemHeight = element.attr(attributes.$attr["daItemHeight"]);
+                    if (attributes.$attr["daLeft"])
+                        _this.scope.Left = element.attr(attributes.$attr["daLeft"]);
+                    if (attributes.$attr["daRight"])
+                        _this.scope.Right = element.attr(attributes.$attr["daRight"]);
                     _this.init();
                 };
             }
