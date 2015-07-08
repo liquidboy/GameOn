@@ -5,4 +5,23 @@
         float:left;
         margin-right:5px;
         margin-bottom:5px;
+        position:relative;
     }
+
+        .file-storage-list .item .sz {
+            color:white;
+            position:absolute;
+            left:5px; top:5px;
+            margin:auto;
+            background-color:rgba(0, 0, 0, 0.26);
+        }
+        .file-storage-list .item .ofn {
+        }
+        .file-storage-list .item .ct {
+            color:white;
+            position:absolute;
+            right:5px; bottom:10px;
+            margin:auto;
+            font-size:10px;
+            background-color:rgba(0, 0, 0, 0.26);
+        }

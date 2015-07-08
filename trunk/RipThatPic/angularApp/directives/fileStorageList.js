@@ -35,6 +35,9 @@ var Application;
                 var __this = this;
                 this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
                     __this.scope.ItemsList = result;
+                    $.each(__this.scope.ItemsList, function () {
+                        this.SizeKB = Math.round(this.Size / 1000);
+                    });
                 }).error(function (err) {
                 });
             };
