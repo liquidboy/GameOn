@@ -22,13 +22,19 @@
       background-image: url('/content/icons/House-black.png');
       background-size: 25px;
       background-repeat: no-repeat;
-      padding-left: 25px;
+      padding-left: 20px;
     }
     .ui.menu .item.ico-image {
       background-image: url('/content/icons/Image-black.png');
       background-size: 25px;
       background-repeat: no-repeat;
       padding-left: 25px;
+    }
+    .ui.menu .ico-login {
+      background-image: url('/content/icons/User-Male-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 20px;
     }
     .ui.menu .ico-user {
       background-image: url('/content/icons/User-Male-black.png');
@@ -242,6 +248,9 @@
       background-image: url('/content/icons/document-white.png');
     }
     .ui.menu .active.ico-user {
+      background-image: url('/content/icons/User-Male-white.png');
+    }
+    .ui.menu .active.ico-login {
       background-image: url('/content/icons/User-Male-white.png');
     }
     .ui.menu .item.active.ico-config {
