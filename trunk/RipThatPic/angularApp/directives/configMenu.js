@@ -11,7 +11,7 @@ var Application;
                 this.scope = {};
                 this.restrict = 'E';
                 this.replace = true;
-                this.templateUrl = '/angularApp/partials/configmenu.html';
+                this.templateUrl = '/angularApp/partials/config-menu.html';
                 this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', ConfigMenuController];
                 this.link = function ($scope, element, attributes, controller) {
                     //eg. http://dotnetspeak.com/2013/12/angular-and-dom-manipulations-in-directives

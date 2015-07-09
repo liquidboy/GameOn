@@ -177,7 +177,7 @@ var Application;
                 };
                 this.restrict = 'E';
                 this.replace = true;
-                this.templateUrl = '/angularApp/partials/fileupload.html';
+                this.templateUrl = '/angularApp/partials/file-upload.html';
                 this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileUploadController];
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;

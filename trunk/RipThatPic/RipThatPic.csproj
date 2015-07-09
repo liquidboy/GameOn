@@ -309,8 +309,8 @@
     </Content>
     <Content Include="angularApp\partials\file-storage-picker.html" />
     <Content Include="angularApp\partials\file-storage-list.html" />
-    <Content Include="angularApp\partials\fileupload.html" />
-    <Content Include="angularApp\partials\configmenu.html" />
+    <Content Include="angularApp\partials\file-upload.html" />
+    <Content Include="angularApp\partials\config-menu.html" />
     <Content Include="angularApp\partials\workarea.html" />
     <Content Include="angularApp\partials\billboard.html" />
     <Content Include="angularApp\services\authService.js">

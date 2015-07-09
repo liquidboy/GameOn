@@ -26,7 +26,7 @@
 
             this.restrict = 'E';
             this.replace = true;
-            this.templateUrl = '/angularApp/partials/configmenu.html';
+            this.templateUrl = '/angularApp/partials/config-menu.html';
             this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', ConfigMenuController];
             this.link = ($scope: IConfigMenuController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: ConfigMenuController) =>
             {

@@ -50,7 +50,7 @@
             
             this.restrict = 'E';
             this.replace = true;
-            this.templateUrl = '/angularApp/partials/fileupload.html';
+            this.templateUrl = '/angularApp/partials/file-upload.html';
             this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileUploadController];
             this.link = ($scope: IFileUploadController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileUploadController) =>
             {                
