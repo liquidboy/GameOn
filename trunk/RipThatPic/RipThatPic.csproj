@@ -1355,6 +1355,8 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Scripts\justified\jquery.justifiedGallery.min.js" />
+    <Content Include="Scripts\justified\justifiedGallery.min.css" />
     <Content Include="Scripts\Moxie.2.0.0.js" />
     <Content Include="Scripts\Moxie.dev.2.0.0.js" />
     <Content Include="Scripts\Oimo.js" />

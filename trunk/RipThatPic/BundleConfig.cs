@@ -84,7 +84,8 @@ namespace RipThatPic
                     "~/Scripts/plupload/plupload.dev.js",
                     "~/Scripts/radio.min.js",
                     "~/Scripts/jquery.signalR-2.2.0.min.js",
-                    "~/signalr/hubs"
+                    "~/signalr/hubs",
+                    "~/Scripts/justified/jquery.justifiedGallery.min.js"
                 ));
 
 
@@ -104,7 +105,8 @@ namespace RipThatPic
                    "~/Themes/Notifications.css",
                    "~/Themes/FileUpload.css",
                    "~/Themes/FileStorageList.css",
-                   "~/Themes/FileStoragePicker.css"
+                   "~/Themes/FileStoragePicker.css",
+                   "~/Scripts/justified/justifiedGallery.min.css"
                ));
 
 

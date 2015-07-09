@@ -58,6 +58,10 @@
                         this.SizeKB = Math.round(this.Size / 1000);
                     });
 
+                    //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
+                    //eval('setTimeout(function(){ $("#fsl").justifiedGallery();}, 10);');
+                    __this.scope.$apply();
+                    eval('$("#fsl").justifiedGallery();');
                 })
                 .error(function (err) { });
         }
