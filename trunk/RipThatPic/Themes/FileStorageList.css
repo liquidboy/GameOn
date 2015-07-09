@@ -1,4 +1,6 @@
-﻿.file-storage-list {
+﻿/* big use of justified lib for laying out list of pics http://miromannino.github.io/Justified-Gallery/  */
+
+.file-storage-list {
         overflow:auto;
         border:1px solid #e5e5e5;
         background-color:#e5e5e5;
@@ -13,6 +15,7 @@
         margin-bottom:5px;
         position:relative;*/
         cursor:pointer;
+        opacity:0;
     }
 
         .file-storage-list .item .sz {

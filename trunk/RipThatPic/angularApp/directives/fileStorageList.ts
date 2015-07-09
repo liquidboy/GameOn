@@ -36,6 +36,10 @@
                 if (attributes.$attr["daLeft"]) this.scope.Left = element.attr(<string>attributes.$attr["daLeft"]);
                 if (attributes.$attr["daRight"]) this.scope.Right = element.attr(<string>attributes.$attr["daRight"]);
 
+                //this.scope.ItemSelected = () => {
+                //    this.ItemSelected();
+                //};
+
                 this.init();
                
             };
@@ -53,17 +57,34 @@
             this.dataSvc
                 .getAll("FileStorage", __this.authService.sessionId)
                 .success(function (result: any) {
+
                     __this.scope.ItemsList = result;
                     $.each(__this.scope.ItemsList, function () {
                         this.SizeKB = Math.round(this.Size / 1000);
                     });
 
                     //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
-                    //eval('setTimeout(function(){ $("#fsl").justifiedGallery();}, 10);');
-                    __this.scope.$apply();
-                    eval('$("#fsl").justifiedGallery();');
+                    try {
+                        //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
+                        //eval('$("#fsl").justifiedGallery();');
+                        
+
+                        //freaking using apply was causing digest errors .. going with timeout approach
+                        eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 100);');
+                        
+                    } catch (e){ }
                 })
                 .error(function (err) { });
+        }
+
+
+        ItemSelected = () => {
+
+            alert('clicked');
+        }
+
+        safeApply= (scope: any, fn: Function) => {
+            (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
         }
     }
 
@@ -77,6 +98,8 @@
         Left: string;
         Right: string;
         ItemHeight: string;
+
+        ItemSelected: Function;
     }
     class FileStorageListController {
       

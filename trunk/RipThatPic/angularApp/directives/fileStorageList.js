@@ -9,6 +9,12 @@ var Application;
                 this.pubSubConstants = pubSubConstants;
                 this.dataSvc = dataSvc;
                 this.authService = authService;
+                this.ItemSelected = function () {
+                    alert('clicked');
+                };
+                this.safeApply = function (scope, fn) {
+                    (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
+                };
                 this.restrict = 'E';
                 this.replace = true;
                 this.templateUrl = '/angularApp/partials/file-storage-list.html';
@@ -25,6 +31,9 @@ var Application;
                         _this.scope.Left = element.attr(attributes.$attr["daLeft"]);
                     if (attributes.$attr["daRight"])
                         _this.scope.Right = element.attr(attributes.$attr["daRight"]);
+                    //this.scope.ItemSelected = () => {
+                    //    this.ItemSelected();
+                    //};
                     _this.init();
                 };
             }
@@ -48,10 +57,14 @@ var Application;
                     $.each(__this.scope.ItemsList, function () {
                         this.SizeKB = Math.round(this.Size / 1000);
                     });
-                    //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
-                    //eval('setTimeout(function(){ $("#fsl").justifiedGallery();}, 10);');
-                    __this.scope.$apply();
-                    eval('$("#fsl").justifiedGallery();');
+                    try {
+                        //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
+                        //eval('$("#fsl").justifiedGallery();');
+                        //freaking using apply was causing digest errors .. going with timeout approach
+                        eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 100);');
+                    }
+                    catch (e) {
+                    }
                 }).error(function (err) {
                 });
             };
