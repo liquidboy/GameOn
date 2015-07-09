@@ -206,7 +206,7 @@
 
         
         EnableDisableStartButton = () => {
-            if (this.scope.FileUploadRefCounter > 0) $('#' + this.scope.StartButtonId).removeAttr('disabled');
+            if (this.scope.FileUploadRefCounter > 0) { $('#' + this.scope.StartButtonId).removeAttr('disabled');}
             else $('#' + this.scope.StartButtonId).attr('disabled', '');
 
             this.scope.$apply();

@@ -168,8 +168,9 @@ var Application;
                     //this.uploader.defaultLog = this.uploader.log = log;
                 };
                 this.EnableDisableStartButton = function () {
-                    if (_this.scope.FileUploadRefCounter > 0)
+                    if (_this.scope.FileUploadRefCounter > 0) {
                         $('#' + _this.scope.StartButtonId).removeAttr('disabled');
+                    }
                     else
                         $('#' + _this.scope.StartButtonId).attr('disabled', '');
                     _this.scope.$apply();
