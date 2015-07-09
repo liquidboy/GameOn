@@ -10,14 +10,44 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.authService = authService;
                 this.ItemSelected = function (scope, evt) {
-                    //do stuff with the previously selected item ??!
-                    if (scope.LastSelectedItem !== null) {
-                        $(scope.LastSelectedItem).removeClass('selected');
-                    }
                     //now do stuff with the selected item
                     var el = evt.currentTarget;
-                    $(el).addClass('selected');
-                    scope.LastSelectedItem = el;
+                    //see if its already in the list
+                    var foundItInList = null;
+                    $.each(scope.SelectedItems, function (index) {
+                        var elm = scope.SelectedItems[index];
+                        if (elm.uniqueID === el.uniqueID) {
+                            foundItInList = el;
+                        }
+                    });
+                    if (scope.IsMultipleSelection) {
+                        if (foundItInList != null) {
+                            $(foundItInList).removeClass('selected');
+                            var index = scope.SelectedItems.indexOf(foundItInList);
+                            scope.SelectedItems.splice(index, 1);
+                        }
+                        else {
+                            $(el).addClass('selected');
+                            scope.SelectedItems.push(el);
+                        }
+                    }
+                    else {
+                        if (foundItInList != null) {
+                            $(foundItInList).removeClass('selected');
+                            var index = scope.SelectedItems.indexOf(foundItInList);
+                            scope.SelectedItems.splice(index, 1);
+                        }
+                        else {
+                            //clear list of anything 
+                            if (scope.SelectedItems !== null && scope.SelectedItems.length >= 1) {
+                                $(scope.SelectedItems).removeClass('selected');
+                                scope.SelectedItems = [];
+                            }
+                            //now add this single item into the list
+                            $(el).addClass('selected');
+                            scope.SelectedItems.push(el);
+                        }
+                    }
                 };
                 this.safeApply = function (scope, fn) {
                     (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
@@ -38,7 +68,9 @@ var Application;
                         _this.scope.Left = element.attr(attributes.$attr["daLeft"]);
                     if (attributes.$attr["daRight"])
                         _this.scope.Right = element.attr(attributes.$attr["daRight"]);
-                    _this.scope.LastSelectedItem = null;
+                    if (attributes.$attr["daIsMultipleSelection"])
+                        _this.scope.IsMultipleSelection = element.attr(attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
+                    _this.scope.SelectedItems = [];
                     _this.scope.ItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);
                     };

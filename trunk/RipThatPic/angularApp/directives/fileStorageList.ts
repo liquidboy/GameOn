@@ -30,13 +30,16 @@
             this.link = ($scope: IFileStorageListController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileStorageListController) =>
             {                
                 this.scope = $scope;
+                
                 if (attributes.$attr["daBottom"]) this.scope.Bottom = element.attr(<string>attributes.$attr["daBottom"]);
                 if (attributes.$attr["daTop"]) this.scope.Top = element.attr(<string>attributes.$attr["daTop"]);
                 if (attributes.$attr["daItemHeight"]) this.scope.ItemHeight = element.attr(<string>attributes.$attr["daItemHeight"]);
                 if (attributes.$attr["daLeft"]) this.scope.Left = element.attr(<string>attributes.$attr["daLeft"]);
                 if (attributes.$attr["daRight"]) this.scope.Right = element.attr(<string>attributes.$attr["daRight"]);
+                if (attributes.$attr["daIsMultipleSelection"]) this.scope.IsMultipleSelection = element.attr(<string>attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
 
-                this.scope.LastSelectedItem = null;
+                
+                this.scope.SelectedItems = [];
                 this.scope.ItemSelected = (evt) => { this.ItemSelected(this.scope, evt);}
 
                 this.init();
@@ -79,17 +82,49 @@
 
         ItemSelected = (scope: IFileStorageListController, evt: any) => {
 
-            //do stuff with the previously selected item ??!
-            if (scope.LastSelectedItem !== null) {
-                $(scope.LastSelectedItem).removeClass('selected');
-            }
+            
 
 
             //now do stuff with the selected item
             var el = evt.currentTarget;
-            $(el).addClass('selected');
-            scope.LastSelectedItem = el;
 
+            //see if its already in the list
+            var foundItInList = null;
+            $.each(scope.SelectedItems,(index) => {
+                var elm: any = scope.SelectedItems[index];
+                if (elm.uniqueID === el.uniqueID) {
+                    foundItInList = el;
+                }
+            });
+
+            if (scope.IsMultipleSelection) { //MULTIPLE SELECTION
+                if (foundItInList != null) { //already selected so unselect it
+                    $(foundItInList).removeClass('selected');
+                    var index = scope.SelectedItems.indexOf(foundItInList);
+                    scope.SelectedItems.splice(index, 1);
+                } else { //its new so add it to the list
+                    $(el).addClass('selected');
+                    scope.SelectedItems.push(el);
+                }
+            } else { //SINGLE SELECTION
+                if (foundItInList != null) { // already selected so unselect it
+                    $(foundItInList).removeClass('selected');
+                    var index = scope.SelectedItems.indexOf(foundItInList);
+                    scope.SelectedItems.splice(index, 1);
+                } else {
+
+                    //clear list of anything 
+                    if (scope.SelectedItems !== null && scope.SelectedItems.length >= 1) {
+                        $(scope.SelectedItems).removeClass('selected');
+                        scope.SelectedItems = [];
+                    }
+
+                    //now add this single item into the list
+                    $(el).addClass('selected');
+                    scope.SelectedItems.push(el);
+                }
+            }
+            
         }
 
         safeApply= (scope: any, fn: Function) => {
@@ -109,7 +144,9 @@
         ItemHeight: string;
 
         ItemSelected: Function;
-        LastSelectedItem: any;
+        SelectedItems: Array<any>;
+
+        IsMultipleSelection: boolean;
     }
     class FileStorageListController {
       
