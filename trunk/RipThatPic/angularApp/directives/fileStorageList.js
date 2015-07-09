@@ -16,7 +16,7 @@ var Application;
                     var foundItInList = null;
                     $.each(scope.SelectedItems, function (index) {
                         var elm = scope.SelectedItems[index];
-                        if (elm.uniqueID === el.uniqueID) {
+                        if ($(elm).data('id') === $(el).data('id')) {
                             foundItInList = el;
                         }
                     });

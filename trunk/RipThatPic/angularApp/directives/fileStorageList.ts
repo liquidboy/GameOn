@@ -38,6 +38,7 @@
                 if (attributes.$attr["daRight"]) this.scope.Right = element.attr(<string>attributes.$attr["daRight"]);
                 if (attributes.$attr["daIsMultipleSelection"]) this.scope.IsMultipleSelection = element.attr(<string>attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
 
+
                 
                 this.scope.SelectedItems = [];
                 this.scope.ItemSelected = (evt) => { this.ItemSelected(this.scope, evt);}
@@ -92,7 +93,7 @@
             var foundItInList = null;
             $.each(scope.SelectedItems,(index) => {
                 var elm: any = scope.SelectedItems[index];
-                if (elm.uniqueID === el.uniqueID) {
+                if ($(elm).data('id') === $(el).data('id')) {
                     foundItInList = el;
                 }
             });

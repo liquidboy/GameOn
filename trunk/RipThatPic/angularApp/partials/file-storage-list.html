@@ -1,10 +1,11 @@
-﻿<div class="file-storage-list" style="bottom:{{Bottom}};top:{{Top}};left:{{Left}};right:{{Right}};">
+﻿<div class="file-storage-list" ng-style="{'bottom':Bottom,'top':Top,'left':Left,'right':Right}">
 
 
     <div id="fsl">
         <div ng-click="ItemSelected($event)"
              ng-repeat="item in ItemsList" 
              ng-include="'itemlist.html'" 
+             data-id="{{item.DisplayId}}"
              class="item" target="_blank"></div>
 
         <script type="text/ng-template" id="itemlist.html">
