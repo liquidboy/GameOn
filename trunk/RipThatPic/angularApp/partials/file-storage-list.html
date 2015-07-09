@@ -2,10 +2,10 @@
 
 
     <div id="fsl">
-        <div 
-             ng-click="scope.ItemSelected"
-           ng-repeat="item in ItemsList" ng-include="'itemlist.html'" 
-           class="item" target="_blank"></div>
+        <div ng-click="ItemSelected($event)"
+             ng-repeat="item in ItemsList" 
+             ng-include="'itemlist.html'" 
+             class="item" target="_blank"></div>
 
         <script type="text/ng-template" id="itemlist.html">
             <img src="http://austoragetest.blob.core.windows.net/temp-upload-thumb/{{item.Name}}"  />

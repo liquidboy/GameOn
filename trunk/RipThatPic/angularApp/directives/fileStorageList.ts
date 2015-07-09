@@ -36,9 +36,8 @@
                 if (attributes.$attr["daLeft"]) this.scope.Left = element.attr(<string>attributes.$attr["daLeft"]);
                 if (attributes.$attr["daRight"]) this.scope.Right = element.attr(<string>attributes.$attr["daRight"]);
 
-                //this.scope.ItemSelected = () => {
-                //    this.ItemSelected();
-                //};
+                this.scope.LastSelectedItem = null;
+                this.scope.ItemSelected = (evt) => { this.ItemSelected(this.scope, evt);}
 
                 this.init();
                
@@ -78,9 +77,19 @@
         }
 
 
-        ItemSelected = () => {
+        ItemSelected = (scope: IFileStorageListController, evt: any) => {
 
-            alert('clicked');
+            //do stuff with the previously selected item ??!
+            if (scope.LastSelectedItem !== null) {
+                $(scope.LastSelectedItem).removeClass('selected');
+            }
+
+
+            //now do stuff with the selected item
+            var el = evt.currentTarget;
+            $(el).addClass('selected');
+            scope.LastSelectedItem = el;
+
         }
 
         safeApply= (scope: any, fn: Function) => {
@@ -100,6 +109,7 @@
         ItemHeight: string;
 
         ItemSelected: Function;
+        LastSelectedItem: any;
     }
     class FileStorageListController {
       

@@ -9,8 +9,15 @@ var Application;
                 this.pubSubConstants = pubSubConstants;
                 this.dataSvc = dataSvc;
                 this.authService = authService;
-                this.ItemSelected = function () {
-                    alert('clicked');
+                this.ItemSelected = function (scope, evt) {
+                    //do stuff with the previously selected item ??!
+                    if (scope.LastSelectedItem !== null) {
+                        $(scope.LastSelectedItem).removeClass('selected');
+                    }
+                    //now do stuff with the selected item
+                    var el = evt.currentTarget;
+                    $(el).addClass('selected');
+                    scope.LastSelectedItem = el;
                 };
                 this.safeApply = function (scope, fn) {
                     (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
@@ -31,9 +38,10 @@ var Application;
                         _this.scope.Left = element.attr(attributes.$attr["daLeft"]);
                     if (attributes.$attr["daRight"])
                         _this.scope.Right = element.attr(attributes.$attr["daRight"]);
-                    //this.scope.ItemSelected = () => {
-                    //    this.ItemSelected();
-                    //};
+                    _this.scope.LastSelectedItem = null;
+                    _this.scope.ItemSelected = function (evt) {
+                        _this.ItemSelected(_this.scope, evt);
+                    };
                     _this.init();
                 };
             }
