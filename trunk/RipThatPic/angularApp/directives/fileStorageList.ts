@@ -100,15 +100,18 @@
             if (scope.IsMultipleSelection) { //MULTIPLE SELECTION
                 if (foundItInList != null) { //already selected so unselect it
                     $(foundItInList).removeClass('selected');
+                    $(foundItInList).find('.chk').hide();
                     var index = scope.SelectedItems.indexOf(foundItInList);
                     scope.SelectedItems.splice(index, 1);
                 } else { //its new so add it to the list
                     $(el).addClass('selected');
+                    $(el).find('.chk').show();
                     scope.SelectedItems.push(el);
                 }
             } else { //SINGLE SELECTION
                 if (foundItInList != null) { // already selected so unselect it
                     $(foundItInList).removeClass('selected');
+                    $(foundItInList).find('.chk').hide();
                     var index = scope.SelectedItems.indexOf(foundItInList);
                     scope.SelectedItems.splice(index, 1);
                 } else {
@@ -116,11 +119,13 @@
                     //clear list of anything 
                     if (scope.SelectedItems !== null && scope.SelectedItems.length >= 1) {
                         $(scope.SelectedItems).removeClass('selected');
+                        $(scope.SelectedItems).find('.chk').hide();
                         scope.SelectedItems = [];
                     }
 
                     //now add this single item into the list
                     $(el).addClass('selected');
+                    $(el).find('.chk').show();
                     scope.SelectedItems.push(el);
                 }
             }

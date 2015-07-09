@@ -23,17 +23,20 @@ var Application;
                     if (scope.IsMultipleSelection) {
                         if (foundItInList != null) {
                             $(foundItInList).removeClass('selected');
+                            $(foundItInList).find('.chk').hide();
                             var index = scope.SelectedItems.indexOf(foundItInList);
                             scope.SelectedItems.splice(index, 1);
                         }
                         else {
                             $(el).addClass('selected');
+                            $(el).find('.chk').show();
                             scope.SelectedItems.push(el);
                         }
                     }
                     else {
                         if (foundItInList != null) {
                             $(foundItInList).removeClass('selected');
+                            $(foundItInList).find('.chk').hide();
                             var index = scope.SelectedItems.indexOf(foundItInList);
                             scope.SelectedItems.splice(index, 1);
                         }
@@ -41,10 +44,12 @@ var Application;
                             //clear list of anything 
                             if (scope.SelectedItems !== null && scope.SelectedItems.length >= 1) {
                                 $(scope.SelectedItems).removeClass('selected');
+                                $(scope.SelectedItems).find('.chk').hide();
                                 scope.SelectedItems = [];
                             }
                             //now add this single item into the list
                             $(el).addClass('selected');
+                            $(el).find('.chk').show();
                             scope.SelectedItems.push(el);
                         }
                     }

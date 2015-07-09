@@ -415,6 +415,8 @@
     <Content Include="Content\icons\Settings-white.png" />
     <Content Include="Content\icons\theme-black.png" />
     <Content Include="Content\icons\theme-white.png" />
+    <Content Include="Content\icons\tick-black.png" />
+    <Content Include="Content\icons\tick-white.png" />
     <Content Include="Content\icons\User-Male-black.png" />
     <Content Include="Content\icons\User-Male-white.png" />
     <Content Include="Content\icons\version-black.png" />
