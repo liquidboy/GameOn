@@ -35,15 +35,17 @@ var Application;
                     var __this = _this;
                     if (__this._isUploading)
                         return;
+                    __this.uploader.settings.url = __this.scope.Url + '?cn=' + __this.scope.CN;
                     __this.uploader.start();
                     __this._isUploading = true;
                 };
                 this.initUploader = function () {
                     var __this = _this;
+                    __this.scope.Url = '/api/Upload';
                     var uploadConfig = {
                         button: _this.scope.BrowseButtonId,
                         dropArea: _this.scope.DropAreaId,
-                        url: '/api/Upload',
+                        url: __this.scope.Url,
                         headers: {},
                         bodyParams: {},
                         beforeFileUpload: function () {
@@ -199,6 +201,8 @@ var Application;
                     if (attributes.$attr["daDock"])
                         _this.scope.Dock = element.attr(attributes.$attr["daDock"]);
                     element.addClass('fu-dock-' + _this.scope.Dock);
+                    if (attributes.$attr["daCn"])
+                        _this.scope.CN = element.attr(attributes.$attr["daCn"]);
                     _this.initUploader();
                     //changing to auto uploading
                     //element.find('#start_button').on('click', this.startUpload);

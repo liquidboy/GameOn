@@ -666,7 +666,7 @@ namespace Incite.Cloud.Storage
         private CloudBlobContainer DoCreateContainer(string containerName)
         {
             var container = DoGetContainer(containerName);
-            container.Create();
+            container.CreateIfNotExists();
             container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Off });
             return container;
         }

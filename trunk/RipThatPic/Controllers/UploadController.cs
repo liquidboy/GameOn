@@ -23,16 +23,21 @@ namespace RipThatPic.Controllers
         //using memorystream
         //http://forums.asp.net/t/1842441.aspx?File+upload+using+MultipartMemoryStreamProvider
 
-        private const string _groupingUpload = "temp-upload";
-        private const string _groupingUploadThumb = _groupingUpload + "-thumb";
+        
         private const int _thumbSize = 240;
 
 
         // POST: api/Upload
         [HttpPost]
-        public async Task<HttpResponseMessage> Post()
+        public async Task<HttpResponseMessage> Post([FromUri]string cn)
         {
-            var uploadPath = "";// TempStorage.GetTempDir(id);
+            //container/bucket 
+            string _groupingUpload = "temp-upload";
+            if (!string.IsNullOrEmpty(cn)) _groupingUpload = cn;
+            string _groupingUploadThumb = _groupingUpload + "-thumb";
+
+
+            //var uploadPath = "";// TempStorage.GetTempDir(id);
 
             if (Request.Content.IsMimeMultipartContent())
             {
@@ -69,8 +74,13 @@ namespace RipThatPic.Controllers
 
                         using (var stream = await fileData.ReadAsStreamAsync())
                         {
-                            //processor.CreateContainer(uniqueId);
-                            var uf = new FileStorageEntity(uniqueId, _groupingUpload);
+                            //create containers incase they don't exist
+                            processor.CreateContainer(_groupingUpload);
+                            processor.CreateContainer(_groupingUploadThumb);
+
+
+                            //setup entity for uplading into storage table
+                            var uf = new FileStorageEntity(uniqueId, _groupingUpload.ToLower());
                             uf.ContentType = ContentType.MediaType;
                             uf.Size = ContentLength.HasValue ? ContentLength.Value : 0;
                             uf.OriginalFileName = OriginalFileName;

@@ -64,6 +64,7 @@
                 
                 if (attributes.$attr["daDock"]) this.scope.Dock = element.attr(<string>attributes.$attr["daDock"]);
                 element.addClass('fu-dock-' + this.scope.Dock);
+                if (attributes.$attr["daCn"]) this.scope.CN = element.attr(<string>attributes.$attr["daCn"]);
                 
                 
                 this.initUploader();
@@ -81,17 +82,18 @@
         startUpload = () => {
             var __this = this;
             if (__this._isUploading) return;
+            __this.uploader.settings.url = __this.scope.Url + '?cn=' + __this.scope.CN;
             __this.uploader.start();
             __this._isUploading = true;
         }
 
         initUploader = () => {
             var __this = this;
-
+            __this.scope.Url = '/api/Upload';
             var uploadConfig = {
                 button: this.scope.BrowseButtonId,
                 dropArea: this.scope.DropAreaId,
-                url: '/api/Upload',
+                url: __this.scope.Url,
                 headers: {},
                 bodyParams: {},
                 beforeFileUpload: () => { },
@@ -241,6 +243,8 @@
         DropAreaId: string ;
         //StartButtonId: string;
         Dock: string;
+        Url: string;
+        CN: string;
     }
     class FileUploadController {
       
