@@ -58,7 +58,7 @@
                 this.scope = $scope;
                 this.scope.BrowseButtonId = 'browse_button';
                 this.scope.DropAreaId = 'drop_area';
-                this.scope.StartButtonId = 'start_button';
+                //this.scope.StartButtonId = 'start_button';
                 this.scope.FileUploadRefCounter = 0;
                 this.scope.Dock = 'top';
                 
@@ -68,7 +68,8 @@
                 
                 this.initUploader();
 
-                element.find('#start_button').on('click', this.startUpload);
+                //changing to auto uploading
+                //element.find('#start_button').on('click', this.startUpload);
              
             };
 
@@ -186,6 +187,8 @@
                                 //    file.npsProperties.timeout = undefined;
                                 //}
                             });
+
+                            __this.startUpload();
                         },
                         FilesRemoved: (up, files) => { },
                         FileUploaded: (up, file, info) => {
@@ -218,10 +221,10 @@
             var __this = this;
 
             if (__this.scope.FileUploadRefCounter > 0) {
-                $('#' + __this.scope.StartButtonId).removeAttr('disabled');
+                //$('#' + __this.scope.StartButtonId).removeAttr('disabled');
             }
             else {
-                $('#' + __this.scope.StartButtonId).attr('disabled', '');
+                //$('#' + __this.scope.StartButtonId).attr('disabled', '');
                 __this._isUploading = false;
             }
 
@@ -236,7 +239,7 @@
         FileUploadRefCounter: number;
         BrowseButtonId: string;
         DropAreaId: string ;
-        StartButtonId: string;
+        //StartButtonId: string;
         Dock: string;
     }
     class FileUploadController {

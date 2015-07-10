@@ -147,6 +147,7 @@ var Application;
                                         //    file.npsProperties.timeout = undefined;
                                         //}
                                     });
+                                    __this.startUpload();
                                 },
                                 FilesRemoved: function (up, files) {
                                 },
@@ -177,10 +178,9 @@ var Application;
                 this.EnableDisableStartButton = function () {
                     var __this = _this;
                     if (__this.scope.FileUploadRefCounter > 0) {
-                        $('#' + __this.scope.StartButtonId).removeAttr('disabled');
                     }
                     else {
-                        $('#' + __this.scope.StartButtonId).attr('disabled', '');
+                        //$('#' + __this.scope.StartButtonId).attr('disabled', '');
                         __this._isUploading = false;
                     }
                     __this.scope.$apply();
@@ -193,14 +193,15 @@ var Application;
                     _this.scope = $scope;
                     _this.scope.BrowseButtonId = 'browse_button';
                     _this.scope.DropAreaId = 'drop_area';
-                    _this.scope.StartButtonId = 'start_button';
+                    //this.scope.StartButtonId = 'start_button';
                     _this.scope.FileUploadRefCounter = 0;
                     _this.scope.Dock = 'top';
                     if (attributes.$attr["daDock"])
                         _this.scope.Dock = element.attr(attributes.$attr["daDock"]);
                     element.addClass('fu-dock-' + _this.scope.Dock);
                     _this.initUploader();
-                    element.find('#start_button').on('click', _this.startUpload);
+                    //changing to auto uploading
+                    //element.find('#start_button').on('click', this.startUpload);
                 };
             }
             FileUploadDirective.prototype.injection = function () {
