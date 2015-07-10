@@ -23,6 +23,44 @@
         }
         
     }
+
+
+
+    export interface IExplorerController extends ng.IScope {
+
+        //FileStoragePicker
+        FSPList: Array<any>;
+        FSPBottom: string;
+        FSPTop: string;
+        FSPLeft: string;
+        FSPRight: string;
+        FSPWidth: string;
+
+        FSPLocationStyle: string;
+
+        FSPItemSelected: Function;
+        FSPSelectedItem: any;
+
+
+        //FileStorage
+        FSItemsList: Array<any>;
+        FSBottom: string;
+        FSTop: string;
+        FSLeft: string;
+        FSRight: string;
+        FSItemHeight: string;
+        FSCN: string;
+
+        FSItemSelected: Function;
+        FSSelectedItems: Array<any>;
+
+        FSIsMultipleSelection: boolean;
+
+    }
+    
+
+
+
     var myapp: ng.IModule = angular.module('bootstrapApp');
     myapp.controller("ExplorerCtrl", ["$scope", "$rootScope", ExplorerCtrl]);
 }

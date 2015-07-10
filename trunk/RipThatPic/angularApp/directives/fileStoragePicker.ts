@@ -7,9 +7,9 @@
         public restrict: string;
         public replace: boolean;
         public controller: any;
-        public scope: IFileStoragePickerController ;
+        public scope: Application.Controllers.IExplorerController ;
 
-        public link: ($scope: IFileStoragePickerController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileStoragePickerController) => void;
+        public link: ($scope: Application.Controllers.IExplorerController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: Application.Controllers.IExplorerController) => void;
 
 
         constructor(public pubSubConstants: Application.Constants.PubSubConstants,
@@ -21,27 +21,26 @@
             this.restrict = 'E';
             this.replace = true;
             this.templateUrl = '/angularApp/partials/file-storage-picker.html';
-            this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileStoragePickerController];
-            this.link = ($scope: IFileStoragePickerController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileStoragePickerController) =>
+            this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl];
+            this.link = ($scope: Application.Controllers.IExplorerController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: Application.Controllers.IExplorerController) =>
             {                
                 this.scope = $scope;
            
-                if (attributes.$attr["daBottom"]) this.scope.Bottom = element.attr(<string>attributes.$attr["daBottom"]);
-                if (attributes.$attr["daTop"]) this.scope.Top = element.attr(<string>attributes.$attr["daTop"]);
-                if (attributes.$attr["daLeft"]) this.scope.Left = element.attr(<string>attributes.$attr["daLeft"]);
-                if (attributes.$attr["daRight"]) this.scope.Right = element.attr(<string>attributes.$attr["daRight"]);
-                if (attributes.$attr["daWidth"]) this.scope.Width = element.attr(<string>attributes.$attr["daWidth"]);
+                if (attributes.$attr["daBottom"]) this.scope.FSPBottom = element.attr(<string>attributes.$attr["daBottom"]);
+                if (attributes.$attr["daTop"]) this.scope.FSPTop = element.attr(<string>attributes.$attr["daTop"]);
+                if (attributes.$attr["daLeft"]) this.scope.FSPLeft = element.attr(<string>attributes.$attr["daLeft"]);
+                if (attributes.$attr["daRight"]) this.scope.FSPRight = element.attr(<string>attributes.$attr["daRight"]);
+                if (attributes.$attr["daWidth"]) this.scope.FSPWidth = element.attr(<string>attributes.$attr["daWidth"]);
 
-                this.scope.LocationStyle = '';
-                if ($scope.Bottom != undefined) this.scope.LocationStyle += "Bottom: " + $scope.Bottom + ";";
-                if ($scope.Top != undefined) this.scope.LocationStyle += "Top: " + $scope.Top + ";";
-                if ($scope.Left != undefined) this.scope.LocationStyle += "Left: " + $scope.Left + ";";
-                if ($scope.Right != undefined) this.scope.LocationStyle += "Right: " + $scope.Right + ";";
-                if ($scope.Width != undefined) this.scope.LocationStyle += "Width: " + $scope.Width + ";";
+                this.scope.FSPLocationStyle = '';
+                if ($scope.FSPBottom != undefined) this.scope.FSPLocationStyle += "Bottom: " + $scope.FSPBottom + ";";
+                if ($scope.FSPTop != undefined) this.scope.FSPLocationStyle += "Top: " + $scope.FSPTop + ";";
+                if ($scope.FSPLeft != undefined) this.scope.FSPLocationStyle += "Left: " + $scope.FSPLeft + ";";
+                if ($scope.FSPRight != undefined) this.scope.FSPLocationStyle += "Right: " + $scope.FSPRight + ";";
+                if ($scope.FSPWidth != undefined) this.scope.FSPLocationStyle += "Width: " + $scope.FSPWidth + ";";
                 
 
-
-                this.scope.ItemSelected = (evt) => { this.ItemSelected(this.scope, evt); }
+                this.scope.FSPItemSelected = (evt) => { this.ItemSelected(this.scope, evt); }
 
                 this.init();
             };
@@ -83,41 +82,17 @@
             this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileUploaded,() => { __this.RefreshData(); });
         }
 
-        ItemSelected = (scope: IFileStoragePickerController, evt: any) => {
+        ItemSelected = (scope: Application.Controllers.IExplorerController, evt: any) => {
 
+            if (scope.FSPSelectedItem) {
+                $(scope.FSPSelectedItem).removeClass('selected');
+                scope.FSPSelectedItem = null;
+            }
+
+            var el = evt.currentTarget;
+            $(el).addClass('selected');
+            scope.FSPSelectedItem = el;
         };
-    }
-
-
-
-
-    interface IFileStoragePickerController extends ng.IScope {
-        FSPList: Array<any>;
-        Bottom: string;
-        Top: string;
-        Left: string;
-        Right: string;
-        Width: string;
-
-        LocationStyle: string;
-
-        ItemSelected: Function;
-    }
-    class FileStoragePickerController {
-      
-
-
-        constructor(public $scope: IFileStoragePickerController,
-            private $routeParams: any,
-            private $rootScope: any,
-            private $injector: any) {
-            
-
-        }
-
-
-  
-        
     }
 
 

@@ -26,43 +26,43 @@ var Application;
                     var el = evt.currentTarget;
                     //see if its already in the list
                     var foundItInList = null;
-                    $.each(scope.SelectedItems, function (index) {
-                        var elm = scope.SelectedItems[index];
+                    $.each(scope.FSSelectedItems, function (index) {
+                        var elm = scope.FSSelectedItems[index];
                         if ($(elm).data('id') === $(el).data('id')) {
                             foundItInList = el;
                         }
                     });
-                    if (scope.IsMultipleSelection) {
+                    if (scope.FSIsMultipleSelection) {
                         if (foundItInList != null) {
                             $(foundItInList).removeClass('selected');
                             $(foundItInList).find('.chk').hide();
-                            var index = scope.SelectedItems.indexOf(foundItInList);
-                            scope.SelectedItems.splice(index, 1);
+                            var index = scope.FSSelectedItems.indexOf(foundItInList);
+                            scope.FSSelectedItems.splice(index, 1);
                         }
                         else {
                             $(el).addClass('selected');
                             $(el).find('.chk').show();
-                            scope.SelectedItems.push(el);
+                            scope.FSSelectedItems.push(el);
                         }
                     }
                     else {
                         if (foundItInList != null) {
                             $(foundItInList).removeClass('selected');
                             $(foundItInList).find('.chk').hide();
-                            var index = scope.SelectedItems.indexOf(foundItInList);
-                            scope.SelectedItems.splice(index, 1);
+                            var index = scope.FSSelectedItems.indexOf(foundItInList);
+                            scope.FSSelectedItems.splice(index, 1);
                         }
                         else {
                             //clear list of anything 
-                            if (scope.SelectedItems !== null && scope.SelectedItems.length >= 1) {
-                                $(scope.SelectedItems).removeClass('selected');
-                                $(scope.SelectedItems).find('.chk').hide();
-                                scope.SelectedItems = [];
+                            if (scope.FSSelectedItems !== null && scope.FSSelectedItems.length >= 1) {
+                                $(scope.FSSelectedItems).removeClass('selected');
+                                $(scope.FSSelectedItems).find('.chk').hide();
+                                scope.FSSelectedItems = [];
                             }
                             //now add this single item into the list
                             $(el).addClass('selected');
                             $(el).find('.chk').show();
-                            scope.SelectedItems.push(el);
+                            scope.FSSelectedItems.push(el);
                         }
                     }
                 };
@@ -72,27 +72,27 @@ var Application;
                 this.restrict = 'E';
                 this.replace = true;
                 this.templateUrl = '/angularApp/partials/file-storage-list.html';
-                this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileStorageListController];
+                this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl];
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
                     if (attributes.$attr["daBottom"])
-                        _this.scope.Bottom = element.attr(attributes.$attr["daBottom"]);
+                        _this.scope.FSBottom = element.attr(attributes.$attr["daBottom"]);
                     if (attributes.$attr["daTop"])
-                        _this.scope.Top = element.attr(attributes.$attr["daTop"]);
+                        _this.scope.FSTop = element.attr(attributes.$attr["daTop"]);
                     if (attributes.$attr["daItemHeight"])
-                        _this.scope.ItemHeight = element.attr(attributes.$attr["daItemHeight"]);
+                        _this.scope.FSItemHeight = element.attr(attributes.$attr["daItemHeight"]);
                     if (attributes.$attr["daLeft"])
-                        _this.scope.Left = element.attr(attributes.$attr["daLeft"]);
+                        _this.scope.FSLeft = element.attr(attributes.$attr["daLeft"]);
                     if (attributes.$attr["daRight"])
-                        _this.scope.Right = element.attr(attributes.$attr["daRight"]);
+                        _this.scope.FSRight = element.attr(attributes.$attr["daRight"]);
                     if (attributes.$attr["daIsMultipleSelection"])
-                        _this.scope.IsMultipleSelection = element.attr(attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
+                        _this.scope.FSIsMultipleSelection = element.attr(attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
                     if (attributes.$attr["daCn"])
-                        _this.scope.CN = element.attr(attributes.$attr["daCn"]);
-                    if (_this.scope.CN == 'undefined' || _this.scope.CN == undefined)
-                        _this.scope.CN = '';
-                    _this.scope.SelectedItems = [];
-                    _this.scope.ItemSelected = function (evt) {
+                        _this.scope.FSCN = element.attr(attributes.$attr["daCn"]);
+                    if (_this.scope.FSCN == 'undefined' || _this.scope.FSCN == undefined)
+                        _this.scope.FSCN = '';
+                    _this.scope.FSSelectedItems = [];
+                    _this.scope.FSItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);
                     };
                     _this.init();
@@ -109,10 +109,10 @@ var Application;
                     return;
                 //tag this method as already running
                 __this._isRefreshing = true;
-                if (__this.scope.CN === '') {
-                    __this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
-                        __this.scope.ItemsList = result;
-                        $.each(__this.scope.ItemsList, function () {
+                if (__this.scope.FSCN === '') {
+                    this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
+                        __this.scope.FSItemsList = result;
+                        $.each(__this.scope.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1000);
                         });
                         try {
@@ -126,14 +126,14 @@ var Application;
                     });
                 }
                 else {
-                    __this.dataSvc.getAllByGrouping("FileStorage", __this.scope.CN, __this.authService.sessionId).success(function (result) {
+                    this.dataSvc.getAllByGrouping("FileStorage", __this.scope.FSCN, __this.authService.sessionId).success(function (result) {
                         //__this.scope.ItemsList = [];
                         //$.each(result, function () {
                         //    this.SizeKB = Math.round(this.Size / 1000);
                         //    __this.scope.ItemsList.push(this);
                         //});
-                        __this.scope.ItemsList = result;
-                        $.each(__this.scope.ItemsList, function () {
+                        __this.scope.FSItemsList = result;
+                        $.each(__this.scope.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
                         });
                         try {
@@ -152,15 +152,6 @@ var Application;
             return FileStorageListDirective;
         })();
         Directives.FileStorageListDirective = FileStorageListDirective;
-        var FileStorageListController = (function () {
-            function FileStorageListController($scope, $routeParams, $rootScope, $injector) {
-                this.$scope = $scope;
-                this.$routeParams = $routeParams;
-                this.$rootScope = $rootScope;
-                this.$injector = $injector;
-            }
-            return FileStorageListController;
-        })();
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dFileStorageList", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
             return new FileStorageListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);

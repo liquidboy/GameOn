@@ -24,35 +24,42 @@ var Application;
                     });
                 };
                 this.ItemSelected = function (scope, evt) {
+                    if (scope.FSPSelectedItem) {
+                        $(scope.FSPSelectedItem).removeClass('selected');
+                        scope.FSPSelectedItem = null;
+                    }
+                    var el = evt.currentTarget;
+                    $(el).addClass('selected');
+                    scope.FSPSelectedItem = el;
                 };
                 this.restrict = 'E';
                 this.replace = true;
                 this.templateUrl = '/angularApp/partials/file-storage-picker.html';
-                this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileStoragePickerController];
+                this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl];
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
                     if (attributes.$attr["daBottom"])
-                        _this.scope.Bottom = element.attr(attributes.$attr["daBottom"]);
+                        _this.scope.FSPBottom = element.attr(attributes.$attr["daBottom"]);
                     if (attributes.$attr["daTop"])
-                        _this.scope.Top = element.attr(attributes.$attr["daTop"]);
+                        _this.scope.FSPTop = element.attr(attributes.$attr["daTop"]);
                     if (attributes.$attr["daLeft"])
-                        _this.scope.Left = element.attr(attributes.$attr["daLeft"]);
+                        _this.scope.FSPLeft = element.attr(attributes.$attr["daLeft"]);
                     if (attributes.$attr["daRight"])
-                        _this.scope.Right = element.attr(attributes.$attr["daRight"]);
+                        _this.scope.FSPRight = element.attr(attributes.$attr["daRight"]);
                     if (attributes.$attr["daWidth"])
-                        _this.scope.Width = element.attr(attributes.$attr["daWidth"]);
-                    _this.scope.LocationStyle = '';
-                    if ($scope.Bottom != undefined)
-                        _this.scope.LocationStyle += "Bottom: " + $scope.Bottom + ";";
-                    if ($scope.Top != undefined)
-                        _this.scope.LocationStyle += "Top: " + $scope.Top + ";";
-                    if ($scope.Left != undefined)
-                        _this.scope.LocationStyle += "Left: " + $scope.Left + ";";
-                    if ($scope.Right != undefined)
-                        _this.scope.LocationStyle += "Right: " + $scope.Right + ";";
-                    if ($scope.Width != undefined)
-                        _this.scope.LocationStyle += "Width: " + $scope.Width + ";";
-                    _this.scope.ItemSelected = function (evt) {
+                        _this.scope.FSPWidth = element.attr(attributes.$attr["daWidth"]);
+                    _this.scope.FSPLocationStyle = '';
+                    if ($scope.FSPBottom != undefined)
+                        _this.scope.FSPLocationStyle += "Bottom: " + $scope.FSPBottom + ";";
+                    if ($scope.FSPTop != undefined)
+                        _this.scope.FSPLocationStyle += "Top: " + $scope.FSPTop + ";";
+                    if ($scope.FSPLeft != undefined)
+                        _this.scope.FSPLocationStyle += "Left: " + $scope.FSPLeft + ";";
+                    if ($scope.FSPRight != undefined)
+                        _this.scope.FSPLocationStyle += "Right: " + $scope.FSPRight + ";";
+                    if ($scope.FSPWidth != undefined)
+                        _this.scope.FSPLocationStyle += "Width: " + $scope.FSPWidth + ";";
+                    _this.scope.FSPItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);
                     };
                     _this.init();
@@ -75,15 +82,6 @@ var Application;
             return FileStoragePickerDirective;
         })();
         Directives.FileStoragePickerDirective = FileStoragePickerDirective;
-        var FileStoragePickerController = (function () {
-            function FileStoragePickerController($scope, $routeParams, $rootScope, $injector) {
-                this.$scope = $scope;
-                this.$routeParams = $routeParams;
-                this.$rootScope = $rootScope;
-                this.$injector = $injector;
-            }
-            return FileStoragePickerController;
-        })();
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dFileStoragePicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
             return new FileStoragePickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);

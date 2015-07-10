@@ -1,6 +1,6 @@
-﻿<div class="file-storage-picker" style="{{LocationStyle}}">
+﻿<div class="file-storage-picker" style="{{FSPLocationStyle}}">
     <div id="fsp">
-        <div ng-click="ItemSelected($event)"
+        <div ng-click="FSPItemSelected($event)"
              ng-repeat="item in FSPList"
              ng-include="'fspitemlist.html'"
              data-id="{{item.name}}"
