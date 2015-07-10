@@ -7,7 +7,7 @@ namespace Incite.Cloud
     {
         Task<string> UploadBlobIntoContainerAsync(System.IO.Stream fileStream, string containerName, string fileName, string originalFileName, string contentType, bool publicAccess = false);
         string UploadBlobIntoContainer(System.IO.Stream fileStream, string containerName, string fileName, string originalFileName, string contentType, bool publicAccess = false);
-        bool CreateContainer(string containerName);
+        bool CreateContainer(string containerName, bool isPublicContainer);
         Task<bool> DownloadFile(string folderPathToSaveUrn, string containerName, string containerFileName, string folderPrefix, long singleFileSizeInMB);
         List<Container> GetListOfContainers();
         List<Blob> GetListOfBlobs(string containerName);

@@ -206,9 +206,9 @@ namespace Incite.Cloud.Storage
         }
 
 
-        public bool CreateContainer(string containerName)
+        public bool CreateContainer(string containerName, bool isPublicContainer = false)
         {
-            var container = DoCreateContainer(containerName);
+            var container = DoCreateContainer(containerName, isPublicContainer);
             return container != null;
         }
 
@@ -663,11 +663,12 @@ namespace Incite.Cloud.Storage
             return container;
         }
 
-        private CloudBlobContainer DoCreateContainer(string containerName)
+        private CloudBlobContainer DoCreateContainer(string containerName, bool isPublicContainer = false)
         {
             var container = DoGetContainer(containerName);
             container.CreateIfNotExists();
-            container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Off });
+            if(isPublicContainer) container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Container });
+            else container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Off });
             return container;
         }
 

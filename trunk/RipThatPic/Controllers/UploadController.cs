@@ -76,7 +76,7 @@ namespace RipThatPic.Controllers
                         {
                             //create containers incase they don't exist
                             processor.CreateContainer(_groupingUpload);
-                            processor.CreateContainer(_groupingUploadThumb);
+                            processor.CreateContainer(_groupingUploadThumb, true);
 
 
                             //setup entity for uplading into storage table
