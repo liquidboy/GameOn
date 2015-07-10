@@ -1,5 +1,16 @@
-﻿<div class="file-storage-picker">
-   file storage picker
+﻿<div class="file-storage-picker" style="{{LocationStyle}}">
+    <div id="fsp">
+        <div ng-click="ItemSelected($event)"
+             ng-repeat="item in ItemsList"
+             ng-include="'fspitemlist.html'"
+             data-id="{{item.name}}"
+             class="item" target="_blank"></div>
+
+        <script type="text/ng-template" id="fspitemlist.html">
+            <div class="ct">{{item.name}}</div>
+        </script>
+    </div>
+
 </div>
 
 

@@ -1,6 +1,17 @@
 ﻿.file-storage-picker {
-        width: 100%;
-    }
+    overflow:auto;
+    
+    
+    margin:auto;
+    position:absolute;
+    padding:7px 5px 7px 5px;
+}
     .file-storage-picker .item {
-        float:left;
+        /*float:left;
+        margin-right:5px;
+        margin-bottom:5px;
+        position:relative;*/
+        cursor:pointer;
+        opacity: 0.4;
+        filter: alpha(opacity=40); /* For IE8 and earlier */
     }
