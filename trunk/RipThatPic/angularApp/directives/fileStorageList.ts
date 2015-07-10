@@ -41,8 +41,10 @@
                 if (attributes.$attr["daRight"]) this.scope.Right = element.attr(<string>attributes.$attr["daRight"]);
                 if (attributes.$attr["daIsMultipleSelection"]) this.scope.IsMultipleSelection = element.attr(<string>attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
 
+                if (attributes.$attr["daCn"]) this.scope.CN = element.attr(<string>attributes.$attr["daCn"]);
+                if (this.scope.CN == 'undefined' || this.scope.CN == '') this.scope.CN = 'temp-upload';
 
-                
+
                 this.scope.SelectedItems = [];
                 this.scope.ItemSelected = (evt) => { this.ItemSelected(this.scope, evt);}
 
@@ -83,7 +85,8 @@
             __this._isRefreshing = true;
             
             __this.dataSvc
-                .getAll("FileStorage", __this.authService.sessionId)
+                //.getAll("FileStorage", __this.authService.sessionId)
+                .getAllByGrouping("FileStorage", __this.scope.CN, __this.authService.sessionId)
                 .success(function (result: any) {
                     
                     //__this.scope.ItemsList = [];
@@ -182,6 +185,7 @@
         Left: string;
         Right: string;
         ItemHeight: string;
+        CN: string;
 
         ItemSelected: Function;
         SelectedItems: Array<any>;

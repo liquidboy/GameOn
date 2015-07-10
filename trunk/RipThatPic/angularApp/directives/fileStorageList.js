@@ -90,6 +90,10 @@ var Application;
                         _this.scope.Right = element.attr(attributes.$attr["daRight"]);
                     if (attributes.$attr["daIsMultipleSelection"])
                         _this.scope.IsMultipleSelection = element.attr(attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
+                    if (attributes.$attr["daCn"])
+                        _this.scope.CN = element.attr(attributes.$attr["daCn"]);
+                    if (_this.scope.CN == 'undefined' || _this.scope.CN == '')
+                        _this.scope.CN = 'temp-upload';
                     _this.scope.SelectedItems = [];
                     _this.scope.ItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);
@@ -117,7 +121,7 @@ var Application;
                     return;
                 var __this = this;
                 __this._isRefreshing = true;
-                __this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
+                __this.dataSvc.getAllByGrouping("FileStorage", __this.scope.CN, __this.authService.sessionId).success(function (result) {
                     //__this.scope.ItemsList = [];
                     //$.each(result, function () {
                     //    this.SizeKB = Math.round(this.Size / 1000);
