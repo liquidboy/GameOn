@@ -42,7 +42,7 @@
                 if (attributes.$attr["daIsMultipleSelection"]) this.scope.IsMultipleSelection = element.attr(<string>attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
 
                 if (attributes.$attr["daCn"]) this.scope.CN = element.attr(<string>attributes.$attr["daCn"]);
-                if (this.scope.CN == 'undefined' || this.scope.CN == '') this.scope.CN = 'temp-upload';
+                if (this.scope.CN == 'undefined' || this.scope.CN == undefined) this.scope.CN = '';
 
 
                 this.scope.SelectedItems = [];
@@ -62,14 +62,13 @@
         }
 
         initPubSub = () => {
-            var __this = this;
 
-            __this.radioPubSubSvc.subscribe(
-                __this.pubSubConstants.FileUploaded,
-                () => { __this.RefreshData(); },
+            this.radioPubSubSvc.subscribe(
+                this.pubSubConstants.FileUploaded,
+                this.RefreshData.bind(this),
                 undefined);
 
-            __this.scope.$on('$destroy', __this.destructor);
+            this.scope.$on('$destroy', this.destructor);
         }
 
         destructor = () => {
@@ -80,41 +79,66 @@
 
         _isRefreshing: boolean = false;
         private RefreshData() {
-            if (this._isRefreshing) return;
             var __this = this;
-            __this._isRefreshing = true;
+
+            //stop refreshing being called again if its currently running
+            if (__this._isRefreshing) return;
             
-            __this.dataSvc
-                //.getAll("FileStorage", __this.authService.sessionId)
-                .getAllByGrouping("FileStorage", __this.scope.CN, __this.authService.sessionId)
-                .success(function (result: any) {
+            //tag this method as already running
+            __this._isRefreshing = true;  
+            
+            if (__this.scope.CN === '') {
+                __this.dataSvc
+                    .getAll("FileStorage", __this.authService.sessionId)
+                    .success(function (result: any) {
                     
-                    //__this.scope.ItemsList = [];
-                    //$.each(result, function () {
-                    //    this.SizeKB = Math.round(this.Size / 1000);
-                    //    __this.scope.ItemsList.push(this);
-                    //});
+                        __this.scope.ItemsList = result;
+                        $.each(__this.scope.ItemsList, function () {
+                            this.SizeKB = Math.round(this.Size / 1000);
+                        });
+
+                        //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
+                        try {
+                            //freaking using apply was causing digest errors .. going with timeout approach
+                            eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
+                        } catch (e) { }
+
+                        __this._isRefreshing = false;
+                    })
+                    .error(function (err) { });
+            } else {
+                __this.dataSvc
+                    .getAllByGrouping("FileStorage", __this.scope.CN, __this.authService.sessionId)
+                    .success(function (result: any) {
+                    
+                        //__this.scope.ItemsList = [];
+                        //$.each(result, function () {
+                        //    this.SizeKB = Math.round(this.Size / 1000);
+                        //    __this.scope.ItemsList.push(this);
+                        //});
 
 
-                    __this.scope.ItemsList = result;
-                    $.each(__this.scope.ItemsList, function () {
-                        this.SizeKB = Math.round(this.Size / 1000);
-                    });
+                        __this.scope.ItemsList = result;
+                        $.each(__this.scope.ItemsList, function () {
+                            this.SizeKB = Math.round(this.Size / 1024);
+                        });
 
-                    //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
-                    try {
-                        //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
-                        //eval('$("#fsl").justifiedGallery();');
+                        //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
+                        try {
+                            //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
+                            //eval('$("#fsl").justifiedGallery();');
                         
 
-                        //freaking using apply was causing digest errors .. going with timeout approach
-                        eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
-                        
-                    } catch (e) { }
+                            //freaking using apply was causing digest errors .. going with timeout approach
+                            eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
 
-                    __this._isRefreshing = false;
-                })
-                .error(function (err) { });
+                        } catch (e) { }
+
+                        __this._isRefreshing = false;
+                    })
+                    .error(function (err) { });
+            }
+
         }
 
 

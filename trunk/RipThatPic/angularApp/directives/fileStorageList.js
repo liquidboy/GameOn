@@ -11,11 +11,8 @@ var Application;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.initPubSub = function () {
-                    var __this = _this;
-                    __this.radioPubSubSvc.subscribe(__this.pubSubConstants.FileUploaded, function () {
-                        __this.RefreshData();
-                    }, undefined);
-                    __this.scope.$on('$destroy', __this.destructor);
+                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileUploaded, _this.RefreshData.bind(_this), undefined);
+                    _this.scope.$on('$destroy', _this.destructor);
                 };
                 this.destructor = function () {
                     var __this = _this;
@@ -92,8 +89,8 @@ var Application;
                         _this.scope.IsMultipleSelection = element.attr(attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
                     if (attributes.$attr["daCn"])
                         _this.scope.CN = element.attr(attributes.$attr["daCn"]);
-                    if (_this.scope.CN == 'undefined' || _this.scope.CN == '')
-                        _this.scope.CN = 'temp-upload';
+                    if (_this.scope.CN == 'undefined' || _this.scope.CN == undefined)
+                        _this.scope.CN = '';
                     _this.scope.SelectedItems = [];
                     _this.scope.ItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);
@@ -117,31 +114,51 @@ var Application;
                 this.RefreshData();
             };
             FileStorageListDirective.prototype.RefreshData = function () {
-                if (this._isRefreshing)
-                    return;
                 var __this = this;
+                //stop refreshing being called again if its currently running
+                if (__this._isRefreshing)
+                    return;
+                //tag this method as already running
                 __this._isRefreshing = true;
-                __this.dataSvc.getAllByGrouping("FileStorage", __this.scope.CN, __this.authService.sessionId).success(function (result) {
-                    //__this.scope.ItemsList = [];
-                    //$.each(result, function () {
-                    //    this.SizeKB = Math.round(this.Size / 1000);
-                    //    __this.scope.ItemsList.push(this);
-                    //});
-                    __this.scope.ItemsList = result;
-                    $.each(__this.scope.ItemsList, function () {
-                        this.SizeKB = Math.round(this.Size / 1000);
+                if (__this.scope.CN === '') {
+                    __this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
+                        __this.scope.ItemsList = result;
+                        $.each(__this.scope.ItemsList, function () {
+                            this.SizeKB = Math.round(this.Size / 1000);
+                        });
+                        try {
+                            //freaking using apply was causing digest errors .. going with timeout approach
+                            eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
+                        }
+                        catch (e) {
+                        }
+                        __this._isRefreshing = false;
+                    }).error(function (err) {
                     });
-                    try {
-                        //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
-                        //eval('$("#fsl").justifiedGallery();');
-                        //freaking using apply was causing digest errors .. going with timeout approach
-                        eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
-                    }
-                    catch (e) {
-                    }
-                    __this._isRefreshing = false;
-                }).error(function (err) {
-                });
+                }
+                else {
+                    __this.dataSvc.getAllByGrouping("FileStorage", __this.scope.CN, __this.authService.sessionId).success(function (result) {
+                        //__this.scope.ItemsList = [];
+                        //$.each(result, function () {
+                        //    this.SizeKB = Math.round(this.Size / 1000);
+                        //    __this.scope.ItemsList.push(this);
+                        //});
+                        __this.scope.ItemsList = result;
+                        $.each(__this.scope.ItemsList, function () {
+                            this.SizeKB = Math.round(this.Size / 1024);
+                        });
+                        try {
+                            //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
+                            //eval('$("#fsl").justifiedGallery();');
+                            //freaking using apply was causing digest errors .. going with timeout approach
+                            eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
+                        }
+                        catch (e) {
+                        }
+                        __this._isRefreshing = false;
+                    }).error(function (err) {
+                    });
+                }
             };
             return FileStorageListDirective;
         })();
