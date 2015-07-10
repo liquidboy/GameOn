@@ -191,7 +191,7 @@
                         FileUploaded: (up, file, info) => {
                             __this.scope.FileUploadRefCounter--;
                             __this.EnableDisableStartButton();
-                            __this.radioPubSubSvc.publish(__this.pubSubConstants.FileUploaded, null);
+                            if (!__this._isUploading) __this.radioPubSubSvc.publish(__this.pubSubConstants.FileUploaded, null);
                         },
                         ChunkUploaded: (up, file, info) => { },
                         UploadComplete: (up, files) => { },

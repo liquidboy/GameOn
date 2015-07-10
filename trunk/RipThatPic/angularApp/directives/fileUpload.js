@@ -153,7 +153,8 @@ var Application;
                                 FileUploaded: function (up, file, info) {
                                     __this.scope.FileUploadRefCounter--;
                                     __this.EnableDisableStartButton();
-                                    __this.radioPubSubSvc.publish(__this.pubSubConstants.FileUploaded, null);
+                                    if (!__this._isUploading)
+                                        __this.radioPubSubSvc.publish(__this.pubSubConstants.FileUploaded, null);
                                 },
                                 ChunkUploaded: function (up, file, info) {
                                 },
