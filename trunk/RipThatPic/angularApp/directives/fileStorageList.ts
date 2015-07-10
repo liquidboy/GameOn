@@ -2,21 +2,12 @@
     //'use strict';
     export class FileStorageListDirective implements ng.IDirective {
 
-        
-
-        public injection(): Array<any> {
-            return [
-                "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
-                (pubSubConstants, dataSvc, authService, radioPubSubSvc) => { return new FileStorageListDirective(pubSubConstants, dataSvc, authService, radioPubSubSvc); }
-            ];
-        }
        
         public templateUrl: string;
         public restrict: string;
         public replace: boolean;
         public controller: any;
         public scope: IFileStorageListController ;
-
         public link: ($scope: IFileStorageListController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileStorageListController) => void;
 
 
@@ -235,7 +226,7 @@
 
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.directive("dFileStorageList",  FileStorageListDirective.prototype.injection());
+    myapp.directive( "dFileStorageList", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new FileStorageListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);
 }
 
 

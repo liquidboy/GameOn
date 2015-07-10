@@ -3,13 +3,6 @@
     export class FileStoragePickerDirective implements ng.IDirective {
 
        
-        public injection(): Array<any> {
-            return [
-                "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
-                (pubSubConstants, dataSvc, authService, radioPubSubSvc) => { return new FileStoragePickerDirective(pubSubConstants, dataSvc, authService, radioPubSubSvc); }
-            ];
-        }
-       
         public templateUrl: string;
         public restrict: string;
         public replace: boolean;
@@ -129,7 +122,7 @@
 
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.directive("dFileStoragePicker", FileStoragePickerDirective.prototype.injection());
+    myapp.directive("dFileStoragePicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new FileStoragePickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);
 }
 
 

@@ -58,17 +58,6 @@ var Application;
                     _this.init();
                 };
             }
-            FileStoragePickerDirective.prototype.injection = function () {
-                return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    function (pubSubConstants, dataSvc, authService, radioPubSubSvc) {
-                        return new FileStoragePickerDirective(pubSubConstants, dataSvc, authService, radioPubSubSvc);
-                    }
-                ];
-            };
             FileStoragePickerDirective.prototype.init = function () {
                 this.initPubSub();
                 this.RefreshData();
@@ -96,7 +85,9 @@ var Application;
             return FileStoragePickerController;
         })();
         var myapp = angular.module('bootstrapApp');
-        myapp.directive("dFileStoragePicker", FileStoragePickerDirective.prototype.injection());
+        myapp.directive("dFileStoragePicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
+            return new FileStoragePickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
+        }]);
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=fileStoragePicker.js.map

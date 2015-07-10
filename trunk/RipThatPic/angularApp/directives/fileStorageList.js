@@ -98,17 +98,6 @@ var Application;
                     _this.init();
                 };
             }
-            FileStorageListDirective.prototype.injection = function () {
-                return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    function (pubSubConstants, dataSvc, authService, radioPubSubSvc) {
-                        return new FileStorageListDirective(pubSubConstants, dataSvc, authService, radioPubSubSvc);
-                    }
-                ];
-            };
             FileStorageListDirective.prototype.init = function () {
                 this.initPubSub();
                 this.RefreshData();
@@ -173,7 +162,9 @@ var Application;
             return FileStorageListController;
         })();
         var myapp = angular.module('bootstrapApp');
-        myapp.directive("dFileStorageList", FileStorageListDirective.prototype.injection());
+        myapp.directive("dFileStorageList", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
+            return new FileStorageListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
+        }]);
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=fileStorageList.js.map
