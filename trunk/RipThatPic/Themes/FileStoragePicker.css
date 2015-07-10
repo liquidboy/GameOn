@@ -9,9 +9,18 @@
     .file-storage-picker .item {
         /*float:left;
         margin-right:5px;
-        margin-bottom:5px;
+        
         position:relative;*/
+        margin-bottom:2px;
         cursor:pointer;
-        opacity: 0.4;
-        filter: alpha(opacity=40); /* For IE8 and earlier */
+        min-height:30px;
+        border-left:4px solid lightgray;
+        vertical-align:central;
+        padding-left:10px;
+        width:90%;
+
+    }
+    .file-storage-picker .item:hover {
+        background-color:lightgray;
+        color:white;
     }

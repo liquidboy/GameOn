@@ -71,7 +71,7 @@
 
             this.dataSvc
                 .getGroupings('filestorage', __this.authService.sessionId)
-                .success(function (result: any) { __this.scope.ItemsList = result; })
+                .success(function (result: any) { __this.scope.FSPList = result; })
                 .error(function (err) { });
         }
 
@@ -99,7 +99,7 @@
 
 
     interface IFileStoragePickerController extends ng.IScope {
-        ItemsList: Array<any>;
+        FSPList: Array<any>;
         Bottom: string;
         Top: string;
         Left: string;

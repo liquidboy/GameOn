@@ -79,7 +79,7 @@ var Application;
             FileStoragePickerDirective.prototype.RefreshGroupings = function () {
                 var __this = this;
                 this.dataSvc.getGroupings('filestorage', __this.authService.sessionId).success(function (result) {
-                    __this.scope.ItemsList = result;
+                    __this.scope.FSPList = result;
                 }).error(function (err) {
                 });
             };
