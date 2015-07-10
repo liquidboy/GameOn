@@ -31,7 +31,8 @@
         public injection(): Array<any> {
             return [
                 "pubSubConstants",
-                (pubSubConstants) => { return new FileUploadDirective(pubSubConstants); }
+                "radioPubSubSvc",
+                (pubSubConstants, radioPubSubSvc) => { return new FileUploadDirective(pubSubConstants, radioPubSubSvc); }
             ];
         }
         //public static $inject: any[] = [() => { return new FileUploadDirective(); }];
@@ -45,7 +46,7 @@
         public link: ($scope: IFileUploadController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileUploadController) => void;
 
 
-        constructor(public pubSubConstants: Application.Constants.PubSubConstants) {
+        constructor(public pubSubConstants: Application.Constants.PubSubConstants, public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
 
             
             this.restrict = 'E';
@@ -64,7 +65,7 @@
                 if (attributes.$attr["daDock"]) this.scope.Dock = element.attr(<string>attributes.$attr["daDock"]);
                 element.addClass('fu-dock-' + this.scope.Dock);
                 
-
+                
                 this.initUploader();
 
                 element.find('#start_button').on('click', this.startUpload);
@@ -74,9 +75,13 @@
 
         }
 
+
+        _isUploading: boolean = false;
         startUpload = () => {
             var __this = this;
+            if (__this._isUploading) return;
             __this.uploader.start();
+            __this._isUploading = true;
         }
 
         initUploader = () => {
@@ -183,7 +188,11 @@
                             });
                         },
                         FilesRemoved: (up, files) => { },
-                        FileUploaded: (up, file, info) => { __this.scope.FileUploadRefCounter--; __this.EnableDisableStartButton();},
+                        FileUploaded: (up, file, info) => {
+                            __this.scope.FileUploadRefCounter--;
+                            __this.EnableDisableStartButton();
+                            __this.radioPubSubSvc.publish(__this.pubSubConstants.FileUploaded, null);
+                        },
                         ChunkUploaded: (up, file, info) => { },
                         UploadComplete: (up, files) => { },
                         //Destry: destroy,
@@ -206,10 +215,17 @@
 
         
         EnableDisableStartButton = () => {
-            if (this.scope.FileUploadRefCounter > 0) { $('#' + this.scope.StartButtonId).removeAttr('disabled');}
-            else $('#' + this.scope.StartButtonId).attr('disabled', '');
+            var __this = this;
 
-            this.scope.$apply();
+            if (__this.scope.FileUploadRefCounter > 0) {
+                $('#' + __this.scope.StartButtonId).removeAttr('disabled');
+            }
+            else {
+                $('#' + __this.scope.StartButtonId).attr('disabled', '');
+                __this._isUploading = false;
+            }
+
+            __this.scope.$apply();
         }
     }
 

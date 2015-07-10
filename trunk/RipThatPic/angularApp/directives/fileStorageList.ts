@@ -6,8 +6,8 @@
 
         public injection(): Array<any> {
             return [
-                "pubSubConstants", "dataSvc", "authSvc",
-                (pubSubConstants, dataSvc, authService) => { return new FileStorageListDirective(pubSubConstants, dataSvc, authService); }
+                "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                (pubSubConstants, dataSvc, authService, radioPubSubSvc) => { return new FileStorageListDirective(pubSubConstants, dataSvc, authService, radioPubSubSvc); }
             ];
         }
        
@@ -20,7 +20,10 @@
         public link: ($scope: IFileStorageListController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileStorageListController) => void;
 
 
-        constructor(public pubSubConstants: Application.Constants.PubSubConstants, public dataSvc: Application.Services.IData, public authService: Application.Services.IAuthService) {
+        constructor(public pubSubConstants: Application.Constants.PubSubConstants,
+            public dataSvc: Application.Services.IData,
+            public authService: Application.Services.IAuthService,
+            public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
 
             
             this.restrict = 'E';
@@ -51,15 +54,44 @@
         }
 
         private init() {
+            this.initPubSub();
             this.RefreshData();
+            
         }
 
-        private RefreshData() {
+        initPubSub = () => {
             var __this = this;
 
-            this.dataSvc
+            __this.radioPubSubSvc.subscribe(
+                __this.pubSubConstants.FileUploaded,
+                () => { __this.RefreshData(); },
+                undefined);
+
+            __this.scope.$on('$destroy', __this.destructor);
+        }
+
+        destructor = () => {
+            var __this = this;
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileUploaded,() => { __this.RefreshData(); } );
+        }
+
+
+        _isRefreshing: boolean = false;
+        private RefreshData() {
+            if (this._isRefreshing) return;
+            var __this = this;
+            __this._isRefreshing = true;
+            
+            __this.dataSvc
                 .getAll("FileStorage", __this.authService.sessionId)
                 .success(function (result: any) {
+                    
+                    //__this.scope.ItemsList = [];
+                    //$.each(result, function () {
+                    //    this.SizeKB = Math.round(this.Size / 1000);
+                    //    __this.scope.ItemsList.push(this);
+                    //});
+
 
                     __this.scope.ItemsList = result;
                     $.each(__this.scope.ItemsList, function () {
@@ -73,9 +105,11 @@
                         
 
                         //freaking using apply was causing digest errors .. going with timeout approach
-                        eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 100);');
+                        eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
                         
-                    } catch (e){ }
+                    } catch (e) { }
+
+                    __this._isRefreshing = false;
                 })
                 .error(function (err) { });
         }

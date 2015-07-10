@@ -4,9 +4,10 @@ var Application;
     (function (Directives) {
         //'use strict';
         var FileUploadDirective = (function () {
-            function FileUploadDirective(pubSubConstants) {
+            function FileUploadDirective(pubSubConstants, radioPubSubSvc) {
                 var _this = this;
                 this.pubSubConstants = pubSubConstants;
+                this.radioPubSubSvc = radioPubSubSvc;
                 this.localWindow = window;
                 this.plupload = this.localWindow.plupload;
                 this.httpConfiguration = {
@@ -29,9 +30,13 @@ var Application;
                         silverlight_xap_url: '/scripts/plupload/moxie.xap'
                     };
                 };
+                this._isUploading = false;
                 this.startUpload = function () {
                     var __this = _this;
+                    if (__this._isUploading)
+                        return;
                     __this.uploader.start();
+                    __this._isUploading = true;
                 };
                 this.initUploader = function () {
                     var __this = _this;
@@ -148,6 +153,7 @@ var Application;
                                 FileUploaded: function (up, file, info) {
                                     __this.scope.FileUploadRefCounter--;
                                     __this.EnableDisableStartButton();
+                                    __this.radioPubSubSvc.publish(__this.pubSubConstants.FileUploaded, null);
                                 },
                                 ChunkUploaded: function (up, file, info) {
                                 },
@@ -168,12 +174,15 @@ var Application;
                     //this.uploader.defaultLog = this.uploader.log = log;
                 };
                 this.EnableDisableStartButton = function () {
-                    if (_this.scope.FileUploadRefCounter > 0) {
-                        $('#' + _this.scope.StartButtonId).removeAttr('disabled');
+                    var __this = _this;
+                    if (__this.scope.FileUploadRefCounter > 0) {
+                        $('#' + __this.scope.StartButtonId).removeAttr('disabled');
                     }
-                    else
-                        $('#' + _this.scope.StartButtonId).attr('disabled', '');
-                    _this.scope.$apply();
+                    else {
+                        $('#' + __this.scope.StartButtonId).attr('disabled', '');
+                        __this._isUploading = false;
+                    }
+                    __this.scope.$apply();
                 };
                 this.restrict = 'E';
                 this.replace = true;
@@ -196,8 +205,9 @@ var Application;
             FileUploadDirective.prototype.injection = function () {
                 return [
                     "pubSubConstants",
-                    function (pubSubConstants) {
-                        return new FileUploadDirective(pubSubConstants);
+                    "radioPubSubSvc",
+                    function (pubSubConstants, radioPubSubSvc) {
+                        return new FileUploadDirective(pubSubConstants, radioPubSubSvc);
                     }
                 ];
             };

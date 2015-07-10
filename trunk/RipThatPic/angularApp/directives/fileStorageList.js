@@ -4,11 +4,26 @@ var Application;
     (function (Directives) {
         //'use strict';
         var FileStorageListDirective = (function () {
-            function FileStorageListDirective(pubSubConstants, dataSvc, authService) {
+            function FileStorageListDirective(pubSubConstants, dataSvc, authService, radioPubSubSvc) {
                 var _this = this;
                 this.pubSubConstants = pubSubConstants;
                 this.dataSvc = dataSvc;
                 this.authService = authService;
+                this.radioPubSubSvc = radioPubSubSvc;
+                this.initPubSub = function () {
+                    var __this = _this;
+                    __this.radioPubSubSvc.subscribe(__this.pubSubConstants.FileUploaded, function () {
+                        __this.RefreshData();
+                    }, undefined);
+                    __this.scope.$on('$destroy', __this.destructor);
+                };
+                this.destructor = function () {
+                    var __this = _this;
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileUploaded, function () {
+                        __this.RefreshData();
+                    });
+                };
+                this._isRefreshing = false;
                 this.ItemSelected = function (scope, evt) {
                     //now do stuff with the selected item
                     var el = evt.currentTarget;
@@ -87,17 +102,27 @@ var Application;
                     "pubSubConstants",
                     "dataSvc",
                     "authSvc",
-                    function (pubSubConstants, dataSvc, authService) {
-                        return new FileStorageListDirective(pubSubConstants, dataSvc, authService);
+                    "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authService, radioPubSubSvc) {
+                        return new FileStorageListDirective(pubSubConstants, dataSvc, authService, radioPubSubSvc);
                     }
                 ];
             };
             FileStorageListDirective.prototype.init = function () {
+                this.initPubSub();
                 this.RefreshData();
             };
             FileStorageListDirective.prototype.RefreshData = function () {
+                if (this._isRefreshing)
+                    return;
                 var __this = this;
-                this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
+                __this._isRefreshing = true;
+                __this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
+                    //__this.scope.ItemsList = [];
+                    //$.each(result, function () {
+                    //    this.SizeKB = Math.round(this.Size / 1000);
+                    //    __this.scope.ItemsList.push(this);
+                    //});
                     __this.scope.ItemsList = result;
                     $.each(__this.scope.ItemsList, function () {
                         this.SizeKB = Math.round(this.Size / 1000);
@@ -106,10 +131,11 @@ var Application;
                         //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
                         //eval('$("#fsl").justifiedGallery();');
                         //freaking using apply was causing digest errors .. going with timeout approach
-                        eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 100);');
+                        eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
                     }
                     catch (e) {
                     }
+                    __this._isRefreshing = false;
                 }).error(function (err) {
                 });
             };

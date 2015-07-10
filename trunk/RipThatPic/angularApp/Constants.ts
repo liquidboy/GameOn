@@ -14,6 +14,8 @@
         CookieSettings_FileUploadRetries: string = "FileUploadRetries";
         CookieSettings_FileUploadMaxFileSize: string = "FileUploadMaxFileSize";
 
+        FileUploaded: string = "FileUploaded";
+
         constructor() {
             
         }
