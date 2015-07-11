@@ -345,7 +345,7 @@ namespace Incite.Cloud.Storage
             return result.HttpStatusCode;
         }
 
-        public async Task<IEnumerable<string>> RetrieveAllGroupingsFromTable(string tableName)
+        public async Task<IEnumerable<GroupingEntity>> RetrieveAllGroupingsFromTable(string tableName)
         {
             var table = _tableClient.GetTableReference("Grouping");
             await table.CreateIfNotExistsAsync();
@@ -353,9 +353,9 @@ namespace Incite.Cloud.Storage
             var result = table.ExecuteQuery(
                 new TableQuery<GroupingEntity>()
                     .Where(TableQuery.GenerateFilterCondition("TableName", QueryComparisons.Equal, tableName))
-                    .Select(new string[] { "GroupingName" }));
+                    .Select(new string[] { "GroupingName", "DisplayName", "Icon" }));
 
-            return result.Select(x=>x.GroupingName).Distinct();
+            return result.Select(x => new GroupingEntity (){ GroupingName = x.GroupingName, DisplayName = x.DisplayName, Icon = x.Icon });
 
         }
 
