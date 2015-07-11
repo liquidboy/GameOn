@@ -32,13 +32,13 @@
                 if (attributes.$attr["daRight"]) this.scope.FSPRight = element.attr(<string>attributes.$attr["daRight"]);
                 if (attributes.$attr["daWidth"]) this.scope.FSPWidth = element.attr(<string>attributes.$attr["daWidth"]);
 
-                this.scope.FSPLocationStyle = '';
-                if ($scope.FSPBottom != undefined) this.scope.FSPLocationStyle += "Bottom: " + $scope.FSPBottom + ";";
-                if ($scope.FSPTop != undefined) this.scope.FSPLocationStyle += "Top: " + $scope.FSPTop + ";";
-                if ($scope.FSPLeft != undefined) this.scope.FSPLocationStyle += "Left: " + $scope.FSPLeft + ";";
-                if ($scope.FSPRight != undefined) this.scope.FSPLocationStyle += "Right: " + $scope.FSPRight + ";";
-                if ($scope.FSPWidth != undefined) this.scope.FSPLocationStyle += "Width: " + $scope.FSPWidth + ";";
-                
+                var finalStyle: string = '';
+                if ($scope.FSPBottom != undefined) finalStyle += "Bottom: " + $scope.FSPBottom + ";";
+                if ($scope.FSPTop != undefined) finalStyle += "Top: " + $scope.FSPTop + ";";
+                if ($scope.FSPLeft != undefined) finalStyle += "Left: " + $scope.FSPLeft + ";";
+                if ($scope.FSPRight != undefined) finalStyle += "Right: " + $scope.FSPRight + ";";
+                if ($scope.FSPWidth != undefined) finalStyle += "Width: " + $scope.FSPWidth + ";";
+                this.scope.FSPLocationStyle = finalStyle;
 
                 this.scope.FSPItemSelected = (evt) => { this.ItemSelected(this.scope, evt); }
 

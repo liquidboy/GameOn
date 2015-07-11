@@ -41,9 +41,9 @@
         public restrict: string;
         public replace: boolean;
         public controller: any;
-        public scope: IFileUploadController ;
+        public scope: IFileUploadScope ;
 
-        public link: ($scope: IFileUploadController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileUploadController) => void;
+        public link: ($scope: IFileUploadScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: ng.INgModelController) => void;
 
 
         constructor(public pubSubConstants: Application.Constants.PubSubConstants, public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
@@ -53,20 +53,20 @@
             this.replace = true;
             this.templateUrl = '/angularApp/partials/file-upload.html';
             this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileUploadController];
-            this.link = ($scope: IFileUploadController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: IFileUploadController) =>
+            this.link = ($scope: IFileUploadScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: ng.INgModelController) =>
             {                
                 this.scope = $scope;
-                this.scope.BrowseButtonId = 'browse_button';
-                this.scope.DropAreaId = 'drop_area';
+                this.scope.FUBrowseButtonId = 'browse_button';
+                this.scope.FUDropAreaId = 'drop_area';
                 //this.scope.StartButtonId = 'start_button';
-                this.scope.FileUploadRefCounter = 0;
-                this.scope.Dock = 'top';
+                this.scope.FUFileUploadRefCounter = 0;
+                this.scope.FUDock = 'top';
                 
-                if (attributes.$attr["daDock"]) this.scope.Dock = element.attr(<string>attributes.$attr["daDock"]);
-                element.addClass('fu-dock-' + this.scope.Dock);
-                if (attributes.$attr["daCn"]) this.scope.CN = element.attr(<string>attributes.$attr["daCn"]);
+                if (attributes.$attr["daDock"]) this.scope.FUDock = element.attr(<string>attributes.$attr["daDock"]);
+                element.addClass('fu-dock-' + this.scope.FUDock);
+                if (attributes.$attr["daCn"]) this.scope.FUCN = element.attr(<string>attributes.$attr["daCn"]);
                 
-                
+                this.initPubSub();
                 this.initUploader();
 
                 //changing to auto uploading
@@ -77,23 +77,41 @@
 
         }
 
+        initPubSub = () => {
+
+            this.radioPubSubSvc.subscribe(
+                this.pubSubConstants.FileStorageContainerChanged,
+                this.ContainerChanged.bind(this),
+                undefined);
+
+            this.scope.$on('$destroy', this.destructor);
+        }
+
+        private ContainerChanged(cn: string) {
+            this.scope.FUCN = cn === '-all-' ? '' : cn;
+        }
+
+        destructor = () => {
+            var __this = this;
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileStorageContainerChanged, __this.ContainerChanged);
+        }
 
         _isUploading: boolean = false;
         startUpload = () => {
             var __this = this;
             if (__this._isUploading) return;
-            __this.uploader.settings.url = __this.scope.Url + '?cn=' + __this.scope.CN;
+            __this.uploader.settings.url = __this.scope.FUUrl + '?cn=' + __this.scope.FUCN;
             __this.uploader.start();
             __this._isUploading = true;
         }
 
         initUploader = () => {
             var __this = this;
-            __this.scope.Url = '/api/Upload';
+            __this.scope.FUUrl = '/api/Upload';
             var uploadConfig = {
-                button: this.scope.BrowseButtonId,
-                dropArea: this.scope.DropAreaId,
-                url: __this.scope.Url,
+                button: this.scope.FUBrowseButtonId,
+                dropArea: this.scope.FUDropAreaId,
+                url: __this.scope.FUUrl,
                 headers: {},
                 bodyParams: {},
                 beforeFileUpload: () => { },
@@ -116,12 +134,12 @@
                 maxFileSize: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, 2147483647)
             };
 
-            if (!this.scope.BrowseButtonId) {
+            if (!this.scope.FUBrowseButtonId) {
                 alert('Browse button not specified');
                 return;
             }
 
-            $('#' + this.scope.BrowseButtonId).removeAttr('disabled');
+            $('#' + this.scope.FUBrowseButtonId).removeAttr('disabled');
 
 
             //uploadConfig.bodyParams[$scope.formsCookieName] = $scope.formsCookieValue;
@@ -183,7 +201,7 @@
                         FileFiltered: (up, file) => { },
                         FilesAdded: (up, files) => {
                             this.plupload.each(files, function (file) {
-                                __this.scope.FileUploadRefCounter++;
+                                __this.scope.FUFileUploadRefCounter++;
                                 __this.EnableDisableStartButton();
                                 //if (isHtml4) {
                                 //    file.npsProperties.timeout = undefined;
@@ -194,7 +212,7 @@
                         },
                         FilesRemoved: (up, files) => { },
                         FileUploaded: (up, file, info) => {
-                            __this.scope.FileUploadRefCounter--;
+                            __this.scope.FUFileUploadRefCounter--;
                             __this.EnableDisableStartButton();
                             if (!__this._isUploading) __this.radioPubSubSvc.publish(__this.pubSubConstants.FileUploaded, null);
                         },
@@ -222,7 +240,7 @@
         EnableDisableStartButton = () => {
             var __this = this;
 
-            if (__this.scope.FileUploadRefCounter > 0) {
+            if (__this.scope.FUFileUploadRefCounter > 0) {
                 //$('#' + __this.scope.StartButtonId).removeAttr('disabled');
             }
             else {
@@ -237,20 +255,20 @@
 
 
 
-    interface IFileUploadController extends ng.IScope {
-        FileUploadRefCounter: number;
-        BrowseButtonId: string;
-        DropAreaId: string ;
+    interface IFileUploadScope extends ng.IScope {
+        FUFileUploadRefCounter: number;
+        FUBrowseButtonId: string;
+        FUDropAreaId: string ;
         //StartButtonId: string;
-        Dock: string;
-        Url: string;
-        CN: string;
+        FUDock: string;
+        FUUrl: string;
+        FUCN: string;
     }
     class FileUploadController {
       
 
 
-        constructor(public $scope: IFileUploadController,
+        constructor(public $scope: IFileUploadScope,
             private $routeParams: any,
             private $rootScope: any,
             private $injector: any) {

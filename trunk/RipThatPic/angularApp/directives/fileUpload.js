@@ -30,22 +30,30 @@ var Application;
                         silverlight_xap_url: '/scripts/plupload/moxie.xap'
                     };
                 };
+                this.initPubSub = function () {
+                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileStorageContainerChanged, _this.ContainerChanged.bind(_this), undefined);
+                    _this.scope.$on('$destroy', _this.destructor);
+                };
+                this.destructor = function () {
+                    var __this = _this;
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileStorageContainerChanged, __this.ContainerChanged);
+                };
                 this._isUploading = false;
                 this.startUpload = function () {
                     var __this = _this;
                     if (__this._isUploading)
                         return;
-                    __this.uploader.settings.url = __this.scope.Url + '?cn=' + __this.scope.CN;
+                    __this.uploader.settings.url = __this.scope.FUUrl + '?cn=' + __this.scope.FUCN;
                     __this.uploader.start();
                     __this._isUploading = true;
                 };
                 this.initUploader = function () {
                     var __this = _this;
-                    __this.scope.Url = '/api/Upload';
+                    __this.scope.FUUrl = '/api/Upload';
                     var uploadConfig = {
-                        button: _this.scope.BrowseButtonId,
-                        dropArea: _this.scope.DropAreaId,
-                        url: __this.scope.Url,
+                        button: _this.scope.FUBrowseButtonId,
+                        dropArea: _this.scope.FUDropAreaId,
+                        url: __this.scope.FUUrl,
                         headers: {},
                         bodyParams: {},
                         beforeFileUpload: function () {
@@ -80,11 +88,11 @@ var Application;
                         maxFileAutoRetryAttempts: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRetries, 4),
                         maxFileSize: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, 2147483647)
                     };
-                    if (!_this.scope.BrowseButtonId) {
+                    if (!_this.scope.FUBrowseButtonId) {
                         alert('Browse button not specified');
                         return;
                     }
-                    $('#' + _this.scope.BrowseButtonId).removeAttr('disabled');
+                    $('#' + _this.scope.FUBrowseButtonId).removeAttr('disabled');
                     //uploadConfig.bodyParams[$scope.formsCookieName] = $scope.formsCookieValue;
                     //uploadConfig.bodyParams[$scope.sessionCookieName] = $scope.sessionCookieValue;
                     _this.newUploadInstance(uploadConfig);
@@ -143,7 +151,7 @@ var Application;
                                 },
                                 FilesAdded: function (up, files) {
                                     _this.plupload.each(files, function (file) {
-                                        __this.scope.FileUploadRefCounter++;
+                                        __this.scope.FUFileUploadRefCounter++;
                                         __this.EnableDisableStartButton();
                                         //if (isHtml4) {
                                         //    file.npsProperties.timeout = undefined;
@@ -154,7 +162,7 @@ var Application;
                                 FilesRemoved: function (up, files) {
                                 },
                                 FileUploaded: function (up, file, info) {
-                                    __this.scope.FileUploadRefCounter--;
+                                    __this.scope.FUFileUploadRefCounter--;
                                     __this.EnableDisableStartButton();
                                     if (!__this._isUploading)
                                         __this.radioPubSubSvc.publish(__this.pubSubConstants.FileUploaded, null);
@@ -179,7 +187,7 @@ var Application;
                 };
                 this.EnableDisableStartButton = function () {
                     var __this = _this;
-                    if (__this.scope.FileUploadRefCounter > 0) {
+                    if (__this.scope.FUFileUploadRefCounter > 0) {
                     }
                     else {
                         //$('#' + __this.scope.StartButtonId).attr('disabled', '');
@@ -193,16 +201,17 @@ var Application;
                 this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', FileUploadController];
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
-                    _this.scope.BrowseButtonId = 'browse_button';
-                    _this.scope.DropAreaId = 'drop_area';
+                    _this.scope.FUBrowseButtonId = 'browse_button';
+                    _this.scope.FUDropAreaId = 'drop_area';
                     //this.scope.StartButtonId = 'start_button';
-                    _this.scope.FileUploadRefCounter = 0;
-                    _this.scope.Dock = 'top';
+                    _this.scope.FUFileUploadRefCounter = 0;
+                    _this.scope.FUDock = 'top';
                     if (attributes.$attr["daDock"])
-                        _this.scope.Dock = element.attr(attributes.$attr["daDock"]);
-                    element.addClass('fu-dock-' + _this.scope.Dock);
+                        _this.scope.FUDock = element.attr(attributes.$attr["daDock"]);
+                    element.addClass('fu-dock-' + _this.scope.FUDock);
                     if (attributes.$attr["daCn"])
-                        _this.scope.CN = element.attr(attributes.$attr["daCn"]);
+                        _this.scope.FUCN = element.attr(attributes.$attr["daCn"]);
+                    _this.initPubSub();
                     _this.initUploader();
                     //changing to auto uploading
                     //element.find('#start_button').on('click', this.startUpload);
@@ -216,6 +225,9 @@ var Application;
                         return new FileUploadDirective(pubSubConstants, radioPubSubSvc);
                     }
                 ];
+            };
+            FileUploadDirective.prototype.ContainerChanged = function (cn) {
+                this.scope.FUCN = cn === '-all-' ? '' : cn;
             };
             return FileUploadDirective;
         })();

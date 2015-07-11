@@ -50,17 +50,18 @@ var Application;
                         _this.scope.FSPRight = element.attr(attributes.$attr["daRight"]);
                     if (attributes.$attr["daWidth"])
                         _this.scope.FSPWidth = element.attr(attributes.$attr["daWidth"]);
-                    _this.scope.FSPLocationStyle = '';
+                    var finalStyle = '';
                     if ($scope.FSPBottom != undefined)
-                        _this.scope.FSPLocationStyle += "Bottom: " + $scope.FSPBottom + ";";
+                        finalStyle += "Bottom: " + $scope.FSPBottom + ";";
                     if ($scope.FSPTop != undefined)
-                        _this.scope.FSPLocationStyle += "Top: " + $scope.FSPTop + ";";
+                        finalStyle += "Top: " + $scope.FSPTop + ";";
                     if ($scope.FSPLeft != undefined)
-                        _this.scope.FSPLocationStyle += "Left: " + $scope.FSPLeft + ";";
+                        finalStyle += "Left: " + $scope.FSPLeft + ";";
                     if ($scope.FSPRight != undefined)
-                        _this.scope.FSPLocationStyle += "Right: " + $scope.FSPRight + ";";
+                        finalStyle += "Right: " + $scope.FSPRight + ";";
                     if ($scope.FSPWidth != undefined)
-                        _this.scope.FSPLocationStyle += "Width: " + $scope.FSPWidth + ";";
+                        finalStyle += "Width: " + $scope.FSPWidth + ";";
+                    _this.scope.FSPLocationStyle = finalStyle;
                     _this.scope.FSPItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);
                     };
