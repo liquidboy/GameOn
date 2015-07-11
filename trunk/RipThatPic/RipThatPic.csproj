@@ -304,9 +304,13 @@
     <Content Include="angularApp\directives\fileUpload.js">
       <DependentUpon>fileUpload.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\inlineWindow.js">
+      <DependentUpon>inlineWindow.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\partials\inline-window.html" />
     <Content Include="angularApp\partials\file-storage-picker.html" />
     <Content Include="angularApp\partials\file-storage-list.html" />
     <Content Include="angularApp\partials\file-upload.html" />
@@ -611,6 +615,9 @@
     </Content>
     <Content Include="angularApp\directives\fileStorageList.js.map">
       <DependentUpon>fileStorageList.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\inlineWindow.js.map">
+      <DependentUpon>inlineWindow.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1576,6 +1583,7 @@
     <Content Include="script\vs\nls.js" />
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
+    <Content Include="Themes\InlineWindow.css" />
     <Content Include="Themes\FileStoragePicker.css" />
     <Content Include="Themes\FileStorageList.css" />
     <Content Include="Themes\FileUpload.css" />
@@ -1714,6 +1722,7 @@
     <TypeScriptCompile Include="angularApp\controllers\Config\configComment.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Config\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
+    <TypeScriptCompile Include="angularApp\directives\inlineWindow.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileStoragePicker.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileStorageList.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileUpload.ts" />

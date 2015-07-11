@@ -53,6 +53,7 @@ namespace RipThatPic
             bundles.Add(new ScriptBundle("~/default/directives-js-libraries")
                 .Include(
                     "~/angularApp/directives/billboard.js",
+                    "~/angularApp/directives/inlineWindow.js",
                     "~/angularApp/directives/workarea.js",
                     "~/angularApp/directives/configMenu.js",
                     "~/angularApp/directives/fileStorageList.js",
@@ -106,6 +107,7 @@ namespace RipThatPic
                    "~/Themes/FileUpload.css",
                    "~/Themes/FileStorageList.css",
                    "~/Themes/FileStoragePicker.css",
+                   "~/Themes/InlineWindow.css",
                    "~/Scripts/justified/justifiedGallery.min.css"
                ));
 
