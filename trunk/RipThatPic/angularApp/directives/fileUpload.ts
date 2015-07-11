@@ -61,6 +61,7 @@
                 //this.scope.StartButtonId = 'start_button';
                 this.scope.FUFileUploadRefCounter = 0;
                 this.scope.FUDock = 'top';
+                this.scope.FURootElement = element;
                 
                 if (attributes.$attr["daDock"]) this.scope.FUDock = element.attr(<string>attributes.$attr["daDock"]);
                 element.addClass('fu-dock-' + this.scope.FUDock);
@@ -68,6 +69,7 @@
                 
                 this.initPubSub();
                 this.initUploader();
+                this.ContainerChanged(this.scope.FUCN);
 
                 //changing to auto uploading
                 //element.find('#start_button').on('click', this.startUpload);
@@ -89,6 +91,12 @@
 
         private ContainerChanged(cn: string) {
             this.scope.FUCN = cn === '-all-' ? '' : cn;
+
+            if (this.scope.FUCN.length === 0)
+                this.scope.FURootElement.hide();
+            else 
+                this.scope.FURootElement.show();
+            
         }
 
         destructor = () => {
@@ -263,6 +271,7 @@
         FUDock: string;
         FUUrl: string;
         FUCN: string;
+        FURootElement: ng.IAugmentedJQuery;
     }
     class FileUploadController {
       

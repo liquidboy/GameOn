@@ -206,6 +206,7 @@ var Application;
                     //this.scope.StartButtonId = 'start_button';
                     _this.scope.FUFileUploadRefCounter = 0;
                     _this.scope.FUDock = 'top';
+                    _this.scope.FURootElement = element;
                     if (attributes.$attr["daDock"])
                         _this.scope.FUDock = element.attr(attributes.$attr["daDock"]);
                     element.addClass('fu-dock-' + _this.scope.FUDock);
@@ -213,6 +214,7 @@ var Application;
                         _this.scope.FUCN = element.attr(attributes.$attr["daCn"]);
                     _this.initPubSub();
                     _this.initUploader();
+                    _this.ContainerChanged(_this.scope.FUCN);
                     //changing to auto uploading
                     //element.find('#start_button').on('click', this.startUpload);
                 };
@@ -228,6 +230,10 @@ var Application;
             };
             FileUploadDirective.prototype.ContainerChanged = function (cn) {
                 this.scope.FUCN = cn === '-all-' ? '' : cn;
+                if (this.scope.FUCN.length === 0)
+                    this.scope.FURootElement.hide();
+                else
+                    this.scope.FURootElement.show();
             };
             return FileUploadDirective;
         })();
