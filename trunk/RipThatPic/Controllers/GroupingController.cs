@@ -90,6 +90,9 @@ namespace RipThatPic.Controllers
         public string TableName { get; set; }
         public string GroupingName { get; set; }
 
+        public string DisplayName { get; set; }
+        public string Icon { get; set; }
+
         public Guid DisplayId { get; set; }
     }
 }

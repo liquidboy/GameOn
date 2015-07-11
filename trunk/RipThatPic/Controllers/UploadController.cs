@@ -33,7 +33,7 @@ namespace RipThatPic.Controllers
         {
             //container/bucket 
             string _groupingUpload = "temp-upload";
-            if (!string.IsNullOrEmpty(cn)) _groupingUpload = cn;
+            if (!string.IsNullOrEmpty(cn)) _groupingUpload = CleanContainerName(cn);
             string _groupingUploadThumb = _groupingUpload + "-thumb";
 
 

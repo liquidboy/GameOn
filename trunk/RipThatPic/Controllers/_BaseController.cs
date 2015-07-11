@@ -18,6 +18,11 @@ namespace RipThatPic.Controllers
             return new AzureProcessor(AzureProcessor.Location.Sydney); 
         }
 
+        internal string CleanContainerName(string cn)
+        {
+            return cn.Trim().ToLower();
+        }
+
     }
 
 

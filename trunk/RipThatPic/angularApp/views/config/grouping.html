@@ -2,58 +2,82 @@
 
 <div class="config">
 
+    <!-- GRID AREA -->
     <div>
-        <div>
-            <table class="jf-tbl">
-                <colgroup>
-                    <col style="width:157px" />
-                    <col style="width:308px" />
-                    <col style="width:180px" />
-                </colgroup>
+        <table class="jf-tbl">
+            <colgroup>
+                <col style="width:157px" />
+                <col style="width:308px" />
+                <col style="width:180px" />
+                <col style="width:180px" />
+            </colgroup>
 
-                <tr>
-                    <td><input type="text" ng-model="configgrouping.SelectedItem.Grouping" style="width:150px" ng-readonly="configgrouping.SelectedItem.GroupingIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configgrouping.SelectedItem.Name" style="width:308px" ng-readonly="configgrouping.SelectedItem.NameIsReadOnly" /></td>
-                    <td>
-                        <input type="button" value="Save" ng-click="configgrouping.SaveItem()" />
-                        <input type="button" value="Delete" ng-click="configgrouping.DeleteItem()" />
-                        <input type="button" value="Clear" ng-click="configgrouping.ClearEntryFields()" />
-                    </td>
-                </tr>
+            <tr>
+                <td><input type="text" ng-model="configgrouping.SelectedItem.Grouping" style="width:150px" ng-readonly="configgrouping.SelectedItem.GroupingIsReadOnly" /></td>
+                <td><input type="text" ng-model="configgrouping.SelectedItem.Name" style="width:308px" ng-readonly="configgrouping.SelectedItem.NameIsReadOnly" /></td>
+                <td><input type="text" ng-model="configgrouping.SelectedItem.TableName" style="width:180px" ng-readonly="configgrouping.SelectedItem.NameIsReadOnly" /></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configgrouping.SaveItem()" />
+                    <input type="button" value="Delete" ng-click="configgrouping.DeleteItem()" />
+                    <input type="button" value="Clear" ng-click="configgrouping.ClearEntryFields()" />
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="table-header">Grouping</td>
-                    <td class="table-header">Name</td>
-                    <td class="table-header">Actions</td>
-                </tr>
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Key</td>
+                <td class="table-header">Entity</td>
+                <td class="table-header">Actions</td>
+            </tr>
 
-                <tr>
-                    <td colspan="5">
-                        <div class="jf-data-grid">
-                            <table class="jf-tbl">
-                                <colgroup>
-                                    <col style="width:155px" />
-                                    <col style="width:310px" />
-                                </colgroup>
+            <tr>
+                <td colspan="5">
+                    <div class="jf-data-grid">
+                        <table class="jf-tbl">
+                            <colgroup>
+                                <col style="width:155px" />
+                                <col style="width:310px" />
+                                <col style="width:180px" />
+                            </colgroup>
 
-                                <tr ng-repeat="item in configgrouping.ItemsList"
-                                    ng-include="'itemlist.html'"
-                                    ng-click="configgrouping.SelectItemRow(item, $event)"
-                                    class="table-content-row"></tr>
-                            </table>
-                        </div>
+                            <tr ng-repeat="item in configgrouping.ItemsList"
+                                ng-include="'itemlist.html'"
+                                ng-click="configgrouping.SelectItemRow(item, $event)"
+                                class="table-content-row"></tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-                    </td>
-                </tr>
-
-            </table>
-        </div>
-
+    <!-- SELECTED ITEM DETAILS AREA -->
+    <div>
+        <table class="jf-tbldetail">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tr><td class="label">Grouping :</td><td>{{configgrouping.SelectedItem.Grouping}}</td></tr>
+            <tr><td class="label">Key :</td><td>{{configgrouping.SelectedItem.Name}}</td></tr>
+            <tr><td class="label">Internal Grouping Name :</td><td>{{configgrouping.SelectedItem.GroupingName}}</td></tr>
+            <tr><td class="label">Entity :</td><td><input type="text" ng-model="configgrouping.SelectedItem.TableName" style="width:250px" /></td></tr>
+            <tr><td class="label">Display Name :</td><td><input type="text" ng-model="configgrouping.SelectedItem.DisplayName" style="width:350px" /></td></tr>
+            <tr><td class="label">Icon :</td><td><input type="text" ng-model="configgrouping.SelectedItem.Icon" style="width:350px" /></td></tr>
+            <tr><td colspan="2"><br /></td></tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configgrouping.SaveItem()" />
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 
 <script type="text/ng-template" id="itemlist.html">
     <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
     <td>{{item.Name}} </td>
+    <td>{{item.TableName}} </td>
 </script>
