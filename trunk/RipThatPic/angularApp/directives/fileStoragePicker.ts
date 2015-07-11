@@ -92,6 +92,10 @@
             var el = evt.currentTarget;
             $(el).addClass('selected');
             scope.FSPSelectedItem = el;
+
+            var cn = $(el).data('id');
+            
+            this.radioPubSubSvc.publish(this.pubSubConstants.FileStorageContainerChanged, cn);
         };
     }
 

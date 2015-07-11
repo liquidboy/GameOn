@@ -31,6 +31,8 @@ var Application;
                     var el = evt.currentTarget;
                     $(el).addClass('selected');
                     scope.FSPSelectedItem = el;
+                    var cn = $(el).data('id');
+                    _this.radioPubSubSvc.publish(_this.pubSubConstants.FileStorageContainerChanged, cn);
                 };
                 this.restrict = 'E';
                 this.replace = true;

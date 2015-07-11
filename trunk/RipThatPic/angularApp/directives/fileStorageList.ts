@@ -48,8 +48,7 @@
 
         private init() {
             this.initPubSub();
-            this.RefreshData();
-            
+            //this.RefreshData();   
         }
 
         initPubSub = () => {
@@ -59,14 +58,24 @@
                 this.RefreshData.bind(this),
                 undefined);
 
+            this.radioPubSubSvc.subscribe(
+                this.pubSubConstants.FileStorageContainerChanged,
+                this.ContainerChanged.bind(this),
+                undefined);
+
             this.scope.$on('$destroy', this.destructor);
         }
 
         destructor = () => {
             var __this = this;
-            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileUploaded,() => { __this.RefreshData(); } );
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileUploaded, __this.RefreshData );
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileStorageContainerChanged, __this.ContainerChanged );
         }
 
+        private ContainerChanged(cn: string) {
+            this.scope.FSCN = cn === '-all-'? '': cn;
+            this.RefreshData();
+        }
 
         _isRefreshing: boolean = false;
         private RefreshData() {

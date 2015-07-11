@@ -12,13 +12,13 @@ var Application;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.initPubSub = function () {
                     _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileUploaded, _this.RefreshData.bind(_this), undefined);
+                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileStorageContainerChanged, _this.ContainerChanged.bind(_this), undefined);
                     _this.scope.$on('$destroy', _this.destructor);
                 };
                 this.destructor = function () {
                     var __this = _this;
-                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileUploaded, function () {
-                        __this.RefreshData();
-                    });
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileUploaded, __this.RefreshData);
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileStorageContainerChanged, __this.ContainerChanged);
                 };
                 this._isRefreshing = false;
                 this.ItemSelected = function (scope, evt) {
@@ -100,6 +100,10 @@ var Application;
             }
             FileStorageListDirective.prototype.init = function () {
                 this.initPubSub();
+                //this.RefreshData();   
+            };
+            FileStorageListDirective.prototype.ContainerChanged = function (cn) {
+                this.scope.FSCN = cn === '-all-' ? '' : cn;
                 this.RefreshData();
             };
             FileStorageListDirective.prototype.RefreshData = function () {

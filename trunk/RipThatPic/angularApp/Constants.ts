@@ -16,6 +16,8 @@
 
         FileUploaded: string = "FileUploaded";
 
+        FileStorageContainerChanged: string = "FileStorageContainerChanged";
+
         constructor() {
             
         }
