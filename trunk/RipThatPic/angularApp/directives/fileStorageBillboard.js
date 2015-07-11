@@ -36,16 +36,30 @@ var Application;
                         _this.scope.FSBBottom = element.attr(attributes.$attr["daBottom"]);
                     if (attributes.$attr["daTop"])
                         _this.scope.FSBTop = element.attr(attributes.$attr["daTop"]);
-                    if (attributes.$attr["daItemHeight"])
-                        _this.scope.FSBItemHeight = element.attr(attributes.$attr["daItemHeight"]);
                     if (attributes.$attr["daLeft"])
                         _this.scope.FSBLeft = element.attr(attributes.$attr["daLeft"]);
                     if (attributes.$attr["daRight"])
                         _this.scope.FSBRight = element.attr(attributes.$attr["daRight"]);
+                    if (attributes.$attr["daItemHeight"])
+                        _this.scope.FSBItemHeight = element.attr(attributes.$attr["daItemHeight"]);
+                    if (attributes.$attr["daItemWidth"])
+                        _this.scope.FSBItemWidth = element.attr(attributes.$attr["daItemWidth"]);
                     if (attributes.$attr["daCn"])
                         _this.scope.FSBCN = element.attr(attributes.$attr["daCn"]);
                     if (_this.scope.FSBCN == 'undefined' || _this.scope.FSBCN == undefined)
                         _this.scope.FSBCN = '';
+                    var finalStyle = '';
+                    if ($scope.FSBBottom != undefined)
+                        finalStyle += "Bottom: " + $scope.FSBBottom + ";";
+                    if ($scope.FSBTop != undefined)
+                        finalStyle += "Top: " + $scope.FSBTop + ";";
+                    if ($scope.FSBLeft != undefined)
+                        finalStyle += "Left: " + $scope.FSBLeft + ";";
+                    if ($scope.FSBRight != undefined)
+                        finalStyle += "Right: " + $scope.FSBRight + ";";
+                    //if ($scope.FSBItemWidth != undefined) finalStyle += "Width: " + $scope.FSBItemWidth + ";";
+                    //if ($scope.FSBItemHeight != undefined) finalStyle += "Height: " + $scope.FSBItemHeight + ";";
+                    _this.scope.FSBLocationStyle = finalStyle;
                     _this.scope.FSBSelectedItems = [];
                     _this.scope.FSBItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);

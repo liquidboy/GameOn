@@ -27,12 +27,24 @@
                 
                 if (attributes.$attr["daBottom"]) this.scope.FSBBottom = element.attr(<string>attributes.$attr["daBottom"]);
                 if (attributes.$attr["daTop"]) this.scope.FSBTop = element.attr(<string>attributes.$attr["daTop"]);
-                if (attributes.$attr["daItemHeight"]) this.scope.FSBItemHeight = element.attr(<string>attributes.$attr["daItemHeight"]);
                 if (attributes.$attr["daLeft"]) this.scope.FSBLeft = element.attr(<string>attributes.$attr["daLeft"]);
                 if (attributes.$attr["daRight"]) this.scope.FSBRight = element.attr(<string>attributes.$attr["daRight"]);
+                if (attributes.$attr["daItemHeight"]) this.scope.FSBItemHeight = element.attr(<string>attributes.$attr["daItemHeight"]);
+                if (attributes.$attr["daItemWidth"]) this.scope.FSBItemWidth = element.attr(<string>attributes.$attr["daItemWidth"]);
 
                 if (attributes.$attr["daCn"]) this.scope.FSBCN = element.attr(<string>attributes.$attr["daCn"]);
                 if (this.scope.FSBCN == 'undefined' || this.scope.FSBCN == undefined) this.scope.FSBCN = '';
+
+
+                var finalStyle: string = '';
+                if ($scope.FSBBottom != undefined) finalStyle += "Bottom: " + $scope.FSBBottom + ";";
+                if ($scope.FSBTop != undefined) finalStyle += "Top: " + $scope.FSBTop + ";";
+                if ($scope.FSBLeft != undefined) finalStyle += "Left: " + $scope.FSBLeft + ";";
+                if ($scope.FSBRight != undefined) finalStyle += "Right: " + $scope.FSBRight + ";";
+                //if ($scope.FSBItemWidth != undefined) finalStyle += "Width: " + $scope.FSBItemWidth + ";";
+                //if ($scope.FSBItemHeight != undefined) finalStyle += "Height: " + $scope.FSBItemHeight + ";";
+                this.scope.FSBLocationStyle = finalStyle;
+
 
 
                 this.scope.FSBSelectedItems = [];
@@ -142,7 +154,10 @@
         FSBLeft: string;
         FSBRight: string;
         FSBItemHeight: string;
+        FSBItemWidth: string;
         FSBCN: string;
+
+        FSBLocationStyle: string;
 
         FSBItemSelected: Function;
         FSBSelectedItems: Array<any>;

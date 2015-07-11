@@ -14,10 +14,13 @@
         margin-bottom:5px;
         position:relative;*/
         cursor:pointer;
-        opacity: 0.4;
-        filter: alpha(opacity=40); /* For IE8 and earlier */
+        overflow:hidden;
+        /*opacity: 0.4;
+        filter: alpha(opacity=40);*/ /* For IE8 and earlier */
     }
-
+        .file-storage-billboard .item img {
+            width:100%;
+        }
         .file-storage-billboard .item.selected {
             border-left: 8px solid orange;
         }
