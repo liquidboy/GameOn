@@ -24,6 +24,7 @@
             this.link = ($scope: IFileStorageBillboardScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: ng.INgModelController) =>
             {                
                 this.scope = $scope;
+                this.scope.FSBRootElement = element;
                 
                 if (attributes.$attr["daBottom"]) this.scope.FSBBottom = element.attr(<string>attributes.$attr["daBottom"]);
                 if (attributes.$attr["daTop"]) this.scope.FSBTop = element.attr(<string>attributes.$attr["daTop"]);
@@ -51,9 +52,18 @@
                 this.scope.FSBItemSelected = (evt) => { this.ItemSelected(this.scope, evt);}
 
                 this.init();
-               
+
             };
 
+
+
+
+        }
+
+        restartAnimation = () => {
+
+            //setup rotating animation
+            var items = this.scope.FSBRootElement.find('item');
 
         }
 
@@ -105,7 +115,7 @@
                             this.SizeKB = Math.round(this.Size / 1000);
                         });
 
-                
+                        __this.restartAnimation();
 
                         __this._isRefreshing = false;
                     })
@@ -120,6 +130,8 @@
                         $.each(__this.scope.FSBItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
                         });
+
+                        __this.restartAnimation();
                     
                         __this._isRefreshing = false;
                     })
@@ -161,6 +173,8 @@
 
         FSBItemSelected: Function;
         FSBSelectedItems: Array<any>;
+
+        FSBRootElement: ng.IAugmentedJQuery;
         
     }
     

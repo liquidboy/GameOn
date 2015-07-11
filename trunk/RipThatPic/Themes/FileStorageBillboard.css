@@ -15,8 +15,9 @@
         position:relative;*/
         cursor:pointer;
         overflow:hidden;
-        /*opacity: 0.4;
-        filter: alpha(opacity=40);*/ /* For IE8 and earlier */
+        position:absolute;
+        opacity: 0.0;
+        filter: alpha(opacity=40); /* For IE8 and earlier */
     }
         .file-storage-billboard .item img {
             width:100%;

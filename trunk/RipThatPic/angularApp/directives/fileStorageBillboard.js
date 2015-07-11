@@ -10,6 +10,10 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
+                this.restartAnimation = function () {
+                    //setup rotating animation
+                    var items = _this.scope.FSBRootElement.find('item');
+                };
                 this.initPubSub = function () {
                     _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileStorageContainerChanged, _this.ContainerChanged.bind(_this), undefined);
                     _this.scope.$on('$destroy', _this.destructor);
@@ -32,6 +36,7 @@ var Application;
                 this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl];
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
+                    _this.scope.FSBRootElement = element;
                     if (attributes.$attr["daBottom"])
                         _this.scope.FSBBottom = element.attr(attributes.$attr["daBottom"]);
                     if (attributes.$attr["daTop"])
@@ -89,6 +94,7 @@ var Application;
                         $.each(__this.scope.FSBItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1000);
                         });
+                        __this.restartAnimation();
                         __this._isRefreshing = false;
                     }).error(function (err) {
                     });
@@ -100,6 +106,7 @@ var Application;
                         $.each(__this.scope.FSBItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
                         });
+                        __this.restartAnimation();
                         __this._isRefreshing = false;
                     }).error(function (err) {
                     });
