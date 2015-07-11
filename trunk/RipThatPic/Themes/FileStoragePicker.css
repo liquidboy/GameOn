@@ -4,28 +4,56 @@
     
     margin:auto;
     position:absolute;
-    padding:7px 5px 7px 5px;
+    /*padding:7px 5px 7px 5px;*/
 }
     .file-storage-picker .item {
         /*float:left;
         margin-right:5px;
         
         position:relative;*/
-        margin-bottom:2px;
+        /*margin-bottom:2px;*/
         cursor:pointer;
-        min-height:25px;
-        border-left:4px solid lightgray;
+        min-height:35px;
+        /*border-left:4px solid #e5e5e5;*/
         vertical-align:central;
-        padding-left:10px;
-        width:90%;
+        padding-left:15px;
+        font-size:14px;
+        padding-top:10px;
 
     }
     .file-storage-picker .item:hover {
-        background-color:lightgray;
-        color:white;
+        background-color:#e5e5e5;
+        color:black;
     }
 
         .file-storage-picker .item.selected {
-            background-color:lightgray;
-            color:white;
+            background-color:#e5e5e5;
+            border-left:4px solid orange;
+            font-weight:bold;
+            color:black;
+            padding-left:13px;
+        }
+
+        .file-storage-picker .item .ico-All {
+            background-image:url(/Content/icons/All-black.png);
+            background-size: 22px;
+            background-repeat: no-repeat;
+            background-position-x:0;
+            padding-left:30px;
+        }
+        .file-storage-picker .item.selected .ico-All {
+            padding-left:32px;
+        }
+
+
+        .file-storage-picker .item .ico-Folder {
+            background-image:url(/Content/icons/Folder-black.png);
+            background-size: 24px;
+            background-repeat: no-repeat;
+            background-position-x:0;
+            padding-left:30px;
+        }
+
+        .file-storage-picker .item.selected .ico-Folder {
+            padding-left:32px;
         }

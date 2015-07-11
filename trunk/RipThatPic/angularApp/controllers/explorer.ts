@@ -1,6 +1,7 @@
 ﻿module Application.Controllers {
     export class ExplorerCtrl {
 
+
         constructor(public $scope: ng.IScope, public $rootScope: any) {
 
             this.init();
@@ -27,6 +28,9 @@
 
 
     export interface IExplorerController extends ng.IScope {
+
+
+
 
         //FileStoragePicker
         FSPList: Array<any>;

@@ -3,7 +3,8 @@
         body {
             background-color:whitesmoke;
             color:black;
-            font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;
+            font-family-backup:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;
+            font-family: "Segoe UI Web Regular","Segoe UI","Segoe WP",Tahoma,Arial,sans-serif;
             margin:0;
             padding:0;
         }

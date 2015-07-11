@@ -43,8 +43,8 @@ namespace RipThatPic.Controllers
             var processor = GetAzureProcessor();
             var result = await processor.RetrieveAllGroupingsFromTable(tablename);
 
-            var ret = result.Select(x => new { name = x }).ToList();
-            ret.Insert(0, new { name = "-all-" });
+            var ret = result.Select(x => new { name = x , icon = "Folder" }).ToList();
+            ret.Insert(0, new { name = "-all-", icon = "All" });
             return ret.AsEnumerable();
 
         }

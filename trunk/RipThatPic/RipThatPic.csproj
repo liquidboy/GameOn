@@ -365,6 +365,8 @@
     <Content Include="angularApp\views\splash\splash.html" />
     <Content Include="Assets\Spaceship\0.png" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
+    <Content Include="Content\icons\All-black.png" />
+    <Content Include="Content\icons\All-white.png" />
     <Content Include="Content\icons\area-black.png" />
     <Content Include="Content\icons\area-white.png" />
     <Content Include="Content\icons\Banner-black.png" />
@@ -381,6 +383,8 @@
     <Content Include="Content\icons\extension-white.png" />
     <Content Include="Content\icons\filestorage-black.png" />
     <Content Include="Content\icons\filestorage-white.png" />
+    <Content Include="Content\icons\Folder-black.png" />
+    <Content Include="Content\icons\Folder-white.png" />
     <Content Include="Content\icons\group-black.png" />
     <Content Include="Content\icons\group-white.png" />
     <Content Include="Content\icons\House-black.png" />
