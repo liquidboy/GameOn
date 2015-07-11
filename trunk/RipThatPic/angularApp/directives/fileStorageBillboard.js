@@ -11,60 +11,17 @@ var Application;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.initPubSub = function () {
-                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileUploaded, _this.RefreshData.bind(_this), undefined);
                     _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileStorageContainerChanged, _this.ContainerChanged.bind(_this), undefined);
                     _this.scope.$on('$destroy', _this.destructor);
                 };
                 this.destructor = function () {
                     var __this = _this;
-                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileUploaded, __this.RefreshData);
                     _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileStorageContainerChanged, __this.ContainerChanged);
                 };
                 this._isRefreshing = false;
                 this.ItemSelected = function (scope, evt) {
                     //now do stuff with the selected item
                     var el = evt.currentTarget;
-                    //see if its already in the list
-                    var foundItInList = null;
-                    $.each(scope.FSBSelectedItems, function (index) {
-                        var elm = scope.FSBSelectedItems[index];
-                        if ($(elm).data('id') === $(el).data('id')) {
-                            foundItInList = el;
-                        }
-                    });
-                    if (scope.FSBIsMultipleSelection) {
-                        if (foundItInList != null) {
-                            $(foundItInList).removeClass('selected');
-                            $(foundItInList).find('.chk').hide();
-                            var index = scope.FSBSelectedItems.indexOf(foundItInList);
-                            scope.FSBSelectedItems.splice(index, 1);
-                        }
-                        else {
-                            $(el).addClass('selected');
-                            $(el).find('.chk').show();
-                            scope.FSBSelectedItems.push(el);
-                        }
-                    }
-                    else {
-                        if (foundItInList != null) {
-                            $(foundItInList).removeClass('selected');
-                            $(foundItInList).find('.chk').hide();
-                            var index = scope.FSBSelectedItems.indexOf(foundItInList);
-                            scope.FSBSelectedItems.splice(index, 1);
-                        }
-                        else {
-                            //clear list of anything 
-                            if (scope.FSBSelectedItems !== null && scope.FSBSelectedItems.length >= 1) {
-                                $(scope.FSBSelectedItems).removeClass('selected');
-                                $(scope.FSBSelectedItems).find('.chk').hide();
-                                scope.FSBSelectedItems = [];
-                            }
-                            //now add this single item into the list
-                            $(el).addClass('selected');
-                            $(el).find('.chk').show();
-                            scope.FSBSelectedItems.push(el);
-                        }
-                    }
                 };
                 this.safeApply = function (scope, fn) {
                     (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
@@ -85,8 +42,6 @@ var Application;
                         _this.scope.FSBLeft = element.attr(attributes.$attr["daLeft"]);
                     if (attributes.$attr["daRight"])
                         _this.scope.FSBRight = element.attr(attributes.$attr["daRight"]);
-                    if (attributes.$attr["daIsMultipleSelection"])
-                        _this.scope.FSBIsMultipleSelection = element.attr(attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
                     if (attributes.$attr["daCn"])
                         _this.scope.FSBCN = element.attr(attributes.$attr["daCn"]);
                     if (_this.scope.FSBCN == 'undefined' || _this.scope.FSBCN == undefined)
@@ -120,36 +75,17 @@ var Application;
                         $.each(__this.scope.FSBItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1000);
                         });
-                        try {
-                            //freaking using apply was causing digest errors .. going with timeout approach
-                            eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
-                        }
-                        catch (e) {
-                        }
                         __this._isRefreshing = false;
                     }).error(function (err) {
                     });
                 }
                 else {
                     this.dataSvc.getAllByGrouping("FileStorage", __this.scope.FSBCN, __this.authService.sessionId).success(function (result) {
-                        //__this.scope.ItemsList = [];
-                        //$.each(result, function () {
-                        //    this.SizeKB = Math.round(this.Size / 1000);
-                        //    __this.scope.ItemsList.push(this);
-                        //});
                         __this.scope.FSBItemsList = [];
                         __this.scope.FSBItemsList = result;
                         $.each(__this.scope.FSBItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
                         });
-                        try {
-                            //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
-                            //eval('$("#fsl").justifiedGallery();');
-                            //freaking using apply was causing digest errors .. going with timeout approach
-                            eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
-                        }
-                        catch (e) {
-                        }
                         __this._isRefreshing = false;
                     }).error(function (err) {
                     });

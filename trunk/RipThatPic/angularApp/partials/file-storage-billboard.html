@@ -1,20 +1,7 @@
-﻿<div class="file-storage-billboard" ng-style="{'bottom':FSBottom,'top':FSTop,'left':FSLeft,'right':FSRight}">
+﻿<div class="file-storage-billboard" ng-style="{'bottom':FSBottom,'top':FSBTop,'left':FSBLeft,'right':FSBRight}">
 
 
-    <div id="fsl">
-        <div ng-click="FSItemSelected($event)"
-             ng-repeat="item in FSItemsList" 
-             ng-include="'itemlist.html'" 
-             data-id="{{item.DisplayId}}"
-             class="item" target="_blank"></div>
-
-        <script type="text/ng-template" id="itemlist.html">
-            <img src="http://austoragetest.blob.core.windows.net/{{item.Grouping}}-thumb/{{item.Name}}"  />
-            <div class="sz">{{item.SizeKB}}KB</div>
-            <div class="ct">{{item.ContentType}}</div>
-            <div class="chk" ></div>
-        </script>
-    </div>
+    
 
 
  </div>
