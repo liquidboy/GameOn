@@ -113,6 +113,7 @@ var Application;
                     return;
                 //tag this method as already running
                 __this._isRefreshing = true;
+                __this.scope.FSItemsList = [];
                 if (__this.scope.FSCN === '') {
                     this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
                         __this.scope.FSItemsList = result;
@@ -136,6 +137,7 @@ var Application;
                         //    this.SizeKB = Math.round(this.Size / 1000);
                         //    __this.scope.ItemsList.push(this);
                         //});
+                        __this.scope.FSItemsList = [];
                         __this.scope.FSItemsList = result;
                         $.each(__this.scope.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);

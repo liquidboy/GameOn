@@ -2,12 +2,12 @@
 
 .file-storage-list {
         overflow:auto;
-        border:1px solid #e5e5e5;
-        background-color:#e5e5e5;
+        border-left:1px solid #e5e5e5;
+        /*background-color:#e5e5e5;*/
         margin:auto;
         position:absolute;
         left:0; top:0;right:0;bottom:0;
-        padding:7px 5px 7px 5px;
+        padding:0 5px 7px 5px;
     }
     .file-storage-list .item {
         /*float:left;

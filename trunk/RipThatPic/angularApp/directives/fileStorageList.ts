@@ -80,18 +80,20 @@
         _isRefreshing: boolean = false;
         private RefreshData() {
             var __this = this;
-
+            
             //stop refreshing being called again if its currently running
             if (__this._isRefreshing) return;
             
             //tag this method as already running
             __this._isRefreshing = true;  
+
+            __this.scope.FSItemsList = [];
             
             if (__this.scope.FSCN === '') {
                 this.dataSvc
                     .getAll("FileStorage", __this.authService.sessionId)
                     .success(function (result: any) {
-                    
+                        
                         __this.scope.FSItemsList = result;
                         $.each(__this.scope.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1000);
@@ -117,7 +119,7 @@
                         //    __this.scope.ItemsList.push(this);
                         //});
 
-
+                        __this.scope.FSItemsList = [];
                         __this.scope.FSItemsList = result;
                         $.each(__this.scope.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
@@ -127,7 +129,7 @@
                         try {
                             //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
                             //eval('$("#fsl").justifiedGallery();');
-                        
+
 
                             //freaking using apply was causing digest errors .. going with timeout approach
                             eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
