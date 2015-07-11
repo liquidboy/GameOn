@@ -1,0 +1,55 @@
+﻿
+.file-storage-billboard {
+        overflow:auto;
+        border-left:1px solid #e5e5e5;
+        /*background-color:#e5e5e5;*/
+        margin:auto;
+        position:absolute;
+        left:0; top:0;right:0;bottom:0;
+        padding:0 5px 7px 5px;
+    }
+    .file-storage-billboard .item {
+        /*float:left;
+        margin-right:5px;
+        margin-bottom:5px;
+        position:relative;*/
+        cursor:pointer;
+        opacity: 0.4;
+        filter: alpha(opacity=40); /* For IE8 and earlier */
+    }
+
+        .file-storage-billboard .item.selected {
+            border-left: 8px solid orange;
+        }
+
+        .file-storage-billboard .item .sz {
+            color:white;
+            position:absolute;
+            left:5px; top:5px;
+            margin:auto;
+            background-color:rgba(0, 0, 0, 0.26);
+        }
+        .file-storage-billboard .item .ofn {
+        }
+        .file-storage-billboard .item .ct {
+            color:white;
+            position:absolute;
+            right:10px; bottom:10px;
+            margin:auto;
+            font-size:10px;
+            background-color:rgba(0, 0, 0, 0.26);
+        }
+        .file-storage-billboard .item .chk {
+            position:absolute;
+            left:0; bottom:0;
+            margin:auto;
+            background-color:orange;
+            width:30px;
+            height:30px;
+            display:none;
+
+            background-image: url('/content/icons/tick-white.png');
+            background-size: 25px;
+            background-repeat: no-repeat;
+        }
+        
