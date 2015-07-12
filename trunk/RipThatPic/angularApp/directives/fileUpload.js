@@ -86,7 +86,7 @@ var Application;
                         runtimes: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRuntimes, 'html5,flash,html4'),
                         chunk_size: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadChunkSize, 0),
                         maxFileAutoRetryAttempts: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRetries, 4),
-                        maxFileSize: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, 2147483647)
+                        maxFileSize: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, '5mb') //2147483647)
                     };
                     if (!_this.scope.FUBrowseButtonId) {
                         alert('Browse button not specified');
@@ -151,6 +151,10 @@ var Application;
                                 },
                                 FilesAdded: function (up, files) {
                                     _this.plupload.each(files, function (file) {
+                                        //var szkb = file.size / 1024 / 1024;
+                                        //if (szkb > 5) {  //5mb
+                                        //    return false;
+                                        //}
                                         __this.scope.FUFileUploadRefCounter++;
                                         __this.EnableDisableStartButton();
                                         //if (isHtml4) {

@@ -139,7 +139,7 @@
                 runtimes: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadRuntimes, 'html5,flash,html4'), //uploadFileService.defaults.runtimes),
                 chunk_size: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadChunkSize, 0), //uploadFileService.defaults.chunkSize),
                 maxFileAutoRetryAttempts: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadRetries, 4),  //uploadFileService.defaults.maxFileAutoRetryAttempts)
-                maxFileSize: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, 2147483647)
+                maxFileSize: this.getSetting(this.pubSubConstants.CookieSettings_FileUploadMaxFileSize, '5mb')  //2147483647)
             };
 
             if (!this.scope.FUBrowseButtonId) {
@@ -209,6 +209,10 @@
                         FileFiltered: (up, file) => { },
                         FilesAdded: (up, files) => {
                             this.plupload.each(files, function (file) {
+                                //var szkb = file.size / 1024 / 1024;
+                                //if (szkb > 5) {  //5mb
+                                //    return false;
+                                //}
                                 __this.scope.FUFileUploadRefCounter++;
                                 __this.EnableDisableStartButton();
                                 //if (isHtml4) {
