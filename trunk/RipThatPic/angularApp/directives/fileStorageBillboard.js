@@ -10,9 +10,35 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
+                this.pointerAnimation = 0;
                 this.restartAnimation = function () {
+                    var __this = _this;
                     //setup rotating animation
-                    var items = _this.scope.FSBRootElement.find('item');
+                    clearInterval(__this.pointerAnimation);
+                    __this.scope.FSBCurrentIndex = 0;
+                    __this.pointerAnimation = setInterval(function () {
+                        var items = __this.scope.FSBRootElement.find('.item');
+                        var itemnos = __this.scope.FSBRootElement.find('.itemno');
+                        itemnos.each(function (id, el) {
+                            $(el).removeClass('selected');
+                        });
+                        if (items.length > 0) {
+                            var item = items[__this.scope.FSBCurrentIndex];
+                            var id = $(item).data('id');
+                            jQuery.each(itemnos, function (idx) {
+                                var iit = itemnos[idx];
+                                if ($(iit).data('id') === id) {
+                                    $(iit).addClass('selected');
+                                }
+                            });
+                            if (__this.scope.FSBCurrentIndex >= 0)
+                                $(item).fadeOut(500);
+                            __this.scope.FSBCurrentIndex++;
+                            if (__this.scope.FSBCurrentIndex >= items.length)
+                                __this.scope.FSBCurrentIndex = 0;
+                            $(item).fadeIn(1000);
+                        }
+                    }, 5000);
                 };
                 this.initPubSub = function () {
                     _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileStorageContainerChanged, _this.ContainerChanged.bind(_this), undefined);

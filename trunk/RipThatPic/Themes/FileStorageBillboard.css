@@ -16,9 +16,30 @@
         cursor:pointer;
         overflow:hidden;
         position:absolute;
-        opacity: 0.0;
-        filter: alpha(opacity=40); /* For IE8 and earlier */
+        display:none;
+        /*opacity: 0.0;
+        filter: alpha(opacity=40);*/ /* For IE8 and earlier */
     }
+    file-storage-billboard #fsl {
+        border: 1px solid lightgray;
+    }
+    .file-storage-billboard #fsbli {
+        margin:auto;
+        position:absolute;
+        left:0; 
+        padding:0 5px 7px 5px;
+    }
+    .file-storage-billboard .itemno {
+        width:15px;
+        height:15px;
+        background-color:lightgray;
+        margin-left:0;
+        margin-right:5px;
+        margin-top:5px;
+        cursor:pointer;
+        float:left;
+    }
+
         .file-storage-billboard .item img {
             width:100%;
         }
@@ -26,6 +47,9 @@
             border-left: 8px solid orange;
         }
 
+        .file-storage-billboard .itemno.selected {
+            background-color: orange;
+        }
         .file-storage-billboard .item .sz {
             color:white;
             position:absolute;

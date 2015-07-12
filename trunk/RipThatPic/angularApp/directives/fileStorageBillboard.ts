@@ -60,10 +60,40 @@
 
         }
 
-        restartAnimation = () => {
 
+        pointerAnimation: number = 0;
+        restartAnimation = () => {
+            var __this = this;
             //setup rotating animation
-            var items = this.scope.FSBRootElement.find('item');
+            
+            clearInterval(__this.pointerAnimation);
+            __this.scope.FSBCurrentIndex = 0;
+
+            __this.pointerAnimation = setInterval(() => {
+                var items = __this.scope.FSBRootElement.find('.item');
+                var itemnos = __this.scope.FSBRootElement.find('.itemno');
+
+                itemnos.each((id, el) => { $(el).removeClass('selected'); });
+
+                if (items.length > 0) {
+                    var item = items[__this.scope.FSBCurrentIndex];
+                    var id = $(item).data('id');
+                    jQuery.each(itemnos,(idx) => {
+                        var iit = itemnos[idx];
+                        if ($(iit).data('id') === id) {
+                            $(iit).addClass('selected');
+                        }
+                    });
+                    
+
+                    if (__this.scope.FSBCurrentIndex >= 0) $(item).fadeOut(500);
+
+                    __this.scope.FSBCurrentIndex++;
+                    if (__this.scope.FSBCurrentIndex >= items.length) __this.scope.FSBCurrentIndex = 0;
+
+                    $(item).fadeIn(1000);
+                }
+            }, 5000);
 
         }
 
@@ -175,7 +205,7 @@
         FSBSelectedItems: Array<any>;
 
         FSBRootElement: ng.IAugmentedJQuery;
-        
+        FSBCurrentIndex: number;
     }
     
 
