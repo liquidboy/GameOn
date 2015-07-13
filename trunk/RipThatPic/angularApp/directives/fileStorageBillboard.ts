@@ -25,7 +25,7 @@
             {                
                 this.scope = $scope;
                 this.scope.FSBRootElement = element;
-                this.scope.FSBTimeBetweenEachFrame = 10000;  //10 seconds
+                this.scope.FSBTimeBetweenEachFrame = 5000;  //10 seconds
                 
                 if (attributes.$attr["daBottom"]) this.scope.FSBBottom = element.attr(<string>attributes.$attr["daBottom"]);
                 if (attributes.$attr["daTop"]) this.scope.FSBTop = element.attr(<string>attributes.$attr["daTop"]);
@@ -69,11 +69,11 @@
 
         clearAnimation = () => {
             clearInterval(this.pointerAnimation);
-            $('#fsbttn').stop();
+            $('#fsbttn').width('0'); $('#fsbttn').stop();
             this.scope.FSBCurrentIndex = -1;
             this.scope.FSBItems = null;
             this.scope.FSBItemNos = null;
-            $('#fsbttn').width('0');
+
         }
 
 
@@ -87,19 +87,36 @@
         }
 
         changeImage = () => {
+            this.changeImageToID('');
+        }
+
+        changeImageToID = (guidToLoad: any) => {
             var __this = this;
 
             if (__this.scope.FSBItems == null || __this.scope.FSBItems.length === 0) __this.scope.FSBItems = __this.scope.FSBRootElement.find('.item');
             if (__this.scope.FSBItemNos == null || __this.scope.FSBItemNos.length === 0) __this.scope.FSBItemNos = __this.scope.FSBRootElement.find('.itemno');
-
-
+            
             __this.scope.FSBItemNos.each((id, el) => { $(el).removeClass('selected'); });
 
             if (__this.scope.FSBItems.length > 0) {
                 var previousItem = __this.scope.FSBItems[__this.scope.FSBCurrentIndex];
 
-                __this.scope.FSBCurrentIndex++;
+
+                //determine next index to change to
+                if (guidToLoad === '') {
+                    __this.scope.FSBCurrentIndex++;
+                }
+                else {
+                    var indexToChangeTo = -1;
+                    jQuery.each(__this.scope.FSBItems, function (idx, el) {
+                        if ($(el).data('id') === guidToLoad) indexToChangeTo = idx;
+                    });
+                    __this.scope.FSBCurrentIndex = indexToChangeTo;
+                }
+                
+                //if index is greater than number of images reset to start
                 if (__this.scope.FSBCurrentIndex >= __this.scope.FSBItems.length) __this.scope.FSBCurrentIndex = 0;
+
 
                 var currentItem = __this.scope.FSBItems[__this.scope.FSBCurrentIndex];
 
@@ -115,12 +132,14 @@
 
                 if (__this.scope.FSBCurrentIndex >= 0) $(previousItem).fadeOut(500);
 
-                
-                $('#fsbttn').animate({ width: __this.scope.FSBItemWidth }, __this.scope.FSBTimeBetweenEachFrame,() => { $('#fsbttn').width('0'); }); 
+
+                $('#fsbttn').animate({ width: __this.scope.FSBItemWidth }, __this.scope.FSBTimeBetweenEachFrame,() => { $('#fsbttn').width('0'); });
 
                 $(currentItem).fadeIn(1000);
             }
         }
+
+
 
         private init() {
             this.initPubSub();
@@ -207,8 +226,11 @@
             //now do stuff with the selected item
             var el = evt.currentTarget;
 
-         
-           
+            clearInterval(this.pointerAnimation);
+            $('#fsbttn').width('0'); $('#fsbttn').stop();
+            this.changeImageToID($(el).data('id'));
+            this.pointerAnimation = setInterval(this.changeImage, this.scope.FSBTimeBetweenEachFrame);
+            
             
         }
 

@@ -12,11 +12,11 @@ var Application;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.clearAnimation = function () {
                     clearInterval(_this.pointerAnimation);
+                    $('#fsbttn').width('0');
                     $('#fsbttn').stop();
                     _this.scope.FSBCurrentIndex = -1;
                     _this.scope.FSBItems = null;
                     _this.scope.FSBItemNos = null;
-                    $('#fsbttn').width('0');
                 };
                 this.pointerAnimation = 0;
                 this.restartAnimation = function () {
@@ -26,6 +26,9 @@ var Application;
                     setTimeout(__this.changeImage, 50); //force a first image
                 };
                 this.changeImage = function () {
+                    _this.changeImageToID('');
+                };
+                this.changeImageToID = function (guidToLoad) {
                     var __this = _this;
                     if (__this.scope.FSBItems == null || __this.scope.FSBItems.length === 0)
                         __this.scope.FSBItems = __this.scope.FSBRootElement.find('.item');
@@ -36,7 +39,19 @@ var Application;
                     });
                     if (__this.scope.FSBItems.length > 0) {
                         var previousItem = __this.scope.FSBItems[__this.scope.FSBCurrentIndex];
-                        __this.scope.FSBCurrentIndex++;
+                        //determine next index to change to
+                        if (guidToLoad === '') {
+                            __this.scope.FSBCurrentIndex++;
+                        }
+                        else {
+                            var indexToChangeTo = -1;
+                            jQuery.each(__this.scope.FSBItems, function (idx, el) {
+                                if ($(el).data('id') === guidToLoad)
+                                    indexToChangeTo = idx;
+                            });
+                            __this.scope.FSBCurrentIndex = indexToChangeTo;
+                        }
+                        //if index is greater than number of images reset to start
                         if (__this.scope.FSBCurrentIndex >= __this.scope.FSBItems.length)
                             __this.scope.FSBCurrentIndex = 0;
                         var currentItem = __this.scope.FSBItems[__this.scope.FSBCurrentIndex];
@@ -69,6 +84,11 @@ var Application;
                 this.ItemSelected = function (scope, evt) {
                     //now do stuff with the selected item
                     var el = evt.currentTarget;
+                    clearInterval(_this.pointerAnimation);
+                    $('#fsbttn').width('0');
+                    $('#fsbttn').stop();
+                    _this.changeImageToID($(el).data('id'));
+                    _this.pointerAnimation = setInterval(_this.changeImage, _this.scope.FSBTimeBetweenEachFrame);
                 };
                 this.safeApply = function (scope, fn) {
                     (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
@@ -80,7 +100,7 @@ var Application;
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
                     _this.scope.FSBRootElement = element;
-                    _this.scope.FSBTimeBetweenEachFrame = 10000; //10 seconds
+                    _this.scope.FSBTimeBetweenEachFrame = 5000; //10 seconds
                     if (attributes.$attr["daBottom"])
                         _this.scope.FSBBottom = element.attr(attributes.$attr["daBottom"]);
                     if (attributes.$attr["daTop"])
