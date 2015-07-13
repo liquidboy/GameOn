@@ -67,10 +67,11 @@
 
         clearAnimation = () => {
             clearInterval(this.pointerAnimation);
+            $('#fsbttn').stop();
             this.scope.FSBCurrentIndex = -1;
             this.scope.FSBItems = null;
             this.scope.FSBItemNos = null;
-             
+            $('#fsbttn').width('0');
         }
 
 
@@ -113,6 +114,7 @@
                 if (__this.scope.FSBCurrentIndex >= 0) $(previousItem).fadeOut(500);
 
                 
+                $('#fsbttn').animate({ width: __this.scope.FSBItemWidth }, __this.scope.FSBTimeBetweenEachFrame,() => { $('#fsbttn').width('0'); }); 
 
                 $(currentItem).fadeIn(1000);
             }

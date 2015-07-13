@@ -12,9 +12,11 @@ var Application;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.clearAnimation = function () {
                     clearInterval(_this.pointerAnimation);
+                    $('#fsbttn').stop();
                     _this.scope.FSBCurrentIndex = -1;
                     _this.scope.FSBItems = null;
                     _this.scope.FSBItemNos = null;
+                    $('#fsbttn').width('0');
                 };
                 this.pointerAnimation = 0;
                 this.restartAnimation = function () {
@@ -47,6 +49,9 @@ var Application;
                         });
                         if (__this.scope.FSBCurrentIndex >= 0)
                             $(previousItem).fadeOut(500);
+                        $('#fsbttn').animate({ width: __this.scope.FSBItemWidth }, __this.scope.FSBTimeBetweenEachFrame, function () {
+                            $('#fsbttn').width('0');
+                        });
                         $(currentItem).fadeIn(1000);
                     }
                 };

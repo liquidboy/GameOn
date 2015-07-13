@@ -29,6 +29,11 @@
         left:5px; 
         padding:0 5px 7px 5px;
     }
+    .file-storage-billboard #fsbttn {
+        height:3px; 
+        width:0; 
+        background-color:orange;
+    }
     .file-storage-billboard .itemno {
         width:15px;
         height:15px;
@@ -40,8 +45,10 @@
         float:left;
     }
 
-        .file-storage-billboard .item img {
-            width:100%;
+        .file-storage-billboard .item div {
+            height: 100%;
+            background-repeat:no-repeat;
+            background-size:cover;
         }
         .file-storage-billboard .item.selected {
             border-left: 8px solid orange;
