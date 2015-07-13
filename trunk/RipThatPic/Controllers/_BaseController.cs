@@ -23,10 +23,36 @@ namespace RipThatPic.Controllers
             return cn.Trim().ToLower();
         }
 
+
+        internal string GetClientIp(HttpRequestMessage request = null)
+        {
+            request = request ?? Request;
+
+            if (request.Properties.ContainsKey("MS_HttpContext"))
+            {
+                return ((System.Web.HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.UserHostAddress;
+            }
+            //else if (request.Properties.ContainsKey(RemoteEndpointMessageProperty.Name))
+            //{
+            //    RemoteEndpointMessageProperty prop = (RemoteEndpointMessageProperty)request.Properties[RemoteEndpointMessageProperty.Name];
+            //    return prop.Address;
+            //}
+            else if (System.Web.HttpContext.Current != null)
+            {
+                return System.Web.HttpContext.Current.Request.UserHostAddress;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+
     }
 
 
 
 
-    
+
 }

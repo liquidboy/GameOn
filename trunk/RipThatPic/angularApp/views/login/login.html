@@ -7,6 +7,7 @@
     <div ng-show="login.IsLoggedIn">
         Welcome <span class="login-name">{{login.LoggedInEntity.DisplayName}}</span>
         <div class="login-session">SessionId : {{login.LoggedInEntity.SessionId}}</div>
+        <div class="login-session">ClientIP : {{login.LoggedInEntity.ClientIP}}</div>
     </div>
 
     <table ng-hide="login.IsLoggedIn">

@@ -19,10 +19,12 @@ namespace RipThatPic.Controllers
         [HttpPost]
         public LoginEntity Post([FromBody]LoginEntity loginEntity)
         {
+            
             loginEntity.IsSuccessful = false;
             loginEntity.LoginErrorMessage = string.Empty;
             loginEntity.SessionId = Guid.Empty;
             loginEntity.DisplayName = string.Empty;
+            loginEntity.ClientIP = GetClientIp();
 
 
             if (string.IsNullOrEmpty(loginEntity.Username) || string.IsNullOrEmpty(loginEntity.Password)) {
@@ -39,6 +41,7 @@ namespace RipThatPic.Controllers
             loginEntity.DisplayName = "Anonymous";
             loginEntity.Username = ""; //clear these out
             loginEntity.Password = ""; //clear these out
+            
 
             return loginEntity;
 
@@ -67,7 +70,7 @@ namespace RipThatPic.Controllers
         public string Username { get; set; }
         public string Password { get; set; }
 
-        
+        public string ClientIP { get; set; }
 
         public LoginEntity() { }
     
