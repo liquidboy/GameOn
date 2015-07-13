@@ -25,7 +25,7 @@
             {                
                 this.scope = $scope;
                 this.scope.FSBRootElement = element;
-                this.scope.FSBTimeBetweenEachFrame = 5000;  //10 seconds
+                this.scope.FSBTimeBetweenEachFrame = 10000;  //10 seconds
                 
                 if (attributes.$attr["daBottom"]) this.scope.FSBBottom = element.attr(<string>attributes.$attr["daBottom"]);
                 if (attributes.$attr["daTop"]) this.scope.FSBTop = element.attr(<string>attributes.$attr["daTop"]);

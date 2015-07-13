@@ -100,7 +100,7 @@ var Application;
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
                     _this.scope.FSBRootElement = element;
-                    _this.scope.FSBTimeBetweenEachFrame = 5000; //10 seconds
+                    _this.scope.FSBTimeBetweenEachFrame = 10000; //10 seconds
                     if (attributes.$attr["daBottom"])
                         _this.scope.FSBBottom = element.attr(attributes.$attr["daBottom"]);
                     if (attributes.$attr["daTop"])
