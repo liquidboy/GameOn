@@ -25,6 +25,7 @@
             {                
                 this.scope = $scope;
                 this.scope.FSBRootElement = element;
+                this.scope.FSBTimeBetweenEachFrame = 10000;  //10 seconds
                 
                 if (attributes.$attr["daBottom"]) this.scope.FSBBottom = element.attr(<string>attributes.$attr["daBottom"]);
                 if (attributes.$attr["daTop"]) this.scope.FSBTop = element.attr(<string>attributes.$attr["daTop"]);
@@ -69,7 +70,7 @@
             this.scope.FSBCurrentIndex = -1;
             this.scope.FSBItems = null;
             this.scope.FSBItemNos = null;
-
+             
         }
 
 
@@ -78,14 +79,15 @@
             var __this = this;
 
             __this.clearAnimation();
-            __this.pointerAnimation = setInterval(__this.changeImage, 5000);
+            __this.pointerAnimation = setInterval(__this.changeImage, __this.scope.FSBTimeBetweenEachFrame);
+            setTimeout(__this.changeImage, 50);  //force a first image
         }
 
         changeImage = () => {
             var __this = this;
 
-            if (__this.scope.FSBItems == null) __this.scope.FSBItems = __this.scope.FSBRootElement.find('.item');
-            if (__this.scope.FSBItemNos == null) __this.scope.FSBItemNos = __this.scope.FSBRootElement.find('.itemno');
+            if (__this.scope.FSBItems == null || __this.scope.FSBItems.length === 0) __this.scope.FSBItems = __this.scope.FSBRootElement.find('.item');
+            if (__this.scope.FSBItemNos == null || __this.scope.FSBItemNos.length === 0) __this.scope.FSBItemNos = __this.scope.FSBRootElement.find('.itemno');
 
 
             __this.scope.FSBItemNos.each((id, el) => { $(el).removeClass('selected'); });
@@ -229,6 +231,7 @@
         FSBItemSelected: Function;
         FSBSelectedItems: Array<any>;
 
+        FSBTimeBetweenEachFrame: number;
         FSBRootElement: ng.IAugmentedJQuery;
         FSBCurrentIndex: number;
         FSBItems: any;

@@ -20,13 +20,14 @@ var Application;
                 this.restartAnimation = function () {
                     var __this = _this;
                     __this.clearAnimation();
-                    __this.pointerAnimation = setInterval(__this.changeImage, 5000);
+                    __this.pointerAnimation = setInterval(__this.changeImage, __this.scope.FSBTimeBetweenEachFrame);
+                    setTimeout(__this.changeImage, 50); //force a first image
                 };
                 this.changeImage = function () {
                     var __this = _this;
-                    if (__this.scope.FSBItems == null)
+                    if (__this.scope.FSBItems == null || __this.scope.FSBItems.length === 0)
                         __this.scope.FSBItems = __this.scope.FSBRootElement.find('.item');
-                    if (__this.scope.FSBItemNos == null)
+                    if (__this.scope.FSBItemNos == null || __this.scope.FSBItemNos.length === 0)
                         __this.scope.FSBItemNos = __this.scope.FSBRootElement.find('.itemno');
                     __this.scope.FSBItemNos.each(function (id, el) {
                         $(el).removeClass('selected');
@@ -74,6 +75,7 @@ var Application;
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
                     _this.scope.FSBRootElement = element;
+                    _this.scope.FSBTimeBetweenEachFrame = 10000; //10 seconds
                     if (attributes.$attr["daBottom"])
                         _this.scope.FSBBottom = element.attr(attributes.$attr["daBottom"]);
                     if (attributes.$attr["daTop"])
