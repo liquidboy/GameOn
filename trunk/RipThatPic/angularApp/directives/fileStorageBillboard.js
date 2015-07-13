@@ -41,11 +41,13 @@ var Application;
                     }, 5000);
                 };
                 this.initPubSub = function () {
+                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileUploaded, _this.RefreshData.bind(_this), undefined);
                     _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileStorageContainerChanged, _this.ContainerChanged.bind(_this), undefined);
                     _this.scope.$on('$destroy', _this.destructor);
                 };
                 this.destructor = function () {
                     var __this = _this;
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileUploaded, __this.RefreshData);
                     _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileStorageContainerChanged, __this.ContainerChanged);
                 };
                 this._isRefreshing = false;
@@ -79,18 +81,21 @@ var Application;
                         _this.scope.FSBCN = element.attr(attributes.$attr["daCn"]);
                     if (_this.scope.FSBCN == 'undefined' || _this.scope.FSBCN == undefined)
                         _this.scope.FSBCN = '';
-                    var finalStyle = '';
-                    if ($scope.FSBBottom != undefined)
-                        finalStyle += "Bottom: " + $scope.FSBBottom + ";";
-                    if ($scope.FSBTop != undefined)
-                        finalStyle += "Top: " + $scope.FSBTop + ";";
-                    if ($scope.FSBLeft != undefined)
-                        finalStyle += "Left: " + $scope.FSBLeft + ";";
-                    if ($scope.FSBRight != undefined)
-                        finalStyle += "Right: " + $scope.FSBRight + ";";
-                    //if ($scope.FSBItemWidth != undefined) finalStyle += "Width: " + $scope.FSBItemWidth + ";";
-                    //if ($scope.FSBItemHeight != undefined) finalStyle += "Height: " + $scope.FSBItemHeight + ";";
-                    _this.scope.FSBLocationStyle = finalStyle;
+                    var rootElement = $(element[0]);
+                    if ($scope.FSBBottom != undefined && element) {
+                        rootElement.css('bottom', $scope.FSBBottom);
+                    }
+                    if ($scope.FSBTop != undefined && element) {
+                        rootElement.css('top', $scope.FSBTop);
+                    }
+                    if ($scope.FSBLeft != undefined && element) {
+                        rootElement.css('left', $scope.FSBLeft);
+                    }
+                    if ($scope.FSBRight != undefined && element) {
+                        rootElement.css('right', $scope.FSBRight);
+                    }
+                    //if ($scope.FSBItemWidth != undefined && element) { rootElement.css('width', parseInt($scope.FSBItemWidth) + 20); }
+                    //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
                     _this.scope.FSBSelectedItems = [];
                     _this.scope.FSBItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);
@@ -113,6 +118,8 @@ var Application;
                     return;
                 //tag this method as already running
                 __this._isRefreshing = true;
+                clearInterval(__this.pointerAnimation);
+                __this.scope.FSBCurrentIndex = 0;
                 __this.scope.FSBItemsList = [];
                 if (__this.scope.FSBCN === '') {
                     this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {

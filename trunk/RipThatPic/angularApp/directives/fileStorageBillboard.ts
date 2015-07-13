@@ -37,15 +37,14 @@
                 if (this.scope.FSBCN == 'undefined' || this.scope.FSBCN == undefined) this.scope.FSBCN = '';
 
 
-                var finalStyle: string = '';
-                if ($scope.FSBBottom != undefined) finalStyle += "Bottom: " + $scope.FSBBottom + ";";
-                if ($scope.FSBTop != undefined) finalStyle += "Top: " + $scope.FSBTop + ";";
-                if ($scope.FSBLeft != undefined) finalStyle += "Left: " + $scope.FSBLeft + ";";
-                if ($scope.FSBRight != undefined) finalStyle += "Right: " + $scope.FSBRight + ";";
-                //if ($scope.FSBItemWidth != undefined) finalStyle += "Width: " + $scope.FSBItemWidth + ";";
-                //if ($scope.FSBItemHeight != undefined) finalStyle += "Height: " + $scope.FSBItemHeight + ";";
-                this.scope.FSBLocationStyle = finalStyle;
 
+                var rootElement: any = $(element[0]);
+                if ($scope.FSBBottom != undefined && element) { rootElement.css('bottom', $scope.FSBBottom); }
+                if ($scope.FSBTop != undefined && element) { rootElement.css('top', $scope.FSBTop); }
+                if ($scope.FSBLeft != undefined && element) { rootElement.css('left', $scope.FSBLeft); }
+                if ($scope.FSBRight != undefined && element) { rootElement.css('right', $scope.FSBRight); }
+                //if ($scope.FSBItemWidth != undefined && element) { rootElement.css('width', parseInt($scope.FSBItemWidth) + 20); }
+                //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
 
 
                 this.scope.FSBSelectedItems = [];
@@ -103,7 +102,10 @@
         }
 
         initPubSub = () => {
-
+            this.radioPubSubSvc.subscribe(
+                this.pubSubConstants.FileUploaded,
+                this.RefreshData.bind(this),
+                undefined);
           
             this.radioPubSubSvc.subscribe(
                 this.pubSubConstants.FileStorageContainerChanged,
@@ -115,6 +117,7 @@
 
         destructor = () => {
             var __this = this;
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileUploaded, __this.RefreshData);
             this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileStorageContainerChanged, __this.ContainerChanged );
         }
 
@@ -132,6 +135,9 @@
             
             //tag this method as already running
             __this._isRefreshing = true;  
+            
+            clearInterval(__this.pointerAnimation);
+            __this.scope.FSBCurrentIndex = 0;
 
             __this.scope.FSBItemsList = [];
             
@@ -199,7 +205,7 @@
         FSBItemWidth: string;
         FSBCN: string;
 
-        FSBLocationStyle: string;
+        //FSBLocationStyle: string;
 
         FSBItemSelected: Function;
         FSBSelectedItems: Array<any>;
