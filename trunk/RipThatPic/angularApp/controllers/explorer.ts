@@ -40,8 +40,7 @@
         FSPRight: string;
         FSPWidth: string;
 
-        FSPLocationStyle: string;
-
+        
         FSPItemSelected: Function;
         FSPSelectedItem: any;
 

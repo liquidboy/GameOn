@@ -26,19 +26,24 @@
             {                
                 this.scope = $scope;
            
+                
+
                 if (attributes.$attr["daBottom"]) this.scope.FSPBottom = element.attr(<string>attributes.$attr["daBottom"]);
                 if (attributes.$attr["daTop"]) this.scope.FSPTop = element.attr(<string>attributes.$attr["daTop"]);
                 if (attributes.$attr["daLeft"]) this.scope.FSPLeft = element.attr(<string>attributes.$attr["daLeft"]);
                 if (attributes.$attr["daRight"]) this.scope.FSPRight = element.attr(<string>attributes.$attr["daRight"]);
                 if (attributes.$attr["daWidth"]) this.scope.FSPWidth = element.attr(<string>attributes.$attr["daWidth"]);
 
-                var finalStyle: string = '';
-                if ($scope.FSPBottom != undefined) finalStyle += "Bottom: " + $scope.FSPBottom + ";";
-                if ($scope.FSPTop != undefined) finalStyle += "Top: " + $scope.FSPTop + ";";
-                if ($scope.FSPLeft != undefined) finalStyle += "Left: " + $scope.FSPLeft + ";";
-                if ($scope.FSPRight != undefined) finalStyle += "Right: " + $scope.FSPRight + ";";
-                if ($scope.FSPWidth != undefined) finalStyle += "Width: " + $scope.FSPWidth + ";";
-                this.scope.FSPLocationStyle = finalStyle;
+                
+
+
+                var rootElement: any = $(element[0]);
+                if ($scope.FSPBottom != undefined && element) {  rootElement.css('bottom', $scope.FSPBottom); }
+                if ($scope.FSPTop != undefined && element) { rootElement.css('top', $scope.FSPTop); }
+                if ($scope.FSPLeft != undefined && element) { rootElement.css('left', $scope.FSPLeft); }
+                if ($scope.FSPRight != undefined && element) { rootElement.css('right', $scope.FSPRight); }
+                if ($scope.FSPWidth != undefined && element) { rootElement.css('width', $scope.FSPWidth); }
+                
 
                 this.scope.FSPItemSelected = (evt) => { this.ItemSelected(this.scope, evt); }
 
