@@ -51,6 +51,8 @@
                 //if ($scope.FSBItemWidth != undefined && element) { rootElement.css('width', parseInt($scope.FSBItemWidth) + 20); }
                 //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
 
+                $('#fsbli').width(parseInt(this.scope.FSBItemWidth) - 10 + 'px');
+
 
                 this.scope.FSBSelectedItems = [];
                 this.scope.FSBItemSelected = (evt) => { this.ItemSelected(this.scope, evt);}

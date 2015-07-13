@@ -122,6 +122,7 @@ var Application;
                     }
                     //if ($scope.FSBItemWidth != undefined && element) { rootElement.css('width', parseInt($scope.FSBItemWidth) + 20); }
                     //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
+                    $('#fsbli').width(parseInt(_this.scope.FSBItemWidth) - 10 + 'px');
                     _this.scope.FSBSelectedItems = [];
                     _this.scope.FSBItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);
