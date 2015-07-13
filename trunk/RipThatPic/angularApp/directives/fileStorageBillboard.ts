@@ -64,40 +64,56 @@
         }
 
 
+        clearAnimation = () => {
+            clearInterval(this.pointerAnimation);
+            this.scope.FSBCurrentIndex = -1;
+            this.scope.FSBItems = null;
+            this.scope.FSBItemNos = null;
+
+        }
+
+
         pointerAnimation: number = 0;
         restartAnimation = () => {
             var __this = this;
-            //setup rotating animation
-            
-            clearInterval(__this.pointerAnimation);
-            __this.scope.FSBCurrentIndex = 0;
 
-            __this.pointerAnimation = setInterval(() => {
-                var items = __this.scope.FSBRootElement.find('.item');
-                var itemnos = __this.scope.FSBRootElement.find('.itemno');
+            __this.clearAnimation();
+            __this.pointerAnimation = setInterval(__this.changeImage, 5000);
+        }
 
-                itemnos.each((id, el) => { $(el).removeClass('selected'); });
+        changeImage = () => {
+            var __this = this;
 
-                if (items.length > 0) {
-                    var item = items[__this.scope.FSBCurrentIndex];
-                    var id = $(item).data('id');
-                    jQuery.each(itemnos,(idx) => {
-                        var iit = itemnos[idx];
-                        if ($(iit).data('id') === id) {
-                            $(iit).addClass('selected');
-                        }
-                    });
-                    
+            if (__this.scope.FSBItems == null) __this.scope.FSBItems = __this.scope.FSBRootElement.find('.item');
+            if (__this.scope.FSBItemNos == null) __this.scope.FSBItemNos = __this.scope.FSBRootElement.find('.itemno');
 
-                    if (__this.scope.FSBCurrentIndex >= 0) $(item).fadeOut(500);
 
-                    __this.scope.FSBCurrentIndex++;
-                    if (__this.scope.FSBCurrentIndex >= items.length) __this.scope.FSBCurrentIndex = 0;
+            __this.scope.FSBItemNos.each((id, el) => { $(el).removeClass('selected'); });
 
-                    $(item).fadeIn(1000);
-                }
-            }, 5000);
+            if (__this.scope.FSBItems.length > 0) {
+                var previousItem = __this.scope.FSBItems[__this.scope.FSBCurrentIndex];
 
+                __this.scope.FSBCurrentIndex++;
+                if (__this.scope.FSBCurrentIndex >= __this.scope.FSBItems.length) __this.scope.FSBCurrentIndex = 0;
+
+                var currentItem = __this.scope.FSBItems[__this.scope.FSBCurrentIndex];
+
+
+                var id = $(currentItem).data('id');
+                jQuery.each(__this.scope.FSBItemNos,(idx) => {
+                    var iit = __this.scope.FSBItemNos[idx];
+                    if ($(iit).data('id') === id) {
+                        $(iit).addClass('selected');
+                    }
+                });
+
+
+                if (__this.scope.FSBCurrentIndex >= 0) $(previousItem).fadeOut(500);
+
+                
+
+                $(currentItem).fadeIn(1000);
+            }
         }
 
         private init() {
@@ -140,8 +156,7 @@
             //tag this method as already running
             __this._isRefreshing = true;  
             
-            clearInterval(__this.pointerAnimation);
-            __this.scope.FSBCurrentIndex = 0;
+            __this.clearAnimation();
 
             __this.scope.FSBItemsList = [];
             
@@ -197,9 +212,7 @@
     }
 
     export interface IFileStorageBillboardScope extends ng.IScope {
-
-
-        
+       
         FSBItemsList: Array<any>;
         FSBBottom: string;
         FSBTop: string;
@@ -218,6 +231,8 @@
 
         FSBRootElement: ng.IAugmentedJQuery;
         FSBCurrentIndex: number;
+        FSBItems: any;
+        FSBItemNos: any;
     }
     
 

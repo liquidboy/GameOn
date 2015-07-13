@@ -1,7 +1,7 @@
 ﻿<div class="file-storage-billboard" >
 
     <div id="fsli1">
-        <div ng-click="FSBItemSelected($event)"
+        <div ng-click="FSBItemSelected($event)" 
              ng-repeat="item in FSBItemsList"
              ng-include="'fsbitemlist.html'"
              data-id="{{item.DisplayId}}"
@@ -12,7 +12,7 @@
         </script>
     </div>
 
-    <div id="fsbli" ng-style="{'top': FSBItemHeight, 'width' : FSBItemWidth}">
+    <div id="fsbli" ng-style="{ 'width' : FSBItemWidth}">
         <div 
              ng-repeat="item in FSBItemsList"
              ng-include="'fsbitemlist2.html'"

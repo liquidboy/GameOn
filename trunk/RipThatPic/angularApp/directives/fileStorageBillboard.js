@@ -10,35 +10,44 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
+                this.clearAnimation = function () {
+                    clearInterval(_this.pointerAnimation);
+                    _this.scope.FSBCurrentIndex = -1;
+                    _this.scope.FSBItems = null;
+                    _this.scope.FSBItemNos = null;
+                };
                 this.pointerAnimation = 0;
                 this.restartAnimation = function () {
                     var __this = _this;
-                    //setup rotating animation
-                    clearInterval(__this.pointerAnimation);
-                    __this.scope.FSBCurrentIndex = 0;
-                    __this.pointerAnimation = setInterval(function () {
-                        var items = __this.scope.FSBRootElement.find('.item');
-                        var itemnos = __this.scope.FSBRootElement.find('.itemno');
-                        itemnos.each(function (id, el) {
-                            $(el).removeClass('selected');
+                    __this.clearAnimation();
+                    __this.pointerAnimation = setInterval(__this.changeImage, 5000);
+                };
+                this.changeImage = function () {
+                    var __this = _this;
+                    if (__this.scope.FSBItems == null)
+                        __this.scope.FSBItems = __this.scope.FSBRootElement.find('.item');
+                    if (__this.scope.FSBItemNos == null)
+                        __this.scope.FSBItemNos = __this.scope.FSBRootElement.find('.itemno');
+                    __this.scope.FSBItemNos.each(function (id, el) {
+                        $(el).removeClass('selected');
+                    });
+                    if (__this.scope.FSBItems.length > 0) {
+                        var previousItem = __this.scope.FSBItems[__this.scope.FSBCurrentIndex];
+                        __this.scope.FSBCurrentIndex++;
+                        if (__this.scope.FSBCurrentIndex >= __this.scope.FSBItems.length)
+                            __this.scope.FSBCurrentIndex = 0;
+                        var currentItem = __this.scope.FSBItems[__this.scope.FSBCurrentIndex];
+                        var id = $(currentItem).data('id');
+                        jQuery.each(__this.scope.FSBItemNos, function (idx) {
+                            var iit = __this.scope.FSBItemNos[idx];
+                            if ($(iit).data('id') === id) {
+                                $(iit).addClass('selected');
+                            }
                         });
-                        if (items.length > 0) {
-                            var item = items[__this.scope.FSBCurrentIndex];
-                            var id = $(item).data('id');
-                            jQuery.each(itemnos, function (idx) {
-                                var iit = itemnos[idx];
-                                if ($(iit).data('id') === id) {
-                                    $(iit).addClass('selected');
-                                }
-                            });
-                            if (__this.scope.FSBCurrentIndex >= 0)
-                                $(item).fadeOut(500);
-                            __this.scope.FSBCurrentIndex++;
-                            if (__this.scope.FSBCurrentIndex >= items.length)
-                                __this.scope.FSBCurrentIndex = 0;
-                            $(item).fadeIn(1000);
-                        }
-                    }, 5000);
+                        if (__this.scope.FSBCurrentIndex >= 0)
+                            $(previousItem).fadeOut(500);
+                        $(currentItem).fadeIn(1000);
+                    }
                 };
                 this.initPubSub = function () {
                     _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileUploaded, _this.RefreshData.bind(_this), undefined);
@@ -128,8 +137,7 @@ var Application;
                     return;
                 //tag this method as already running
                 __this._isRefreshing = true;
-                clearInterval(__this.pointerAnimation);
-                __this.scope.FSBCurrentIndex = 0;
+                __this.clearAnimation();
                 __this.scope.FSBItemsList = [];
                 if (__this.scope.FSBCN === '') {
                     this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
