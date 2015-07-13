@@ -30,6 +30,8 @@
                 if (attributes.$attr["daTop"]) this.scope.FSBTop = element.attr(<string>attributes.$attr["daTop"]);
                 if (attributes.$attr["daLeft"]) this.scope.FSBLeft = element.attr(<string>attributes.$attr["daLeft"]);
                 if (attributes.$attr["daRight"]) this.scope.FSBRight = element.attr(<string>attributes.$attr["daRight"]);
+                if (attributes.$attr["daHeight"]) this.scope.FSBHeight = element.attr(<string>attributes.$attr["daHeight"]);
+                if (attributes.$attr["daWidth"]) this.scope.FSBWidth = element.attr(<string>attributes.$attr["daWidth"]);
                 if (attributes.$attr["daItemHeight"]) this.scope.FSBItemHeight = element.attr(<string>attributes.$attr["daItemHeight"]);
                 if (attributes.$attr["daItemWidth"]) this.scope.FSBItemWidth = element.attr(<string>attributes.$attr["daItemWidth"]);
 
@@ -43,6 +45,8 @@
                 if ($scope.FSBTop != undefined && element) { rootElement.css('top', $scope.FSBTop); }
                 if ($scope.FSBLeft != undefined && element) { rootElement.css('left', $scope.FSBLeft); }
                 if ($scope.FSBRight != undefined && element) { rootElement.css('right', $scope.FSBRight); }
+                if ($scope.FSBWidth != undefined && element) { rootElement.css('width', $scope.FSBWidth); }
+                if ($scope.FSBHeight != undefined && element) { rootElement.css('height', $scope.FSBHeight); }
                 //if ($scope.FSBItemWidth != undefined && element) { rootElement.css('width', parseInt($scope.FSBItemWidth) + 20); }
                 //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
 
@@ -201,6 +205,8 @@
         FSBTop: string;
         FSBLeft: string;
         FSBRight: string;
+        FSBHeight: string;
+        FSBWidth: string;
         FSBItemHeight: string;
         FSBItemWidth: string;
         FSBCN: string;
@@ -219,6 +225,7 @@
     var myapp: ng.IModule = angular.module('bootstrapApp');
     myapp.directive( "dFileStorageBillboard", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new FileStorageBillboardDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);
 }
+
 
 
 

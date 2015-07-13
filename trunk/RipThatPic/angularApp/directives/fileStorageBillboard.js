@@ -73,6 +73,10 @@ var Application;
                         _this.scope.FSBLeft = element.attr(attributes.$attr["daLeft"]);
                     if (attributes.$attr["daRight"])
                         _this.scope.FSBRight = element.attr(attributes.$attr["daRight"]);
+                    if (attributes.$attr["daHeight"])
+                        _this.scope.FSBHeight = element.attr(attributes.$attr["daHeight"]);
+                    if (attributes.$attr["daWidth"])
+                        _this.scope.FSBWidth = element.attr(attributes.$attr["daWidth"]);
                     if (attributes.$attr["daItemHeight"])
                         _this.scope.FSBItemHeight = element.attr(attributes.$attr["daItemHeight"]);
                     if (attributes.$attr["daItemWidth"])
@@ -93,6 +97,12 @@ var Application;
                     }
                     if ($scope.FSBRight != undefined && element) {
                         rootElement.css('right', $scope.FSBRight);
+                    }
+                    if ($scope.FSBWidth != undefined && element) {
+                        rootElement.css('width', $scope.FSBWidth);
+                    }
+                    if ($scope.FSBHeight != undefined && element) {
+                        rootElement.css('height', $scope.FSBHeight);
                     }
                     //if ($scope.FSBItemWidth != undefined && element) { rootElement.css('width', parseInt($scope.FSBItemWidth) + 20); }
                     //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
