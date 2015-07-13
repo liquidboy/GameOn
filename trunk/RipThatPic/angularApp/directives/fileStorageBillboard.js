@@ -117,6 +117,8 @@ var Application;
                         _this.scope.FSBItemHeight = element.attr(attributes.$attr["daItemHeight"]);
                     if (attributes.$attr["daItemWidth"])
                         _this.scope.FSBItemWidth = element.attr(attributes.$attr["daItemWidth"]);
+                    if (attributes.$attr["daHideNumbers"])
+                        _this.scope.FSBHideNumbers = element.attr(attributes.$attr["daHideNumbers"]) == "true" ? true : false;
                     if (attributes.$attr["daCn"])
                         _this.scope.FSBCN = element.attr(attributes.$attr["daCn"]);
                     if (_this.scope.FSBCN == 'undefined' || _this.scope.FSBCN == undefined)
@@ -143,6 +145,10 @@ var Application;
                     //if ($scope.FSBItemWidth != undefined && element) { rootElement.css('width', parseInt($scope.FSBItemWidth) + 20); }
                     //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
                     $('#fsbli').width(parseInt(_this.scope.FSBItemWidth) - 10 + 'px');
+                    if ($scope.FSBHideNumbers)
+                        $('#fsbli').hide();
+                    else
+                        $('#fsbli').show();
                     _this.scope.FSBSelectedItems = [];
                     _this.scope.FSBItemSelected = function (evt) {
                         _this.ItemSelected(_this.scope, evt);

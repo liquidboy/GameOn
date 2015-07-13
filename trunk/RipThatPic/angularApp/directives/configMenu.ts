@@ -40,7 +40,7 @@
                 var foundTab = element.find('a[data-id="' + selectedTab + '"]');
                 foundTab.addClass("active");
 
-                if (selectedTab === 'home' || selectedTab === 'login' || selectedTab === 'explorer' ) {
+                if (selectedTab === 'home' || selectedTab === 'login' || selectedTab === 'explorer' || selectedTab === 'splash') {
                     var menuConfig = element.find('span[data-id="menu-config"]');
                     menuConfig.addClass('hidden');
                 }

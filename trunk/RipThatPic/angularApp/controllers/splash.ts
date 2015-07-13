@@ -33,7 +33,7 @@
                 //http://weblogs.asp.net/dwahlin/cancelling-route-navigation-in-angularjs
                 //without the rootscope it fails
                 __this.$rootScope.$evalAsync(function () {
-                    __this.location.path('/explorer'); 
+                    __this.location.path('/page'); 
                 }); 
 
             }, 1000);

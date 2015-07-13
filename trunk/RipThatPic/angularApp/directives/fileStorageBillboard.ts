@@ -35,6 +35,7 @@
                 if (attributes.$attr["daWidth"]) this.scope.FSBWidth = element.attr(<string>attributes.$attr["daWidth"]);
                 if (attributes.$attr["daItemHeight"]) this.scope.FSBItemHeight = element.attr(<string>attributes.$attr["daItemHeight"]);
                 if (attributes.$attr["daItemWidth"]) this.scope.FSBItemWidth = element.attr(<string>attributes.$attr["daItemWidth"]);
+                if (attributes.$attr["daHideNumbers"]) this.scope.FSBHideNumbers = element.attr(<string>attributes.$attr["daHideNumbers"]) == "true" ? true : false;
 
                 if (attributes.$attr["daCn"]) this.scope.FSBCN = element.attr(<string>attributes.$attr["daCn"]);
                 if (this.scope.FSBCN == 'undefined' || this.scope.FSBCN == undefined) this.scope.FSBCN = '';
@@ -52,7 +53,7 @@
                 //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
 
                 $('#fsbli').width(parseInt(this.scope.FSBItemWidth) - 10 + 'px');
-
+                if ($scope.FSBHideNumbers) $('#fsbli').hide(); else $('#fsbli').show();
 
                 this.scope.FSBSelectedItems = [];
                 this.scope.FSBItemSelected = (evt) => { this.ItemSelected(this.scope, evt);}
@@ -251,6 +252,7 @@
         FSBItemHeight: string;
         FSBItemWidth: string;
         FSBCN: string;
+        FSBHideNumbers: boolean;
 
         //FSBLocationStyle: string;
 

@@ -310,10 +310,14 @@
     <Content Include="angularApp\directives\inlineWindow.js">
       <DependentUpon>inlineWindow.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\pageLite.js">
+      <DependentUpon>pageLite.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\partials\file-storage-billboard.html" />
+    <Content Include="angularApp\partials\page-lite.html" />
     <Content Include="angularApp\partials\inline-window.html" />
     <Content Include="angularApp\partials\file-storage-picker.html" />
     <Content Include="angularApp\partials\file-storage-list.html" />
@@ -625,6 +629,9 @@
     </Content>
     <Content Include="angularApp\directives\fileStorageBillboard.js.map">
       <DependentUpon>fileStorageBillboard.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\pageLite.js.map">
+      <DependentUpon>pageLite.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1591,6 +1598,7 @@
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
     <Content Include="Themes\FileStorageBillboard.css" />
+    <Content Include="Themes\PageLite.css" />
     <Content Include="Themes\InlineWindow.css" />
     <Content Include="Themes\FileStoragePicker.css" />
     <Content Include="Themes\FileStorageList.css" />
@@ -1737,6 +1745,7 @@
     <TypeScriptCompile Include="angularApp\directives\fileStorageList.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileUpload.ts" />
     <TypeScriptCompile Include="angularApp\directives\configMenu.ts" />
+    <TypeScriptCompile Include="angularApp\directives\pageLite.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />
