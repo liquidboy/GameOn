@@ -3,14 +3,14 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigCtrl = (function () {
-            function ConfigCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService, radioPubSubSvc, pubSubConstants) {
+            function ConfigCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authSvc, radioPubSubSvc, pubSubConstants) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
                 this.dataSvc = dataSvc;
                 this.instanceFactory = instanceFactory;
-                this.authService = authService;
+                this.authSvc = authSvc;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.pubSubConstants = pubSubConstants;
                 this.destructor = function () {
@@ -18,7 +18,7 @@ var Application;
                 };
                 var __this = this;
                 var ctl = $('.list-of-pages');
-                dataSvc.getAllConfig(this.authService.sessionId).success(function (result) {
+                dataSvc.getAllConfig(this.authSvc.sessionId).success(function (result) {
                     __this.PageList = result.Pages;
                     __this.BannerList = result.Banners;
                     __this.AreaList = result.Areas;
@@ -27,6 +27,7 @@ var Application;
                 }).error(function (err) {
                 });
                 $scope.$on('$destroy', __this.destructor);
+                this.authSvc.ping('config');
             }
             return ConfigCtrl;
         })();

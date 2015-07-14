@@ -45,6 +45,9 @@ var Application;
             DataSvc.prototype.login = function (username, password) {
                 return this.http.post(this.urlBase + 'login', { "username": username, "password": password });
             };
+            DataSvc.prototype.ping = function (tid) {
+                return this.http.post(this.urlBase + 'ping', { "ia": true, "ts": new Date().getTime(), "tid": tid });
+            };
             DataSvc.prototype.testCall = function () {
                 alert('DataSvc test call');
             };

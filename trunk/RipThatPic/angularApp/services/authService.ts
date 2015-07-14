@@ -1,6 +1,7 @@
 ﻿module Application.Services {
     export interface IAuthService{
         sessionId: string;
+        ping(tid: string);
         login(username: string, userpwd: string);
         IsLoggedIn: boolean;
         LoginEntity: any;
@@ -24,7 +25,17 @@
             public pubSubConstants: Application.Constants.PubSubConstants ){
 
         }
-
+        ping(tid: string) {
+            this.sessionId = 'xxxx-xxxx-xxxx-xxxx-xxxx';
+            this.dataSvc
+                .ping(tid)
+                .success((result: any) => {
+                    var r = result;
+                })
+                .error((err) => {
+                    alert(err.message);
+                });
+        }
         login(username: string, userpwd: string) {
             //todo: do actual authentication call, still need to work out what approach to take
             this.sessionId = 'xxxx-xxxx-xxxx-xxxx-xxxx';

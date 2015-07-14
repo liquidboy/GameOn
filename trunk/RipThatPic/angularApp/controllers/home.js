@@ -3,13 +3,14 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var HomeCtrl = (function () {
-            function HomeCtrl($scope, $rootScope, realtimeDataService, radioPubSubSvc, pubSubConstants) {
+            function HomeCtrl($scope, $rootScope, realtimeDataService, radioPubSubSvc, pubSubConstants, authSvc) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.realtimeDataService = realtimeDataService;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.pubSubConstants = pubSubConstants;
+                this.authSvc = authSvc;
                 this.NotificationMessageRecieved = function (message) {
                     var encodedMsg = $('<div />').text(message).html();
                     $('#alerts').append('<li>' + encodedMsg + '</li>'); //i need to clean this up as this "alerts" element sits in index.html
@@ -33,12 +34,13 @@ var Application;
                 $('#butTestNotifications').click(function () {
                     __this.realtimeDataService.send(Date.now().toString());
                 });
+                this.authSvc.ping('home');
             };
             return HomeCtrl;
         })();
         Controllers.HomeCtrl = HomeCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("HomeCtrl", ["$scope", "$rootScope", "realtimeDataService", "radioPubSubSvc", "pubSubConstants", HomeCtrl]);
+        myapp.controller("HomeCtrl", ["$scope", "$rootScope", "realtimeDataService", "radioPubSubSvc", "pubSubConstants", "authSvc", HomeCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=home.js.map

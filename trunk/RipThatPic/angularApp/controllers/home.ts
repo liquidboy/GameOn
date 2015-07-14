@@ -6,7 +6,8 @@
             public $rootScope: any,
             public realtimeDataService: Application.Services.IRealtimeDataService,
             public radioPubSubSvc: Application.Services.IRadioPubSubSvc,
-            public pubSubConstants: Application.Constants.PubSubConstants) {
+            public pubSubConstants: Application.Constants.PubSubConstants,
+            public authSvc: Application.Services.IAuthService) {
 
             this.init();
         }
@@ -33,6 +34,7 @@
                 __this.realtimeDataService.send( Date.now().toString() );
             });
 
+            this.authSvc.ping('home');
         }
 
         NotificationMessageRecieved = ( message: any) => {
@@ -46,5 +48,5 @@
         }
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("HomeCtrl", ["$scope", "$rootScope", "realtimeDataService", "radioPubSubSvc", "pubSubConstants", HomeCtrl]); 
+    myapp.controller("HomeCtrl", ["$scope", "$rootScope", "realtimeDataService", "radioPubSubSvc", "pubSubConstants", "authSvc", HomeCtrl]); 
 }

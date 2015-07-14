@@ -2,7 +2,7 @@
     export class ExplorerCtrl {
 
 
-        constructor(public $scope: ng.IScope, public $rootScope: any) {
+        constructor(public $scope: ng.IScope, public $rootScope: any, public authSvc: Application.Services.IAuthService) {
 
             this.init();
         }
@@ -19,6 +19,7 @@
 
             //});
 
+            this.authSvc.ping('explorer');
 
 
         }
@@ -65,5 +66,5 @@
 
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ExplorerCtrl", ["$scope", "$rootScope", ExplorerCtrl]);
+    myapp.controller("ExplorerCtrl", ["$scope", "$rootScope", "authSvc", ExplorerCtrl]);
 }

@@ -18,6 +18,14 @@ var Application;
                     }
                 ];
             };
+            AuthService.prototype.ping = function (tid) {
+                this.sessionId = 'xxxx-xxxx-xxxx-xxxx-xxxx';
+                this.dataSvc.ping(tid).success(function (result) {
+                    var r = result;
+                }).error(function (err) {
+                    alert(err.message);
+                });
+            };
             AuthService.prototype.login = function (username, userpwd) {
                 var _this = this;
                 //todo: do actual authentication call, still need to work out what approach to take

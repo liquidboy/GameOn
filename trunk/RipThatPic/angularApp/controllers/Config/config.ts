@@ -14,7 +14,7 @@
             public serviceHelperSvc: Application.Services.IServiceHelper,
             public dataSvc: Application.Services.IData,
             public instanceFactory: Application.Services.IInstanceFactory,
-            public authService: Application.Services.IAuthService,
+            public authSvc: Application.Services.IAuthService,
             public radioPubSubSvc: Application.Services.IRadioPubSubSvc,
             public pubSubConstants: Application.Constants.PubSubConstants) {
 
@@ -23,7 +23,7 @@
             
 
 
-            dataSvc.getAllConfig(this.authService.sessionId)
+            dataSvc.getAllConfig(this.authSvc.sessionId)
                 .success((result: any) => {
                     __this.PageList = result.Pages;
                     __this.BannerList = result.Banners;
@@ -35,6 +35,8 @@
             
 
             $scope.$on('$destroy', __this.destructor);
+
+            this.authSvc.ping('config');
         }
 
 

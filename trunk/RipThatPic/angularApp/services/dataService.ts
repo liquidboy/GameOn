@@ -19,6 +19,7 @@
         //saveArea(name: string, grouping: string, color: string, longname: string, displayid: string ): ng.IHttpPromise<{}>;
 
         login(username: string, password: string): ng.IHttpPromise<{}>;
+        ping(tid: string): ng.IHttpPromise<{}>;
 
         testCall();
     }
@@ -59,6 +60,7 @@
         save(type: string, entity: any, sessionid: string) { return this.http.post(this.urlBase + type , entity); }
 
         login(username: string, password: string) { return this.http.post(this.urlBase + 'login', {"username": username, "password": password}); }
+        ping(tid: string) { return this.http.post(this.urlBase + 'ping', { "ia": true, "ts": new Date().getTime(), "tid" : tid }); }
 
 
 
