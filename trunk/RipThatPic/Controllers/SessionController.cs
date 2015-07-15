@@ -94,6 +94,7 @@ namespace RipThatPic.Controllers
         public string Color { get; set; }
         public string Url { get; set; }
         public string Description { get; set; }
+        public string LatestPing { get; set; }
 
         public Guid DisplayId { get; set; }
     }
