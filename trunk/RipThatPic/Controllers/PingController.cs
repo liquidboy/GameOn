@@ -37,8 +37,18 @@ namespace RipThatPic.Controllers
 
 
 
+        // GET: api/Session?name=sessionname&grouping=groupname
+        public async Task<PingEntity> Get([FromBody]PingEntity ping)
+        {
+            var processor = GetAzureProcessor();
+            var ret = await processor.CreateTable("Session");
+            var session =  await processor.RetrieveFromTable<SessionEntity>("Session", "ping", ping.ClientIP);
 
-        
+            ping.FromString(session.LatestPing);
+
+            return ping;
+        }
+
 
 
     }
