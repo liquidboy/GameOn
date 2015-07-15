@@ -1,4 +1,5 @@
 ﻿module Application.Controllers {
+
     export class ExplorerCtrl {
 
 
@@ -19,8 +20,11 @@
 
             //});
 
-            this.authSvc.ping('explorer');
-
+            try {
+                __this.authSvc.ping('explorer');
+            } catch (e) {
+                alert(e.message);
+            }
 
         }
         

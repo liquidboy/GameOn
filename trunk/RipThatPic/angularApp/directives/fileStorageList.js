@@ -72,7 +72,7 @@ var Application;
                 this.restrict = 'E';
                 this.replace = true;
                 this.templateUrl = '/angularApp/partials/file-storage-list.html';
-                this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl];
+                //this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl ];
                 this.link = function ($scope, element, attributes, controller) {
                     _this.scope = $scope;
                     if (attributes.$attr["daBottom"])

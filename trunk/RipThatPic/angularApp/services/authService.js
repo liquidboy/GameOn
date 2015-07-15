@@ -9,7 +9,7 @@ var Application;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.pubSubConstants = pubSubConstants;
                 this.IsLoggedIn = false;
-                this.sessionId = "";
+                this.sessionId = "xxxx-xxxx-xxxx-xxxx-xxxx";
             }
             AuthService.prototype.injection = function () {
                 return [
@@ -19,8 +19,7 @@ var Application;
                 ];
             };
             AuthService.prototype.ping = function (tid) {
-                this.sessionId = 'xxxx-xxxx-xxxx-xxxx-xxxx';
-                this.dataSvc.ping(tid).success(function (result) {
+                this.dataSvc.ping(tid, this.sessionId).success(function (result) {
                     var r = result;
                 }).error(function (err) {
                     alert(err.message);
@@ -29,7 +28,6 @@ var Application;
             AuthService.prototype.login = function (username, userpwd) {
                 var _this = this;
                 //todo: do actual authentication call, still need to work out what approach to take
-                this.sessionId = 'xxxx-xxxx-xxxx-xxxx-xxxx';
                 this.dataSvc.login(username, userpwd).success(function (result) {
                     if (result.IsSuccessful) {
                         _this.sessionId = result.SessionId;

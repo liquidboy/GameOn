@@ -15,38 +15,38 @@ var Application;
                     }
                 ];
             };
-            DataSvc.prototype.delete = function (type, name, grouping, sessionid) {
+            DataSvc.prototype.delete = function (type, name, grouping, sid) {
                 return this.http.delete(this.urlBase + type + "?" + "grouping=" + grouping + "&name=" + name);
             };
-            DataSvc.prototype.deleteByDisplayId = function (type, displayid, sessionid) {
+            DataSvc.prototype.deleteByDisplayId = function (type, displayid, sid) {
                 return this.http.delete(this.urlBase + type + "?displayid=" + displayid);
             };
-            DataSvc.prototype.getByDisplayId = function (type, displayid, sessionid) {
+            DataSvc.prototype.getByDisplayId = function (type, displayid, sid) {
                 return this.http.get(this.urlBase + type + "/" + displayid);
             };
-            DataSvc.prototype.getAll = function (type, sessionid) {
+            DataSvc.prototype.getAll = function (type, sid) {
                 return this.http.get(this.urlBase + type + "s");
             };
-            DataSvc.prototype.getAllByGrouping = function (type, grouping, sessionid) {
+            DataSvc.prototype.getAllByGrouping = function (type, grouping, sid) {
                 return this.http.get(this.urlBase + type + "s?grouping=" + grouping);
             };
-            DataSvc.prototype.getAllConfig = function (sessionid) {
+            DataSvc.prototype.getAllConfig = function (sid) {
                 return this.http.get(this.urlBase + "config");
             };
-            DataSvc.prototype.getGroupings = function (type, sessionid) {
+            DataSvc.prototype.getGroupings = function (type, sid) {
                 return this.http.get(this.urlBase + "groupings?tablename=" + type);
             };
-            DataSvc.prototype.get = function (type, grouping, name, sessionid) {
+            DataSvc.prototype.get = function (type, grouping, name, sid) {
                 return this.http.get(this.urlBase + type + "?grouping=" + grouping + "&name=" + name);
             };
-            DataSvc.prototype.save = function (type, entity, sessionid) {
+            DataSvc.prototype.save = function (type, entity, sid) {
                 return this.http.post(this.urlBase + type, entity);
             };
             DataSvc.prototype.login = function (username, password) {
                 return this.http.post(this.urlBase + 'login', { "username": username, "password": password });
             };
-            DataSvc.prototype.ping = function (tid) {
-                return this.http.post(this.urlBase + 'ping', { "ia": true, "ts": new Date().getTime(), "tid": tid });
+            DataSvc.prototype.ping = function (tid, sid) {
+                return this.http.post(this.urlBase + 'ping', { "ia": true, "ts": new Date().getTime(), "tid": tid, "sid": sid });
             };
             DataSvc.prototype.testCall = function () {
                 alert('DataSvc test call');

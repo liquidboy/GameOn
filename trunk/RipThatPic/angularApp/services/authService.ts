@@ -10,7 +10,7 @@
     export class AuthService implements IAuthService{
 
         IsLoggedIn: boolean = false;
-        sessionId: string = "";
+        sessionId: string = "xxxx-xxxx-xxxx-xxxx-xxxx";
         LoginEntity: any;
 
         public injection(): Array<any> {
@@ -26,9 +26,8 @@
 
         }
         ping(tid: string) {
-            this.sessionId = 'xxxx-xxxx-xxxx-xxxx-xxxx';
             this.dataSvc
-                .ping(tid)
+                .ping(tid, this.sessionId)
                 .success((result: any) => {
                     var r = result;
                 })
@@ -38,7 +37,6 @@
         }
         login(username: string, userpwd: string) {
             //todo: do actual authentication call, still need to work out what approach to take
-            this.sessionId = 'xxxx-xxxx-xxxx-xxxx-xxxx';
             this.dataSvc
                 .login(username, userpwd)
                 .success((result: any) => {

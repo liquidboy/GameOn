@@ -34,7 +34,7 @@ var Application;
                 $('#butTestNotifications').click(function () {
                     __this.realtimeDataService.send(Date.now().toString());
                 });
-                this.authSvc.ping('home');
+                __this.authSvc.ping('home');
             };
             return HomeCtrl;
         })();

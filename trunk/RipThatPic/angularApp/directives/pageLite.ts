@@ -19,7 +19,7 @@
             this.restrict = 'E';
             this.replace = true;
             this.templateUrl = '/angularApp/partials/page-lite.html';
-            this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl];
+            //this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl];
             this.link = ($scope: Application.Controllers.IExplorerController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: Application.Controllers.IExplorerController) => {
                 this.scope = $scope;
             }

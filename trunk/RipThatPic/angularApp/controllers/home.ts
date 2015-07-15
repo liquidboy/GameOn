@@ -34,7 +34,7 @@
                 __this.realtimeDataService.send( Date.now().toString() );
             });
 
-            this.authSvc.ping('home');
+            __this.authSvc.ping('home');
         }
 
         NotificationMessageRecieved = ( message: any) => {

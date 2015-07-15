@@ -20,7 +20,7 @@
             this.restrict = 'E';
             this.replace = true;
             this.templateUrl = '/angularApp/partials/file-storage-billboard.html';
-            this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl ];
+           // this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl ];
             this.link = ($scope: IFileStorageBillboardScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: ng.INgModelController) =>
             {                
                 this.scope = $scope;

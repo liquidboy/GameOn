@@ -11,12 +11,12 @@ var Application;
             }
             ExplorerCtrl.prototype.init = function () {
                 var __this = this;
-                //this.$rootScope.$on("show-serviced",(evt, area) => {
-                //    $("#dRequirements").show();
-                //    $("#dWizard").show();
-                //    this.$rootScope.$broadcast("wizard-step-selected", "step8");
-                //});
-                this.authSvc.ping('explorer');
+                try {
+                    __this.authSvc.ping('explorer');
+                }
+                catch (e) {
+                    alert(e.message);
+                }
             };
             return ExplorerCtrl;
         })();
