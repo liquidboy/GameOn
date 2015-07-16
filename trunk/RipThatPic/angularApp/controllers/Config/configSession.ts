@@ -2,6 +2,7 @@
     export class ConfigSessionCtrl {
         EntityType: string = "session";
         ItemsList: Array<any>;
+        PingDetails: Array<any>;
         SelectedItem: any;
 
         constructor(
@@ -77,6 +78,8 @@
             this.SelectedItem.GroupingIsReadOnly = true;
             this.SelectedItem._Model = model;
             this.SelectedItem._Model.IsSelected = true;
+
+            this.PingDetails = model.LatestPing.split("|");
         }
 
 

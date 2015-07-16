@@ -41,6 +41,7 @@ var Application;
                     _this.SelectedItem.GroupingIsReadOnly = true;
                     _this.SelectedItem._Model = model;
                     _this.SelectedItem._Model.IsSelected = true;
+                    _this.PingDetails = model.LatestPing.split("|");
                 };
                 this.init();
             }

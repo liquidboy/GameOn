@@ -65,6 +65,7 @@
             <tr><td class="label">Name :</td><td>{{configsession.SelectedItem.Name}}</td></tr>
             <tr><td class="label">LastModified (UTC) :</td><td>{{configsession.SelectedItem.ModifiedDateTime}}</td></tr>
             <tr><td class="label">LastModified (GMT) :</td><td>{{configsession.SelectedItem.DisplayDateTime}}</td></tr>
+            <tr><td class="label">Ping Details :</td><td><div ng-repeat="pi in configsession.PingDetails" ng-include="'pingitemlist.html'"></div></td></tr>
             <tr><td colspan="2"><br /></td></tr>
             <tr>
                 <td></td>
@@ -79,4 +80,7 @@
     <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
     <td>{{item.Name}} </td>
     <td>{{item.DisplayDateTime}} </td>
+</script>
+<script type="text/ng-template" id="pingitemlist.html">
+    <div>- {{pi}}</div>
 </script>
