@@ -1451,6 +1451,7 @@
     <Content Include="Scripts\plupload\plupload.min.js" />
     <Content Include="Scripts\poly2tri.js" />
     <Content Include="Scripts\radio.min.js" />
+    <Content Include="Scripts\utilities\date-extensions.js" />
     <Content Include="script\EditorIntelliSense\Helpers.txt" />
     <Content Include="script\EditorIntelliSense\jquery.txt" />
     <Content Include="script\EditorIntelliSense\Office.Runtime.txt" />

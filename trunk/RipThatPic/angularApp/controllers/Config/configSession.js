@@ -52,10 +52,12 @@ var Application;
                 var __this = this;
                 this.dataSvc.getAll(__this.EntityType, __this.authService.sessionId).success(function (result) {
                     var temp = result;
-                    //$.each(result,() => {
-                    //    var _dt = Date.parse(this.ModifiedDateTime);
-                    //    this.DisplayDateTime = _dt;
-                    //});
+                    var _date = Date;
+                    var iso8601Date = new Date();
+                    $.each(result, function (idx, el) {
+                        iso8601Date.setISO8601(el.ModifiedDateTime);
+                        el.DisplayDateTime = iso8601Date.toString();
+                    });
                     __this.ItemsList = result;
                 }).error(function (err) {
                 });

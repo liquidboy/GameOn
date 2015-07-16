@@ -40,11 +40,15 @@
             this.dataSvc
                 .getAll(__this.EntityType, __this.authService.sessionId)
                 .success(function (result: any) {
-                var temp = result;
-                    //$.each(result,() => {
-                    //    var _dt = Date.parse(this.ModifiedDateTime);
-                    //    this.DisplayDateTime = _dt;
-                    //});
+                    var temp = result;
+                    var _date: any = Date;
+                    var iso8601Date: any = new Date();
+
+                    $.each(result,(idx: number,el :any) => {        
+                        iso8601Date.setISO8601(el.ModifiedDateTime);
+                        el.DisplayDateTime = iso8601Date.toString();
+                    });
+                
                     __this.ItemsList = result;
                 })
                 .error(function (err) { });
