@@ -13,8 +13,12 @@
             public authService: Application.Services.IAuthService,
             public location: ng.ILocationService) {
             
-            var grouping: string = location.search()["grouping"];
-            var name: string = location.search()["name"];
+            var id = location.search().id;  //?id=xxxxx
+            if (id) {
+                
+            }
+
+
         }
         
 
