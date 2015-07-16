@@ -11,8 +11,9 @@ var Application;
                 this.instanceFactory = instanceFactory;
                 this.authService = authService;
                 this.location = location;
-                var grouping = location.search()["grouping"];
-                var name = location.search()["name"];
+                var id = location.search().id; //?id=xxxxx
+                if (id) {
+                }
             }
             return PageCtrl;
         })();
