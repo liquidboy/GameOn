@@ -51,12 +51,10 @@ var Application;
             ConfigSessionCtrl.prototype.RefreshData = function () {
                 var __this = this;
                 this.dataSvc.getAll(__this.EntityType, __this.authService.sessionId).success(function (result) {
-                    var temp = result;
-                    var _date = Date;
-                    var iso8601Date = new Date();
+                    var dateHelper = new Date();
                     $.each(result, function (idx, el) {
-                        iso8601Date.setISO8601(el.ModifiedDateTime);
-                        el.DisplayDateTime = iso8601Date.toString();
+                        dateHelper.setISO8601(el.ModifiedDateTime);
+                        el.DisplayDateTime = dateHelper.toString();
                     });
                     __this.ItemsList = result;
                 }).error(function (err) {

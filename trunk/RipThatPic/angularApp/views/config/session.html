@@ -2,58 +2,77 @@
 
 <div class="config">
 
+    <!-- GRID AREA -->
     <div>
-        <div>
-            <table class="jf-tbl">
-                <colgroup>
-                    <col style="width:157px" />
-                    <col style="width:155px" />
-                    <col style="width:255px" />
-                    <col style="width:180px" />
-                </colgroup>
+        <table class="jf-tbl">
+            <colgroup>
+                <col style="width:157px" />
+                <col style="width:155px" />
+                <col style="width:305px" />
+                <col style="width:180px" />
+            </colgroup>
 
-                <tr>
-                    <td><input type="text" ng-model="configsession.SelectedItem.Grouping" style="width:150px" ng-readonly="configsession.SelectedItem.GroupingIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configsession.SelectedItem.Name" style="width:150px" ng-readonly="configsession.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configsession.SelectedItem.ModifiedDateTime" style="width:250px" /></td>
-                    <td>
-                        <input type="button" value="Save" ng-click="configsession.SaveItem()" />
-                        <input type="button" value="Delete" ng-click="configsession.DeleteItem()" />
-                        <input type="button" value="Clear" ng-click="configsession.ClearEntryFields()" />
-                    </td>
-                </tr>
+            <tr>
+                <td><input type="text" ng-model="configsession.SelectedItem.Grouping" style="width:150px" ng-readonly="configsession.SelectedItem.GroupingIsReadOnly" /></td>
+                <td><input type="text" ng-model="configsession.SelectedItem.Name" style="width:150px" ng-readonly="configsession.SelectedItem.NameIsReadOnly" /></td>
+                <td><input type="text" ng-model="configsession.SelectedItem.ModifiedDateTime" style="width:300px" /></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configsession.SaveItem()" />
+                    <input type="button" value="Delete" ng-click="configsession.DeleteItem()" />
+                    <input type="button" value="Clear" ng-click="configsession.ClearEntryFields()" />
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="table-header">Grouping</td>
-                    <td class="table-header">Name</td>
-                    <td class="table-header">Last Modified</td>
-                    <td class="table-header">Actions</td>
-                </tr>
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">Last Modified</td>
+                <td class="table-header">Actions</td>
+            </tr>
 
-                <tr>
-                    <td colspan="4">
-                        <div class="jf-data-grid">
-                            <table class="jf-tbl">
-                                <colgroup>
-                                    <col style="width:154px" />
-                                    <col style="width:155px" />
-                                    <col style="width:255px" />
-                                </colgroup>
+            <tr>
+                <td colspan="4">
+                    <div class="jf-data-grid">
+                        <table class="jf-tbl">
+                            <colgroup>
+                                <col style="width:154px" />
+                                <col style="width:155px" />
+                                <col style="width:305px" />
+                            </colgroup>
 
-                                <tr ng-repeat="item in configsession.ItemsList"
-                                    ng-include="'itemlist.html'"
-                                    ng-click="configsession.SelectItemRow(item, $event)"
-                                    class="table-content-row"></tr>
-                            </table>
-                        </div>
+                            <tr ng-repeat="item in configsession.ItemsList"
+                                ng-include="'itemlist.html'"
+                                ng-click="configsession.SelectItemRow(item, $event)"
+                                class="table-content-row"></tr>
+                        </table>
+                    </div>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </table>
-        </div>
+        </table>
+    </div>
 
+    <!-- SELECTED ITEM DETAILS AREA -->
+    <div>
+        <table class="jf-tbldetail">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tr><td class="label">Grouping :</td><td>{{configsession.SelectedItem.Grouping}}</td></tr>
+            <tr><td class="label">Name :</td><td>{{configsession.SelectedItem.Name}}</td></tr>
+            <tr><td class="label">LastModified (UTC) :</td><td>{{configsession.SelectedItem.ModifiedDateTime}}</td></tr>
+            <tr><td class="label">LastModified (GMT) :</td><td>{{configsession.SelectedItem.DisplayDateTime}}</td></tr>
+            <tr><td colspan="2"><br /></td></tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configsession.SaveItem()" />
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 <script type="text/ng-template" id="itemlist.html">
