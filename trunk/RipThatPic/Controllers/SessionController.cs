@@ -38,6 +38,7 @@ namespace RipThatPic.Controllers
         public async Task<int> Post([FromBody]SessionEntity data)
         {
             if (data.DisplayId == Guid.Empty) data.DisplayId = Guid.NewGuid();
+            data.Timestamp = DateTime.UtcNow;
             var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Session");
             return await processor.AddToTable("Session", data);
@@ -90,11 +91,9 @@ namespace RipThatPic.Controllers
 
         public SessionEntity() { }
 
-        public string LongName { get; set; }
-        public string Color { get; set; }
-        public string Url { get; set; }
-        public string Description { get; set; }
         public string LatestPing { get; set; }
+
+        public DateTime ModifiedDateTime { get; set; }
 
         public Guid DisplayId { get; set; }
     }

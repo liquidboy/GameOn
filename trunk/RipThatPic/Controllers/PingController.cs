@@ -27,6 +27,7 @@ namespace RipThatPic.Controllers
             var session = new SessionEntity(string.Format("{0}", ping.ClientIP), "ping");
             //session.DisplayId = Guid.NewGuid();
             session.LatestPing = ping.ToString();
+            session.ModifiedDateTime = DateTime.UtcNow;
             var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Session");
             await processor.AddToTable("Session", session);

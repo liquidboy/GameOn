@@ -8,16 +8,14 @@
                 <colgroup>
                     <col style="width:157px" />
                     <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
+                    <col style="width:255px" />
                     <col style="width:180px" />
                 </colgroup>
 
                 <tr>
                     <td><input type="text" ng-model="configsession.SelectedItem.Grouping" style="width:150px" ng-readonly="configsession.SelectedItem.GroupingIsReadOnly" /></td>
                     <td><input type="text" ng-model="configsession.SelectedItem.Name" style="width:150px" ng-readonly="configsession.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configsession.SelectedItem.LongName" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configsession.SelectedItem.Color" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configsession.SelectedItem.ModifiedDateTime" style="width:250px" /></td>
                     <td>
                         <input type="button" value="Save" ng-click="configsession.SaveItem()" />
                         <input type="button" value="Delete" ng-click="configsession.DeleteItem()" />
@@ -29,20 +27,18 @@
                 <tr>
                     <td class="table-header">Grouping</td>
                     <td class="table-header">Name</td>
-                    <td class="table-header">LongName</td>
-                    <td class="table-header">Color</td>
+                    <td class="table-header">Last Modified</td>
                     <td class="table-header">Actions</td>
                 </tr>
 
                 <tr>
-                    <td colspan="5">
+                    <td colspan="4">
                         <div class="jf-data-grid">
                             <table class="jf-tbl">
                                 <colgroup>
                                     <col style="width:154px" />
                                     <col style="width:155px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
+                                    <col style="width:255px" />
                                 </colgroup>
 
                                 <tr ng-repeat="item in configsession.ItemsList"
@@ -63,6 +59,5 @@
 <script type="text/ng-template" id="itemlist.html">
     <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
     <td>{{item.Name}} </td>
-    <td>{{item.LongName}} </td>
-    <td>{{item.Color}} </td>
+    <td>{{item.DisplayDateTime}} </td>
 </script>

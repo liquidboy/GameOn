@@ -39,7 +39,14 @@
 
             this.dataSvc
                 .getAll(__this.EntityType, __this.authService.sessionId)
-                .success(function (result: any) { __this.ItemsList = result; })
+                .success(function (result: any) {
+                var temp = result;
+                    //$.each(result,() => {
+                    //    var _dt = Date.parse(this.ModifiedDateTime);
+                    //    this.DisplayDateTime = _dt;
+                    //});
+                    __this.ItemsList = result;
+                })
                 .error(function (err) { });
         }
 
