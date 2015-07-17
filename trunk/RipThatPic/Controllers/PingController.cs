@@ -20,6 +20,7 @@ namespace RipThatPic.Controllers
         public async Task<bool> Post([FromBody]PingEntity ping)
         {
             var dt = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(Math.Round(ping.TS / 1000d)).ToLocalTime();
+
             ping.ClientIP = GetClientIp();
             ping.UA = GetUserAgent();
 
@@ -63,8 +64,10 @@ namespace RipThatPic.Controllers
 
         public bool IA { get; set; }
         public long TS { get; set; }
-        
+
         public string TID { get; set; }
+        
+
         public string SID { get; set; }
 
         public string ClientIP { get; set; }
