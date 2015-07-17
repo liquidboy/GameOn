@@ -49,7 +49,7 @@
             this.dataSvc
                 .get('page', group, name, this.authService.sessionId)
                 .success((result: any) => {
-                    this.sc.Title = result.LongName;
+                    this.sc.PLTitle = result.LongName;
                 })
                 .error(() => { });        
         }
@@ -59,7 +59,7 @@
             this.dataSvc
                 .getAllByGrouping('post', group + '|' + name, this.authService.sessionId)
                 .success((result: any) => {
-                    this.sc.Posts = result;
+                    this.sc.PLPosts = result;
                 })
                 .error(() => { });
         }
@@ -67,8 +67,8 @@
 
     export interface IPageLite extends ng.IScope {
 
-        Title: string;
-        Posts: Array<any>;
+        PLTitle: string;
+        PLPosts: Array<any>;
 
     }
 

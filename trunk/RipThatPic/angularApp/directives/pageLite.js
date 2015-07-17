@@ -36,14 +36,14 @@ var Application;
             PageLiteDirective.prototype.getPage = function (group, name) {
                 var _this = this;
                 this.dataSvc.get('page', group, name, this.authService.sessionId).success(function (result) {
-                    _this.sc.Title = result.LongName;
+                    _this.sc.PLTitle = result.LongName;
                 }).error(function () {
                 });
             };
             PageLiteDirective.prototype.getPosts = function (group, name) {
                 var _this = this;
                 this.dataSvc.getAllByGrouping('post', group + '|' + name, this.authService.sessionId).success(function (result) {
-                    _this.sc.Posts = result;
+                    _this.sc.PLPosts = result;
                 }).error(function () {
                 });
             };
