@@ -262,7 +262,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Page") return table.ExecuteQuery(new TableQuery<PageEntity>().Where(where));
             else if (type == "DataCenter") return table.ExecuteQuery(new TableQuery<DataCenterEntity>().Where(where));
             else if (type == "List") return table.ExecuteQuery(new TableQuery<ListEntity>().Where(where));
-            else if (type == "Post") return table.ExecuteQuery(new TableQuery<PostEntity>().Where(where));
+            else if (type == "Post") return table.ExecuteQuery(new TableQuery<PostEntity>().Where(where)); //.Select(new string[]{ "LongName", "Name"}));
             else if (type == "Permission") return table.ExecuteQuery(new TableQuery<PermissionEntity>().Where(where));
             else if (type == "Map") return table.ExecuteQuery(new TableQuery<MapEntity>().Where(where));
             else if (type == "Service") return table.ExecuteQuery(new TableQuery<ServiceEntity>().Where(where));
