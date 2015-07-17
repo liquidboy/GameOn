@@ -277,7 +277,12 @@ namespace Incite.Cloud.Storage
             else throw new NotImplementedException();
         }
 
-    
+
+        private IEnumerable<ITableEntity> ExecuteTableQuery(string type, CloudTable table, string where, string[] select)
+        {
+            return table.ExecuteQuery(new TableQuery().Where(where).Select(select.ToList()));
+        }
+
 
 
         public async Task<int> DeleteByDisplayId(string type, Guid displayId)
