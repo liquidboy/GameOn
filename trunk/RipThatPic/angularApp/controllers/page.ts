@@ -16,28 +16,15 @@
             var name = location.search().n;  //?n=xxxxx <-- url encoded
             var group = location.search().g;  
 
-            var __this = this;
+            this.$scope.Grouping = group;
+            this.$scope.Name = name;
 
-            if (name && group) {
-                this.dataSvc
-                    .get('page', group, name, this.authService.sessionId)
-                    .success((result) => {
-                        __this.$scope._pageData = result;
-                        __this.fillFields(result);
-                    })
-                    .error(() => { });                
-            }
 
             
         }
         
 
-        fillFields = (data: any) => {
-            this.$scope.Title = data.LongName;
-            this.$scope.Tags = [];
-            this.$scope.Abstract = '';
-            this.$scope.Footer = '';
-        }
+    
 
         
     }
@@ -45,14 +32,10 @@
 
     export interface IPageScope extends ng.IScope {
 
-        _pageData: any;
-
-        Title: string;
-        Tags: Array<string>;
-        Abstract: string;
-        Footer: string;
-
-        Posts: Array<string>;
+        
+        Grouping: string;
+        Name: string;
+        
 
     }
 

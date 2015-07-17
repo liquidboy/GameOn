@@ -4,7 +4,6 @@ var Application;
     (function (Controllers) {
         var PageCtrl = (function () {
             function PageCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService, location) {
-                var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.serviceHelperSvc = serviceHelperSvc;
@@ -12,22 +11,10 @@ var Application;
                 this.instanceFactory = instanceFactory;
                 this.authService = authService;
                 this.location = location;
-                this.fillFields = function (data) {
-                    _this.$scope.Title = data.LongName;
-                    _this.$scope.Tags = [];
-                    _this.$scope.Abstract = '';
-                    _this.$scope.Footer = '';
-                };
                 var name = location.search().n; //?n=xxxxx <-- url encoded
                 var group = location.search().g;
-                var __this = this;
-                if (name && group) {
-                    this.dataSvc.get('page', group, name, this.authService.sessionId).success(function (result) {
-                        __this.$scope._pageData = result;
-                        __this.fillFields(result);
-                    }).error(function () {
-                    });
-                }
+                this.$scope.Grouping = group;
+                this.$scope.Name = name;
             }
             return PageCtrl;
         })();
