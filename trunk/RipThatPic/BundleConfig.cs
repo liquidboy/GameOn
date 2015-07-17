@@ -90,8 +90,8 @@ namespace RipThatPic
                     "~/Scripts/jquery.signalR-2.2.0.min.js",
                     "~/signalr/hubs",
                     "~/Scripts/justified/jquery.justifiedGallery.min.js",
-                    "~/Scripts/utilities/date-extensions.js",
-                    "~/Scripts/tinymce/tinymce.min.js"
+                    "~/Scripts/utilities/date-extensions.js"
+                    //, "~/Scripts/tinymce/tinymce.min.js"
                 ));
 
 

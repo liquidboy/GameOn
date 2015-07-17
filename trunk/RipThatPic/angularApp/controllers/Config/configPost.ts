@@ -16,11 +16,17 @@
             public instanceFactory: Application.Services.IInstanceFactory,
             public authService: Application.Services.IAuthService) {
 
+            this.$scope.$on('$destroy', this.destructor);
+
             this.init();
 
             window['tinymce'].init({ selector: '#taDetails' });
             //this.$scope.$eval("tinymce.init({selector:'#taDetails'});");
 
+        }
+        destructor = () => {
+            var __this = this;
+            window['tinymce'].EditorManager.execCommand('mceRemoveEditor', true, 'taDetails');
         }
 
         DeleteItem = () => {
@@ -77,6 +83,8 @@
             this.SelectedItem.GroupingIsReadOnly = true;
             this.SelectedItem._Model = model;
             this.SelectedItem._Model.IsSelected = true;
+
+            window['tinymce'].get('taDetails').setContent(model.Details);
         }
 
 

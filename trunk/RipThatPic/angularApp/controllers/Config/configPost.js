@@ -12,6 +12,10 @@ var Application;
                 this.instanceFactory = instanceFactory;
                 this.authService = authService;
                 this.EntityType = "post";
+                this.destructor = function () {
+                    var __this = _this;
+                    window['tinymce'].EditorManager.execCommand('mceRemoveEditor', true, 'taDetails');
+                };
                 this.DeleteItem = function () {
                     var __this = _this;
                     _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping, __this.authService.sessionId).success(function (result) {
@@ -41,7 +45,9 @@ var Application;
                     _this.SelectedItem.GroupingIsReadOnly = true;
                     _this.SelectedItem._Model = model;
                     _this.SelectedItem._Model.IsSelected = true;
+                    window['tinymce'].get('taDetails').setContent(model.Details);
                 };
+                this.$scope.$on('$destroy', this.destructor);
                 this.init();
                 window['tinymce'].init({ selector: '#taDetails' });
                 //this.$scope.$eval("tinymce.init({selector:'#taDetails'});");
