@@ -11,8 +11,8 @@ var Application;
                 this.instanceFactory = instanceFactory;
                 this.authService = authService;
                 this.location = location;
-                var id = location.search().id; //?id=xxxxx
-                if (id) {
+                var name = location.search().name; //?name=xxxxx <-- url encoded
+                if (name) {
                 }
             }
             return PageCtrl;

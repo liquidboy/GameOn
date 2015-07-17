@@ -13,8 +13,8 @@
             public authService: Application.Services.IAuthService,
             public location: ng.ILocationService) {
             
-            var id = location.search().id;  //?id=xxxxx
-            if (id) {
+            var name = location.search().name;  //?name=xxxxx <-- url encoded
+            if (name) {
                 
             }
 
