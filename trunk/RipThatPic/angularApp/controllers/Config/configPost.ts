@@ -67,6 +67,8 @@
 
             var __this: any = this;
 
+            __this.SelectedItem.Details = window['tinymce'].get('taDetails').getContent();
+
             this.dataSvc
                 .save(__this.EntityType, __this.SelectedItem, __this.authService.sessionId)
                 .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
@@ -88,7 +90,11 @@
         }
 
 
-        private UnSelect() { if (this.SelectedItem != undefined) this.SelectedItem._Model.IsSelected = false; }
+        private UnSelect() {
+            if (this.SelectedItem != undefined) this.SelectedItem._Model.IsSelected = false;
+
+            try { window['tinymce'].get('taDetails').setContent(''); } catch(e){}
+        }
 
 
 

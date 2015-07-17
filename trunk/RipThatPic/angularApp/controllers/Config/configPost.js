@@ -30,6 +30,7 @@ var Application;
                 };
                 this.SaveItem = function () {
                     var __this = _this;
+                    __this.SelectedItem.Details = window['tinymce'].get('taDetails').getContent();
                     _this.dataSvc.save(__this.EntityType, __this.SelectedItem, __this.authService.sessionId).success(function (val) {
                         __this.RefreshData();
                         __this.InitSelectedItem();
@@ -70,6 +71,11 @@ var Application;
             ConfigPostCtrl.prototype.UnSelect = function () {
                 if (this.SelectedItem != undefined)
                     this.SelectedItem._Model.IsSelected = false;
+                try {
+                    window['tinymce'].get('taDetails').setContent('');
+                }
+                catch (e) {
+                }
             };
             return ConfigPostCtrl;
         })();
