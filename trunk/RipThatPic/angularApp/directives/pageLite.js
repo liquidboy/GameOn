@@ -18,6 +18,7 @@ var Application;
                     //this.scope = $scope;
                     _this.sc = $scope;
                     var __this = _this;
+                    __this.sc.PLGroup = $scope.Grouping + '|' + $scope.Name;
                     _this.getPage($scope.Grouping, $scope.Name);
                     _this.getPosts($scope.Grouping, $scope.Name);
                 };

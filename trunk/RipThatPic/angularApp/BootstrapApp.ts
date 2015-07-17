@@ -18,6 +18,7 @@
             .when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html', controllerAs: 'config' })
             .when('/explorer', { controller: 'ExplorerCtrl', templateUrl: '/angularApp/views/explorer/explorer.html', controllerAs: 'explorer' })
             .when('/page', { controller: 'PageCtrl', templateUrl: '/angularApp/views/page/page.html', controllerAs: 'page' })
+            .when('/post', { controller: 'PostCtrl', templateUrl: '/angularApp/views/post/post.html', controllerAs: 'post' })
             .when('/config/area', { controller: 'ConfigAreaCtrl', templateUrl: '/angularApp/views/config/area.html', controllerAs: 'configarea' })
             .when('/config/comment', { controller: 'ConfigCommentCtrl', templateUrl: '/angularApp/views/config/comment.html', controllerAs: 'configcomment' })
             .when('/config/session', { controller: 'ConfigSessionCtrl', templateUrl: '/angularApp/views/config/session.html', controllerAs: 'configsession' })

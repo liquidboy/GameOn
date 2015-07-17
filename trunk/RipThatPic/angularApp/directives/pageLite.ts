@@ -36,9 +36,12 @@
 
                 var __this = this;
 
+                __this.sc.PLGroup = $scope.Grouping + '|' + $scope.Name;
                 this.getPage($scope.Grouping, $scope.Name);
                 this.getPosts($scope.Grouping, $scope.Name);
                 
+
+
             }
 
             
@@ -69,6 +72,8 @@
 
         PLTitle: string;
         PLPosts: Array<any>;
+
+        PLGroup: string;
 
     }
 

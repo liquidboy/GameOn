@@ -85,6 +85,9 @@
     width:200px;
 }
 
-
+textarea {
+    font-family: "Segoe UI Web Regular","Segoe UI","Segoe WP",Tahoma,Arial,sans-serif;
+    font-size:12px;
+}
 
 
