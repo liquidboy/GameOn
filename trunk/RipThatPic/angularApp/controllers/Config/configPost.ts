@@ -4,6 +4,10 @@
         ItemsList: Array<any>;
         SelectedItem: any;
 
+        _tinymce: any;
+
+        
+
         constructor(
             public $scope: ng.IScope,
             public $rootScope: any,
@@ -11,7 +15,12 @@
             public dataSvc: Application.Services.IData,
             public instanceFactory: Application.Services.IInstanceFactory,
             public authService: Application.Services.IAuthService) {
+
             this.init();
+
+            window['tinymce'].init({ selector: '#taDetails' });
+            //this.$scope.$eval("tinymce.init({selector:'#taDetails'});");
+
         }
 
         DeleteItem = () => {

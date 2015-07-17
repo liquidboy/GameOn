@@ -12,4 +12,5 @@ var BootstrapApp;
 })(BootstrapApp || (BootstrapApp = {}));
 //weird way to pass thru the js library "radio" into the module ... find a better approach!!!
 eval('BootstrapApp.radio = radio');
+eval('BootstrapApp.tinymce = tinymce');
 //# sourceMappingURL=BootstrapApp.js.map

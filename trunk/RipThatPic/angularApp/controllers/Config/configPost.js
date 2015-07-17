@@ -43,6 +43,8 @@ var Application;
                     _this.SelectedItem._Model.IsSelected = true;
                 };
                 this.init();
+                window['tinymce'].init({ selector: '#taDetails' });
+                //this.$scope.$eval("tinymce.init({selector:'#taDetails'});");
             }
             ConfigPostCtrl.prototype.init = function () {
                 this.InitSelectedItem();
