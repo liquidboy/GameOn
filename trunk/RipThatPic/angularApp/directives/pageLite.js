@@ -18,10 +18,8 @@ var Application;
                     //this.scope = $scope;
                     _this.sc = $scope;
                     var __this = _this;
-                    _this.dataSvc.get('page', $scope.Grouping, $scope.Name, __this.authService.sessionId).success(function (result) {
-                        __this.sc.Title = result.LongName;
-                    }).error(function () {
-                    });
+                    _this.getPage($scope.Grouping, $scope.Name);
+                    _this.getPosts($scope.Grouping, $scope.Name);
                 };
             }
             PageLiteDirective.prototype.injection = function () {
@@ -34,6 +32,20 @@ var Application;
                         return new PageLiteDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
                     }
                 ];
+            };
+            PageLiteDirective.prototype.getPage = function (group, name) {
+                var _this = this;
+                this.dataSvc.get('page', group, name, this.authService.sessionId).success(function (result) {
+                    _this.sc.Title = result.LongName;
+                }).error(function () {
+                });
+            };
+            PageLiteDirective.prototype.getPosts = function (group, name) {
+                var _this = this;
+                this.dataSvc.getAllByGrouping('post', group + '|' + name, this.authService.sessionId).success(function (result) {
+                    _this.sc.Posts = result;
+                }).error(function () {
+                });
             };
             return PageLiteDirective;
         })();

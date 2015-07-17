@@ -36,21 +36,39 @@
 
                 var __this = this;
 
-                this.dataSvc
-                    .get('page', $scope.Grouping, $scope.Name, __this.authService.sessionId)
-                    .success((result: any) => {
-                        __this.sc.Title = result.LongName;
-                    })
-                    .error(() => { });          
-
-
+                this.getPage($scope.Grouping, $scope.Name);
+                this.getPosts($scope.Grouping, $scope.Name);
+                
             }
+
+            
+        }
+
+        getPage(group: string, name: string) {
+
+            this.dataSvc
+                .get('page', group, name, this.authService.sessionId)
+                .success((result: any) => {
+                    this.sc.Title = result.LongName;
+                })
+                .error(() => { });        
+        }
+
+        getPosts(group: string, name: string) {
+
+            this.dataSvc
+                .getAllByGrouping('post', group + '|' + name, this.authService.sessionId)
+                .success((result: any) => {
+                    this.sc.Posts = result;
+                })
+                .error(() => { });
         }
     }
 
     export interface IPageLite extends ng.IScope {
 
         Title: string;
+        Posts: Array<any>;
 
     }
 
