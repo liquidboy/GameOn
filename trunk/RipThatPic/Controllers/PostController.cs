@@ -92,8 +92,8 @@ namespace RipThatPic.Controllers
 
         public string LongName { get; set; }
         public string Color { get; set; }
-        public string Url { get; set; }
-        public string Description { get; set; }
+        public string Abstract { get; set; }
+        public string Details { get; set; }
 
         public Guid DisplayId { get; set; }
     }
