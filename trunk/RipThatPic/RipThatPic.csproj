@@ -316,10 +316,14 @@
     <Content Include="angularApp\directives\pageLite.js">
       <DependentUpon>pageLite.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\postLite.js">
+      <DependentUpon>postLite.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\partials\file-storage-billboard.html" />
+    <Content Include="angularApp\partials\post-lite.html" />
     <Content Include="angularApp\partials\page-lite.html" />
     <Content Include="angularApp\partials\inline-window.html" />
     <Content Include="angularApp\partials\file-storage-picker.html" />
@@ -639,6 +643,9 @@
     </Content>
     <Content Include="angularApp\controllers\post.js.map">
       <DependentUpon>post.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\postLite.js.map">
+      <DependentUpon>postLite.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1606,6 +1613,7 @@
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
     <Content Include="Themes\FileStorageBillboard.css" />
+    <Content Include="Themes\PostLite.css" />
     <Content Include="Themes\PageLite.css" />
     <Content Include="Themes\InlineWindow.css" />
     <Content Include="Themes\FileStoragePicker.css" />
@@ -1755,6 +1763,7 @@
     <TypeScriptCompile Include="angularApp\directives\fileStorageList.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileUpload.ts" />
     <TypeScriptCompile Include="angularApp\directives\configMenu.ts" />
+    <TypeScriptCompile Include="angularApp\directives\postLite.ts" />
     <TypeScriptCompile Include="angularApp\directives\pageLite.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />

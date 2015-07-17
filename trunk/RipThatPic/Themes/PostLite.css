@@ -1,0 +1,9 @@
+﻿.post-lite {
+   margin-left:5px;
+}
+
+    .post-lite h1,h2,h3,h4,h5 {
+        padding:0;
+        margin:0;
+    }
+        

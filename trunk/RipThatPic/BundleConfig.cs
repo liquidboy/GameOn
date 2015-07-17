@@ -60,7 +60,8 @@ namespace RipThatPic
                     "~/angularApp/directives/fileStorageBillboard.js",
                     "~/angularApp/directives/fileStoragePicker.js",
                     "~/angularApp/directives/fileUpload.js",
-                    "~/angularApp/directives/pageLite.js"
+                    "~/angularApp/directives/pageLite.js",
+                    "~/angularApp/directives/postLite.js"
                 ));
 
 
@@ -113,6 +114,7 @@ namespace RipThatPic
                    "~/Themes/FileStoragePicker.css",
                    "~/Themes/InlineWindow.css",
                    "~/Themes/PageLite.css",
+                   "~/Themes/PostLite.css",
                    "~/Scripts/justified/justifiedGallery.min.css"
                ));
 
