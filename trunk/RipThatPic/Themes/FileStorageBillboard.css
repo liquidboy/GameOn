@@ -1,7 +1,7 @@
 ﻿
 .file-storage-billboard {
         overflow:auto;
-        border-left:1px solid #e5e5e5;
+        /*border-left:1px solid #e5e5e5;*/
         /*background-color:#e5e5e5;*/
         margin:auto;
         position:absolute;
@@ -26,7 +26,7 @@
     .file-storage-billboard #fsbli {
         margin:auto;
         position:absolute;
-        left:5px; 
+        left:0; 
         padding:0 15px 7px 5px;
     }
     .file-storage-billboard #fsbttn {
