@@ -2,7 +2,7 @@
 
 <div class="config">
 
-    <!-- GRID -->
+    <!-- GRID AREA -->
     <div>
         <table class="jf-tbl">
             <colgroup>
@@ -59,13 +59,35 @@
         </table>
     </div>
 
-    <!-- FONT LIST -->
-    <div class="page-fonts">
 
-        <d-font-picker da-group="default" da-is-multiple-selection="false"></d-font-picker>
-
+    <!-- SELECTED ITEM DETAILS AREA -->
+    <div>
+        <table class="jf-tbldetail">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tr><td class="label">Grouping :</td><td>{{configpage.SelectedItem.Grouping}}</td></tr>
+            <tr><td class="label">Name :</td><td>{{configpage.SelectedItem.Name}}</td></tr>
+            <tr><td class="label">LongName :</td><td>{{configpage.SelectedItem.LongName}}</td></tr>
+            <tr><td class="label">Color :</td><td>{{configpage.SelectedItem.Color}}</td></tr>
+            <tr><td class="label">DisplayId :</td><td>{{configpage.SelectedItem.DisplayId}}</td></tr>
+            <tr><td class="label">Url :</td><td><input type="text" ng-model="configpage.SelectedItem.Url" style="width:250px" /></td></tr>
+            <tr><td class="label">Description :</td><td><input type="text" ng-model="configpage.SelectedItem.Description" style="width:250px" /></td></tr>
+            <tr><td class="label">Fonts :</td><td>{{configpage.SelectedItem.Fonts}}</td></tr>
+            <tr style="vertical-align:top;"><td class="label"></td><td><div style="height:80px;"><d-font-picker da-group="default" da-is-multiple-selection="true"></d-font-picker></div></td></tr>
+            <tr><td colspan="2"><br /></td></tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configpage.SaveItem()" />
+                </td>
+            </tr>
+        </table>
     </div>
 
+
+    
 </div>
 
 <script type="text/ng-template" id="itemlist.html">

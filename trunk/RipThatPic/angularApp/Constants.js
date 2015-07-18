@@ -16,8 +16,8 @@ var Application;
                 this.FileUploaded = "FileUploaded";
                 this.FileStorageContainerChanged = "FileStorageContainerChanged";
                 this.FontChanged = "FontChanged";
-                this.FontAdded = "FontAdded";
-                this.FontRemoved = "FontRemoved";
+                this.FontsSelectedCleared = "FontsSelectedCleared";
+                this.InitFontsSelected = "InitFontsSelected";
             }
             return PubSubConstants;
         })();

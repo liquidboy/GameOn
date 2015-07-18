@@ -59,19 +59,40 @@
 
         initPubSub = () => {
 
-            //this.radioPubSubSvc.subscribe(
-            //    this.pubSubConstants.FileUploaded,
-            //    this.RefreshData.bind(this),
-            //    undefined);
+            this.radioPubSubSvc.subscribe(
+                this.pubSubConstants.FontsSelectedCleared,
+                this.ClearSelectedItems.bind(this),
+                undefined);
+            this.radioPubSubSvc.subscribe(
+                this.pubSubConstants.InitFontsSelected,
+                this.SetSelectedItems.bind(this),
+                undefined);
 
-            //this.scope.$on('$destroy', this.destructor);
+            this.sc.$on('$destroy', this.destructor);
         }
 
         destructor = () => {
             var __this = this;
-            //this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileUploaded,() => { __this.RefreshData(); });
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FontsSelectedCleared, this.ClearSelectedItems);
         }
 
+        ClearSelectedItems = () => {
+            var elms = $('input[type="checkbox"]');
+            $(elms).prop('checked', false);
+            this.sc.FOPSelectedItems = [];
+        }
+
+        SetSelectedItems = (ids : string) => {
+            if (ids) {
+                var parts = ids.split(',');
+                this.sc.FOPSelectedItems = [];
+                $.each(parts,(idx, val) => {
+                    var elms = $('input[data-id="' + val + '"]');
+                    $(elms[0]).prop('checked', true);
+                    this.sc.FOPSelectedItems.push(val); 
+                });
+            }
+        }
 
         ItemClicked = (scope: IFontPickerScope, evt: any) => {
             
@@ -89,6 +110,7 @@
                         $(elms[0]).prop('checked', false);
                     });
                     scope.FOPSelectedItems = [];
+
                 }
  
                 scope.FOPSelectedItems.push(id); 
@@ -100,6 +122,8 @@
                 scope.FOPSelectedItems.splice(index, 1);
             }
             
+
+            this.radioPubSubSvc.publish(this.pubSubConstants.FontChanged, scope.FOPSelectedItems.join());
         };
     }
 

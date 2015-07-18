@@ -3,7 +3,7 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigPageCtrl = (function () {
-            function ConfigPageCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService) {
+            function ConfigPageCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService, radioPubSubSvc, pubSubConstants) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
@@ -11,6 +11,8 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.instanceFactory = instanceFactory;
                 this.authService = authService;
+                this.radioPubSubSvc = radioPubSubSvc;
+                this.pubSubConstants = pubSubConstants;
                 this.EntityType = "page";
                 this.DeleteItem = function () {
                     var __this = _this;
@@ -23,6 +25,10 @@ var Application;
                 };
                 this.ClearEntryFields = function () {
                     _this.InitSelectedItem();
+                };
+                this.destructor = function () {
+                    var __this = _this;
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FontChanged, __this.FontChanged);
                 };
                 this.SaveItem = function () {
                     var __this = _this;
@@ -41,12 +47,18 @@ var Application;
                     _this.SelectedItem.GroupingIsReadOnly = true;
                     _this.SelectedItem._Model = model;
                     _this.SelectedItem._Model.IsSelected = true;
+                    _this.radioPubSubSvc.publish(_this.pubSubConstants.InitFontsSelected, model.Fonts);
                 };
                 this.init();
             }
             ConfigPageCtrl.prototype.init = function () {
                 this.InitSelectedItem();
                 this.RefreshData();
+                this.radioPubSubSvc.subscribe(this.pubSubConstants.FontChanged, this.FontChanged.bind(this), undefined);
+                this.$scope.$on('$destroy', this.destructor);
+            };
+            ConfigPageCtrl.prototype.FontChanged = function (fonts) {
+                this.SelectedItem.Fonts = fonts;
             };
             ConfigPageCtrl.prototype.RefreshData = function () {
                 var __this = this;
@@ -60,14 +72,16 @@ var Application;
                 this.SelectedItem = this.instanceFactory.getInstance("_object");
             };
             ConfigPageCtrl.prototype.UnSelect = function () {
-                if (this.SelectedItem != undefined)
+                if (this.SelectedItem != undefined) {
                     this.SelectedItem._Model.IsSelected = false;
+                    this.radioPubSubSvc.publish(this.pubSubConstants.FontsSelectedCleared, undefined);
+                }
             };
             return ConfigPageCtrl;
         })();
         Controllers.ConfigPageCtrl = ConfigPageCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigPageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigPageCtrl]);
+        myapp.controller("ConfigPageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigPageCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configPage.js.map

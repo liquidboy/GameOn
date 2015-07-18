@@ -10,7 +10,9 @@
             public serviceHelperSvc: Application.Services.IServiceHelper,
             public dataSvc: Application.Services.IData,
             public instanceFactory: Application.Services.IInstanceFactory,
-            public authService: Application.Services.IAuthService) {
+            public authService: Application.Services.IAuthService,
+            public radioPubSubSvc: Application.Services.IRadioPubSubSvc,
+            public pubSubConstants: Application.Constants.PubSubConstants) {
             this.init();
         }
 
@@ -32,6 +34,19 @@
         private init() {
             this.InitSelectedItem();
             this.RefreshData();
+
+
+            this.radioPubSubSvc.subscribe(this.pubSubConstants.FontChanged, this.FontChanged.bind(this), undefined);
+            this.$scope.$on('$destroy', this.destructor);
+        }
+
+        destructor = () => {
+            var __this = this;
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FontChanged, __this.FontChanged);
+        }
+
+        private FontChanged(fonts: string) {
+            this.SelectedItem.Fonts = fonts;
         }
 
         private RefreshData() {
@@ -68,14 +83,20 @@
             this.SelectedItem.GroupingIsReadOnly = true;
             this.SelectedItem._Model = model;
             this.SelectedItem._Model.IsSelected = true;
+            this.radioPubSubSvc.publish(this.pubSubConstants.InitFontsSelected, model.Fonts);
         }
 
 
-        private UnSelect() { if (this.SelectedItem != undefined) this.SelectedItem._Model.IsSelected = false; }
+        private UnSelect() {
+            if (this.SelectedItem != undefined) {
+                this.SelectedItem._Model.IsSelected = false;
+                this.radioPubSubSvc.publish(this.pubSubConstants.FontsSelectedCleared, undefined);
+            }
+        }
 
 
 
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ConfigPageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigPageCtrl]);
+    myapp.controller("ConfigPageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigPageCtrl]);
 }

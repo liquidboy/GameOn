@@ -11,15 +11,29 @@ var Application;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.initPubSub = function () {
-                    //this.radioPubSubSvc.subscribe(
-                    //    this.pubSubConstants.FileUploaded,
-                    //    this.RefreshData.bind(this),
-                    //    undefined);
-                    //this.scope.$on('$destroy', this.destructor);
+                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FontsSelectedCleared, _this.ClearSelectedItems.bind(_this), undefined);
+                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.InitFontsSelected, _this.SetSelectedItems.bind(_this), undefined);
+                    _this.sc.$on('$destroy', _this.destructor);
                 };
                 this.destructor = function () {
                     var __this = _this;
-                    //this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileUploaded,() => { __this.RefreshData(); });
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FontsSelectedCleared, _this.ClearSelectedItems);
+                };
+                this.ClearSelectedItems = function () {
+                    var elms = $('input[type="checkbox"]');
+                    $(elms).prop('checked', false);
+                    _this.sc.FOPSelectedItems = [];
+                };
+                this.SetSelectedItems = function (ids) {
+                    if (ids) {
+                        var parts = ids.split(',');
+                        _this.sc.FOPSelectedItems = [];
+                        $.each(parts, function (idx, val) {
+                            var elms = $('input[data-id="' + val + '"]');
+                            $(elms[0]).prop('checked', true);
+                            _this.sc.FOPSelectedItems.push(val);
+                        });
+                    }
                 };
                 this.ItemClicked = function (scope, evt) {
                     //now do stuff with the selected item
@@ -43,6 +57,7 @@ var Application;
                         var index = scope.FOPSelectedItems.indexOf(id);
                         scope.FOPSelectedItems.splice(index, 1);
                     }
+                    _this.radioPubSubSvc.publish(_this.pubSubConstants.FontChanged, scope.FOPSelectedItems.join());
                 };
                 this.restrict = 'E';
                 this.replace = true;

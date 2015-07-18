@@ -1,9 +1,9 @@
 ﻿.font-picker {
-    overflow:auto;
+    /*overflow:auto;*/
     
     
     margin:auto;
-    position:absolute;
+    /*position:absolute;*/
     /*padding:7px 5px 7px 5px;*/
 }
     .font-picker .item {

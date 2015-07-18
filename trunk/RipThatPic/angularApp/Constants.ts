@@ -19,8 +19,8 @@
         FileStorageContainerChanged: string = "FileStorageContainerChanged";
 
         FontChanged: string = "FontChanged";
-        FontAdded: string = "FontAdded";
-        FontRemoved: string = "FontRemoved";
+        FontsSelectedCleared: string = "FontsSelectedCleared";
+        InitFontsSelected: string = "InitFontsSelected";
 
         constructor() {
             
