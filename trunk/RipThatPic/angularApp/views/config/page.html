@@ -1,64 +1,71 @@
 ﻿<d-config-menu da-selected-tab="page"></d-config-menu>
 
 <div class="config">
+
+    <!-- GRID -->
     <div>
-        <div>
-            <table class="jf-tbl">
-                <colgroup>
-                    <col style="width:157px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:180px" />
-                </colgroup>
+        <table class="jf-tbl">
+            <colgroup>
+                <col style="width:157px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:180px" />
+            </colgroup>
 
-                <tr>
-                    <td><input type="text" ng-model="configpage.SelectedItem.Grouping" style="width:150px" ng-readonly="configpage.SelectedItem.GroupingIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configpage.SelectedItem.Name" style="width:150px" ng-readonly="configpage.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configpage.SelectedItem.LongName" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configpage.SelectedItem.Color" style="width:150px" /></td>
-                    <td>
-                        <input type="button" value="Save" ng-click="configpage.SaveItem()" />
-                        <input type="button" value="Delete" ng-click="configpage.DeleteItem()" />
-                        <input type="button" value="Clear" ng-click="configpage.ClearEntryFields()" />
-                    </td>
-                </tr>
+            <tr>
+                <td><input type="text" ng-model="configpage.SelectedItem.Grouping" style="width:150px" ng-readonly="configpage.SelectedItem.GroupingIsReadOnly" /></td>
+                <td><input type="text" ng-model="configpage.SelectedItem.Name" style="width:150px" ng-readonly="configpage.SelectedItem.NameIsReadOnly" /></td>
+                <td><input type="text" ng-model="configpage.SelectedItem.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configpage.SelectedItem.Color" style="width:150px" /></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configpage.SaveItem()" />
+                    <input type="button" value="Delete" ng-click="configpage.DeleteItem()" />
+                    <input type="button" value="Clear" ng-click="configpage.ClearEntryFields()" />
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="table-header">Grouping</td>
-                    <td class="table-header">Name</td>
-                    <td class="table-header">LongName</td>
-                    <td class="table-header">Color</td>
-                    <td class="table-header">Actions</td>
-                </tr>
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <td class="table-header">Actions</td>
+            </tr>
 
-                <tr>
-                    <td colspan="5">
-                        <div class="jf-data-grid">
-                            <table class="jf-tbl">
-                                <colgroup>
-                                    <col style="width:154px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
+            <tr>
+                <td colspan="5">
+                    <div class="jf-data-grid">
+                        <table class="jf-tbl">
+                            <colgroup>
+                                <col style="width:154px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
 
-                                </colgroup>
+                            </colgroup>
 
-                                <tr ng-repeat="item in configpage.ItemsList"
-                                    ng-include="'itemlist.html'"
-                                    ng-click="configpage.SelectItemRow(item, $event)"
-                                    class="table-content-row"></tr>
-                            </table>
-                        </div>
+                            <tr ng-repeat="item in configpage.ItemsList"
+                                ng-include="'itemlist.html'"
+                                ng-click="configpage.SelectItemRow(item, $event)"
+                                class="table-content-row"></tr>
+                        </table>
+                    </div>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </table>
-        </div>
+        </table>
+    </div>
+
+    <!-- FONT LIST -->
+    <div class="page-fonts">
+
+        <d-font-picker da-group="default" da-is-multiple-selection="false"></d-font-picker>
 
     </div>
+
 </div>
 
 <script type="text/ng-template" id="itemlist.html">

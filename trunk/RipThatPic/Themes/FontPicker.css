@@ -1,0 +1,29 @@
+﻿.font-picker {
+    overflow:auto;
+    
+    
+    margin:auto;
+    position:absolute;
+    /*padding:7px 5px 7px 5px;*/
+}
+    .font-picker .item {
+
+        cursor:pointer;
+        vertical-align:central;
+        padding:5px 15px 5px 15px;
+        font-size:14px;
+    }
+    /*.font-picker .item:hover {
+        background-color:#e5e5e5;
+        color:black;
+    }*/
+
+        /*.font-picker .item.selected {
+            background-color:#e5e5e5;
+            border-left:4px solid orange;
+            font-weight:bold;
+            color:black;
+            padding-left:13px;
+        }*/
+
+    

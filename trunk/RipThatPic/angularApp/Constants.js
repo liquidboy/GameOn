@@ -15,6 +15,9 @@ var Application;
                 this.CookieSettings_FileUploadMaxFileSize = "FileUploadMaxFileSize";
                 this.FileUploaded = "FileUploaded";
                 this.FileStorageContainerChanged = "FileStorageContainerChanged";
+                this.FontChanged = "FontChanged";
+                this.FontAdded = "FontAdded";
+                this.FontRemoved = "FontRemoved";
             }
             return PubSubConstants;
         })();

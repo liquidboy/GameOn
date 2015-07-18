@@ -18,6 +18,10 @@
 
         FileStorageContainerChanged: string = "FileStorageContainerChanged";
 
+        FontChanged: string = "FontChanged";
+        FontAdded: string = "FontAdded";
+        FontRemoved: string = "FontRemoved";
+
         constructor() {
             
         }

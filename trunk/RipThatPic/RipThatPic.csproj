@@ -310,6 +310,9 @@
     <Content Include="angularApp\directives\fileUpload.js">
       <DependentUpon>fileUpload.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\fontPicker.js">
+      <DependentUpon>fontPicker.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\inlineWindow.js">
       <DependentUpon>inlineWindow.ts</DependentUpon>
     </Content>
@@ -323,6 +326,7 @@
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\partials\file-storage-billboard.html" />
+    <Content Include="angularApp\partials\font-picker.html" />
     <Content Include="angularApp\partials\post-lite.html" />
     <Content Include="angularApp\partials\page-lite.html" />
     <Content Include="angularApp\partials\inline-window.html" />
@@ -646,6 +650,9 @@
     </Content>
     <Content Include="angularApp\directives\postLite.js.map">
       <DependentUpon>postLite.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\fontPicker.js.map">
+      <DependentUpon>fontPicker.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1613,6 +1620,7 @@
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
     <Content Include="Themes\FileStorageBillboard.css" />
+    <Content Include="Themes\FontPicker.css" />
     <Content Include="Themes\PostLite.css" />
     <Content Include="Themes\PageLite.css" />
     <Content Include="Themes\InlineWindow.css" />
@@ -1758,6 +1766,7 @@
     <TypeScriptCompile Include="angularApp\controllers\Config\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileStorageBillboard.ts" />
+    <TypeScriptCompile Include="angularApp\directives\fontPicker.ts" />
     <TypeScriptCompile Include="angularApp\directives\inlineWindow.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileStoragePicker.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileStorageList.ts" />

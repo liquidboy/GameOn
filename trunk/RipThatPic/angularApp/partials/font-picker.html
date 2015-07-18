@@ -1,0 +1,20 @@
+﻿<div class="font-picker" >
+
+    <link ng-repeat="item1 in FOPItemsList" href='{{item1.Url}}' rel='stylesheet' type='text/css' />
+
+    <div id="fop">
+        <div 
+             ng-repeat="item in FOPItemsList"
+             ng-include="'fopitemlist.html'"
+             data-id="{{item.name}}"
+             class="item" target="_blank"></div>
+
+        <script type="text/ng-template" id="fopitemlist.html">
+            <input type="checkbox" ng-checked="item.IsChecked" ng-click="FOPItemClicked($event)"  data-id="{{item.DisplayId}}" />
+            <span ng-style="{'font-family': item.LongName}" value="">{{item.LongName}}</span>
+        </script>
+    </div>
+
+</div>
+
+
