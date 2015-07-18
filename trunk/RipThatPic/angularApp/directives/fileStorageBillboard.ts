@@ -144,7 +144,9 @@
 
         private init() {
             this.initPubSub();
-            //this.RefreshData();   
+            if (this.scope.FSBCN) {
+                this.RefreshData();   
+            }
         }
 
         initPubSub = () => {

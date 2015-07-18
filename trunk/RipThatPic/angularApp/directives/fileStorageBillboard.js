@@ -158,7 +158,9 @@ var Application;
             }
             FileStorageBillboardDirective.prototype.init = function () {
                 this.initPubSub();
-                //this.RefreshData();   
+                if (this.scope.FSBCN) {
+                    this.RefreshData();
+                }
             };
             FileStorageBillboardDirective.prototype.ContainerChanged = function (cn) {
                 this.scope.FSBCN = cn === '-all-' ? '' : cn;

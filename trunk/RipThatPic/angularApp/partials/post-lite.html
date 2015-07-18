@@ -5,12 +5,12 @@
         {{PsLStyle}}
     </style>
 
-    <h1><span class="post-title">{{PsLData.LongName}}</span></h1>
+    <div class="post-title"><h1>{{PsLData.LongName}}</h1></div>
     <h2></h2>
     <h3></h3>
-    <h4><span class="post-abstract">{{PsLData.Abstract}}</span></h4>
+    <div class="post-abstract"><h4>{{PsLData.Abstract}}</h4></div>
 
-    <div ng-bind-html="PsLData.Details"></div>
+    <div ng-bind-html="PsLData.Details" class="post-details"></div>
 
 
 
