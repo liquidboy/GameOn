@@ -52,7 +52,7 @@
             this.dataSvc
                 .get('page', group, name, this.authService.sessionId)
                 .success((result: any) => {
-                    this.sc.PLTitle = result.LongName;
+                    this.sc.PLTitle = result.Entity.LongName;
                 })
                 .error(() => { });        
         }

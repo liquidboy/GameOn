@@ -37,7 +37,7 @@ var Application;
             PageLiteDirective.prototype.getPage = function (group, name) {
                 var _this = this;
                 this.dataSvc.get('page', group, name, this.authService.sessionId).success(function (result) {
-                    _this.sc.PLTitle = result.LongName;
+                    _this.sc.PLTitle = result.Entity.LongName;
                 }).error(function () {
                 });
             };

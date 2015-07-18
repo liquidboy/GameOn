@@ -14,11 +14,16 @@ namespace RipThatPic.Controllers
     {
 
         // GET: api/Page?name=pagename&grouping=groupname
-        public async Task<PageEntity> Get(string name, string grouping)
+        public async Task<PageRequest> Get(string name, string grouping)
         {
+            var returnResult = new PageRequest();
+
             var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("Page");
-            return await processor.RetrieveFromTable<PageEntity>("Page", grouping, name);
+            returnResult.Entity =  await processor.RetrieveFromTable<PageEntity>("Page", grouping, name);
+
+            return returnResult;
+
         }
 
         // GET: api/Page?grouping=groupname
@@ -71,6 +76,13 @@ namespace RipThatPic.Controllers
         }
 
 
+    }
+
+    public class PageRequest 
+    {
+        public PageEntity Entity { get; set; }
+
+        public List<string> FontsMetadata { get; set; } 
     }
 
     public class PageEntity : TableEntity
