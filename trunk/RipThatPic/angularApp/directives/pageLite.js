@@ -20,7 +20,7 @@ var Application;
                     var __this = _this;
                     __this.sc.PLGroup = $scope.Grouping + '|' + $scope.Name;
                     _this.getPage($scope.Grouping, $scope.Name);
-                    _this.getPosts($scope.Grouping, $scope.Name);
+                    //this.getPosts($scope.Grouping, $scope.Name);
                 };
             }
             PageLiteDirective.prototype.injection = function () {
@@ -37,16 +37,10 @@ var Application;
             PageLiteDirective.prototype.getPage = function (group, name) {
                 var _this = this;
                 this.dataSvc.get('page', group, name, this.authService.sessionId).success(function (result) {
-                    _this.sc.PLTitle = result.Entity.LongName;
-                    _this.sc.PLStyle = result.Entity.PageStyle;
+                    _this.sc.PLTitle = result.Page.LongName;
+                    _this.sc.PLStyle = result.Page.PageStyle;
                     _this.sc.PLFonts = result.FontsMetadata;
-                }).error(function () {
-                });
-            };
-            PageLiteDirective.prototype.getPosts = function (group, name) {
-                var _this = this;
-                this.dataSvc.getAllByGrouping('post', group + '|' + name, this.authService.sessionId).success(function (result) {
-                    _this.sc.PLPosts = result;
+                    _this.sc.PLPosts = result.Posts;
                 }).error(function () {
                 });
             };

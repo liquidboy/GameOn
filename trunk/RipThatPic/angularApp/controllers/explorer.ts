@@ -23,7 +23,7 @@
             try {
                 __this.authSvc.ping('explorer');
             } catch (e) {
-                alert(e.message);
+                //alert(e.message);
             }
 
         }

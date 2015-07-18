@@ -15,7 +15,6 @@ var Application;
                     __this.authSvc.ping('explorer');
                 }
                 catch (e) {
-                    alert(e.message);
                 }
             };
             return ExplorerCtrl;

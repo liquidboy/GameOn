@@ -22,10 +22,17 @@ namespace RipThatPic.Controllers
 
             var pageData = await processor.CreateTable("Page");
 
-            returnResult.Entity =  await processor.RetrieveFromTable<PageEntity>("Page", grouping, name);
+            returnResult.Page =  await processor.RetrieveFromTable<PageEntity>("Page", grouping, name);
 
-            returnResult.FontsMetadata = GetFonts(returnResult.Entity.Fonts);
-            
+            returnResult.FontsMetadata = GetFonts(returnResult.Page.Fonts);
+
+            using (var PostsCtrl = new PostsController())
+            {
+                var postGroup = grouping + "|" + name;
+                returnResult.Posts = PostsCtrl.Get(postGroup.ToLower());
+            }
+
+
             return returnResult;
 
         }
@@ -84,9 +91,11 @@ namespace RipThatPic.Controllers
 
     public class PageRequest 
     {
-        public PageEntity Entity { get; set; }
+        public PageEntity Page { get; set; }
 
-        public List<FontEntity> FontsMetadata { get; set; } 
+        public List<FontEntity> FontsMetadata { get; set; }
+
+        public IEnumerable<Object> Posts { get; set; }
     }
 
     public class PageEntity : TableEntity

@@ -15,7 +15,12 @@ var Application;
                 var group = location.search().g;
                 this.$scope.Grouping = group;
                 this.$scope.Name = name;
+                this.init();
             }
+            PageCtrl.prototype.init = function () {
+                var __this = this;
+                __this.authService.ping('page');
+            };
             return PageCtrl;
         })();
         Controllers.PageCtrl = PageCtrl;

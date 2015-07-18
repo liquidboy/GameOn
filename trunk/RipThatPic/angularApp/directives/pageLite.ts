@@ -38,10 +38,8 @@
 
                 __this.sc.PLGroup = $scope.Grouping + '|' + $scope.Name;
                 this.getPage($scope.Grouping, $scope.Name);
-                this.getPosts($scope.Grouping, $scope.Name);
+                //this.getPosts($scope.Grouping, $scope.Name);
                 
-
-
             }
 
             
@@ -52,22 +50,23 @@
             this.dataSvc
                 .get('page', group, name, this.authService.sessionId)
                 .success((result: any) => {
-                    this.sc.PLTitle = result.Entity.LongName;
-                    this.sc.PLStyle = result.Entity.PageStyle;
+                    this.sc.PLTitle = result.Page.LongName;
+                    this.sc.PLStyle = result.Page.PageStyle;
                     this.sc.PLFonts = result.FontsMetadata;
+                    this.sc.PLPosts = result.Posts;
                 })
                 .error(() => { });        
         }
 
-        getPosts(group: string, name: string) {
+        //getPosts(group: string, name: string) {
 
-            this.dataSvc
-                .getAllByGrouping('post', group + '|' + name, this.authService.sessionId)
-                .success((result: any) => {
-                    this.sc.PLPosts = result;
-                })
-                .error(() => { });
-        }
+        //    this.dataSvc
+        //        .getAllByGrouping('post', group + '|' + name, this.authService.sessionId)
+        //        .success((result: any) => {
+        //            this.sc.PLPosts = result;
+        //        })
+        //        .error(() => { });
+        //}
     }
 
     export interface IPageLite extends ng.IScope {

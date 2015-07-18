@@ -19,10 +19,17 @@
             this.$scope.Grouping = group;
             this.$scope.Name = name;
 
-
             
+            this.init();
         }
-        
+
+
+        private init() {
+
+            var __this = this;
+
+            __this.authService.ping('page');
+        } 
 
     
 
