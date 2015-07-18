@@ -38,6 +38,8 @@ var Application;
                 var _this = this;
                 this.dataSvc.get('page', group, name, this.authService.sessionId).success(function (result) {
                     _this.sc.PLTitle = result.Entity.LongName;
+                    _this.sc.PLTitleStyle = result.Entity.PageStyle;
+                    _this.sc.PLFonts = result.FontsMetadata;
                 }).error(function () {
                 });
             };

@@ -53,6 +53,8 @@
                 .get('page', group, name, this.authService.sessionId)
                 .success((result: any) => {
                     this.sc.PLTitle = result.Entity.LongName;
+                    this.sc.PLTitleStyle = result.Entity.PageStyle;
+                    this.sc.PLFonts = result.FontsMetadata;
                 })
                 .error(() => { });        
         }
@@ -71,7 +73,9 @@
     export interface IPageLite extends ng.IScope {
 
         PLTitle: string;
+        PLTitleStyle: string;
         PLPosts: Array<any>;
+        PLFonts: Array<any>;
 
         PLGroup: string;
 

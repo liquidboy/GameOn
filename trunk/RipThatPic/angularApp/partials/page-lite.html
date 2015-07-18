@@ -1,5 +1,11 @@
 ﻿<div class="page-lite" >
-    <h1>{{PLTitle}}</h1>
+    <link ng-repeat="item1 in PLFonts" href='{{item1.Url}}' rel='stylesheet' type='text/css' />
+
+    <style type="text/css">
+        {{PLTitleStyle}}
+    </style>
+
+    <h1><span class="page-title">{{PLTitle}}</span></h1>
     <h2></h2>
     <h3></h3>
     <h4></h4>
@@ -9,7 +15,7 @@
 
 
     <div ng-repeat="post in PLPosts"
-        ng-include="'postlist.html'" ></div>
+        ng-include="'postlist.html'" class="page-posts"></div>
 
 
 

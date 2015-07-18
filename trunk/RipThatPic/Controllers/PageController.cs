@@ -19,9 +19,26 @@ namespace RipThatPic.Controllers
             var returnResult = new PageRequest();
 
             var processor = GetAzureProcessor();
-            var ret = await processor.CreateTable("Page");
+
+            var pageData = await processor.CreateTable("Page");
+
             returnResult.Entity =  await processor.RetrieveFromTable<PageEntity>("Page", grouping, name);
 
+            if (!string.IsNullOrEmpty(returnResult.Entity.Fonts))
+            {
+                returnResult.FontsMetadata = new List<FontEntity>();
+
+                var fonts = processor.RetrieveAll("Font");
+                var parts = returnResult.Entity.Fonts.Split(",".ToCharArray());
+                foreach (var part in parts) {
+                    foreach (FontEntity font in fonts) {
+                        if (font.DisplayId.ToString().ToLower() == part.ToLower()) {
+                            returnResult.FontsMetadata.Add(font);
+                        }
+                    }
+                }
+            }
+            
             return returnResult;
 
         }
@@ -82,7 +99,7 @@ namespace RipThatPic.Controllers
     {
         public PageEntity Entity { get; set; }
 
-        public List<string> FontsMetadata { get; set; } 
+        public List<FontEntity> FontsMetadata { get; set; } 
     }
 
     public class PageEntity : TableEntity
@@ -103,8 +120,8 @@ namespace RipThatPic.Controllers
         public PageEntity() { }
 
         public string LongName { get; set; }
-        public string Color { get; set; }
-        public string Url { get; set; }
+        public string PageStyle { get; set; }
+
         public string Description { get; set; }
 
         public string Fonts { get; set; }
