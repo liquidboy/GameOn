@@ -19,13 +19,9 @@
             //    this.$rootScope.$broadcast("wizard-step-selected", "step8");
 
             //});
-
-            try {
-                __this.authSvc.ping('explorer');
-            } catch (e) {
-                //alert(e.message);
-            }
-
+            
+            __this.authSvc.ping('explorer');
+            
         }
         
     }

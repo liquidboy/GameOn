@@ -22,17 +22,28 @@
             var grouping: string = location.search()["grouping"];
             var name: string = location.search()["name"];
 
-            if (!authService.IsLoggedIn) {
-                var __this = this;
-                this.$scope.$on('$destroy', __this.destructor);
-                this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginSuccessful, this.loginSuccessful, undefined);
-                this.radioPubSubSvc.subscribe(this.pubSubConstants.LoginFailed, this.loginFailed, undefined);
-            } else {
-                this.IsLoggedIn = authService.IsLoggedIn;
-                this.LoggedInEntity = jQuery.extend(true, {}, authService.LoginEntity);
-            }
+
+            this.init();
         }
-        
+
+
+        private init() {
+
+            var __this = this;
+
+            if (!__this.authService.IsLoggedIn) {
+                __this.$scope.$on('$destroy', __this.destructor);
+                __this.radioPubSubSvc.subscribe(__this.pubSubConstants.LoginSuccessful, __this.loginSuccessful, undefined);
+                __this.radioPubSubSvc.subscribe(__this.pubSubConstants.LoginFailed, __this.loginFailed, undefined);
+            } else {
+                __this.IsLoggedIn = __this.authService.IsLoggedIn;
+                __this.LoggedInEntity = jQuery.extend(true, {}, __this.authService.LoginEntity);
+            }
+            
+            __this.authService.ping('login');
+            
+        }
+
         AttemptLogin = () => {
             this.authService.login(this.UserName, this.Password);
         }

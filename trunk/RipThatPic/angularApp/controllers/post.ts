@@ -25,10 +25,7 @@
         
 
         private init() {
-
-            var __this = this;
-            
-            __this.authService.ping('post');
+            this.authService.ping('post');
         }
 
         

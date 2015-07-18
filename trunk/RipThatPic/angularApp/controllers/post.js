@@ -18,8 +18,7 @@ var Application;
                 this.init();
             }
             PostCtrl.prototype.init = function () {
-                var __this = this;
-                __this.authService.ping('post');
+                this.authService.ping('post');
             };
             return PostCtrl;
         })();

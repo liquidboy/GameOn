@@ -18,8 +18,7 @@ var Application;
                 this.init();
             }
             PageCtrl.prototype.init = function () {
-                var __this = this;
-                __this.authService.ping('page');
+                this.authService.ping('page');
             };
             return PageCtrl;
         })();
