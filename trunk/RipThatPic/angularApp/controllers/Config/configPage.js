@@ -74,7 +74,7 @@ var Application;
             ConfigPageCtrl.prototype.UnSelect = function () {
                 if (this.SelectedItem != undefined) {
                     this.SelectedItem._Model.IsSelected = false;
-                    this.radioPubSubSvc.publish(this.pubSubConstants.FontsSelectedCleared, undefined);
+                    this.radioPubSubSvc.publish(this.pubSubConstants.ClearFontsSelected, undefined);
                 }
             };
             return ConfigPageCtrl;

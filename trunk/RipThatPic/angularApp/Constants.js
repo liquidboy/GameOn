@@ -16,7 +16,7 @@ var Application;
                 this.FileUploaded = "FileUploaded";
                 this.FileStorageContainerChanged = "FileStorageContainerChanged";
                 this.FontChanged = "FontChanged";
-                this.FontsSelectedCleared = "FontsSelectedCleared";
+                this.ClearFontsSelected = "ClearFontsSelected";
                 this.InitFontsSelected = "InitFontsSelected";
             }
             return PubSubConstants;

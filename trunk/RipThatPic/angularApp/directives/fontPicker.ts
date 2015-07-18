@@ -60,12 +60,12 @@
         initPubSub = () => {
 
             this.radioPubSubSvc.subscribe(
-                this.pubSubConstants.FontsSelectedCleared,
+                this.pubSubConstants.ClearFontsSelected,
                 this.ClearSelectedItems.bind(this),
                 undefined);
             this.radioPubSubSvc.subscribe(
                 this.pubSubConstants.InitFontsSelected,
-                this.SetSelectedItems.bind(this),
+                this.InitSelectedItems.bind(this),
                 undefined);
 
             this.sc.$on('$destroy', this.destructor);
@@ -73,7 +73,8 @@
 
         destructor = () => {
             var __this = this;
-            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FontsSelectedCleared, this.ClearSelectedItems);
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.ClearFontsSelected, this.ClearSelectedItems);
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.InitFontsSelected, this.InitSelectedItems);
         }
 
         ClearSelectedItems = () => {
@@ -82,7 +83,7 @@
             this.sc.FOPSelectedItems = [];
         }
 
-        SetSelectedItems = (ids : string) => {
+        InitSelectedItems = (ids : string) => {
             if (ids) {
                 var parts = ids.split(',');
                 this.sc.FOPSelectedItems = [];

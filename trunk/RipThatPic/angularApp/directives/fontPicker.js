@@ -11,20 +11,21 @@ var Application;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.initPubSub = function () {
-                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FontsSelectedCleared, _this.ClearSelectedItems.bind(_this), undefined);
-                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.InitFontsSelected, _this.SetSelectedItems.bind(_this), undefined);
+                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.ClearFontsSelected, _this.ClearSelectedItems.bind(_this), undefined);
+                    _this.radioPubSubSvc.subscribe(_this.pubSubConstants.InitFontsSelected, _this.InitSelectedItems.bind(_this), undefined);
                     _this.sc.$on('$destroy', _this.destructor);
                 };
                 this.destructor = function () {
                     var __this = _this;
-                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FontsSelectedCleared, _this.ClearSelectedItems);
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.ClearFontsSelected, _this.ClearSelectedItems);
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.InitFontsSelected, _this.InitSelectedItems);
                 };
                 this.ClearSelectedItems = function () {
                     var elms = $('input[type="checkbox"]');
                     $(elms).prop('checked', false);
                     _this.sc.FOPSelectedItems = [];
                 };
-                this.SetSelectedItems = function (ids) {
+                this.InitSelectedItems = function (ids) {
                     if (ids) {
                         var parts = ids.split(',');
                         _this.sc.FOPSelectedItems = [];
