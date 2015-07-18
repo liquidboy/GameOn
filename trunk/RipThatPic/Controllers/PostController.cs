@@ -116,6 +116,8 @@ namespace RipThatPic.Controllers
 
         public string Fonts { get; set; }
 
+        public string PhotoGroup { get; set; }
+
         public Guid DisplayId { get; set; }
     }
 }

@@ -39,6 +39,7 @@ var Application;
                     __this.sc.PsLData = result.Entity;
                     __this.sc.PsLStyle = result.Entity.PostStyle;
                     __this.sc.PsLFonts = result.FontsMetadata;
+                    __this.radioPubSubSvc.publish(__this.pubSubConstants.FileStorageContainerChanged, result.Entity.PhotoGroup);
                 }).error(function () {
                 });
             };
