@@ -14,7 +14,9 @@
             public serviceHelperSvc: Application.Services.IServiceHelper,
             public dataSvc: Application.Services.IData,
             public instanceFactory: Application.Services.IInstanceFactory,
-            public authService: Application.Services.IAuthService) {
+            public authService: Application.Services.IAuthService,
+            public radioPubSubSvc: Application.Services.IRadioPubSubSvc,
+            public pubSubConstants: Application.Constants.PubSubConstants) {
 
             this.$scope.$on('$destroy', this.destructor);
 
@@ -27,6 +29,12 @@
         destructor = () => {
             var __this = this;
             window['tinymce'].EditorManager.execCommand('mceRemoveEditor', true, 'taDetails');
+
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FontChanged, __this.FontChanged);
+        }
+
+        private FontChanged(fonts: string) {
+            this.SelectedItem.Fonts = fonts;
         }
 
         DeleteItem = () => {
@@ -47,6 +55,9 @@
         private init() {
             this.InitSelectedItem();
             this.RefreshData();
+
+            this.radioPubSubSvc.subscribe(this.pubSubConstants.FontChanged, this.FontChanged.bind(this), undefined);
+            this.$scope.$on('$destroy', this.destructor);
         }
 
         private RefreshData() {
@@ -85,14 +96,14 @@
             this.SelectedItem.GroupingIsReadOnly = true;
             this.SelectedItem._Model = model;
             this.SelectedItem._Model.IsSelected = true;
-
+            this.radioPubSubSvc.publish(this.pubSubConstants.InitFontsSelected, model.Fonts);
             window['tinymce'].get('taDetails').setContent(model.Details);
         }
 
 
         private UnSelect() {
             if (this.SelectedItem != undefined) this.SelectedItem._Model.IsSelected = false;
-
+            this.radioPubSubSvc.publish(this.pubSubConstants.ClearFontsSelected, undefined);
             try { window['tinymce'].get('taDetails').setContent(''); } catch(e){}
         }
 
@@ -100,5 +111,5 @@
 
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ConfigPostCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigPostCtrl]);
+    myapp.controller("ConfigPostCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigPostCtrl]);
 }

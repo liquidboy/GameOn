@@ -3,7 +3,7 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigPostCtrl = (function () {
-            function ConfigPostCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService) {
+            function ConfigPostCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService, radioPubSubSvc, pubSubConstants) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
@@ -11,10 +11,13 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.instanceFactory = instanceFactory;
                 this.authService = authService;
+                this.radioPubSubSvc = radioPubSubSvc;
+                this.pubSubConstants = pubSubConstants;
                 this.EntityType = "post";
                 this.destructor = function () {
                     var __this = _this;
                     window['tinymce'].EditorManager.execCommand('mceRemoveEditor', true, 'taDetails');
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FontChanged, __this.FontChanged);
                 };
                 this.DeleteItem = function () {
                     var __this = _this;
@@ -46,6 +49,7 @@ var Application;
                     _this.SelectedItem.GroupingIsReadOnly = true;
                     _this.SelectedItem._Model = model;
                     _this.SelectedItem._Model.IsSelected = true;
+                    _this.radioPubSubSvc.publish(_this.pubSubConstants.InitFontsSelected, model.Fonts);
                     window['tinymce'].get('taDetails').setContent(model.Details);
                 };
                 this.$scope.$on('$destroy', this.destructor);
@@ -53,9 +57,14 @@ var Application;
                 window['tinymce'].init({ selector: '#taDetails' });
                 //this.$scope.$eval("tinymce.init({selector:'#taDetails'});");
             }
+            ConfigPostCtrl.prototype.FontChanged = function (fonts) {
+                this.SelectedItem.Fonts = fonts;
+            };
             ConfigPostCtrl.prototype.init = function () {
                 this.InitSelectedItem();
                 this.RefreshData();
+                this.radioPubSubSvc.subscribe(this.pubSubConstants.FontChanged, this.FontChanged.bind(this), undefined);
+                this.$scope.$on('$destroy', this.destructor);
             };
             ConfigPostCtrl.prototype.RefreshData = function () {
                 var __this = this;
@@ -71,6 +80,7 @@ var Application;
             ConfigPostCtrl.prototype.UnSelect = function () {
                 if (this.SelectedItem != undefined)
                     this.SelectedItem._Model.IsSelected = false;
+                this.radioPubSubSvc.publish(this.pubSubConstants.ClearFontsSelected, undefined);
                 try {
                     window['tinymce'].get('taDetails').setContent('');
                 }
@@ -81,7 +91,7 @@ var Application;
         })();
         Controllers.ConfigPostCtrl = ConfigPostCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigPostCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigPostCtrl]);
+        myapp.controller("ConfigPostCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigPostCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configPost.js.map

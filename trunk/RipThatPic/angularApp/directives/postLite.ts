@@ -46,11 +46,13 @@
         }
 
         getPost(group: string, name: string) {
-
+            var __this = this;
             this.dataSvc
                 .get('post', group, name, this.authService.sessionId)
                 .success((result: any) => {
-                    this.sc.PslData = result;
+                    __this.sc.PsLData = result.Entity;
+                    __this.sc.PsLStyle = result.Entity.PostStyle;
+                    __this.sc.PsLFonts = result.FontsMetadata;
                 })
                 .error(() => { });        
         }
@@ -60,9 +62,11 @@
 
     export interface IPostLite extends ng.IScope {
 
+        PsLStyle: string;
         PsLGroup: string;
 
-        PslData: any;
+        PsLData: any;
+        PsLFonts: Array<any>;
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');

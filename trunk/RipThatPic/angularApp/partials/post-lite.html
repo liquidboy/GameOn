@@ -1,10 +1,16 @@
 ﻿<div class="post-lite" >
-    <h1>{{PslData.LongName}}</h1>
+    <link ng-repeat="item1 in PsLFonts" href='{{item1.Url}}' rel='stylesheet' type='text/css' />
+
+    <style type="text/css">
+        {{PsLStyle}}
+    </style>
+
+    <h1><span class="post-title">{{PsLData.LongName}}</span></h1>
     <h2></h2>
     <h3></h3>
-    <h4>{{PslData.Abstract}}</h4>
+    <h4><span class="post-abstract">{{PsLData.Abstract}}</span></h4>
 
-    <div ng-bind-html="PslData.Details"></div>
+    <div ng-bind-html="PsLData.Details"></div>
 
 
 

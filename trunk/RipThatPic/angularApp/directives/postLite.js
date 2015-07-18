@@ -34,9 +34,11 @@ var Application;
                 ];
             };
             PostLiteDirective.prototype.getPost = function (group, name) {
-                var _this = this;
+                var __this = this;
                 this.dataSvc.get('post', group, name, this.authService.sessionId).success(function (result) {
-                    _this.sc.PslData = result;
+                    __this.sc.PsLData = result.Entity;
+                    __this.sc.PsLStyle = result.Entity.PostStyle;
+                    __this.sc.PsLFonts = result.FontsMetadata;
                 }).error(function () {
                 });
             };

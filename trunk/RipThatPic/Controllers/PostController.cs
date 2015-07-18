@@ -10,15 +10,26 @@ using System.Web.Http;
 
 namespace RipThatPic.Controllers
 {
+
+    
+
     public class PostController : _BaseController
     {
-
+        
         // GET: api/Post?name=postname&grouping=groupname
-        public async Task<PostEntity> Get(string name, string grouping)
+        public async Task<PostRequest> Get(string name, string grouping)
         {
+            var returnResult = new PostRequest();
+
             var processor = GetAzureProcessor();
-            var ret = await processor.CreateTable("Post");
-            return await processor.RetrieveFromTable<PostEntity>("Post", grouping, name);
+
+            var postData = await processor.CreateTable("Post");
+
+            returnResult.Entity =  await processor.RetrieveFromTable<PostEntity>("Post", grouping, name);
+
+            returnResult.FontsMetadata = GetFonts(returnResult.Entity.Fonts);
+
+            return returnResult;
         }
 
         // GET: api/Post?grouping=groupname
@@ -73,6 +84,13 @@ namespace RipThatPic.Controllers
 
     }
 
+    public class PostRequest
+    {
+        public PostEntity Entity { get; set; }
+
+        public List<FontEntity> FontsMetadata { get; set; }
+    }
+
     public class PostEntity : TableEntity
     {
         private string _name;
@@ -91,9 +109,12 @@ namespace RipThatPic.Controllers
         public PostEntity() { }
 
         public string LongName { get; set; }
+        public string PostStyle { get; set; }
         public string Color { get; set; }
         public string Abstract { get; set; }
         public string Details { get; set; }
+
+        public string Fonts { get; set; }
 
         public Guid DisplayId { get; set; }
     }

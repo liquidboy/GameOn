@@ -24,20 +24,7 @@ namespace RipThatPic.Controllers
 
             returnResult.Entity =  await processor.RetrieveFromTable<PageEntity>("Page", grouping, name);
 
-            if (!string.IsNullOrEmpty(returnResult.Entity.Fonts))
-            {
-                returnResult.FontsMetadata = new List<FontEntity>();
-
-                var fonts = processor.RetrieveAll("Font");
-                var parts = returnResult.Entity.Fonts.Split(",".ToCharArray());
-                foreach (var part in parts) {
-                    foreach (FontEntity font in fonts) {
-                        if (font.DisplayId.ToString().ToLower() == part.ToLower()) {
-                            returnResult.FontsMetadata.Add(font);
-                        }
-                    }
-                }
-            }
+            returnResult.FontsMetadata = GetFonts(returnResult.Entity.Fonts);
             
             return returnResult;
 

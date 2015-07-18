@@ -24,6 +24,31 @@ namespace RipThatPic.Controllers
         }
 
 
+        internal List<FontEntity> GetFonts(string fontDisplayIds)
+        {
+            var listOfFonts = new List<FontEntity>();
+
+            if (!string.IsNullOrEmpty(fontDisplayIds))
+            {
+                var processor = GetAzureProcessor();
+
+                var fonts = processor.RetrieveAll("Font");
+                var parts = fontDisplayIds.Split(",".ToCharArray());
+                foreach (var part in parts)
+                {
+                    foreach (FontEntity font in fonts)
+                    {
+                        if (font.DisplayId.ToString().ToLower() == part.ToLower())
+                        {
+                            listOfFonts.Add(font);
+                        }
+                    }
+                }
+            }
+
+            return listOfFonts;
+        }
+
         internal string GetClientIp(HttpRequestMessage request = null)
         {
             request = request ?? Request;
