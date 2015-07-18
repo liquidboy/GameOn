@@ -56,6 +56,7 @@ namespace RipThatPic
                     "~/angularApp/directives/inlineWindow.js",
                     "~/angularApp/directives/workarea.js",
                     "~/angularApp/directives/configMenu.js",
+                    "~/angularApp/directives/configFooter.js",
                     "~/angularApp/directives/fileStorageList.js",
                     "~/angularApp/directives/fileStorageBillboard.js",
                     "~/angularApp/directives/fileStoragePicker.js",
@@ -108,6 +109,7 @@ namespace RipThatPic
                .Include(
                    "~/Themes/Default.css",
                    "~/Themes/ConfigMenu.css",
+                   "~/Themes/ConfigFooter.css",
                    "~/Themes/Configuration.css",
                    "~/Themes/Notifications.css",
                    "~/Themes/FileUpload.css",
