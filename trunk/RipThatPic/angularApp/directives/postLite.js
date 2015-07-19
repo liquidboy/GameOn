@@ -36,10 +36,11 @@ var Application;
             PostLiteDirective.prototype.getPost = function (group, name) {
                 var __this = this;
                 this.dataSvc.get('post', group, name, this.authService.sessionId).success(function (result) {
-                    __this.sc.PsLData = result.Entity;
-                    __this.sc.PsLStyle = result.Entity.PostStyle;
+                    __this.sc.PsLData = result.Post;
+                    __this.sc.PsLStyle = result.Post.PostStyle;
                     __this.sc.PsLFonts = result.FontsMetadata;
-                    __this.radioPubSubSvc.publish(__this.pubSubConstants.FileStorageContainerChanged, result.Entity.PhotoGroup);
+                    __this.sc.PsLBannerPhoto = result.BannerPhoto;
+                    __this.radioPubSubSvc.publish(__this.pubSubConstants.FileStorageContainerChanged, result.Post.PhotoGroup);
                 }).error(function () {
                 });
             };

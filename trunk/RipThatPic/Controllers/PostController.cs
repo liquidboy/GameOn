@@ -25,9 +25,18 @@ namespace RipThatPic.Controllers
 
             var postData = await processor.CreateTable("Post");
 
-            returnResult.Entity =  await processor.RetrieveFromTable<PostEntity>("Post", grouping, name);
+            returnResult.Post =  await processor.RetrieveFromTable<PostEntity>("Post", grouping, name);
 
-            returnResult.FontsMetadata = GetFonts(returnResult.Entity.Fonts);
+            returnResult.FontsMetadata = GetFonts(returnResult.Post.Fonts);
+
+            if (!string.IsNullOrEmpty(returnResult.Post.BannerPicture))
+            {
+                using (var ctrlFileStorage = new FileStorageController())
+                {
+                    returnResult.BannerPhoto = await ctrlFileStorage.Get(returnResult.Post.BannerPicture);
+                }
+
+            }
 
             return returnResult;
         }
@@ -86,9 +95,11 @@ namespace RipThatPic.Controllers
 
     public class PostRequest
     {
-        public PostEntity Entity { get; set; }
+        public PostEntity Post { get; set; }
 
         public List<FontEntity> FontsMetadata { get; set; }
+
+        public Object BannerPhoto { get; set; }
     }
 
     public class PostEntity : TableEntity

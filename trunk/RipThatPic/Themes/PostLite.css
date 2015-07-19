@@ -1,5 +1,5 @@
 ﻿.post-lite {
-   margin-left:5px;
+   margin-left:0;
 }
 
     .post-lite h1,h2,h3,h4,h5 {
@@ -7,3 +7,16 @@
         margin:0;
     }
         
+    .post-lite .pl-title {
+        position:absolute;
+        padding:0 10px 0 10px;
+        margin:0;
+        bottom:0;
+        left:0;
+        background-color:rgba(255, 255, 255, 0.45);
+
+    }
+
+    .post-lite .pl-banner {
+        
+    }
