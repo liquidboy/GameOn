@@ -43,15 +43,16 @@
 
 
                 var rootElement: any = $(element[0]);
-                if ($scope.FSBBottom != undefined && element) { rootElement.css('bottom', $scope.FSBBottom); }
-                if ($scope.FSBTop != undefined && element) { rootElement.css('top', $scope.FSBTop); }
-                if ($scope.FSBLeft != undefined && element) { rootElement.css('left', $scope.FSBLeft); }
-                if ($scope.FSBRight != undefined && element) { rootElement.css('right', $scope.FSBRight); }
+                var setAbsolute: boolean = false;
+                if ($scope.FSBBottom != undefined && element) { rootElement.css('bottom', $scope.FSBBottom); setAbsolute = true;}
+                if ($scope.FSBTop != undefined && element) { rootElement.css('top', $scope.FSBTop); setAbsolute = true;}
+                if ($scope.FSBLeft != undefined && element) { rootElement.css('left', $scope.FSBLeft); setAbsolute = true;}
+                if ($scope.FSBRight != undefined && element) { rootElement.css('right', $scope.FSBRight); setAbsolute = true;}
                 if ($scope.FSBWidth != undefined && element) { rootElement.css('width', $scope.FSBWidth); }
                 if ($scope.FSBHeight != undefined && element) { rootElement.css('height', $scope.FSBHeight); }
                 //if ($scope.FSBItemWidth != undefined && element) { rootElement.css('width', parseInt($scope.FSBItemWidth) + 20); }
                 //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
-
+                if (setAbsolute) rootElement.css('position', 'Absolute').css('padding', '0 5px 7px 5px');
                 $('#fsbli').width(parseInt(this.scope.FSBItemWidth) - 10 + 'px');
                 if ($scope.FSBHideNumbers) $('#fsbli').hide(); else $('#fsbli').show();
 

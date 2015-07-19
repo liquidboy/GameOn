@@ -124,17 +124,22 @@ var Application;
                     if (_this.scope.FSBCN == 'undefined' || _this.scope.FSBCN == undefined)
                         _this.scope.FSBCN = '';
                     var rootElement = $(element[0]);
+                    var setAbsolute = false;
                     if ($scope.FSBBottom != undefined && element) {
                         rootElement.css('bottom', $scope.FSBBottom);
+                        setAbsolute = true;
                     }
                     if ($scope.FSBTop != undefined && element) {
                         rootElement.css('top', $scope.FSBTop);
+                        setAbsolute = true;
                     }
                     if ($scope.FSBLeft != undefined && element) {
                         rootElement.css('left', $scope.FSBLeft);
+                        setAbsolute = true;
                     }
                     if ($scope.FSBRight != undefined && element) {
                         rootElement.css('right', $scope.FSBRight);
+                        setAbsolute = true;
                     }
                     if ($scope.FSBWidth != undefined && element) {
                         rootElement.css('width', $scope.FSBWidth);
@@ -144,6 +149,8 @@ var Application;
                     }
                     //if ($scope.FSBItemWidth != undefined && element) { rootElement.css('width', parseInt($scope.FSBItemWidth) + 20); }
                     //if ($scope.FSBItemHeight != undefined && element) { rootElement.css('height', parseInt($scope.FSBItemHeight) + 20); }
+                    if (setAbsolute)
+                        rootElement.css('position', 'Absolute').css('padding', '0 5px 7px 5px');
                     $('#fsbli').width(parseInt(_this.scope.FSBItemWidth) - 10 + 'px');
                     if ($scope.FSBHideNumbers)
                         $('#fsbli').hide();

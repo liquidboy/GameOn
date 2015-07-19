@@ -63,7 +63,8 @@ namespace RipThatPic
                     "~/angularApp/directives/fontPicker.js",
                     "~/angularApp/directives/fileUpload.js",
                     "~/angularApp/directives/pageLite.js",
-                    "~/angularApp/directives/postLite.js"
+                    "~/angularApp/directives/postLite.js",
+                    "~/angularApp/directives/publicFooter.js"
                 ));
 
 
@@ -120,6 +121,7 @@ namespace RipThatPic
                    "~/Themes/InlineWindow.css",
                    "~/Themes/PageLite.css",
                    "~/Themes/PostLite.css",
+                   "~/Themes/PublicFooter.css",
                    "~/Scripts/justified/justifiedGallery.min.css"
                ));
 

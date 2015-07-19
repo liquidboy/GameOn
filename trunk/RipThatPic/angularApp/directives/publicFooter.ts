@@ -1,21 +1,21 @@
 ﻿module Application.Directives {
     //'use strict';
-    export class ConfigFooterDirective implements ng.IDirective {
+    export class PublicFooterDirective implements ng.IDirective {
 
-        public injection(): Array<any> { 
+        public injection(): Array<any> {
             return [
                 "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
-                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new ConfigFooterDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
+                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new PublicFooterDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
             ];
         }
-         
+
 
         public templateUrl: string;
         public restrict: string;
         public replace: boolean;
         
-        public sc: IConfigFooter;
-
+        public sc: IPublicFooter;
+         
         public link: ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => void;
 
 
@@ -28,7 +28,7 @@
 
             this.restrict = 'E';
             this.replace = true;
-            this.templateUrl = '/angularApp/partials/config-footer.html';
+            this.templateUrl = '/angularApp/partials/public-footer.html';
             this.link = ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => {
                 this.sc = $scope;
 
@@ -46,12 +46,12 @@
 
     }
 
-    export interface IConfigFooter extends ng.IScope {
+    export interface IPublicFooter extends ng.IScope {
 
 
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.directive("dConfigFooter", ConfigFooterDirective.prototype.injection());
+    myapp.directive("dPublicFooter", PublicFooterDirective.prototype.injection());
 
 }
