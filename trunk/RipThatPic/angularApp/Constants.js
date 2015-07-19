@@ -15,6 +15,7 @@ var Application;
                 this.CookieSettings_FileUploadMaxFileSize = "FileUploadMaxFileSize";
                 this.FileUploaded = "FileUploaded";
                 this.FileStorageContainerChanged = "FileStorageContainerChanged";
+                this.FileStorageListSelectionsChanged = "FileStorageListSelectionsChanged";
                 this.FontChanged = "FontChanged";
                 this.ClearFontsSelected = "ClearFontsSelected";
                 this.InitFontsSelected = "InitFontsSelected";

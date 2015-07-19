@@ -44,6 +44,7 @@
 
 
                 this.sc.FSSelectedItems = [];
+                this.sc.FSSelectedIds = [];
                 this.sc.FSItemSelected = (evt) => { this.ItemSelected(this.sc, evt);}
 
                 this.init();
@@ -155,6 +156,7 @@
             
             //now do stuff with the selected item
             var el = evt.currentTarget;
+            var did = $(el).data('id');
 
             //see if its already in the list
             var foundItInList = null;
@@ -171,10 +173,14 @@
                     $(foundItInList).find('.chk').hide();
                     var index = scope.FSSelectedItems.indexOf(foundItInList);
                     scope.FSSelectedItems.splice(index, 1);
+
+                    var indexid = scope.FSSelectedIds.indexOf(did);
+                    scope.FSSelectedIds.splice(indexid, 1);
                 } else { //its new so add it to the list
                     $(el).addClass('selected');
                     $(el).find('.chk').show();
                     scope.FSSelectedItems.push(el);
+                    scope.FSSelectedIds.push(did);
                 }
             } else { //SINGLE SELECTION
                 if (foundItInList != null) { // already selected so unselect it
@@ -182,6 +188,9 @@
                     $(foundItInList).find('.chk').hide();
                     var index = scope.FSSelectedItems.indexOf(foundItInList);
                     scope.FSSelectedItems.splice(index, 1);
+
+                    var indexid = scope.FSSelectedIds.indexOf(foundItInList);
+                    scope.FSSelectedIds.splice(indexid, 1);
                 } else {
 
                     //clear list of anything 
@@ -190,14 +199,17 @@
                         $(scope.FSSelectedItems).find('.chk').hide();
                         scope.FSSelectedItems = [];
                     }
+                    scope.FSSelectedIds = [];
 
                     //now add this single item into the list
                     $(el).addClass('selected');
                     $(el).find('.chk').show();
                     scope.FSSelectedItems.push(el);
+                    scope.FSSelectedIds.push(did);
                 }
             }
             
+            this.radioPubSubSvc.publish(this.pubSubConstants.FileStorageListSelectionsChanged, scope.FSSelectedIds.join());
         }
 
         safeApply= (scope: any, fn: Function) => {
@@ -217,6 +229,7 @@
 
         FSItemSelected: Function;
         FSSelectedItems: Array<any>;
+        FSSelectedIds: Array<string>;
 
         FSIsMultipleSelection: boolean;
     }

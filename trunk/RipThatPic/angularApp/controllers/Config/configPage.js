@@ -29,6 +29,7 @@ var Application;
                 this.destructor = function () {
                     var __this = _this;
                     _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FontChanged, __this.FontChanged);
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileStorageListSelectionsChanged, __this.PictureChanged);
                 };
                 this.SaveItem = function () {
                     var __this = _this;
@@ -55,10 +56,14 @@ var Application;
                 this.InitSelectedItem();
                 this.RefreshData();
                 this.radioPubSubSvc.subscribe(this.pubSubConstants.FontChanged, this.FontChanged.bind(this), undefined);
+                this.radioPubSubSvc.subscribe(this.pubSubConstants.FileStorageListSelectionsChanged, this.PictureChanged.bind(this), undefined);
                 this.$scope.$on('$destroy', this.destructor);
             };
             ConfigPageCtrl.prototype.FontChanged = function (fonts) {
                 this.SelectedItem.Fonts = fonts;
+            };
+            ConfigPageCtrl.prototype.PictureChanged = function (ids) {
+                this.SelectedItem.BannerPicture = ids;
             };
             ConfigPageCtrl.prototype.RefreshData = function () {
                 var __this = this;

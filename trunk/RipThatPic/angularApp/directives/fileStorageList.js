@@ -24,6 +24,7 @@ var Application;
                 this.ItemSelected = function (scope, evt) {
                     //now do stuff with the selected item
                     var el = evt.currentTarget;
+                    var did = $(el).data('id');
                     //see if its already in the list
                     var foundItInList = null;
                     $.each(scope.FSSelectedItems, function (index) {
@@ -38,11 +39,14 @@ var Application;
                             $(foundItInList).find('.chk').hide();
                             var index = scope.FSSelectedItems.indexOf(foundItInList);
                             scope.FSSelectedItems.splice(index, 1);
+                            var indexid = scope.FSSelectedIds.indexOf(did);
+                            scope.FSSelectedIds.splice(indexid, 1);
                         }
                         else {
                             $(el).addClass('selected');
                             $(el).find('.chk').show();
                             scope.FSSelectedItems.push(el);
+                            scope.FSSelectedIds.push(did);
                         }
                     }
                     else {
@@ -51,6 +55,8 @@ var Application;
                             $(foundItInList).find('.chk').hide();
                             var index = scope.FSSelectedItems.indexOf(foundItInList);
                             scope.FSSelectedItems.splice(index, 1);
+                            var indexid = scope.FSSelectedIds.indexOf(foundItInList);
+                            scope.FSSelectedIds.splice(indexid, 1);
                         }
                         else {
                             //clear list of anything 
@@ -59,12 +65,15 @@ var Application;
                                 $(scope.FSSelectedItems).find('.chk').hide();
                                 scope.FSSelectedItems = [];
                             }
+                            scope.FSSelectedIds = [];
                             //now add this single item into the list
                             $(el).addClass('selected');
                             $(el).find('.chk').show();
                             scope.FSSelectedItems.push(el);
+                            scope.FSSelectedIds.push(did);
                         }
                     }
+                    _this.radioPubSubSvc.publish(_this.pubSubConstants.FileStorageListSelectionsChanged, scope.FSSelectedIds.join());
                 };
                 this.safeApply = function (scope, fn) {
                     (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
@@ -91,6 +100,7 @@ var Application;
                     if (_this.sc.FSCN == 'undefined' || _this.sc.FSCN == undefined)
                         _this.sc.FSCN = '';
                     _this.sc.FSSelectedItems = [];
+                    _this.sc.FSSelectedIds = [];
                     _this.sc.FSItemSelected = function (evt) {
                         _this.ItemSelected(_this.sc, evt);
                     };

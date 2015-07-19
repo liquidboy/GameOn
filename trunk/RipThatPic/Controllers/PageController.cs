@@ -122,6 +122,8 @@ namespace RipThatPic.Controllers
 
         public string Fonts { get; set; }
 
+        public string BannerPicture { get; set; }
+
         public Guid DisplayId { get; set; }
     }
 }

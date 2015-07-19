@@ -17,6 +17,7 @@
         FileUploaded: string = "FileUploaded";
 
         FileStorageContainerChanged: string = "FileStorageContainerChanged";
+        FileStorageListSelectionsChanged: string = "FileStorageListSelectionsChanged";
 
         FontChanged: string = "FontChanged";
         ClearFontsSelected: string = "ClearFontsSelected";
