@@ -6,4 +6,14 @@
         padding:0;
         margin:0;
     }
+
+    .page-lite .pl-title {
+        position:absolute;
+        padding:0 10px 0 10px;
+        margin:0;
+        bottom:0;
+        left:0;
+        background-color:rgba(255, 255, 255, 0.45);
+
+    }
         

@@ -41,6 +41,7 @@ var Application;
                     _this.sc.PLStyle = result.Page.PageStyle;
                     _this.sc.PLFonts = result.FontsMetadata;
                     _this.sc.PLPosts = result.Posts;
+                    _this.sc.PLBannerPhoto = result.BannerPhoto;
                 }).error(function () {
                 });
             };

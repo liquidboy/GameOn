@@ -54,6 +54,7 @@
                     this.sc.PLStyle = result.Page.PageStyle;
                     this.sc.PLFonts = result.FontsMetadata;
                     this.sc.PLPosts = result.Posts;
+                    this.sc.PLBannerPhoto = result.BannerPhoto;
                 })
                 .error(() => { });        
         }
@@ -75,7 +76,7 @@
         PLStyle: string;
         PLPosts: Array<any>;
         PLFonts: Array<any>;
-
+        PLBannerPhoto: any;
         PLGroup: string;
 
     }
