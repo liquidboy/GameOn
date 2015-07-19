@@ -22,11 +22,11 @@ namespace RipThatPic.Controllers
         }
 
         // GET: api/FileStorage?grouping=groupname
-        public async Task<IEnumerable<object>> Get(string name)
+        public async Task<object> Get(string displayId)
         {
             var processor = GetAzureProcessor();
             var ret = await processor.CreateTable("FileStorage");
-            return processor.RetrieveAllByName("FileStorage", name);
+            return processor.RetrieveByDisplayId("FileStorage", new Guid(displayId));
         }
 
 
@@ -48,30 +48,30 @@ namespace RipThatPic.Controllers
 
 
 
-        // DELETE: api/FileStorage/guid
-        [HttpDelete]
-        public async Task<int> Delete([FromUri]string displayid)
-        {
-            var processor = GetAzureProcessor();
-            var result = await processor.DeleteByDisplayId("FileStorage", Guid.Parse(displayid));
-            await processor.DeleteBlobAsync("temp-upload", displayid);
-            await processor.DeleteBlobAsync("temp-upload-thumb", displayid);
-            return result;
-        }
+        //// DELETE: api/FileStorage/guid
+        //[HttpDelete]
+        //public async Task<int> Delete([FromUri]string displayid)
+        //{
+        //    var processor = GetAzureProcessor();
+        //    var result = await processor.DeleteByDisplayId("FileStorage", Guid.Parse(displayid));
+        //    await processor.DeleteBlobAsync("temp-upload", displayid);
+        //    await processor.DeleteBlobAsync("temp-upload-thumb", displayid);
+        //    return result;
+        //}
 
 
-        // DELETE: api/FileStorages/5
-        [HttpDelete]
-        public async Task<int> Delete([FromUri]string grouping, [FromUri]string name)
-        {
-            var processor = GetAzureProcessor();
-            FileStorageEntity entity = new FileStorageEntity(name, grouping);
-            entity.ETag = "*";
-            var result = await processor.DeleteFromTable("FileStorage", entity);
-            await processor.DeleteBlobAsync("temp-upload", name);
-            await processor.DeleteBlobAsync("temp-upload-thumb", name);
-            return result;
-        }
+        //// DELETE: api/FileStorages/5
+        //[HttpDelete]
+        //public async Task<int> Delete([FromUri]string grouping, [FromUri]string name)
+        //{
+        //    var processor = GetAzureProcessor();
+        //    FileStorageEntity entity = new FileStorageEntity(name, grouping);
+        //    entity.ETag = "*";
+        //    var result = await processor.DeleteFromTable("FileStorage", entity);
+        //    await processor.DeleteBlobAsync("temp-upload", name);
+        //    await processor.DeleteBlobAsync("temp-upload-thumb", name);
+        //    return result;
+        //}
 
 
     }

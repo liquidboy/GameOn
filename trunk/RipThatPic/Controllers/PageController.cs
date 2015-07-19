@@ -32,6 +32,15 @@ namespace RipThatPic.Controllers
                 returnResult.Posts = PostsCtrl.Get(postGroup.ToLower());
             }
 
+            if (!string.IsNullOrEmpty(returnResult.Page.BannerPicture)) {
+                using(var ctrlFileStorage = new FileStorageController())
+                {
+                    returnResult.BannerPhoto = await ctrlFileStorage.Get(returnResult.Page.BannerPicture);
+                }
+                
+            }
+            
+
 
             return returnResult;
 
@@ -96,6 +105,8 @@ namespace RipThatPic.Controllers
         public List<FontEntity> FontsMetadata { get; set; }
 
         public IEnumerable<Object> Posts { get; set; }
+
+        public Object BannerPhoto { get; set; }
     }
 
     public class PageEntity : TableEntity

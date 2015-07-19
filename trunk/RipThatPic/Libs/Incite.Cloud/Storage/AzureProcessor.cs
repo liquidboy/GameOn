@@ -312,7 +312,13 @@ namespace Incite.Cloud.Storage
             var table = _tableClient.GetTableReference(type);
             return ExecuteTableQuery(type, table, TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, name));
         }
-        
+
+        public ITableEntity RetrieveByDisplayId(string type, Guid displayId)
+        {
+            var table = _tableClient.GetTableReference(type);
+            return ExecuteTableQuery(type, table, TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)).FirstOrDefault();
+        }
+
         public IEnumerable<ITableEntity> RetrieveAll(string type, string grouping)
         {
             var table = _tableClient.GetTableReference(type);
