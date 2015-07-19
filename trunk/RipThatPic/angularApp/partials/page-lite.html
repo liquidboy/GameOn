@@ -17,14 +17,15 @@
 
 
 
-
-    <div ng-repeat="post in PLPosts"
-        ng-include="'postlist.html'" class="page-posts"></div>
+    <div class="page-posts">
+        <div ng-repeat="post in PLPosts" ng-include="'postlist.html'"></div>
+    </div>
+    
 
 
 
     <script type="text/ng-template" id="postlist.html">
-        <a href="/#/post?n={{post.Name}}&g={{PLGroup}}">{{post.LongName}}</a>
+        <a href="/#/post?n={{post.Name}}&g={{PLGroup}}" class="pg-link">{{post.LongName}}</a>
     </script>
 
 </div>
