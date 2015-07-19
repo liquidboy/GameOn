@@ -18,6 +18,7 @@ var Application;
                     var __this = _this;
                     window['tinymce'].EditorManager.execCommand('mceRemoveEditor', true, 'taDetails');
                     _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FontChanged, __this.FontChanged);
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileStorageListSelectionsChanged, __this.PictureChanged);
                 };
                 this.DeleteItem = function () {
                     var __this = _this;
@@ -60,10 +61,14 @@ var Application;
             ConfigPostCtrl.prototype.FontChanged = function (fonts) {
                 this.SelectedItem.Fonts = fonts;
             };
+            ConfigPostCtrl.prototype.PictureChanged = function (ids) {
+                this.SelectedItem.BannerPicture = ids;
+            };
             ConfigPostCtrl.prototype.init = function () {
                 this.InitSelectedItem();
                 this.RefreshData();
                 this.radioPubSubSvc.subscribe(this.pubSubConstants.FontChanged, this.FontChanged.bind(this), undefined);
+                this.radioPubSubSvc.subscribe(this.pubSubConstants.FileStorageListSelectionsChanged, this.PictureChanged.bind(this), undefined);
                 this.$scope.$on('$destroy', this.destructor);
             };
             ConfigPostCtrl.prototype.RefreshData = function () {

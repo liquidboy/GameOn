@@ -31,10 +31,15 @@
             window['tinymce'].EditorManager.execCommand('mceRemoveEditor', true, 'taDetails');
 
             this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FontChanged, __this.FontChanged);
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileStorageListSelectionsChanged, __this.PictureChanged);
         }
 
         private FontChanged(fonts: string) {
             this.SelectedItem.Fonts = fonts;
+        }
+
+        private PictureChanged(ids: string) {
+            this.SelectedItem.BannerPicture = ids;
         }
 
         DeleteItem = () => {
@@ -57,6 +62,7 @@
             this.RefreshData();
 
             this.radioPubSubSvc.subscribe(this.pubSubConstants.FontChanged, this.FontChanged.bind(this), undefined);
+            this.radioPubSubSvc.subscribe(this.pubSubConstants.FileStorageListSelectionsChanged, this.PictureChanged.bind(this), undefined);
             this.$scope.$on('$destroy', this.destructor);
         }
 

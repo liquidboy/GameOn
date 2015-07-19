@@ -118,6 +118,8 @@ namespace RipThatPic.Controllers
 
         public string PhotoGroup { get; set; }
 
+        public string BannerPicture { get; set; }
+
         public Guid DisplayId { get; set; }
     }
 }

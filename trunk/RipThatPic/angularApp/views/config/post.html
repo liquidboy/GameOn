@@ -77,6 +77,20 @@
             <tr><td class="label">Fonts :</td><td style="font-size:10px; color:darkgray;">{{configpost.SelectedItem.Fonts}}</td></tr>
             <tr style="vertical-align:top;"><td class="label"></td><td><div><d-font-picker da-group="default" da-is-multiple-selection="true"></d-font-picker></div></td></tr>
             <tr><td class="label">PhotoGroup :</td><td><input type="text" ng-model="configpost.SelectedItem.PhotoGroup" style="width:540px;" /></td></tr>
+
+            <tr><td class="label">Picture :</td><td style="font-size:10px; color:darkgray;">{{configpost.SelectedItem.BannerPicture}}</td></tr>
+            <tr style="vertical-align:top;">
+                <td class="label"></td>
+                <td>
+                    <div style="width:550px;height:550px;position:relative;border:1px solid black;">
+                        <d-file-storage-picker da-left="0" da-bottom="50px" da-top="0" da-width="220px" da-cn=""></d-file-storage-picker>
+                        <d-file-storage-list da-item-height="140px"
+                                             da-right="0" da-left="220px" da-bottom="0" da-top="0"
+                                             da-is-multiple-selection="false" da-cn=""></d-file-storage-list>
+                    </div>
+                </td>
+            </tr>
+
             <tr><td colspan="2"><br /></td></tr>
             <tr>
                 <td></td>
