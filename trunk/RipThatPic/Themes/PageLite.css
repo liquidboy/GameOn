@@ -29,4 +29,8 @@
     .page-lite .pg-link:hover {
         font-weight:bold;
     }
+
+    .page-lite .pg-banner {
+        background-repeat: no-repeat; background-size : cover; width : 100%; height : 150px; position:relative; 
+    }
         
