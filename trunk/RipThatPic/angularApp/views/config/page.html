@@ -47,8 +47,8 @@
 
                             </colgroup>
 
-                            <tr ng-repeat="item in configpage.ItemsList"
-                                ng-include="'itemlist.html'"
+                            <tr ng-repeat="item in configpage.Pages"
+                                ng-include="'cpgitemlist.html'"
                                 ng-click="configpage.SelectItemRow(item, $event)"
                                 class="table-content-row"></tr>
                         </table>
@@ -71,13 +71,27 @@
             <tr><td class="label">Grouping :</td><td>{{configpage.SelectedItem.Grouping}}</td></tr>
             <tr><td class="label">Name :</td><td>{{configpage.SelectedItem.Name}}</td></tr>
             <tr><td class="label">LongName :</td><td>{{configpage.SelectedItem.LongName}}</td></tr>
-            <tr><td class="label">Page Style :</td><td><textarea ng-model="configpage.SelectedItem.PageStyle" style="width:450px" rows="10"  /></td></tr>
+            <tr><td class="label">Page Style :</td><td><textarea ng-model="configpage.SelectedItem.PageStyle" style="width:550px" rows="10"  /></td></tr>
             <tr><td class="label">Color :</td><td>{{configpage.SelectedItem.Color}}</td></tr>
             <tr><td class="label">DisplayId :</td><td>{{configpage.SelectedItem.DisplayId}}</td></tr>
             
             <tr><td class="label">Description :</td><td><input type="text" ng-model="configpage.SelectedItem.Description" style="width:250px" /></td></tr>
             <tr><td class="label">Fonts :</td><td style="font-size:10px; color:darkgray;">{{configpage.SelectedItem.Fonts}}</td></tr>
             <tr style="vertical-align:top;"><td class="label"></td><td><div><d-font-picker da-group="default" da-is-multiple-selection="true"></d-font-picker></div></td></tr>
+
+            <tr><td class="label">Picture :</td><td style="font-size:10px; color:darkgray;">{{configpage.SelectedItem.BannerPicture}}</td></tr>
+            <tr style="vertical-align:top;">
+                <td class="label"></td>
+                <td>
+                    <div style="width:550px;height:550px;position:relative;border:1px solid black;">
+                        <d-file-storage-picker da-left="0" da-bottom="50px" da-top="0" da-width="220px" da-cn=""></d-file-storage-picker>
+                        <d-file-storage-list da-item-height="140px"
+                                             da-right="0" da-left="220px" da-bottom="0" da-top="0"
+                                             da-is-multiple-selection="false" da-cn=""></d-file-storage-list>
+                    </div>
+                </td>
+            </tr>
+
             <tr><td colspan="2"><br /></td></tr>
             <tr>
                 <td></td>
@@ -94,7 +108,7 @@
 
 <d-config-footer></d-config-footer>
 
-<script type="text/ng-template" id="itemlist.html">
+<script type="text/ng-template" id="cpgitemlist.html">
     <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
     <td>{{item.Name}} </td>
     <td>{{item.LongName}} </td>

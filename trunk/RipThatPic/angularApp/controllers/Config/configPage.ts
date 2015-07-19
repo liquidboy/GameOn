@@ -1,7 +1,7 @@
 ﻿module Application.Controllers {
     export class ConfigPageCtrl {
         EntityType: string = "page";
-        ItemsList: Array<any>;
+        Pages: Array<any>;
         SelectedItem: any;
 
         constructor(
@@ -54,7 +54,7 @@
 
             this.dataSvc
                 .getAll(__this.EntityType, __this.authService.sessionId)
-                .success(function (result: any) { __this.ItemsList = result; })
+                .success(function (result: any) { __this.Pages = result; })
                 .error(function (err) { });
         }
 

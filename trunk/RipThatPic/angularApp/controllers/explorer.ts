@@ -46,19 +46,19 @@
         FSPSelectedItem: any;
 
 
-        //FileStorage
-        FSItemsList: Array<any>;
-        FSBottom: string;
-        FSTop: string;
-        FSLeft: string;
-        FSRight: string;
-        FSItemHeight: string;
-        FSCN: string;
+        ////FileStorage
+        //FSItemsList: Array<any>;
+        //FSBottom: string;
+        //FSTop: string;
+        //FSLeft: string;
+        //FSRight: string;
+        //FSItemHeight: string;
+        //FSCN: string;
 
-        FSItemSelected: Function;
-        FSSelectedItems: Array<any>;
+        //FSItemSelected: Function;
+        //FSSelectedItems: Array<any>;
 
-        FSIsMultipleSelection: boolean;
+        //FSIsMultipleSelection: boolean;
 
     }
     

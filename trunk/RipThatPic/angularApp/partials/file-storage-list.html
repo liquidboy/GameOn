@@ -4,11 +4,11 @@
     <div id="fsl">
         <div ng-click="FSItemSelected($event)"
              ng-repeat="item in FSItemsList" 
-             ng-include="'itemlist.html'" 
+             ng-include="'fslitemlist.html'" 
              data-id="{{item.DisplayId}}"
              class="item" target="_blank"></div>
 
-        <script type="text/ng-template" id="itemlist.html">
+        <script type="text/ng-template" id="fslitemlist.html">
             <img src="http://austoragetest.blob.core.windows.net/{{item.Grouping}}-thumb/{{item.Name}}"  />
             <div class="sz">{{item.SizeKB}}KB</div>
             <div class="ct">{{item.ContentType}}</div>

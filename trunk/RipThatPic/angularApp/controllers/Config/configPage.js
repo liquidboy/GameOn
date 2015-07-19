@@ -63,7 +63,7 @@ var Application;
             ConfigPageCtrl.prototype.RefreshData = function () {
                 var __this = this;
                 this.dataSvc.getAll(__this.EntityType, __this.authService.sessionId).success(function (result) {
-                    __this.ItemsList = result;
+                    __this.Pages = result;
                 }).error(function (err) {
                 });
             };

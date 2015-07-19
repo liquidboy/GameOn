@@ -13,7 +13,7 @@ var Application;
                 this.initPubSub = function () {
                     _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileUploaded, _this.RefreshData.bind(_this), undefined);
                     _this.radioPubSubSvc.subscribe(_this.pubSubConstants.FileStorageContainerChanged, _this.ContainerChanged.bind(_this), undefined);
-                    _this.scope.$on('$destroy', _this.destructor);
+                    _this.sc.$on('$destroy', _this.destructor);
                 };
                 this.destructor = function () {
                     var __this = _this;
@@ -72,38 +72,48 @@ var Application;
                 this.restrict = 'E';
                 this.replace = true;
                 this.templateUrl = '/angularApp/partials/file-storage-list.html';
-                //this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl ];
-                this.link = function ($scope, element, attributes, controller) {
-                    _this.scope = $scope;
+                this.link = function ($scope, element, attributes) {
+                    _this.sc = $scope;
                     if (attributes.$attr["daBottom"])
-                        _this.scope.FSBottom = element.attr(attributes.$attr["daBottom"]);
+                        _this.sc.FSBottom = element.attr(attributes.$attr["daBottom"]);
                     if (attributes.$attr["daTop"])
-                        _this.scope.FSTop = element.attr(attributes.$attr["daTop"]);
+                        _this.sc.FSTop = element.attr(attributes.$attr["daTop"]);
                     if (attributes.$attr["daItemHeight"])
-                        _this.scope.FSItemHeight = element.attr(attributes.$attr["daItemHeight"]);
+                        _this.sc.FSItemHeight = element.attr(attributes.$attr["daItemHeight"]);
                     if (attributes.$attr["daLeft"])
-                        _this.scope.FSLeft = element.attr(attributes.$attr["daLeft"]);
+                        _this.sc.FSLeft = element.attr(attributes.$attr["daLeft"]);
                     if (attributes.$attr["daRight"])
-                        _this.scope.FSRight = element.attr(attributes.$attr["daRight"]);
+                        _this.sc.FSRight = element.attr(attributes.$attr["daRight"]);
                     if (attributes.$attr["daIsMultipleSelection"])
-                        _this.scope.FSIsMultipleSelection = element.attr(attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
+                        _this.sc.FSIsMultipleSelection = element.attr(attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
                     if (attributes.$attr["daCn"])
-                        _this.scope.FSCN = element.attr(attributes.$attr["daCn"]);
-                    if (_this.scope.FSCN == 'undefined' || _this.scope.FSCN == undefined)
-                        _this.scope.FSCN = '';
-                    _this.scope.FSSelectedItems = [];
-                    _this.scope.FSItemSelected = function (evt) {
-                        _this.ItemSelected(_this.scope, evt);
+                        _this.sc.FSCN = element.attr(attributes.$attr["daCn"]);
+                    if (_this.sc.FSCN == 'undefined' || _this.sc.FSCN == undefined)
+                        _this.sc.FSCN = '';
+                    _this.sc.FSSelectedItems = [];
+                    _this.sc.FSItemSelected = function (evt) {
+                        _this.ItemSelected(_this.sc, evt);
                     };
                     _this.init();
                 };
             }
+            FileStorageListDirective.prototype.injection = function () {
+                return [
+                    "pubSubConstants",
+                    "dataSvc",
+                    "authSvc",
+                    "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
+                        return new FileStorageListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
+                    }
+                ];
+            };
             FileStorageListDirective.prototype.init = function () {
                 this.initPubSub();
                 //this.RefreshData();   
             };
             FileStorageListDirective.prototype.ContainerChanged = function (cn) {
-                this.scope.FSCN = cn === '-all-' ? '' : cn;
+                this.sc.FSCN = cn === '-all-' ? '' : cn;
                 this.RefreshData();
             };
             FileStorageListDirective.prototype.RefreshData = function () {
@@ -113,11 +123,11 @@ var Application;
                     return;
                 //tag this method as already running
                 __this._isRefreshing = true;
-                __this.scope.FSItemsList = [];
-                if (__this.scope.FSCN === '') {
+                __this.sc.FSItemsList = [];
+                if (__this.sc.FSCN === '') {
                     this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
-                        __this.scope.FSItemsList = result;
-                        $.each(__this.scope.FSItemsList, function () {
+                        __this.sc.FSItemsList = result;
+                        $.each(__this.sc.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1000);
                         });
                         try {
@@ -131,19 +141,19 @@ var Application;
                     });
                 }
                 else {
-                    this.dataSvc.getAllByGrouping("FileStorage", __this.scope.FSCN, __this.authService.sessionId).success(function (result) {
-                        //__this.scope.ItemsList = [];
+                    this.dataSvc.getAllByGrouping("FileStorage", __this.sc.FSCN, __this.authService.sessionId).success(function (result) {
+                        //__this.sc.ItemsList = [];
                         //$.each(result, function () {
                         //    this.SizeKB = Math.round(this.Size / 1000);
-                        //    __this.scope.ItemsList.push(this);
+                        //    __this.sc.ItemsList.push(this);
                         //});
-                        __this.scope.FSItemsList = [];
-                        __this.scope.FSItemsList = result;
-                        $.each(__this.scope.FSItemsList, function () {
+                        __this.sc.FSItemsList = [];
+                        __this.sc.FSItemsList = result;
+                        $.each(__this.sc.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
                         });
                         try {
-                            //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
+                            //__this.sc.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
                             //eval('$("#fsl").justifiedGallery();');
                             //freaking using apply was causing digest errors .. going with timeout approach
                             eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
@@ -159,9 +169,7 @@ var Application;
         })();
         Directives.FileStorageListDirective = FileStorageListDirective;
         var myapp = angular.module('bootstrapApp');
-        myapp.directive("dFileStorageList", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-            return new FileStorageListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-        }]);
+        myapp.directive("dFileStorageList", FileStorageListDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=fileStorageList.js.map

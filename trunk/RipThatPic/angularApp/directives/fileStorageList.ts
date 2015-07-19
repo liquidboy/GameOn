@@ -2,13 +2,19 @@
     //'use strict';
     export class FileStorageListDirective implements ng.IDirective {
 
+        public injection(): Array<any> {
+            return [
+                "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new FileStorageListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
+            ];
+        }
        
         public templateUrl: string;
         public restrict: string;
         public replace: boolean;
-        public controller: any;
-        public scope: Application.Controllers.IExplorerController ;
-        public link: ($scope: Application.Controllers.IExplorerController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: Application.Controllers.IExplorerController) => void;
+
+        public sc: IFileStorageListScope ;
+        public link: ($scope: IFileStorageListScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => void;
 
 
         constructor(public pubSubConstants: Application.Constants.PubSubConstants,
@@ -20,24 +26,25 @@
             this.restrict = 'E';
             this.replace = true;
             this.templateUrl = '/angularApp/partials/file-storage-list.html';
-            //this.controller = ['$scope', '$routeParams', '$rootScope', '$injector', Application.Controllers.ExplorerCtrl ];
-            this.link = ($scope: Application.Controllers.IExplorerController, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: Application.Controllers.IExplorerController) =>
+            
+            this.link = ($scope: IFileStorageListScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) =>
             {                
-                this.scope = $scope;
+
+                this.sc = $scope;
                 
-                if (attributes.$attr["daBottom"]) this.scope.FSBottom = element.attr(<string>attributes.$attr["daBottom"]);
-                if (attributes.$attr["daTop"]) this.scope.FSTop = element.attr(<string>attributes.$attr["daTop"]);
-                if (attributes.$attr["daItemHeight"]) this.scope.FSItemHeight = element.attr(<string>attributes.$attr["daItemHeight"]);
-                if (attributes.$attr["daLeft"]) this.scope.FSLeft = element.attr(<string>attributes.$attr["daLeft"]);
-                if (attributes.$attr["daRight"]) this.scope.FSRight = element.attr(<string>attributes.$attr["daRight"]);
-                if (attributes.$attr["daIsMultipleSelection"]) this.scope.FSIsMultipleSelection = element.attr(<string>attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
+                if (attributes.$attr["daBottom"]) this.sc.FSBottom = element.attr(<string>attributes.$attr["daBottom"]);
+                if (attributes.$attr["daTop"]) this.sc.FSTop = element.attr(<string>attributes.$attr["daTop"]);
+                if (attributes.$attr["daItemHeight"]) this.sc.FSItemHeight = element.attr(<string>attributes.$attr["daItemHeight"]);
+                if (attributes.$attr["daLeft"]) this.sc.FSLeft = element.attr(<string>attributes.$attr["daLeft"]);
+                if (attributes.$attr["daRight"]) this.sc.FSRight = element.attr(<string>attributes.$attr["daRight"]);
+                if (attributes.$attr["daIsMultipleSelection"]) this.sc.FSIsMultipleSelection = element.attr(<string>attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
 
-                if (attributes.$attr["daCn"]) this.scope.FSCN = element.attr(<string>attributes.$attr["daCn"]);
-                if (this.scope.FSCN == 'undefined' || this.scope.FSCN == undefined) this.scope.FSCN = '';
+                if (attributes.$attr["daCn"]) this.sc.FSCN = element.attr(<string>attributes.$attr["daCn"]);
+                if (this.sc.FSCN == 'undefined' || this.sc.FSCN == undefined) this.sc.FSCN = '';
 
 
-                this.scope.FSSelectedItems = [];
-                this.scope.FSItemSelected = (evt) => { this.ItemSelected(this.scope, evt);}
+                this.sc.FSSelectedItems = [];
+                this.sc.FSItemSelected = (evt) => { this.ItemSelected(this.sc, evt);}
 
                 this.init();
                
@@ -63,7 +70,7 @@
                 this.ContainerChanged.bind(this),
                 undefined);
 
-            this.scope.$on('$destroy', this.destructor);
+            this.sc.$on('$destroy', this.destructor);
         }
 
         destructor = () => {
@@ -73,7 +80,7 @@
         }
 
         private ContainerChanged(cn: string) {
-            this.scope.FSCN = cn === '-all-'? '': cn;
+            this.sc.FSCN = cn === '-all-'? '': cn;
             this.RefreshData();
         }
 
@@ -87,15 +94,15 @@
             //tag this method as already running
             __this._isRefreshing = true;  
 
-            __this.scope.FSItemsList = [];
+            __this.sc.FSItemsList = [];
             
-            if (__this.scope.FSCN === '') {
+            if (__this.sc.FSCN === '') {
                 this.dataSvc
                     .getAll("FileStorage", __this.authService.sessionId)
                     .success(function (result: any) {
                         
-                        __this.scope.FSItemsList = result;
-                        $.each(__this.scope.FSItemsList, function () {
+                        __this.sc.FSItemsList = result;
+                        $.each(__this.sc.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1000);
                         });
 
@@ -110,24 +117,24 @@
                     .error(function (err) { });
             } else {
                 this.dataSvc
-                    .getAllByGrouping("FileStorage", __this.scope.FSCN, __this.authService.sessionId)
+                    .getAllByGrouping("FileStorage", __this.sc.FSCN, __this.authService.sessionId)
                     .success(function (result: any) {
                     
-                        //__this.scope.ItemsList = [];
+                        //__this.sc.ItemsList = [];
                         //$.each(result, function () {
                         //    this.SizeKB = Math.round(this.Size / 1000);
-                        //    __this.scope.ItemsList.push(this);
+                        //    __this.sc.ItemsList.push(this);
                         //});
 
-                        __this.scope.FSItemsList = [];
-                        __this.scope.FSItemsList = result;
-                        $.each(__this.scope.FSItemsList, function () {
+                        __this.sc.FSItemsList = [];
+                        __this.sc.FSItemsList = result;
+                        $.each(__this.sc.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
                         });
 
                         //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
                         try {
-                            //__this.scope.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
+                            //__this.sc.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
                             //eval('$("#fsl").justifiedGallery();');
 
 
@@ -144,7 +151,7 @@
         }
 
 
-        ItemSelected = (scope: Application.Controllers.IExplorerController, evt: any) => {
+        ItemSelected = (scope: IFileStorageListScope, evt: any) => {
             
             //now do stuff with the selected item
             var el = evt.currentTarget;
@@ -198,12 +205,27 @@
         }
     }
 
+    export interface IFileStorageListScope extends ng.IScope {
+        //FileStorage
+        FSItemsList: Array<any>;
+        FSBottom: string;
+        FSTop: string;
+        FSLeft: string;
+        FSRight: string;
+        FSItemHeight: string;
+        FSCN: string;
+
+        FSItemSelected: Function;
+        FSSelectedItems: Array<any>;
+
+        FSIsMultipleSelection: boolean;
+    }
 
     
-
+ 
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.directive( "dFileStorageList", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new FileStorageListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);
+    myapp.directive("dFileStorageList", FileStorageListDirective.prototype.injection() );
 }
 
 
