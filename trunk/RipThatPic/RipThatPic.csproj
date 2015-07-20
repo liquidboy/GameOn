@@ -322,6 +322,9 @@
     <Content Include="angularApp\directives\pageLite.js">
       <DependentUpon>pageLite.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\pagesList.js">
+      <DependentUpon>pagesList.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\postLite.js">
       <DependentUpon>postLite.ts</DependentUpon>
     </Content>
@@ -331,6 +334,7 @@
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\partials\pages-list.html" />
     <Content Include="angularApp\partials\public-footer.html" />
     <Content Include="angularApp\partials\file-storage-billboard.html" />
     <Content Include="angularApp\partials\font-picker.html" />
@@ -667,6 +671,9 @@
     </Content>
     <Content Include="angularApp\directives\publicFooter.js.map">
       <DependentUpon>publicFooter.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\pagesList.js.map">
+      <DependentUpon>pagesList.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1633,6 +1640,7 @@
     <Content Include="script\vs\nls.js" />
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
+    <Content Include="Themes\PagesList.css" />
     <Content Include="Themes\PublicFooter.css" />
     <Content Include="Themes\FileStorageBillboard.css" />
     <Content Include="Themes\FontPicker.css" />
@@ -1781,6 +1789,7 @@
     <TypeScriptCompile Include="angularApp\controllers\Config\configComment.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Config\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
+    <TypeScriptCompile Include="angularApp\directives\pagesList.ts" />
     <TypeScriptCompile Include="angularApp\directives\publicFooter.ts" />
     <TypeScriptCompile Include="angularApp\directives\configFooter.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileStorageBillboard.ts" />

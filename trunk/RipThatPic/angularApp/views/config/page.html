@@ -49,7 +49,7 @@
 
                             <tr ng-repeat="item in configpage.Pages"
                                 ng-include="'cpgitemlist.html'"
-                                ng-click="configpage.SelectItemRow(item, $event)"
+                                ng-click="configpage.SelectItemRow(item.Page, $event)"
                                 class="table-content-row"></tr>
                         </table>
                     </div>
@@ -109,8 +109,8 @@
 <d-config-footer></d-config-footer>
 
 <script type="text/ng-template" id="cpgitemlist.html">
-    <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
-    <td>{{item.Name}} </td>
-    <td>{{item.LongName}} </td>
-    <td>{{item.Color}} </td>
+    <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Page.Grouping}}</div></td>
+    <td>{{item.Page.Name}} </td>
+    <td>{{item.Page.LongName}} </td>
+    <td>{{item.Page.Color}} </td>
 </script>

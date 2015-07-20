@@ -319,6 +319,23 @@ namespace Incite.Cloud.Storage
             return ExecuteTableQuery(type, table, TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId)).FirstOrDefault();
         }
 
+        public IEnumerable<ITableEntity> RetrieveByDisplayIds(string type, List<Guid> displayIds)
+        {
+            var table = _tableClient.GetTableReference(type);
+
+            string whereTotal = "";
+
+            foreach(var displayId in displayIds)
+            {
+                var where = TableQuery.GenerateFilterConditionForGuid("DisplayId", QueryComparisons.Equal, displayId);
+                if (whereTotal.Length > 0) whereTotal = TableQuery.CombineFilters(whereTotal, TableOperators.Or, where);
+                else whereTotal = where;
+            }
+            
+            return ExecuteTableQuery(type, table, whereTotal);
+        }
+
+
         public IEnumerable<ITableEntity> RetrieveAll(string type, string grouping)
         {
             var table = _tableClient.GetTableReference(type);

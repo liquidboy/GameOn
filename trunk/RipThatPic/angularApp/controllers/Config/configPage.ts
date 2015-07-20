@@ -60,7 +60,7 @@
 
             this.dataSvc
                 .getAll(__this.EntityType, __this.authService.sessionId)
-                .success(function (result: any) { __this.Pages = result; })
+                .success(function (result: any) { __this.Pages = result.Pages; })
                 .error(function (err) { });
         }
 

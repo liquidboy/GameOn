@@ -1,0 +1,37 @@
+﻿.pages-list {
+   
+}
+
+    .pages-list .pages-container{
+
+    }
+   
+    .pages-list .pages-tile{
+        width:90px;
+        height:90px;
+        border:1px solid lightgray;
+        float:left;
+        margin:4px;
+        position:relative;
+        cursor:pointer;
+
+
+        background-repeat: no-repeat; 
+        background-size : cover; 
+    }
+        .pages-list .pages-tile:hover {
+            font-weight:bold;
+        }
+
+        .pages-list .pages-tile .tile-label {
+            margin:0;
+            padding:3px;
+            position:absolute;
+            bottom:0;
+            left:0;
+            font-size:10px;
+
+            width:95%;
+
+            background-color:rgba(255, 255, 255, 0.60);
+        }

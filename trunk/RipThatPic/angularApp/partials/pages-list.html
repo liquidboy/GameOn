@@ -1,0 +1,18 @@
+﻿<div class="pages-list" >
+  
+    <div class="pages-container">
+        <div 
+             ng-repeat="item in PgLiPages" 
+             ng-include="'pgllist.html'" 
+             style="background: url('http://austoragetest.blob.core.windows.net/{{item.BannerPhoto.Grouping}}-thumb/{{item.BannerPhoto.Name}}'); "
+             class="pages-tile"></div>
+    </div>
+    
+
+    <script type="text/ng-template" id="pgllist.html">
+        <div class="tile-label">{{item.Page.LongName}}</div>
+    </script>
+
+</div>
+
+
