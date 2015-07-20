@@ -36,8 +36,12 @@ namespace RipThatPic.Controllers
                 using(var ctrlFileStorage = new FileStorageController())
                 {
                     returnResult.BannerPhoto = await ctrlFileStorage.Get(returnResult.Page.BannerPicture);
-                }
-                
+                }   
+            }
+
+            using (var BannersCtrl = new BannersController()) {
+                var bannerGroup = grouping + "|" + name;
+                returnResult.Banners = BannersCtrl.Get(bannerGroup);
             }
             
 
@@ -107,6 +111,8 @@ namespace RipThatPic.Controllers
         public IEnumerable<Object> Posts { get; set; }
 
         public Object BannerPhoto { get; set; }
+
+        public IEnumerable<Object> Banners { get; set; }
     }
 
     public class PageEntity : TableEntity
