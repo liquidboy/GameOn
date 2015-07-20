@@ -30,6 +30,7 @@
             this.templateUrl = '/angularApp/partials/pages-list.html';
             this.link = ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => {
                 this.sc = $scope;
+                this.sc.LaunchPage = this.launchPage;
 
                 var __this = this;
                 
@@ -51,13 +52,19 @@
                 .error(() => { });        
         }
 
+        launchPage = (model,event) => {
+
+            var trElement = event.currentTarget;
+            
+            window.navigate($(trElement).data("url"));
+        }
     
     }
 
     export interface IPagesList extends ng.IScope {
         
         PgLiPages: Array<any>;
-
+        LaunchPage: Function;
 
     }
 

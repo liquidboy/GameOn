@@ -10,11 +10,16 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
+                this.launchPage = function (model, event) {
+                    var trElement = event.currentTarget;
+                    window.navigate($(trElement).data("url"));
+                };
                 this.restrict = 'E';
                 this.replace = true;
                 this.templateUrl = '/angularApp/partials/pages-list.html';
                 this.link = function ($scope, element, attributes) {
                     _this.sc = $scope;
+                    _this.sc.LaunchPage = _this.launchPage;
                     var __this = _this;
                     _this.getPages('jose01');
                 };
