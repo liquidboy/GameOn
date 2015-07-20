@@ -1,7 +1,16 @@
 ﻿.banner-square {
    width:282px;
    height:282px;
-   border:1px solid #ebebeb;
-   margin-bottom:5px;
-   background-color:#ebebeb;
+   margin-bottom:5px;   
+   position:relative;
+}
+
+.banner-square .banner-label {
+    margin:auto;
+    padding:0;
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
 }

@@ -16,6 +16,8 @@ var Application;
                 this.link = function ($scope, element, attributes) {
                     _this.sc = $scope;
                     var __this = _this;
+                    __this.sc.BSGroup = $scope.Grouping + '|' + $scope.Name;
+                    _this.getBanner(__this.sc.BSGroup);
                 };
             }
             BannerSquareDirective.prototype.injection = function () {
@@ -30,8 +32,10 @@ var Application;
                 ];
             };
             BannerSquareDirective.prototype.getBanner = function (group) {
+                var _this = this;
                 var __this = this;
                 this.dataSvc.getAllByGrouping('banner', group, this.authService.sessionId).success(function (result) {
+                    _this.sc.BSBanners = result;
                 }).error(function () {
                 });
             };

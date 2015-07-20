@@ -1,72 +1,96 @@
 ﻿<d-config-menu da-selected-tab="banner"></d-config-menu>
 
 <div class="config">
+    <!-- GRID AREA -->
     <div>
-        <div>
-            <table class="jf-tbl">
-                <colgroup>
-                    <col style="width:157px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:180px" />
-                </colgroup>
+        <table class="jf-tbl">
+            <colgroup>
+                <col style="width:157px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:180px" />
+            </colgroup>
 
-                <tr>
-                    <td><input type="text" ng-model="configbanner.SelectedItem.Grouping" style="width:150px" ng-readonly="configbanner.SelectedItem.GroupingIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configbanner.SelectedItem.Name" style="width:150px" ng-readonly="configbanner.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configbanner.SelectedItem.LongName" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configbanner.SelectedItem.Color" style="width:150px" /></td>
-                    <td>
-                        <input type="button" value="Save" ng-click="configbanner.SaveItem()" />
-                        <input type="button" value="Delete" ng-click="configbanner.DeleteItem()" />
-                        <input type="button" value="Clear" ng-click="configbanner.ClearEntryFields()" />
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td class="table-header">Grouping</td>
-                    <td class="table-header">Name</td>
-                    <td class="table-header">LongName</td>
-                    <td class="table-header">Color</td>
-                    <td class="table-header">Actions</td>
-                </tr>
-
-                <tr>
-                    <td colspan="5">
-                        <div class="jf-data-grid">
-                            <table class="jf-tbl">
-                                <colgroup>
-                                    <col style="width:154px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
-                                </colgroup>
-
-                                <tr ng-repeat="item in configbanner.ItemsList"
-                                    ng-include="'itemlist.html'"
-                                    ng-click="configbanner.SelectItemRow(item, $event)"
-                                    class="table-content-row"></tr>
-                            </table>
-                        </div>
-
-                    </td>
-                </tr>
-
-                <tr class="table-filter">
-                    <td><select ng-click="configbanner.GroupingChanged(item, $event)" ng-model="configbanner.SelectedGrouping" ng-options="grouping.name for grouping in configbanner.GroupingsList"></select></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-
-            </table>
-        </div>
+            <tr>
+                <td><input type="text" ng-model="configbanner.SelectedItem.Grouping" style="width:150px" ng-readonly="configbanner.SelectedItem.GroupingIsReadOnly" /></td>
+                <td><input type="text" ng-model="configbanner.SelectedItem.Name" style="width:150px" ng-readonly="configbanner.SelectedItem.NameIsReadOnly" /></td>
+                <td><input type="text" ng-model="configbanner.SelectedItem.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configbanner.SelectedItem.Color" style="width:150px" /></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configbanner.SaveItem()" />
+                    <input type="button" value="Delete" ng-click="configbanner.DeleteItem()" />
+                    <input type="button" value="Clear" ng-click="configbanner.ClearEntryFields()" />
+                </td>
+            </tr>
 
 
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <td class="table-header">Actions</td>
+            </tr>
+
+            <tr>
+                <td colspan="5">
+                    <div class="jf-data-grid">
+                        <table class="jf-tbl">
+                            <colgroup>
+                                <col style="width:154px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
+                            </colgroup>
+
+                            <tr ng-repeat="item in configbanner.ItemsList"
+                                ng-include="'itemlist.html'"
+                                ng-click="configbanner.SelectItemRow(item, $event)"
+                                class="table-content-row"></tr>
+                        </table>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr class="table-filter">
+                <td><select ng-click="configbanner.GroupingChanged(item, $event)" ng-model="configbanner.SelectedGrouping" ng-options="grouping.name for grouping in configbanner.GroupingsList"></select></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
     </div>
+
+    <!-- SELECTED ITEM DETAILS AREA -->
+    <div>
+        <table class="jf-tbldetail">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tr><td class="label">Grouping :</td><td>{{configbanner.SelectedItem.Grouping}}</td></tr>
+            <tr><td class="label">Name :</td><td>{{configbanner.SelectedItem.Name}}</td></tr>
+            <tr><td class="label">LongName :</td><td>{{configbanner.SelectedItem.LongName}}</td></tr>
+            <tr><td class="label">Post Style :</td><td><textarea ng-model="configbanner.SelectedItem.BannerStyle" style="width:540px" rows="10" /></td></tr>
+            <tr><td class="label">Color :</td><td>{{configbanner.SelectedItem.Color}}</td></tr>
+            <tr><td class="label">DisplayId :</td><td>{{configbanner.SelectedItem.DisplayId}}</td></tr>
+            
+
+            <tr><td colspan="2"><br /></td></tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configbanner.SaveItem()" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
 </div>
 
 <d-config-footer></d-config-footer>

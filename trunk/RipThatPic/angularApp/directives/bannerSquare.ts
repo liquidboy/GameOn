@@ -36,7 +36,8 @@
 
                 var __this = this;
                 
-
+                __this.sc.BSGroup = $scope.Grouping + '|' + $scope.Name;
+                this.getBanner(__this.sc.BSGroup);
             }
 
             
@@ -47,7 +48,7 @@
             this.dataSvc
                 .getAllByGrouping('banner', group, this.authService.sessionId)
                 .success((result: any) => {
-
+                    this.sc.BSBanners = result;
                 })
                 .error(() => { });        
         }
@@ -56,8 +57,8 @@
     }
 
     export interface IBannerSquare extends ng.IScope {
-
-      
+        BSBanners: Array<any>;
+        BSGroup: string;
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');

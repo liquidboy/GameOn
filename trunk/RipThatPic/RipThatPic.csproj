@@ -292,6 +292,9 @@
     <Content Include="angularApp\controllers\splash.js">
       <DependentUpon>splash.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\bannerSquare.js">
+      <DependentUpon>bannerSquare.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\billboard.js">
       <DependentUpon>billboard.ts</DependentUpon>
     </Content>
@@ -675,6 +678,9 @@
     </Content>
     <Content Include="angularApp\directives\pagesList.js.map">
       <DependentUpon>pagesList.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\bannerSquare.js.map">
+      <DependentUpon>bannerSquare.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />

@@ -1,6 +1,31 @@
-﻿<div class="banner-square" >
-    
+﻿<div >
 
+    <div ng-repeat="item in BSBanners" ng-include="'bnslist2.html'">
+    
+    </div>
+
+
+    <div class="banner-square" >
+        <div ng-repeat="item in BSBanners"
+             ng-include="'bnslist1.html'"
+             stylexxxxx="background: url('http://austoragetest.blob.core.windows.net/{{item.BannerPhoto.Grouping}}-thumb/{{item.BannerPhoto.Name}}'); ">
+
+        </div>
+    </div>
+
+
+    <script type="text/ng-template" id="bnslist1.html">
+        <div class="banner-label">
+            {{item.LongName}}
+        </div>
+    </script>
+
+     <script type="text/ng-template" id="bnslist2.html">
+         <style type="text/css" >
+             {{item.BannerStyle}}
+         </style>
+        
+    </script>
 </div>
 
 
