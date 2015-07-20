@@ -53,6 +53,7 @@ namespace RipThatPic
             bundles.Add(new ScriptBundle("~/default/directives-js-libraries")
                 .Include(
                     "~/angularApp/directives/billboard.js",
+                    "~/angularApp/directives/bannerSquare.js",
                     "~/angularApp/directives/inlineWindow.js",
                     "~/angularApp/directives/workarea.js",
                     "~/angularApp/directives/configMenu.js",
@@ -110,6 +111,7 @@ namespace RipThatPic
             bundles.Add(new StyleBundle("~/default/css-libraries")
                .Include(
                    "~/Themes/Default.css",
+                   "~/Themes/BannerSquare.css",
                    "~/Themes/ConfigMenu.css",
                    "~/Themes/ConfigFooter.css",
                    "~/Themes/Configuration.css",

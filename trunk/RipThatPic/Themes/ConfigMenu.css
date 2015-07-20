@@ -1,11 +1,12 @@
 ﻿
 .ui.menu {
-    padding-bottom:10px;
+    /*padding-bottom:10px;*/
     border-bottom:0 dashed lightgray;
     margin-bottom:10px;
+    /*background-color:#eaeaea;*/
 }
     .ui.menu .item {
-      background-color: whitesmoke;
+      /*background-color: whitesmoke;*/
       padding: 5px;
       font-size: small;
       text-decoration: none;

@@ -334,6 +334,7 @@
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\partials\banner-square.html" />
     <Content Include="angularApp\partials\pages-list.html" />
     <Content Include="angularApp\partials\public-footer.html" />
     <Content Include="angularApp\partials\file-storage-billboard.html" />
@@ -1640,6 +1641,7 @@
     <Content Include="script\vs\nls.js" />
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
+    <Content Include="Themes\BannerSquare.css" />
     <Content Include="Themes\PagesList.css" />
     <Content Include="Themes\PublicFooter.css" />
     <Content Include="Themes\FileStorageBillboard.css" />
@@ -1790,6 +1792,7 @@
     <TypeScriptCompile Include="angularApp\controllers\Config\configArea.ts" />
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
     <TypeScriptCompile Include="angularApp\directives\pagesList.ts" />
+    <TypeScriptCompile Include="angularApp\directives\bannerSquare.ts" />
     <TypeScriptCompile Include="angularApp\directives\publicFooter.ts" />
     <TypeScriptCompile Include="angularApp\directives\configFooter.ts" />
     <TypeScriptCompile Include="angularApp\directives\fileStorageBillboard.ts" />
