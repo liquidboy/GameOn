@@ -18,6 +18,8 @@ var Application;
                     var __this = _this;
                     __this.sc.BSGroup = $scope.Grouping + '|' + $scope.Name;
                     _this.getBanner(__this.sc.BSGroup);
+                    $(element).hide();
+                    $(element).fadeIn(1500);
                 };
             }
             BannerSquareDirective.prototype.injection = function () {

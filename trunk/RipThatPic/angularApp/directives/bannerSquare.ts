@@ -38,6 +38,10 @@
                 
                 __this.sc.BSGroup = $scope.Grouping + '|' + $scope.Name;
                 this.getBanner(__this.sc.BSGroup);
+
+                $(element).hide();
+                $(element).fadeIn(1500);
+
             }
 
             

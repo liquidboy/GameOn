@@ -34,6 +34,8 @@
 
                 var __this = this;
                 
+                
+
                 this.getPages('jose01');
                 
             }
@@ -47,7 +49,6 @@
                 .getAll('page', this.authService.sessionId)
                 .success((result: any) => {
                     this.sc.PgLiPages = result.Pages;
-                    
                 })
                 .error(() => { });        
         }
@@ -67,6 +68,7 @@
         
         PgLiPages: Array<any>;
         LaunchPage: Function;
+        Element: ng.IAugmentedJQuery;
 
     }
 

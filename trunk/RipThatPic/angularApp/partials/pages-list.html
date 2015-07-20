@@ -4,6 +4,7 @@
         <div 
              ng-repeat="item in PgLiPages" 
              ng-include="'pgllist.html'" 
+             ng-animate="{enter: 'pl-animate-enter', leave: 'pl-animate-leave'}"
              style="background: url('http://austoragetest.blob.core.windows.net/{{item.BannerPhoto.Grouping}}-thumb/{{item.BannerPhoto.Name}}'); "
              data-url="/#/page?n={{item.Page.Name}}&g={{item.Page.Grouping}}"
              ng-click="LaunchPage(item, $event)"

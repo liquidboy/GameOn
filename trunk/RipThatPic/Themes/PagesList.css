@@ -1,5 +1,5 @@
 ﻿.pages-list {
-   
+
 }
 
     .pages-list .pages-container{
@@ -14,7 +14,6 @@
         margin:0 4px 4px 0;
         position:relative;
         cursor:pointer;
-
 
         background-repeat: no-repeat; 
         background-size : cover; 
@@ -35,3 +34,18 @@
 
             background-color:rgba(255, 255, 255, 0.60);
         }
+
+
+
+.pl-animate-enter {
+    -webkit-transition: 1s linear all; /* Chrome */
+    -moz-transition: 1s linear all;
+    -o-transition: 1s linear all;
+    transition: 1s linear all;
+    opacity: 0;
+}
+ 
+.pl-animate-enter.pl-animate-enter-active {
+	opacity: 1;
+}
+
