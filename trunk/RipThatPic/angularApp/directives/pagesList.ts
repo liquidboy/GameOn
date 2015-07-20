@@ -56,7 +56,9 @@
 
             var trElement = event.currentTarget;
             
-            window.navigate($(trElement).data("url"));
+            var url = $(trElement).data("url");
+            //window.navigate(url);
+            document.location = url;
         }
     
     }

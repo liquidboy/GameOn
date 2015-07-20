@@ -3,9 +3,9 @@
     <style type="text/css">
         {{PLStyle}}
     </style>
-    <div style="background: url('http://austoragetest.blob.core.windows.net/{{PLBannerPhoto.Grouping}}-thumb-m/{{PLBannerPhoto.Name}}'); " class="pg-banner" >
+    <div style="background: url('http://austoragetest.blob.core.windows.net/{{PLBannerPhoto.Grouping}}-thumb-m/{{PLBannerPhoto.Name}}'); " class="pgl-banner" >
         
-        <div class="pl-title"><h1><span class="page-title">{{PLTitle}}</span></h1></div>
+        <div class="pgl-title"><h1><span class="pgl-titlelabel">{{PLTitle}}</span></h1></div>
     </div>
     <h2></h2>
     <h3></h3>
@@ -17,7 +17,7 @@
 
 
 
-    <div class="page-posts">
+    <div class="pgl-posts">
         <div ng-repeat="post in PLPosts" ng-include="'postlist.html'"></div>
     </div>
     
@@ -25,7 +25,7 @@
 
 
     <script type="text/ng-template" id="postlist.html">
-        <a href="/#/post?n={{post.Name}}&g={{PLGroup}}" class="pg-link">{{post.LongName}}</a>
+        <a href="/#/post?n={{post.Name}}&g={{PLGroup}}" class="pgl-link">{{post.LongName}}</a>
     </script>
 
 </div>

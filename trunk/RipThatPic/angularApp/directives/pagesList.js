@@ -12,7 +12,9 @@ var Application;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.launchPage = function (model, event) {
                     var trElement = event.currentTarget;
-                    window.navigate($(trElement).data("url"));
+                    var url = $(trElement).data("url");
+                    //window.navigate(url);
+                    document.location = url;
                 };
                 this.restrict = 'E';
                 this.replace = true;

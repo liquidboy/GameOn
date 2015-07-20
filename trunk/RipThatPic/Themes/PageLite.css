@@ -7,7 +7,7 @@
         margin:0;
     }
 
-    .page-lite .pl-title {
+    .page-lite .pgl-title {
         position:absolute;
         padding:0 10px 0 10px;
         margin:0;
@@ -17,20 +17,20 @@
 
     }
 
-    .page-lite .page-posts {
+    .page-lite .pgl-posts {
         margin-top:15px;
         margin-left:15px;
     }
 
-    .page-lite .pg-link {
+    .page-lite .pgl-link {
         line-height:30px;
     }
 
-    .page-lite .pg-link:hover {
+    .page-lite .pgl-link:hover {
         font-weight:bold;
     }
 
-    .page-lite .pg-banner {
+    .page-lite .pgl-banner {
         background-repeat: no-repeat !important; 
         background-size : cover !important; 
         width : 100%; height : 150px; position:relative; 
