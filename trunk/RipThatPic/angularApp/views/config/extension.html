@@ -1,65 +1,89 @@
 ﻿<d-config-menu da-selected-tab="extension"></d-config-menu>
 
 <div class="config">
-
+    <!-- GRID AREA -->
     <div>
-        <div>
-            <table class="jf-tbl">
-                <colgroup>
-                    <col style="width:157px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:180px" />
-                </colgroup>
+        <table class="jf-tbl">
+            <colgroup>
+                <col style="width:157px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:180px" />
+            </colgroup>
 
-                <tr>
-                    <td><input type="text" ng-model="configextension.SelectedItem.Grouping" style="width:150px" ng-readonly="configextension.SelectedItem.GroupingIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configextension.SelectedItem.Name" style="width:150px" ng-readonly="configextension.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configextension.SelectedItem.LongName" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configextension.SelectedItem.Color" style="width:150px" /></td>
-                    <td>
-                        <input type="button" value="Save" ng-click="configextension.SaveItem()" />
-                        <input type="button" value="Delete" ng-click="configextension.DeleteItem()" />
-                        <input type="button" value="Clear" ng-click="configextension.ClearEntryFields()" />
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td class="table-header">Grouping</td>
-                    <td class="table-header">Name</td>
-                    <td class="table-header">LongName</td>
-                    <td class="table-header">Color</td>
-                    <td class="table-header">Actions</td>
-                </tr>
-
-                <tr>
-                    <td colspan="5">
-                        <div class="jf-data-grid">
-                            <table class="jf-tbl">
-                                <colgroup>
-                                    <col style="width:154px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
-
-                                </colgroup>
-
-                                <tr ng-repeat="item in configextension.ItemsList"
-                                    ng-include="'itemlist.html'"
-                                    ng-click="configextension.SelectItemRow(item, $event)"
-                                    class="table-content-row"></tr>
-                            </table>
-                        </div>
-
-                    </td>
-                </tr>
-
-            </table>
-        </div>
+            <tr>
+                <td><input type="text" ng-model="configextension.SelectedItem.Grouping" style="width:150px" ng-readonly="configextension.SelectedItem.GroupingIsReadOnly" /></td>
+                <td><input type="text" ng-model="configextension.SelectedItem.Name" style="width:150px" ng-readonly="configextension.SelectedItem.NameIsReadOnly" /></td>
+                <td><input type="text" ng-model="configextension.SelectedItem.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configextension.SelectedItem.Color" style="width:150px" /></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configextension.SaveItem()" />
+                    <input type="button" value="Delete" ng-click="configextension.DeleteItem()" />
+                    <input type="button" value="Clear" ng-click="configextension.ClearEntryFields()" />
+                </td>
+            </tr>
 
 
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <td class="table-header">Actions</td>
+            </tr>
+
+            <tr>
+                <td colspan="5">
+                    <div class="jf-data-grid">
+                        <table class="jf-tbl">
+                            <colgroup>
+                                <col style="width:154px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
+
+                            </colgroup>
+
+                            <tr ng-repeat="item in configextension.ItemsList"
+                                ng-include="'itemlist.html'"
+                                ng-click="configextension.SelectItemRow(item, $event)"
+                                class="table-content-row"></tr>
+                        </table>
+                    </div>
+
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+
+    <!-- SELECTED ITEM DETAILS AREA -->
+    <div>
+        <table class="jf-tbldetail">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tr><td class="label">Grouping :</td><td>{{configextension.SelectedItem.Grouping}}</td></tr>
+            <tr><td class="label">Name :</td><td>{{configextension.SelectedItem.Name}}</td></tr>
+            <tr><td class="label">LongName :</td><td>{{configextension.SelectedItem.LongName}}</td></tr>
+            <tr><td class="label">Color :</td><td>{{configextension.SelectedItem.Color}}</td></tr>
+            <tr><td class="label">DisplayId :</td><td>{{configextension.SelectedItem.DisplayId}}</td></tr>
+
+            <tr><td class="label">Style :</td><td><textarea ng-model="configextension.SelectedItem.ExtensionStyle" style="width:540px" rows="10" /></td></tr>
+            <tr><td class="label">Script :</td><td><textarea ng-model="configextension.SelectedItem.ExtensionScript" style="width:540px" rows="10" /></td></tr>
+            <tr><td class="label">Html :</td><td><textarea ng-model="configextension.SelectedItem.ExtensionHtml" style="width:540px" rows="10" /></td></tr>
+
+            <tr><td colspan="2"><br /></td></tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configextension.SaveItem()" />
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 

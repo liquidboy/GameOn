@@ -1,0 +1,16 @@
+﻿.extension-lite {
+   width:282px;
+   height:282px;
+   margin-bottom:5px;   
+   position:relative;
+}
+
+.extension-lite .extension-label {
+    margin:auto;
+    padding:0;
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+}
