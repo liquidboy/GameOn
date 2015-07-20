@@ -1,27 +1,29 @@
-﻿<div >
+﻿<div>
 
     <div ng-repeat="item in ELExtensions" ng-include="'ellist2.html'">
-    
+
     </div>
 
 
     <div class="extension-square" ng-show="ELShowExtensions">
-        <div ng-repeat="item in ELExtensions" ng-include="'ellist1.html'" ></div>
+        <div ng-repeat="item in ELExtensions" ng-include="'ellist1.html'"></div>
     </div>
 
 
     <script type="text/ng-template" id="ellist1.html">
-        <div class="extension-label">
-            {{item.LongName}}
-        </div>
+        <div class="extension-label">{{item.LongName}}</div>
+        <div ng-bind-html="item.ExtensionScriptHtmlLite"></div>
+
     </script>
 
-     <script type="text/ng-template" id="ellist2.html">
-         <style type="text/css" >
-             {{item.ExtensionStyle}}
-         </style>
-        
+    <script type="text/ng-template" id="ellist2.html">
+        <style type="text/css">
+            {{item.ExtensionStyleLite}}
+        </style>
+        <script type="text/javascript">
+            {{item.ExtensionScriptLite}}
+        </script>
+
+
     </script>
 </div>
-
-

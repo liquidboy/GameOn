@@ -95,6 +95,9 @@ namespace RipThatPic.Controllers
         public string Url { get; set; }
         public string Description { get; set; }
 
+        public string ExtensionStyleLite { get; set; }
+        public string ExtensionScriptLite { get; set; }
+        public string ExtensionHtmlLite { get; set; }
 
         public string ExtensionStyle { get; set; }
         public string ExtensionScript { get; set; }
