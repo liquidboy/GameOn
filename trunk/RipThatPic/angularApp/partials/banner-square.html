@@ -5,7 +5,7 @@
     </div>
 
 
-    <div class="banner-square" >
+    <div class="banner-square" ng-show="BSShowBanners">
         <div ng-repeat="item in BSBanners"
              ng-include="'bnslist1.html'"
              stylexxxxx="background: url('http://austoragetest.blob.core.windows.net/{{item.BannerPhoto.Grouping}}-thumb/{{item.BannerPhoto.Name}}'); ">

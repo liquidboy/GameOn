@@ -49,6 +49,7 @@
                 .getAllByGrouping('banner', group, this.authService.sessionId)
                 .success((result: any) => {
                     this.sc.BSBanners = result;
+                    this.sc.BSShowBanners = result.length > 0 ? true : false;
                 })
                 .error(() => { });        
         }
@@ -59,6 +60,7 @@
     export interface IBannerSquare extends ng.IScope {
         BSBanners: Array<any>;
         BSGroup: string;
+        BSShowBanners: boolean;
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');

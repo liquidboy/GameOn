@@ -36,6 +36,7 @@ var Application;
                 var __this = this;
                 this.dataSvc.getAllByGrouping('banner', group, this.authService.sessionId).success(function (result) {
                     _this.sc.BSBanners = result;
+                    _this.sc.BSShowBanners = result.length > 0 ? true : false;
                 }).error(function () {
                 });
             };
