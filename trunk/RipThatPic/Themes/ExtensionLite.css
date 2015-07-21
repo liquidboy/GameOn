@@ -1,11 +1,8 @@
 ﻿.extension-lite {
-   width:282px;
-   height:282px;
-   margin-bottom:5px;   
-   position:relative;
+  
 }
 
-.extension-lite .extension-label {
+.extension-lite .item .label {
     margin:auto;
     padding:0;
     position:absolute;

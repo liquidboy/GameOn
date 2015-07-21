@@ -37,6 +37,7 @@
                 var __this = this;
                 
                 __this.sc.ELGroup = $scope.Grouping + '|' + $scope.Name;
+                __this.sc.ELExtensions = [];
                 this.getBanner(__this.sc.ELGroup);
 
                 $(element).hide();
@@ -52,8 +53,14 @@
             this.dataSvc
                 .getAllByGrouping('extension', group, this.authService.sessionId)
                 .success((result: any) => {
-                    this.sc.ELExtensions = result;
-                    this.sc.ELShowExtensions = result.length > 0 ? true : false;
+
+                    $(result).each(function (idx: number, obj: any) {
+                        if (obj.IsExtensionStyleLiteEnabled) {
+                            __this.sc.ELExtensions.push(obj);
+                        }
+                    });
+
+                    __this.sc.ELShowExtensions = __this.sc.ELExtensions.length > 0 ? true : false;
                 })
                 .error(() => { });        
         }

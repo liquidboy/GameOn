@@ -17,6 +17,7 @@ var Application;
                     _this.sc = $scope;
                     var __this = _this;
                     __this.sc.ELGroup = $scope.Grouping + '|' + $scope.Name;
+                    __this.sc.ELExtensions = [];
                     _this.getBanner(__this.sc.ELGroup);
                     $(element).hide();
                     $(element).fadeIn(1500);
@@ -34,11 +35,14 @@ var Application;
                 ];
             };
             ExtensionLiteDirective.prototype.getBanner = function (group) {
-                var _this = this;
                 var __this = this;
                 this.dataSvc.getAllByGrouping('extension', group, this.authService.sessionId).success(function (result) {
-                    _this.sc.ELExtensions = result;
-                    _this.sc.ELShowExtensions = result.length > 0 ? true : false;
+                    $(result).each(function (idx, obj) {
+                        if (obj.IsExtensionStyleLiteEnabled) {
+                            __this.sc.ELExtensions.push(obj);
+                        }
+                    });
+                    __this.sc.ELShowExtensions = __this.sc.ELExtensions.length > 0 ? true : false;
                 }).error(function () {
                 });
             };
