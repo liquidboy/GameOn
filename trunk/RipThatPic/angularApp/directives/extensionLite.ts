@@ -39,7 +39,9 @@
                 
                 __this.sc.ELGroup = $scope.Grouping + '|' + $scope.Name;
                 __this.sc.ELExtensions = [];
-                __this.sc.ELRunningScript = '';
+                //__this.sc.ELRunningScript = '';
+                __this.sc.ELElement = element;
+
                 this.getBanner(__this.sc.ELGroup);
 
                 $(element).hide();
@@ -65,7 +67,11 @@
                         }
                     });
 
-                    __this.sc.ELRunningScript = __this.$sce.trustAsJs(runningHtml);
+                    
+                    //__this.sc.ELRunningScript = __this.$sce.trustAsJs(runningHtml);
+
+                    if (runningHtml && runningHtml.length > 0) $(__this.sc.ELElement).find(".dynamicjs").html("<script type='text/javascript'>" + runningHtml + "</script>");
+
                     __this.sc.ELShowExtensions = __this.sc.ELExtensions.length > 0 ? true : false;
                 })
                 .error(() => { });        
@@ -78,7 +84,8 @@
         ELExtensions: Array<any>;
         ELGroup: string;
         ELShowExtensions: boolean;
-        ELRunningScript: string;
+        //ELRunningScript: string;
+        ELElement: ng.IAugmentedJQuery;
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');

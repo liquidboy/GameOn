@@ -1,19 +1,18 @@
 ﻿<div class="extension-lite">
 
+    <div class="dynamicjs"></div>
+    
     <table>
         <tr ng-repeat="item in ELExtensions" ng-include="'ellist1.html'"></tr>
     </table>
     
-    <script type="text/javascript" ng-bind-html="ELRunningScript"></script>
+    
 
     
 
     <script type="text/ng-template" id="ellist1.html">
         <td>
             
-            <style type="text/css">
-                {{item.ExtensionStyleLite}}
-            </style>
             
             <div>
                 <div class="extension-label">{{item.LongName}}</div>

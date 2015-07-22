@@ -19,7 +19,8 @@ var Application;
                     var __this = _this;
                     __this.sc.ELGroup = $scope.Grouping + '|' + $scope.Name;
                     __this.sc.ELExtensions = [];
-                    __this.sc.ELRunningScript = '';
+                    //__this.sc.ELRunningScript = '';
+                    __this.sc.ELElement = element;
                     _this.getBanner(__this.sc.ELGroup);
                     $(element).hide();
                     $(element).fadeIn(1500);
@@ -50,7 +51,9 @@ var Application;
                             __this.sc.ELExtensions.push(obj);
                         }
                     });
-                    __this.sc.ELRunningScript = __this.$sce.trustAsJs(runningHtml);
+                    //__this.sc.ELRunningScript = __this.$sce.trustAsJs(runningHtml);
+                    if (runningHtml && runningHtml.length > 0)
+                        $(__this.sc.ELElement).find(".dynamicjs").html("<script type='text/javascript'>" + runningHtml + "</script>");
                     __this.sc.ELShowExtensions = __this.sc.ELExtensions.length > 0 ? true : false;
                 }).error(function () {
                 });
