@@ -1,11 +1,11 @@
 ﻿module Application.Directives {
     //'use strict';
-    export class ExtensionLiteDirective implements ng.IDirective {
+    export class ExtensionFullDirective implements ng.IDirective {
 
         public injection(): Array<any> {
             return [
                 "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", "$sce",
-                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce) => { return new ExtensionLiteDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce); }
+                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce) => { return new ExtensionFullDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce); }
             ];
         }
 
@@ -14,7 +14,7 @@
         public restrict: string;
         public replace: boolean;
         
-        public sc: IExtensionLite;
+        public sc: IExtensionFull;
 
         public link: ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => void;
 
@@ -29,7 +29,7 @@
 
             this.restrict = 'E';
             this.replace = true;
-            this.templateUrl = '/angularApp/partials/extension-lite.html';
+            this.templateUrl = '/angularApp/partials/extension-full.html';
 
             this.link = ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => {
 
@@ -37,12 +37,12 @@
 
                 var __this = this;
                 
-                __this.sc.ELGroup = $scope.Grouping + '|' + $scope.Name;
-                __this.sc.ELExtensions = [];
-                //__this.sc.ELRunningScript = '';
-                __this.sc.ELElement = element;
+                __this.sc.EFGroup = $scope.Grouping + '|' + $scope.Name;
+                __this.sc.EFExtensions = [];
+                //__this.sc.EFRunningScript = '';
+                __this.sc.EFElement = element;
 
-                this.getBanner(__this.sc.ELGroup);
+                this.getBanner(__this.sc.EFGroup);
 
                 $(element).hide();
                 $(element).fadeIn(1500);
@@ -60,19 +60,19 @@
 
                     var runningHtml = '';
                     $(result).each(function (idx: number, obj: any) {
-                        if (obj.IsExtensionLiteEnabled) {
-                            if (obj.ExtensionHtmlLite) obj.ExtensionHtmlLiteSafe = __this.$sce.trustAsHtml(obj.ExtensionHtmlLite);
-                            if (obj.ExtensionScriptLite) runningHtml += obj.ExtensionScriptLite + '  ';
-                            __this.sc.ELExtensions.push(obj);
+                        if (obj.IsExtensionEnabled) {
+                            if (obj.ExtensionHtml) obj.ExtensionHtmlSafe = __this.$sce.trustAsHtml(obj.ExtensionHtml);
+                            if (obj.ExtensionScript) runningHtml += obj.ExtensionScript + '  ';
+                            __this.sc.EFExtensions.push(obj);
                         }
                     });
 
                     
-                    //__this.sc.ELRunningScript = __this.$sce.trustAsJs(runningHtml);
+                    //__this.sc.EFRunningScript = __this.$sce.trustAsJs(runningHtml);
 
-                    if (runningHtml && runningHtml.length > 0) $(__this.sc.ELElement).find(".dynamicjs").html("<script type='text/javascript'>" + runningHtml + "</script>");
+                    if (runningHtml && runningHtml.length > 0) $(__this.sc.EFElement).find(".dynamicjs").html("<script type='text/javascript'>" + runningHtml + "</script>");
 
-                    __this.sc.ELShowExtensions = __this.sc.ELExtensions.length > 0 ? true : false;
+                    __this.sc.EFShowExtensions = __this.sc.EFExtensions.length > 0 ? true : false;
                 })
                 .error(() => { });        
         }
@@ -80,15 +80,15 @@
      
     }
 
-    export interface IExtensionLite extends ng.IScope {
-        ELExtensions: Array<any>;
-        ELGroup: string;
-        ELShowExtensions: boolean;
-        //ELRunningScript: string;
-        ELElement: ng.IAugmentedJQuery;
+    export interface IExtensionFull extends ng.IScope {
+        EFExtensions: Array<any>;
+        EFGroup: string;
+        EFShowExtensions: boolean;
+        //EFRunningScript: string;
+        EFElement: ng.IAugmentedJQuery;
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.directive("dExtensionLite",  ExtensionLiteDirective.prototype.injection());
+    myapp.directive("dExtensionFull",  ExtensionFullDirective.prototype.injection());
 
 }

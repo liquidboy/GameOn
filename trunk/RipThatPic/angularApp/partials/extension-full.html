@@ -1,0 +1,23 @@
+﻿<div class="extension-full">
+
+    <div class="dynamicjs"></div>
+    
+    <table>
+        <tr ng-repeat="item in EFExtensions" ng-include="'eflist1.html'"></tr>
+    </table>
+    
+    
+
+    
+
+    <script type="text/ng-template" id="eflist1.html">
+        <td>
+            
+            
+            <div>
+                <div class="extension-label">{{item.LongName}}</div>
+                <div ng-bind-html="item.ExtensionHtmlSafe" ></div>
+            </div>
+        </td>
+    </script>
+</div>

@@ -43,7 +43,7 @@ var Application;
                 this.dataSvc.getAllByGrouping('extension', group, this.authService.sessionId).success(function (result) {
                     var runningHtml = '';
                     $(result).each(function (idx, obj) {
-                        if (obj.IsExtensionStyleLiteEnabled) {
+                        if (obj.IsExtensionLiteEnabled) {
                             if (obj.ExtensionHtmlLite)
                                 obj.ExtensionHtmlLiteSafe = __this.$sce.trustAsHtml(obj.ExtensionHtmlLite);
                             if (obj.ExtensionScriptLite)
