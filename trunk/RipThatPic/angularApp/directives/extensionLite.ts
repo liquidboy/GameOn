@@ -4,8 +4,8 @@
 
         public injection(): Array<any> {
             return [
-                "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
-                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new ExtensionLiteDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
+                "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", "$sce",
+                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce) => { return new ExtensionLiteDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce); }
             ];
         }
 
@@ -23,7 +23,8 @@
             public pubSubConstants: Application.Constants.PubSubConstants,
             public dataSvc: Application.Services.IData,
             public authService: Application.Services.IAuthService,
-            public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
+            public radioPubSubSvc: Application.Services.IRadioPubSubSvc,
+            public $sce: ng.ISCEService) {
 
 
             this.restrict = 'E';
@@ -38,6 +39,7 @@
                 
                 __this.sc.ELGroup = $scope.Grouping + '|' + $scope.Name;
                 __this.sc.ELExtensions = [];
+                __this.sc.ELRunningScript = '';
                 this.getBanner(__this.sc.ELGroup);
 
                 $(element).hide();
@@ -54,12 +56,16 @@
                 .getAllByGrouping('extension', group, this.authService.sessionId)
                 .success((result: any) => {
 
+                    var runningHtml = '';
                     $(result).each(function (idx: number, obj: any) {
                         if (obj.IsExtensionStyleLiteEnabled) {
+                            if (obj.ExtensionHtmlLite) obj.ExtensionHtmlLiteSafe = __this.$sce.trustAsHtml(obj.ExtensionHtmlLite);
+                            if (obj.ExtensionScriptLite) runningHtml += obj.ExtensionScriptLite + '  ';
                             __this.sc.ELExtensions.push(obj);
                         }
                     });
 
+                    __this.sc.ELRunningScript = __this.$sce.trustAsJs(runningHtml);
                     __this.sc.ELShowExtensions = __this.sc.ELExtensions.length > 0 ? true : false;
                 })
                 .error(() => { });        
@@ -72,9 +78,10 @@
         ELExtensions: Array<any>;
         ELGroup: string;
         ELShowExtensions: boolean;
+        ELRunningScript: string;
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.directive("dExtensionLite", ExtensionLiteDirective.prototype.injection());
+    myapp.directive("dExtensionLite",  ExtensionLiteDirective.prototype.injection());
 
 }
