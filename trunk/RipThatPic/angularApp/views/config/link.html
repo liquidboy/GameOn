@@ -2,63 +2,87 @@
 
 <div class="config">
 
+    <!-- GRID AREA -->
     <div>
-        <div>
-            <table class="jf-tbl">
-                <colgroup>
-                    <col style="width:157px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:180px" />
-                </colgroup>
+        <table class="jf-tbl">
+            <colgroup>
+                <col style="width:157px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:180px" />
+            </colgroup>
 
-                <tr>
-                    <td><input type="text" ng-model="configlink.SelectedItem.Grouping" style="width:150px" ng-readonly="configlink.SelectedItem.GroupingIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configlink.SelectedItem.Name" style="width:150px" ng-readonly="configlink.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configlink.SelectedItem.LongName" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configlink.SelectedItem.Color" style="width:150px" /></td>
-                    <td>
-                        <input type="button" value="Save" ng-click="configlink.SaveItem()" />
-                        <input type="button" value="Delete" ng-click="configlink.DeleteItem()" />
-                        <input type="button" value="Clear" ng-click="configlink.ClearEntryFields()" />
-                    </td>
-                </tr>
+            <tr>
+                <td><input type="text" ng-model="configlink.SelectedItem.Grouping" style="width:150px" ng-readonly="configlink.SelectedItem.GroupingIsReadOnly" /></td>
+                <td><input type="text" ng-model="configlink.SelectedItem.Name" style="width:150px" ng-readonly="configlink.SelectedItem.NameIsReadOnly" /></td>
+                <td><input type="text" ng-model="configlink.SelectedItem.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configlink.SelectedItem.Url" style="width:150px" /></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configlink.SaveItem()" />
+                    <input type="button" value="Delete" ng-click="configlink.DeleteItem()" />
+                    <input type="button" value="Clear" ng-click="configlink.ClearEntryFields()" />
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="table-header">Grouping</td>
-                    <td class="table-header">Name</td>
-                    <td class="table-header">LongName</td>
-                    <td class="table-header">Color</td>
-                    <td class="table-header">Actions</td>
-                </tr>
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Url</td>
+                <td class="table-header">Actions</td>
+            </tr>
 
-                <tr>
-                    <td colspan="5">
-                        <div class="jf-data-grid">
-                            <table class="jf-tbl">
-                                <colgroup>
-                                    <col style="width:154px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
+            <tr>
+                <td colspan="5">
+                    <div class="jf-data-grid">
+                        <table class="jf-tbl">
+                            <colgroup>
+                                <col style="width:154px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
 
-                                </colgroup>
+                            </colgroup>
 
-                                <tr ng-repeat="item in configlink.ItemsList"
-                                    ng-include="'itemlist.html'"
-                                    ng-click="configlink.SelectItemRow(item, $event)"
-                                    class="table-content-row"></tr>
-                            </table>
-                        </div>
+                            <tr ng-repeat="item in configlink.ItemsList"
+                                ng-include="'itemlist.html'"
+                                ng-click="configlink.SelectItemRow(item, $event)"
+                                class="table-content-row"></tr>
+                        </table>
+                    </div>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </table>
-        </div>
+        </table>
+    </div>
 
+    <!-- SELECTED ITEM DETAILS AREA -->
+    <div>
+        <table class="jf-tbldetail">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tr><td class="label">Grouping :</td><td>{{configlink.SelectedItem.Grouping}}</td></tr>
+            <tr><td class="label">Name :</td><td>{{configlink.SelectedItem.Name}}</td></tr>
+            <tr><td class="label">DisplayId :</td><td>{{configlink.SelectedItem.DisplayId}}</td></tr>
+            <tr><td class="label">LongName :</td><td><input type="text" ng-model="configlink.SelectedItem.LongName" style="width:350px" /></td></tr>
+            <tr><td class="label">Url :</td><td><input type="text" ng-model="configlink.SelectedItem.Url" style="width:350px" /></td></tr>
+            <tr><td class="label">Color :</td><td><input type="text" ng-model="configlink.SelectedItem.Color" style="width:150px" /></td></tr>
+            
+
+
+            <tr><td colspan="2"><br /></td></tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configlink.SaveItem()" />
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 
@@ -69,5 +93,5 @@
     <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
     <td>{{item.Name}} </td>
     <td>{{item.LongName}} </td>
-    <td>{{item.Color}} </td>
+    <td>{{item.Url}} </td>
 </script>
