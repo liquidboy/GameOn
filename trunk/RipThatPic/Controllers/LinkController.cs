@@ -96,6 +96,9 @@ namespace RipThatPic.Controllers
 
         public string Target { get; set; }
 
+        public string LinkStyle { get; set; }
+        
+
         public Guid DisplayId { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿<div class="links-list" >
   
+
+
     <div class="links-container">
         <div
              ng-repeat="item in LinksList" 
@@ -9,7 +11,7 @@
     
 
     <script type="text/ng-template" id="linklist1.html">
-        <a href="{{item.Url}}" target="{{item.Target}}">{{item.LongName}}</a>
+        <a href="{{item.Url}}" target="{{item.Target}}" style="{{item.LinkStyle}}">{{item.LongName}}</a>
     </script>
 
 </div>

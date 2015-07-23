@@ -16,6 +16,7 @@ var Application;
                 this.link = function ($scope, element, attributes) {
                     _this.sc = $scope;
                     var __this = _this;
+                    //__this.sc.TotalLinksStyle = '';
                     var grouping = $scope.Grouping + '|' + $scope.Name;
                     _this.getLinks(grouping);
                 };
@@ -32,9 +33,18 @@ var Application;
                 ];
             };
             LinksListDirective.prototype.getLinks = function (grouping) {
-                var _this = this;
+                var __this = this;
                 this.dataSvc.getAllByGrouping('link', grouping, this.authService.sessionId).success(function (result) {
-                    _this.sc.LinksList = result;
+                    __this.sc.LinksList = result;
+                    //var runningStyle = '';
+                    //$(__this.sc.LinksList).each(function (idx: number, obj: any) {
+                    //    if (obj && obj.LinkStyle) {
+                    //        runningStyle += obj.LinkStyle + ' ';
+                    //    }
+                    //});
+                    //if (runningStyle && runningStyle.length > 0) {
+                    //    __this.sc.TotalLinksStyle = runningStyle;
+                    //}
                 }).error(function () {
                 });
             };

@@ -33,7 +33,7 @@
                
                 var __this = this;
                 
-                
+                //__this.sc.TotalLinksStyle = '';
                 var grouping = $scope.Grouping + '|' + $scope.Name;
                 this.getLinks(grouping);
                 
@@ -43,11 +43,20 @@
         }
 
         getLinks(grouping: string) {
-
+            var __this = this;
             this.dataSvc
                 .getAllByGrouping('link', grouping, this.authService.sessionId)
                 .success((result: any) => {
-                    this.sc.LinksList = result;
+                    __this.sc.LinksList = result;
+                    //var runningStyle = '';
+                    //$(__this.sc.LinksList).each(function (idx: number, obj: any) {
+                    //    if (obj && obj.LinkStyle) {
+                    //        runningStyle += obj.LinkStyle + ' ';
+                    //    }
+                    //});
+                    //if (runningStyle && runningStyle.length > 0) {
+                    //    __this.sc.TotalLinksStyle = runningStyle;
+                    //}
                 })
                 .error(() => { });        
         }
@@ -59,7 +68,7 @@
     export interface ILinksList extends ng.IScope {
         
         LinksList: Array<any>;
-
+        //TotalLinksStyle: string;
 
     }
 
