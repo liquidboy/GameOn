@@ -68,6 +68,7 @@ namespace RipThatPic
                     "~/angularApp/directives/pageLite.js",
                     "~/angularApp/directives/postLite.js",
                     "~/angularApp/directives/pagesList.js",
+                    "~/angularApp/directives/LinksList.js",
                     "~/angularApp/directives/publicFooter.js"
                 ));
 
@@ -129,6 +130,7 @@ namespace RipThatPic
                    "~/Themes/PageLite.css",
                    "~/Themes/PostLite.css",
                    "~/Themes/PagesList.css",
+                   "~/Themes/LinksList.css",
                    "~/Themes/PublicFooter.css",
                    "~/Scripts/justified/justifiedGallery.min.css"
                ));

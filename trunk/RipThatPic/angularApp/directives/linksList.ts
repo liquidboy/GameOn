@@ -1,11 +1,11 @@
 ﻿module Application.Directives {
     //'use strict';
-    export class PagesListDirective implements ng.IDirective {
+    export class LinksListDirective implements ng.IDirective {
 
         public injection(): Array<any> {
             return [
                 "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
-                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new PagesListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
+                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new LinksListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
             ];
         }
 
@@ -13,7 +13,7 @@
         public templateUrl: string;
         public restrict: string;
         public replace: boolean;
-        public sc: IPagesList;
+        public sc: ILinksList;
 
         public link: ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => void;
 
@@ -27,52 +27,43 @@
 
             this.restrict = 'E';
             this.replace = true;
-            this.templateUrl = '/angularApp/partials/pages-list.html';
+            this.templateUrl = '/angularApp/partials/links-list.html';
             this.link = ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => {
                 this.sc = $scope;
-                this.sc.LaunchPage = this.launchPage;
-
+               
                 var __this = this;
                 
                 
-     
-                this.getPages('jose01');
+                var grouping = $scope.Grouping + '|' + $scope.Name;
+                this.getLinks(grouping);
                 
             }
 
             
         }
 
-        getPages(group: string) {
+        getLinks(grouping: string) {
 
             this.dataSvc
-                .getAll('page', this.authService.sessionId)
+                .getAllByGrouping('link', grouping, this.authService.sessionId)
                 .success((result: any) => {
-                    this.sc.PgLiPages = result.Pages;
+                    this.sc.LinksList = result;
                 })
                 .error(() => { });        
         }
 
-        launchPage = (model,event) => {
-
-            var trElement = event.currentTarget;
-            
-            var url = $(trElement).data("url");
-            //window.navigate(url);
-            document.location = url;
-        }
+     
     
     }
 
-    export interface IPagesList extends ng.IScope {
+    export interface ILinksList extends ng.IScope {
         
-        PgLiPages: Array<any>;
-        LaunchPage: Function;
-        Element: ng.IAugmentedJQuery;
+        LinksList: Array<any>;
+
 
     }
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.directive("dPagesList", PagesListDirective.prototype.injection());
+    myapp.directive("dLinksList", LinksListDirective.prototype.injection());
 
 }

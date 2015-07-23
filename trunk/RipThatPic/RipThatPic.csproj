@@ -328,6 +328,9 @@
     <Content Include="angularApp\directives\inlineWindow.js">
       <DependentUpon>inlineWindow.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\linksList.js">
+      <DependentUpon>linksList.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\pageLite.js">
       <DependentUpon>pageLite.ts</DependentUpon>
     </Content>
@@ -346,6 +349,7 @@
     <Content Include="angularApp\partials\extension-full.html" />
     <Content Include="angularApp\partials\extension-lite.html" />
     <Content Include="angularApp\partials\banner-square.html" />
+    <Content Include="angularApp\partials\links-list.html" />
     <Content Include="angularApp\partials\pages-list.html" />
     <Content Include="angularApp\partials\public-footer.html" />
     <Content Include="angularApp\partials\file-storage-billboard.html" />
@@ -695,6 +699,9 @@
     </Content>
     <Content Include="angularApp\directives\extensionFull.js.map">
       <DependentUpon>extensionFull.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\linksList.js.map">
+      <DependentUpon>linksList.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1664,6 +1671,7 @@
     <Content Include="Themes\ExtensionFull.css" />
     <Content Include="Themes\ExtensionLite.css" />
     <Content Include="Themes\BannerSquare.css" />
+    <Content Include="Themes\LinksList.css" />
     <Content Include="Themes\PagesList.css" />
     <Content Include="Themes\PublicFooter.css" />
     <Content Include="Themes\FileStorageBillboard.css" />
@@ -1815,6 +1823,7 @@
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
     <TypeScriptCompile Include="angularApp\directives\extensionFull.ts" />
     <TypeScriptCompile Include="angularApp\directives\extensionLite.ts" />
+    <TypeScriptCompile Include="angularApp\directives\linksList.ts" />
     <TypeScriptCompile Include="angularApp\directives\pagesList.ts" />
     <TypeScriptCompile Include="angularApp\directives\bannerSquare.ts" />
     <TypeScriptCompile Include="angularApp\directives\publicFooter.ts" />
