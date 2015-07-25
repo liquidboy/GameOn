@@ -485,6 +485,16 @@
     <Content Include="Content\icons\version-white.png" />
     <Content Include="Content\icons\Video-black.png" />
     <Content Include="Content\icons\Video-White.png" />
+    <Content Include="Content\placeholders\audio-wide.png" />
+    <Content Include="Content\placeholders\audio.png" />
+    <Content Include="Content\placeholders\document-wide.png" />
+    <Content Include="Content\placeholders\document.png" />
+    <Content Include="Content\placeholders\file-wide.png" />
+    <Content Include="Content\placeholders\file.png" />
+    <Content Include="Content\placeholders\unknown-wide.png" />
+    <Content Include="Content\placeholders\unknown.png" />
+    <Content Include="Content\placeholders\video-wide.png" />
+    <Content Include="Content\placeholders\video.png" />
     <Content Include="Flash\Moxie.2.0.0.swf" />
     <Content Include="Flash\Moxie.cdn.2.0.0.swf" />
     <Content Include="Flash\Moxie.min.2.0.0.swf" />

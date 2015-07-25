@@ -183,6 +183,22 @@ var Application;
                         __this.scope.FSBItemsList = result;
                         $.each(__this.scope.FSBItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1000);
+                            var firstPart = this.ContentType.substring(0, 5);
+                            if (firstPart == 'image') {
+                                this._ImgUrl = 'http://austoragetest.blob.core.windows.net/' + this.Grouping + '-thumb/' + this.Name;
+                            }
+                            else if (firstPart == 'audio') {
+                                this._ImgUrl = '/Content/placeholders/audio-wide.png';
+                            }
+                            else if (firstPart == 'video') {
+                                this._ImgUrl = '/Content/placeholders/video-wide.png';
+                            }
+                            else if (firstPart == 'appli') {
+                                this._ImgUrl = '/Content/placeholders/file-wide.png';
+                            }
+                            else {
+                                this._ImgUrl = '/Content/placeholders/unknown-wide.png';
+                            }
                         });
                         __this.restartAnimation();
                         __this._isRefreshing = false;
@@ -197,6 +213,22 @@ var Application;
                         __this.scope.FSBItemsList = result;
                         $.each(__this.scope.FSBItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
+                            var firstPart = this.ContentType.substring(0, 5);
+                            if (firstPart == 'image') {
+                                this._ImgUrl = 'http://austoragetest.blob.core.windows.net/' + this.Grouping + '-thumb/' + this.Name;
+                            }
+                            else if (firstPart == 'audio') {
+                                this._ImgUrl = '/Content/placeholders/audio-wide.png';
+                            }
+                            else if (firstPart == 'video') {
+                                this._ImgUrl = '/Content/placeholders/video-wide.png';
+                            }
+                            else if (firstPart == 'appli') {
+                                this._ImgUrl = '/Content/placeholders/file-wide.png';
+                            }
+                            else {
+                                this._ImgUrl = '/Content/placeholders/unknown-wide.png';
+                            }
                         });
                         __this.restartAnimation();
                         __this._isRefreshing = false;

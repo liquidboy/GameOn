@@ -131,6 +131,22 @@
                         __this.sc.FSItemsList = result;
                         $.each(__this.sc.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
+
+                            var firstPart = this.ContentType.substring(0, 5);
+
+                            if (firstPart == 'image') {
+                                this._ImgUrl = 'http://austoragetest.blob.core.windows.net/' + this.Grouping + '-thumb/' + this.Name;
+                            } else if (firstPart == 'audio') {
+                                this._ImgUrl = '/Content/placeholders/audio.png';
+                            } else if (firstPart == 'video') {
+                                this._ImgUrl = '/Content/placeholders/video.png';
+                            } else if (firstPart == 'appli') {
+                                this._ImgUrl = '/Content/placeholders/file.png';
+                            } else {
+                                this._ImgUrl = '/Content/placeholders/unknown.png';
+                            }
+                            
+
                         });
 
                         //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
