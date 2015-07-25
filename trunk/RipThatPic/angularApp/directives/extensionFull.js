@@ -28,19 +28,15 @@ var Application;
             }
             ExtensionFullDirective.prototype.injection = function () {
                 return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    "$sce",
-                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce) {
-                        return new ExtensionFullDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce);
-                    }
+                    "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", "$sce",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce) { return new ExtensionFullDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc, $sce); }
                 ];
             };
             ExtensionFullDirective.prototype.getBanner = function (group) {
                 var __this = this;
-                this.dataSvc.getAllByGrouping('extension', group, this.authService.sessionId).success(function (result) {
+                this.dataSvc
+                    .getAllByGrouping('extension', group, this.authService.sessionId)
+                    .success(function (result) {
                     var runningHtml = '';
                     $(result).each(function (idx, obj) {
                         if (obj.IsExtensionEnabled) {
@@ -55,8 +51,8 @@ var Application;
                     if (runningHtml && runningHtml.length > 0)
                         $(__this.sc.EFElement).find(".dynamicjs").html("<script type='text/javascript'>" + runningHtml + "</script>");
                     __this.sc.EFShowExtensions = __this.sc.EFExtensions.length > 0 ? true : false;
-                }).error(function () {
-                });
+                })
+                    .error(function () { });
             };
             return ExtensionFullDirective;
         })();

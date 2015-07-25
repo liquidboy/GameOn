@@ -23,15 +23,8 @@ var Application;
                     _this.radioPubSubSvc.unsubscribe(__this.pubSubConstants.LoginSuccessful, __this.loginSuccessful);
                     _this.radioPubSubSvc.unsubscribe(__this.pubSubConstants.LoginFailed, __this.loginFailed);
                 };
-                this.loginSuccessful = function (data) {
-                    _this.IsLoggedIn = true;
-                    _this.LoggedInEntity = data;
-                    _this.$scope.$apply();
-                };
-                this.loginFailed = function (error) {
-                    _this.IsLoggedIn = false;
-                    _this.LoggedInEntity = {};
-                };
+                this.loginSuccessful = function (data) { _this.IsLoggedIn = true; _this.LoggedInEntity = data; _this.$scope.$apply(); };
+                this.loginFailed = function (error) { _this.IsLoggedIn = false; _this.LoggedInEntity = {}; };
                 var grouping = location.search()["grouping"];
                 var name = location.search()["name"];
                 this.init();

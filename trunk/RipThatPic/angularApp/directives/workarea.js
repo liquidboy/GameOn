@@ -15,14 +15,10 @@ var Application;
             }
             WorkareaDirective.prototype.injection = function () {
                 return [
-                    function () {
-                        return new WorkareaDirective();
-                    }
+                    function () { return new WorkareaDirective(); }
                 ];
             };
-            WorkareaDirective.$inject = [function () {
-                return new WorkareaDirective();
-            }];
+            WorkareaDirective.$inject = [function () { return new WorkareaDirective(); }];
             return WorkareaDirective;
         })();
         Directives.WorkareaDirective = WorkareaDirective;

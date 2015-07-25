@@ -28,21 +28,18 @@ var Application;
             }
             PagesListDirective.prototype.injection = function () {
                 return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-                        return new PagesListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-                    }
+                    "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new PagesListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
                 ];
             };
             PagesListDirective.prototype.getPages = function (group) {
                 var _this = this;
-                this.dataSvc.getAll('page', this.authService.sessionId).success(function (result) {
+                this.dataSvc
+                    .getAll('page', this.authService.sessionId)
+                    .success(function (result) {
                     _this.sc.PgLiPages = result.Pages;
-                }).error(function () {
-                });
+                })
+                    .error(function () { });
             };
             return PagesListDirective;
         })();

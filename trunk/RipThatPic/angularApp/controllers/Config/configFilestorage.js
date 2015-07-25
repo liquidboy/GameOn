@@ -14,24 +14,20 @@ var Application;
                 this.EntityType = "filestorage";
                 this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping, __this.authService.sessionId).success(function (result) {
-                        __this.RefreshData();
-                        __this.InitSelectedItem();
-                    }).error(function (err) {
-                        alert('failure deleting..');
-                    });
+                    _this.dataSvc
+                        .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping, __this.authService.sessionId)
+                        .success(function (result) { __this.RefreshData(); __this.InitSelectedItem(); })
+                        .error(function (err) { alert('failure deleting..'); });
                 };
                 this.ClearEntryFields = function () {
                     _this.InitSelectedItem();
                 };
                 this.SaveItem = function () {
                     var __this = _this;
-                    _this.dataSvc.save(__this.EntityType, __this.SelectedItem, __this.authService.sessionId).success(function (val) {
-                        __this.RefreshData();
-                        __this.InitSelectedItem();
-                    }).error(function (val) {
-                        alert('Failed saving item');
-                    });
+                    _this.dataSvc
+                        .save(__this.EntityType, __this.SelectedItem, __this.authService.sessionId)
+                        .success(function (val) { __this.RefreshData(); __this.InitSelectedItem(); })
+                        .error(function (val) { alert('Failed saving item'); });
                 };
                 this.SelectItemRow = function (model, event) {
                     _this.UnSelect();
@@ -50,19 +46,17 @@ var Application;
             };
             ConfigFileStorageCtrl.prototype.RefreshData = function () {
                 var __this = this;
-                this.dataSvc.getAll(__this.EntityType, __this.authService.sessionId).success(function (result) {
-                    __this.ItemsList = result;
-                }).error(function (err) {
-                });
+                this.dataSvc
+                    .getAll(__this.EntityType, __this.authService.sessionId)
+                    .success(function (result) { __this.ItemsList = result; })
+                    .error(function (err) { });
             };
             ConfigFileStorageCtrl.prototype.InitSelectedItem = function () {
                 this.UnSelect();
                 this.SelectedItem = this.instanceFactory.getInstance("_object");
             };
-            ConfigFileStorageCtrl.prototype.UnSelect = function () {
-                if (this.SelectedItem != undefined)
-                    this.SelectedItem._Model.IsSelected = false;
-            };
+            ConfigFileStorageCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
+                this.SelectedItem._Model.IsSelected = false; };
             return ConfigFileStorageCtrl;
         })();
         Controllers.ConfigFileStorageCtrl = ConfigFileStorageCtrl;

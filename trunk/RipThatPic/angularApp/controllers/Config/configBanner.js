@@ -14,24 +14,20 @@ var Application;
                 this.EntityType = "banner";
                 this.DeleteItem = function () {
                     var __this = _this;
-                    _this.dataSvc.delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping, __this.authService.sessionId).success(function (result) {
-                        __this.RefreshGrid(__this.SelectedGrouping);
-                        __this.InitSelectedItem();
-                    }).error(function (err) {
-                        alert('failure deleting..');
-                    });
+                    _this.dataSvc
+                        .delete(__this.EntityType, __this.SelectedItem.Name, __this.SelectedItem.Grouping, __this.authService.sessionId)
+                        .success(function (result) { __this.RefreshGrid(__this.SelectedGrouping); __this.InitSelectedItem(); })
+                        .error(function (err) { alert('failure deleting..'); });
                 };
                 this.ClearEntryFields = function () {
                     _this.InitSelectedItem();
                 };
                 this.SaveItem = function () {
                     var __this = _this;
-                    _this.dataSvc.save(__this.EntityType, __this.SelectedItem, __this.authService.sessionId).success(function (val) {
-                        __this.RefreshGrid(__this.SelectedGrouping);
-                        __this.InitSelectedItem();
-                    }).error(function (val) {
-                        alert('Failed saving item');
-                    });
+                    _this.dataSvc
+                        .save(__this.EntityType, __this.SelectedItem, __this.authService.sessionId)
+                        .success(function (val) { __this.RefreshGrid(__this.SelectedGrouping); __this.InitSelectedItem(); })
+                        .error(function (val) { alert('Failed saving item'); });
                 };
                 this.SelectItemRow = function (model, event) {
                     _this.UnSelect();
@@ -57,31 +53,29 @@ var Application;
             ConfigBannerCtrl.prototype.RefreshGrid = function (grouping) {
                 var __this = this;
                 if (grouping === undefined || grouping === "-all-")
-                    this.dataSvc.getAll(__this.EntityType, __this.authService.sessionId).success(function (result) {
-                        __this.ItemsList = result;
-                    }).error(function (err) {
-                    });
+                    this.dataSvc
+                        .getAll(__this.EntityType, __this.authService.sessionId)
+                        .success(function (result) { __this.ItemsList = result; })
+                        .error(function (err) { });
                 else
-                    this.dataSvc.getAllByGrouping(__this.EntityType, grouping, __this.authService.sessionId).success(function (result) {
-                        __this.ItemsList = result;
-                    }).error(function (err) {
-                    });
+                    this.dataSvc
+                        .getAllByGrouping(__this.EntityType, grouping, __this.authService.sessionId)
+                        .success(function (result) { __this.ItemsList = result; })
+                        .error(function (err) { });
             };
             ConfigBannerCtrl.prototype.RefreshGroupings = function () {
                 var __this = this;
-                this.dataSvc.getGroupings(__this.EntityType, __this.authService.sessionId).success(function (result) {
-                    __this.GroupingsList = result;
-                }).error(function (err) {
-                });
+                this.dataSvc
+                    .getGroupings(__this.EntityType, __this.authService.sessionId)
+                    .success(function (result) { __this.GroupingsList = result; })
+                    .error(function (err) { });
             };
             ConfigBannerCtrl.prototype.InitSelectedItem = function () {
                 this.UnSelect();
                 this.SelectedItem = this.instanceFactory.getInstance("_object");
             };
-            ConfigBannerCtrl.prototype.UnSelect = function () {
-                if (this.SelectedItem != undefined)
-                    this.SelectedItem._Model.IsSelected = false;
-            };
+            ConfigBannerCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
+                this.SelectedItem._Model.IsSelected = false; };
             return ConfigBannerCtrl;
         })();
         Controllers.ConfigBannerCtrl = ConfigBannerCtrl;

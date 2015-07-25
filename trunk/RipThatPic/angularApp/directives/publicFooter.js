@@ -20,13 +20,8 @@ var Application;
             }
             PublicFooterDirective.prototype.injection = function () {
                 return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-                        return new PublicFooterDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-                    }
+                    "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new PublicFooterDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
                 ];
             };
             return PublicFooterDirective;

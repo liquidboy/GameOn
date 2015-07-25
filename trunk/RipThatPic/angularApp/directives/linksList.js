@@ -23,18 +23,15 @@ var Application;
             }
             LinksListDirective.prototype.injection = function () {
                 return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-                        return new LinksListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-                    }
+                    "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new LinksListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
                 ];
             };
             LinksListDirective.prototype.getLinks = function (grouping) {
                 var __this = this;
-                this.dataSvc.getAllByGrouping('link', grouping, this.authService.sessionId).success(function (result) {
+                this.dataSvc
+                    .getAllByGrouping('link', grouping, this.authService.sessionId)
+                    .success(function (result) {
                     __this.sc.LinksList = result;
                     //var runningStyle = '';
                     //$(__this.sc.LinksList).each(function (idx: number, obj: any) {
@@ -45,8 +42,8 @@ var Application;
                     //if (runningStyle && runningStyle.length > 0) {
                     //    __this.sc.TotalLinksStyle = runningStyle;
                     //}
-                }).error(function () {
-                });
+                })
+                    .error(function () { });
             };
             return LinksListDirective;
         })();

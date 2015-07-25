@@ -19,9 +19,7 @@ var Application;
                 };
                 this.destructor = function () {
                     var __this = _this;
-                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileUploaded, function () {
-                        __this.RefreshData();
-                    });
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileUploaded, function () { __this.RefreshData(); });
                 };
                 this.ItemSelected = function (scope, evt) {
                     if (scope.FSPSelectedItem) {
@@ -66,9 +64,7 @@ var Application;
                     if ($scope.FSPWidth != undefined && element) {
                         rootElement.css('width', $scope.FSPWidth);
                     }
-                    _this.scope.FSPItemSelected = function (evt) {
-                        _this.ItemSelected(_this.scope, evt);
-                    };
+                    _this.scope.FSPItemSelected = function (evt) { _this.ItemSelected(_this.scope, evt); };
                     _this.init();
                 };
             }
@@ -81,18 +77,16 @@ var Application;
             };
             FileStoragePickerDirective.prototype.RefreshGroupings = function () {
                 var __this = this;
-                this.dataSvc.getGroupings('filestorage', __this.authService.sessionId).success(function (result) {
-                    __this.scope.FSPList = result;
-                }).error(function (err) {
-                });
+                this.dataSvc
+                    .getGroupings('filestorage', __this.authService.sessionId)
+                    .success(function (result) { __this.scope.FSPList = result; })
+                    .error(function (err) { });
             };
             return FileStoragePickerDirective;
         })();
         Directives.FileStoragePickerDirective = FileStoragePickerDirective;
         var myapp = angular.module('bootstrapApp');
-        myapp.directive("dFileStoragePicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-            return new FileStoragePickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-        }]);
+        myapp.directive("dFileStoragePicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new FileStoragePickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=fileStoragePicker.js.map

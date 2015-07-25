@@ -34,9 +34,7 @@ var Application;
                         __this.scope.FSBItems = __this.scope.FSBRootElement.find('.item');
                     if (__this.scope.FSBItemNos == null || __this.scope.FSBItemNos.length === 0)
                         __this.scope.FSBItemNos = __this.scope.FSBRootElement.find('.itemno');
-                    __this.scope.FSBItemNos.each(function (id, el) {
-                        $(el).removeClass('selected');
-                    });
+                    __this.scope.FSBItemNos.each(function (id, el) { $(el).removeClass('selected'); });
                     if (__this.scope.FSBItems.length > 0) {
                         var previousItem = __this.scope.FSBItems[__this.scope.FSBCurrentIndex];
                         //determine next index to change to
@@ -64,9 +62,7 @@ var Application;
                         });
                         if (__this.scope.FSBCurrentIndex >= 0)
                             $(previousItem).fadeOut(500);
-                        $('#fsbttn').animate({ width: __this.scope.FSBItemWidth }, __this.scope.FSBTimeBetweenEachFrame, function () {
-                            $('#fsbttn').width('0');
-                        });
+                        $('#fsbttn').animate({ width: __this.scope.FSBItemWidth }, __this.scope.FSBTimeBetweenEachFrame, function () { $('#fsbttn').width('0'); });
                         $(currentItem).fadeIn(1000);
                     }
                 };
@@ -157,9 +153,7 @@ var Application;
                     else
                         $('#fsbli').show();
                     _this.scope.FSBSelectedItems = [];
-                    _this.scope.FSBItemSelected = function (evt) {
-                        _this.ItemSelected(_this.scope, evt);
-                    };
+                    _this.scope.FSBItemSelected = function (evt) { _this.ItemSelected(_this.scope, evt); };
                     _this.init();
                 };
             }
@@ -183,18 +177,22 @@ var Application;
                 __this.clearAnimation();
                 __this.scope.FSBItemsList = [];
                 if (__this.scope.FSBCN === '') {
-                    this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
+                    this.dataSvc
+                        .getAll("FileStorage", __this.authService.sessionId)
+                        .success(function (result) {
                         __this.scope.FSBItemsList = result;
                         $.each(__this.scope.FSBItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1000);
                         });
                         __this.restartAnimation();
                         __this._isRefreshing = false;
-                    }).error(function (err) {
-                    });
+                    })
+                        .error(function (err) { });
                 }
                 else {
-                    this.dataSvc.getAllByGrouping("FileStorage", __this.scope.FSBCN, __this.authService.sessionId).success(function (result) {
+                    this.dataSvc
+                        .getAllByGrouping("FileStorage", __this.scope.FSBCN, __this.authService.sessionId)
+                        .success(function (result) {
                         __this.scope.FSBItemsList = [];
                         __this.scope.FSBItemsList = result;
                         $.each(__this.scope.FSBItemsList, function () {
@@ -202,17 +200,15 @@ var Application;
                         });
                         __this.restartAnimation();
                         __this._isRefreshing = false;
-                    }).error(function (err) {
-                    });
+                    })
+                        .error(function (err) { });
                 }
             };
             return FileStorageBillboardDirective;
         })();
         Directives.FileStorageBillboardDirective = FileStorageBillboardDirective;
         var myapp = angular.module('bootstrapApp');
-        myapp.directive("dFileStorageBillboard", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-            return new FileStorageBillboardDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-        }]);
+        myapp.directive("dFileStorageBillboard", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new FileStorageBillboardDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=fileStorageBillboard.js.map

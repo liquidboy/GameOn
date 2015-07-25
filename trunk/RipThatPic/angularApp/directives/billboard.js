@@ -15,14 +15,10 @@ var Application;
             }
             BillboardDirective.prototype.injection = function () {
                 return [
-                    function () {
-                        return new BillboardDirective();
-                    }
+                    function () { return new BillboardDirective(); }
                 ];
             };
-            BillboardDirective.$inject = [function () {
-                return new BillboardDirective();
-            }];
+            BillboardDirective.$inject = [function () { return new BillboardDirective(); }];
             return BillboardDirective;
         })();
         Directives.BillboardDirective = BillboardDirective;

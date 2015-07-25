@@ -70,9 +70,7 @@ var Application;
                         _this.sc.FOPGroup = element.attr(attributes.$attr["daGroup"]);
                     if (attributes.$attr["daIsMultipleSelection"])
                         _this.sc.FOPIsMultipleSelection = element.attr(attributes.$attr["daIsMultipleSelection"]) == "true" ? true : false;
-                    _this.sc.FOPItemClicked = function (evt) {
-                        _this.ItemClicked(_this.sc, evt);
-                    };
+                    _this.sc.FOPItemClicked = function (evt) { _this.ItemClicked(_this.sc, evt); };
                     _this.init();
                 };
             }
@@ -85,18 +83,16 @@ var Application;
             };
             FontPickerDirective.prototype.RefreshFonts = function () {
                 var __this = this;
-                this.dataSvc.getAllByGrouping('Font', __this.sc.FOPGroup, __this.authService.sessionId).success(function (result) {
-                    __this.sc.FOPItemsList = result;
-                }).error(function (err) {
-                });
+                this.dataSvc
+                    .getAllByGrouping('Font', __this.sc.FOPGroup, __this.authService.sessionId)
+                    .success(function (result) { __this.sc.FOPItemsList = result; })
+                    .error(function (err) { });
             };
             return FontPickerDirective;
         })();
         Directives.FontPickerDirective = FontPickerDirective;
         var myapp = angular.module('bootstrapApp');
-        myapp.directive("dFontPicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-            return new FontPickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-        }]);
+        myapp.directive("dFontPicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new FontPickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=fontPicker.js.map

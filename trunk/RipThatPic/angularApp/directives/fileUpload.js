@@ -56,32 +56,19 @@ var Application;
                         url: __this.scope.FUUrl,
                         headers: {},
                         bodyParams: {},
-                        beforeFileUpload: function () {
-                        },
-                        postInitialisation: function () {
-                        },
-                        filesAdded: function () {
-                        },
-                        filesRemoved: function () {
-                        },
-                        fileUploaded: function () {
-                        },
-                        fileFiltered: function () {
-                        },
-                        attachCustomPropertiesToFile: function () {
-                        },
-                        uploadComplete: function () {
-                        },
-                        uploadProgress: function () {
-                        },
-                        stateChanged: function () {
-                        },
-                        canRetryFiles: function () {
-                        },
-                        error: function () {
-                        },
-                        browse: function () {
-                        },
+                        beforeFileUpload: function () { },
+                        postInitialisation: function () { },
+                        filesAdded: function () { },
+                        filesRemoved: function () { },
+                        fileUploaded: function () { },
+                        fileFiltered: function () { },
+                        attachCustomPropertiesToFile: function () { },
+                        uploadComplete: function () { },
+                        uploadProgress: function () { },
+                        stateChanged: function () { },
+                        canRetryFiles: function () { },
+                        error: function () { },
+                        browse: function () { },
                         timeout: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadTimeout, _this.httpConfiguration.timeout),
                         runtimes: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadRuntimes, 'html5,flash,html4'),
                         chunk_size: _this.getSetting(_this.pubSubConstants.CookieSettings_FileUploadChunkSize, 0),
@@ -124,15 +111,12 @@ var Application;
                             },
                             // PreInit events, bound before any internal events
                             preinit: {
-                                Init: function (up, info) {
-                                },
-                                UploadFile: function (up, file) {
-                                }
+                                Init: function (up, info) { },
+                                UploadFile: function (up, file) { }
                             },
                             // Post init events, bound after the internal events
                             init: {
-                                postInit: function (up) {
-                                },
+                                postInit: function (up) { },
                                 Browse: function (up) {
                                     //up.log.log('[Browse]');
                                     //if (config.browse) {
@@ -140,15 +124,12 @@ var Application;
                                     //}
                                 },
                                 //Refresh: refresh,
-                                StateChanged: function (up) {
-                                },
+                                StateChanged: function (up) { },
                                 //QueueChanged: queueChanged,
                                 //OptionChange: optionChanged,
                                 //BeforeUpload: beforeUpload,
-                                UploadProgress: function (up, file) {
-                                },
-                                FileFiltered: function (up, file) {
-                                },
+                                UploadProgress: function (up, file) { },
+                                FileFiltered: function (up, file) { },
                                 FilesAdded: function (up, files) {
                                     _this.plupload.each(files, function (file) {
                                         //var szkb = file.size / 1024 / 1024;
@@ -163,21 +144,17 @@ var Application;
                                     });
                                     __this.startUpload();
                                 },
-                                FilesRemoved: function (up, files) {
-                                },
+                                FilesRemoved: function (up, files) { },
                                 FileUploaded: function (up, file, info) {
                                     __this.scope.FUFileUploadRefCounter--;
                                     __this.EnableDisableStartButton();
                                     if (!__this._isUploading)
                                         __this.radioPubSubSvc.publish(__this.pubSubConstants.FileUploaded, null);
                                 },
-                                ChunkUploaded: function (up, file, info) {
-                                },
-                                UploadComplete: function (up, files) {
-                                },
+                                ChunkUploaded: function (up, file, info) { },
+                                UploadComplete: function (up, files) { },
                                 //Destry: destroy,
-                                Error: function (up, args) {
-                                }
+                                Error: function (up, args) { }
                             }
                         });
                         __this.uploader.init();
@@ -227,9 +204,7 @@ var Application;
                 return [
                     "pubSubConstants",
                     "radioPubSubSvc",
-                    function (pubSubConstants, radioPubSubSvc) {
-                        return new FileUploadDirective(pubSubConstants, radioPubSubSvc);
-                    }
+                    function (pubSubConstants, radioPubSubSvc) { return new FileUploadDirective(pubSubConstants, radioPubSubSvc); }
                 ];
             };
             FileUploadDirective.prototype.ContainerChanged = function (cn) {

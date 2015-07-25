@@ -17,15 +17,9 @@ var Application;
                 this.pubSubConstants = pubSubConstants;
                 this.authSvc = authSvc;
                 this.$ = jQuery;
-                this.send = function (message) {
-                    _this.nh.server.send(_this.authSvc.sessionId, message);
-                };
-                this.received = function (sessionId, message) {
-                    _this.radioPubSubSvc.publish(_this.pubSubConstants.NotificationMessageRecieved, message);
-                };
-                this.ping = function () {
-                    _this.nh.server.send(_this.authSvc.sessionId, 'ping');
-                };
+                this.send = function (message) { _this.nh.server.send(_this.authSvc.sessionId, message); };
+                this.received = function (sessionId, message) { _this.radioPubSubSvc.publish(_this.pubSubConstants.NotificationMessageRecieved, message); };
+                this.ping = function () { _this.nh.server.send(_this.authSvc.sessionId, 'ping'); };
                 this.nh = this.$.connection.notificationHub;
                 this.nh.client.broadcastMessage = this.received;
                 this.$.connection.hub.start().done(function () {

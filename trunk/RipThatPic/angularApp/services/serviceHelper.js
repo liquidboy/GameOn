@@ -9,9 +9,7 @@ var Application;
             }
             ServiceHelperSvc.prototype.injection = function () {
                 return [
-                    function () {
-                        return [ServiceHelperSvc];
-                    }
+                    function () { return [ServiceHelperSvc]; }
                 ];
             };
             ServiceHelperSvc.prototype.getAuthorizationToken = function (successCallback) {

@@ -18,14 +18,15 @@ var Application;
                 };
                 var __this = this;
                 var ctl = $('.list-of-pages');
-                dataSvc.getAllConfig(this.authSvc.sessionId).success(function (result) {
+                dataSvc.getAllConfig(this.authSvc.sessionId)
+                    .success(function (result) {
                     __this.PageList = result.Pages;
                     __this.BannerList = result.Banners;
                     __this.AreaList = result.Areas;
                     __this.DatacenterList = result.Datacenters;
                     __this.ServiceList = result.Services;
-                }).error(function (err) {
-                });
+                })
+                    .error(function (err) { });
                 $scope.$on('$destroy', __this.destructor);
                 this.authSvc.ping('config');
             }

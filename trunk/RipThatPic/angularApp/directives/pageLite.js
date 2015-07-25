@@ -25,25 +25,22 @@ var Application;
             }
             PageLiteDirective.prototype.injection = function () {
                 return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-                        return new PageLiteDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-                    }
+                    "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new PageLiteDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
                 ];
             };
             PageLiteDirective.prototype.getPage = function (group, name) {
                 var _this = this;
-                this.dataSvc.get('page', group, name, this.authService.sessionId).success(function (result) {
+                this.dataSvc
+                    .get('page', group, name, this.authService.sessionId)
+                    .success(function (result) {
                     _this.sc.PLTitle = result.Page.LongName;
                     _this.sc.PLStyle = result.Page.PageStyle;
                     _this.sc.PLFonts = result.FontsMetadata;
                     _this.sc.PLPosts = result.Posts;
                     _this.sc.PLBannerPhoto = result.BannerPhoto;
-                }).error(function () {
-                });
+                })
+                    .error(function () { });
             };
             return PageLiteDirective;
         })();

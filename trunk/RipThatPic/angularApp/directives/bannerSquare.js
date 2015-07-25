@@ -24,23 +24,20 @@ var Application;
             }
             BannerSquareDirective.prototype.injection = function () {
                 return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-                        return new BannerSquareDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-                    }
+                    "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new BannerSquareDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
                 ];
             };
             BannerSquareDirective.prototype.getBanner = function (group) {
                 var _this = this;
                 var __this = this;
-                this.dataSvc.getAllByGrouping('banner', group, this.authService.sessionId).success(function (result) {
+                this.dataSvc
+                    .getAllByGrouping('banner', group, this.authService.sessionId)
+                    .success(function (result) {
                     _this.sc.BSBanners = result;
                     _this.sc.BSShowBanners = result.length > 0 ? true : false;
-                }).error(function () {
-                });
+                })
+                    .error(function () { });
             };
             return BannerSquareDirective;
         })();

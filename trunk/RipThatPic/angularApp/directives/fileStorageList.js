@@ -101,21 +101,14 @@ var Application;
                         _this.sc.FSCN = '';
                     _this.sc.FSSelectedItems = [];
                     _this.sc.FSSelectedIds = [];
-                    _this.sc.FSItemSelected = function (evt) {
-                        _this.ItemSelected(_this.sc, evt);
-                    };
+                    _this.sc.FSItemSelected = function (evt) { _this.ItemSelected(_this.sc, evt); };
                     _this.init();
                 };
             }
             FileStorageListDirective.prototype.injection = function () {
                 return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-                        return new FileStorageListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-                    }
+                    "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new FileStorageListDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
                 ];
             };
             FileStorageListDirective.prototype.init = function () {
@@ -135,23 +128,27 @@ var Application;
                 __this._isRefreshing = true;
                 __this.sc.FSItemsList = [];
                 if (__this.sc.FSCN === '') {
-                    this.dataSvc.getAll("FileStorage", __this.authService.sessionId).success(function (result) {
+                    this.dataSvc
+                        .getAll("FileStorage", __this.authService.sessionId)
+                        .success(function (result) {
                         __this.sc.FSItemsList = result;
                         $.each(__this.sc.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1000);
                         });
+                        //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
                         try {
                             //freaking using apply was causing digest errors .. going with timeout approach
                             eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
                         }
-                        catch (e) {
-                        }
+                        catch (e) { }
                         __this._isRefreshing = false;
-                    }).error(function (err) {
-                    });
+                    })
+                        .error(function (err) { });
                 }
                 else {
-                    this.dataSvc.getAllByGrouping("FileStorage", __this.sc.FSCN, __this.authService.sessionId).success(function (result) {
+                    this.dataSvc
+                        .getAllByGrouping("FileStorage", __this.sc.FSCN, __this.authService.sessionId)
+                        .success(function (result) {
                         //__this.sc.ItemsList = [];
                         //$.each(result, function () {
                         //    this.SizeKB = Math.round(this.Size / 1000);
@@ -162,17 +159,17 @@ var Application;
                         $.each(__this.sc.FSItemsList, function () {
                             this.SizeKB = Math.round(this.Size / 1024);
                         });
+                        //justified gallery lib - http://miromannino.github.io/Justified-Gallery/
                         try {
                             //__this.sc.$apply(); //<-- its important to "apply" angular binding changes otherwise the justifiedlib does not correctly layout stuff
                             //eval('$("#fsl").justifiedGallery();');
                             //freaking using apply was causing digest errors .. going with timeout approach
                             eval('setTimeout(function(){$("#fsl").justifiedGallery();}, 10);');
                         }
-                        catch (e) {
-                        }
+                        catch (e) { }
                         __this._isRefreshing = false;
-                    }).error(function (err) {
-                    });
+                    })
+                        .error(function (err) { });
                 }
             };
             return FileStorageListDirective;

@@ -8,9 +8,7 @@ var Application;
             }
             InstanceFactory.prototype.injection = function () {
                 return [
-                    function () {
-                        return [InstanceFactory];
-                    }
+                    function () { return [InstanceFactory]; }
                 ];
             };
             InstanceFactory.prototype.getInstance = function (instanceName) {

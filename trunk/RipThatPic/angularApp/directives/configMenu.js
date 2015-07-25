@@ -32,14 +32,10 @@ var Application;
                 return [
                     "pubSubConstants",
                     "radioPubSubSvc",
-                    function (pubSubConstants, radioPubSubSvc) {
-                        return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc);
-                    }
+                    function (pubSubConstants, radioPubSubSvc) { return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc); }
                 ];
             };
-            ConfigMenuDirective.$inject = [function (pubSubConstants, radioPubSubSvc) {
-                return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc);
-            }];
+            ConfigMenuDirective.$inject = [function (pubSubConstants, radioPubSubSvc) { return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc); }];
             return ConfigMenuDirective;
         })();
         Directives.ConfigMenuDirective = ConfigMenuDirective;

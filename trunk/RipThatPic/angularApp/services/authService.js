@@ -13,22 +13,25 @@ var Application;
             }
             AuthService.prototype.injection = function () {
                 return [
-                    function () {
-                        return [AuthService];
-                    }
+                    function () { return [AuthService]; }
                 ];
             };
             AuthService.prototype.ping = function (tid) {
-                this.dataSvc.ping(tid, this.sessionId).success(function (result) {
+                this.dataSvc
+                    .ping(tid, this.sessionId)
+                    .success(function (result) {
                     var r = result;
-                }).error(function (err) {
+                })
+                    .error(function (err) {
                     alert(err.message);
                 });
             };
             AuthService.prototype.login = function (username, userpwd) {
                 var _this = this;
                 //todo: do actual authentication call, still need to work out what approach to take
-                this.dataSvc.login(username, userpwd).success(function (result) {
+                this.dataSvc
+                    .login(username, userpwd)
+                    .success(function (result) {
                     if (result.IsSuccessful) {
                         _this.sessionId = result.SessionId;
                         _this.LoginEntity = result;
@@ -39,7 +42,8 @@ var Application;
                         _this.IsLoggedIn = false;
                         _this.radioPubSubSvc.publish(_this.pubSubConstants.LoginFailed, result.LoginErrorMessage);
                     }
-                }).error(function (err) {
+                })
+                    .error(function (err) {
                     alert(err.Message);
                     _this.IsLoggedIn = false;
                     _this.radioPubSubSvc.publish(_this.pubSubConstants.LoginFailed, err);

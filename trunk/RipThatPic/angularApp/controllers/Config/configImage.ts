@@ -10,8 +10,24 @@
             public serviceHelperSvc: Application.Services.IServiceHelper,
             public dataSvc: Application.Services.IData,
             public instanceFactory: Application.Services.IInstanceFactory,
-            public authService: Application.Services.IAuthService) {
+            public authService: Application.Services.IAuthService,
+            public radioPubSubSvc: Application.Services.IRadioPubSubSvc,
+            public pubSubConstants: Application.Constants.PubSubConstants) {
+
+            this.$scope.$on('$destroy', this.destructor);
+
             this.init();
+        }
+
+        destructor = () => {
+            var __this = this;
+            window['tinymce'].EditorManager.execCommand('mceRemoveEditor', true, 'taDetails');
+
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileStorageListSelectionsChanged, __this.PictureChanged);
+        }
+
+        private PictureChanged(ids: string) {
+            this.SelectedItem.FileStorageDisplayId = ids;
         }
 
         DeleteItem = () => {
@@ -30,6 +46,7 @@
         }
 
         private init() {
+            this.radioPubSubSvc.subscribe(this.pubSubConstants.FileStorageListSelectionsChanged, this.PictureChanged.bind(this), undefined);
             this.InitSelectedItem();
             this.RefreshData();
         }
@@ -77,5 +94,5 @@
 
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ConfigImageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigImageCtrl]);
+    myapp.controller("ConfigImageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigImageCtrl]);
 }

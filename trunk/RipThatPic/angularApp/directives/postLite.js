@@ -24,25 +24,22 @@ var Application;
             }
             PostLiteDirective.prototype.injection = function () {
                 return [
-                    "pubSubConstants",
-                    "dataSvc",
-                    "authSvc",
-                    "radioPubSubSvc",
-                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) {
-                        return new PostLiteDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc);
-                    }
+                    "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new PostLiteDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
                 ];
             };
             PostLiteDirective.prototype.getPost = function (group, name) {
                 var __this = this;
-                this.dataSvc.get('post', group, name, this.authService.sessionId).success(function (result) {
+                this.dataSvc
+                    .get('post', group, name, this.authService.sessionId)
+                    .success(function (result) {
                     __this.sc.PsLData = result.Post;
                     __this.sc.PsLStyle = result.Post.PostStyle;
                     __this.sc.PsLFonts = result.FontsMetadata;
                     __this.sc.PsLBannerPhoto = result.BannerPhoto;
                     __this.radioPubSubSvc.publish(__this.pubSubConstants.FileStorageContainerChanged, result.Post.PhotoGroup);
-                }).error(function () {
-                });
+                })
+                    .error(function () { });
             };
             return PostLiteDirective;
         })();
