@@ -1,0 +1,32 @@
+﻿<div class="image-billboard" >
+
+    <div id="imgbttn" > </div>
+
+    <div id="imgli1">
+        <div 
+             ng-repeat="item in IMGBItemsList"
+             ng-include="'imgbitemlist.html'"
+             data-id="{{item.DisplayId}}"
+             class="item" 
+             ng-style="{'width': IMGBItemWidth, 'height': IMGBItemHeight}" ></div>
+
+        <script type="text/ng-template" id="imgbitemlist.html">
+            <div ng-style="{'background': 'url({{item._ImgUrl}})', 'background-repeat': 'no-repeat', 'background-size' : 'cover' }" />
+        </script>
+    </div>
+
+    <div id="imgbli">
+        <div 
+             ng-click="IMGBItemSelected($event)" 
+             ng-repeat="item in IMGBItemsList"
+             ng-include="'imgbitemlist2.html'"
+             data-id="{{item.DisplayId}}"
+             class="itemno" ></div>
+
+        <script type="text/ng-template" id="imgbitemlist2.html">
+            
+        </script>
+    </div>
+
+
+ </div>

@@ -1,0 +1,90 @@
+﻿
+.image-billboard {
+        overflow:auto;
+        /*border-left:1px solid #e5e5e5;*/
+        /*background-color:#e5e5e5;*/
+        /*margin:auto;*/
+        /*position:absolute;*/
+        /*left:0; top:0;right:0;bottom:0;*/
+        /*padding:0 5px 7px 5px;*/
+    }
+    .image-billboard .item {
+        /*float:left;
+        margin-right:5px;
+        margin-bottom:5px;
+        position:relative;*/
+        /*cursor:pointer;*/
+        overflow:hidden;
+        position:absolute;
+        display:none;
+        /*opacity: 0.0;
+        filter: alpha(opacity=40);*/ /* For IE8 and earlier */
+    }
+    image-billboard #imgl {
+        border: 1px solid lightgray;
+    }
+    .image-billboard #imgbli {
+        margin:auto;
+        position:absolute;
+        left:0; 
+        padding:0 15px 7px 5px;
+    }
+    .image-billboard #imgbttn {
+        height:3px; 
+        width:0; 
+        background-color:orange;
+    }
+    .image-billboard .itemno {
+        width:15px;
+        height:15px;
+        background-color:rgba(211, 211, 211, 0.36);
+        margin-left:5px;
+        margin-right:0;
+        margin-top:5px;
+        cursor:pointer;
+        float:left;
+    }
+
+        .image-billboard .item div {
+            height: 100%;
+            background-repeat:no-repeat;
+            background-size:cover;
+        }
+        .image-billboard .item.selected {
+            border-left: 8px solid orange;
+        }
+
+        .image-billboard .itemno.selected {
+            background-color: orange;
+        }
+        .image-billboard .item .sz {
+            color:white;
+            position:absolute;
+            left:5px; top:5px;
+            margin:auto;
+            background-color:rgba(0, 0, 0, 0.26);
+        }
+        .image-billboard .item .ofn {
+        }
+        .image-billboard .item .ct {
+            color:white;
+            position:absolute;
+            right:10px; bottom:10px;
+            margin:auto;
+            font-size:10px;
+            background-color:rgba(0, 0, 0, 0.26);
+        }
+        .image-billboard .item .chk {
+            position:absolute;
+            left:0; bottom:0;
+            margin:auto;
+            background-color:orange;
+            width:30px;
+            height:30px;
+            display:none;
+
+            background-image: url('/content/icons/tick-white.png');
+            background-size: 25px;
+            background-repeat: no-repeat;
+        }
+        

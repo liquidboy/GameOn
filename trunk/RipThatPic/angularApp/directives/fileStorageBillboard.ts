@@ -6,7 +6,7 @@
         public templateUrl: string;
         public restrict: string;
         public replace: boolean;
-        public controller: any;
+        public controller: any; 
         public scope: IFileStorageBillboardScope ;
         public link: ($scope: IFileStorageBillboardScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: ng.INgModelController) => void;
 

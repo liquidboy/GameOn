@@ -16,6 +16,8 @@ var Application;
                 this.FileUploaded = "FileUploaded";
                 this.FileStorageContainerChanged = "FileStorageContainerChanged";
                 this.FileStorageListSelectionsChanged = "FileStorageListSelectionsChanged";
+                this.ImageContainerChanged = "ImageContainerChanged";
+                this.ImageListSelectionsChanged = "ImageListSelectionsChanged";
                 this.FontChanged = "FontChanged";
                 this.ClearFontsSelected = "ClearFontsSelected";
                 this.InitFontsSelected = "InitFontsSelected";

@@ -19,6 +19,9 @@
         FileStorageContainerChanged: string = "FileStorageContainerChanged";
         FileStorageListSelectionsChanged: string = "FileStorageListSelectionsChanged";
 
+        ImageContainerChanged: string = "ImageContainerChanged";
+        ImageListSelectionsChanged: string = "ImageListSelectionsChanged";
+
         FontChanged: string = "FontChanged";
         ClearFontsSelected: string = "ClearFontsSelected";
         InitFontsSelected: string = "InitFontsSelected";

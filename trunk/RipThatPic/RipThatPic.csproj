@@ -328,6 +328,9 @@
     <Content Include="angularApp\directives\fontPicker.js">
       <DependentUpon>fontPicker.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\imageBillboard.js">
+      <DependentUpon>imageBillboard.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\inlineWindow.js">
       <DependentUpon>inlineWindow.ts</DependentUpon>
     </Content>
@@ -352,6 +355,7 @@
     <Content Include="angularApp\partials\extension-full.html" />
     <Content Include="angularApp\partials\extension-lite.html" />
     <Content Include="angularApp\partials\banner-square.html" />
+    <Content Include="angularApp\partials\image-billboard.html" />
     <Content Include="angularApp\partials\links-list.html" />
     <Content Include="angularApp\partials\pages-list.html" />
     <Content Include="angularApp\partials\public-footer.html" />
@@ -721,6 +725,9 @@
     </Content>
     <Content Include="angularApp\controllers\Config\configAudio.js.map">
       <DependentUpon>configAudio.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\imageBillboard.js.map">
+      <DependentUpon>imageBillboard.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1690,6 +1697,7 @@
     <Content Include="Themes\ExtensionFull.css" />
     <Content Include="Themes\ExtensionLite.css" />
     <Content Include="Themes\BannerSquare.css" />
+    <Content Include="Themes\ImageBillboard.css" />
     <Content Include="Themes\LinksList.css" />
     <Content Include="Themes\PagesList.css" />
     <Content Include="Themes\PublicFooter.css" />
@@ -1845,6 +1853,7 @@
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
     <TypeScriptCompile Include="angularApp\directives\extensionFull.ts" />
     <TypeScriptCompile Include="angularApp\directives\extensionLite.ts" />
+    <TypeScriptCompile Include="angularApp\directives\imageBillboard.ts" />
     <TypeScriptCompile Include="angularApp\directives\linksList.ts" />
     <TypeScriptCompile Include="angularApp\directives\pagesList.ts" />
     <TypeScriptCompile Include="angularApp\directives\bannerSquare.ts" />
