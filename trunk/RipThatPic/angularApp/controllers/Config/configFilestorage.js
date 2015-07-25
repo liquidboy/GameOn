@@ -48,7 +48,28 @@ var Application;
                 var __this = this;
                 this.dataSvc
                     .getAll(__this.EntityType, __this.authService.sessionId)
-                    .success(function (result) { __this.ItemsList = result; })
+                    .success(function (result) {
+                    __this.ItemsList = result;
+                    $.each(__this.ItemsList, function () {
+                        var firstPart = this.ContentType.substring(0, 5);
+                        if (firstPart == 'image') {
+                            //http://austoragetest.blob.core.windows.net/{{configfilestorage.SelectedItem.Grouping}}-thumb/{{configfilestorage.SelectedItem.Name}}
+                            this._ImgUrl = 'http://austoragetest.blob.core.windows.net/' + this.Grouping + '-thumb/' + this.Name;
+                        }
+                        else if (firstPart == 'audio') {
+                            this._ImgUrl = '/Content/placeholders/audio.png';
+                        }
+                        else if (firstPart == 'video') {
+                            this._ImgUrl = '/Content/placeholders/video.png';
+                        }
+                        else if (firstPart == 'appli') {
+                            this._ImgUrl = '/Content/placeholders/file.png';
+                        }
+                        else {
+                            this._ImgUrl = '/Content/placeholders/unknown.png';
+                        }
+                    });
+                })
                     .error(function (err) { });
             };
             ConfigFileStorageCtrl.prototype.InitSelectedItem = function () {
