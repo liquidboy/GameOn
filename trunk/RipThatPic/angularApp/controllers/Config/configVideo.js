@@ -3,7 +3,7 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigVideoCtrl = (function () {
-            function ConfigVideoCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService) {
+            function ConfigVideoCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService, radioPubSubSvc, pubSubConstants) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
@@ -11,7 +11,13 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.instanceFactory = instanceFactory;
                 this.authService = authService;
+                this.radioPubSubSvc = radioPubSubSvc;
+                this.pubSubConstants = pubSubConstants;
                 this.EntityType = "video";
+                this.destructor = function () {
+                    var __this = _this;
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileStorageListSelectionsChanged, __this.FileStorageListSelectionsChanged);
+                };
                 this.DeleteItem = function () {
                     var __this = _this;
                     _this.dataSvc
@@ -38,9 +44,14 @@ var Application;
                     _this.SelectedItem._Model = model;
                     _this.SelectedItem._Model.IsSelected = true;
                 };
+                this.$scope.$on('$destroy', this.destructor);
                 this.init();
             }
+            ConfigVideoCtrl.prototype.FileStorageListSelectionsChanged = function (ids) {
+                this.SelectedItem.FileStorageDisplayId = ids;
+            };
             ConfigVideoCtrl.prototype.init = function () {
+                this.radioPubSubSvc.subscribe(this.pubSubConstants.FileStorageListSelectionsChanged, this.FileStorageListSelectionsChanged.bind(this), undefined);
                 this.InitSelectedItem();
                 this.RefreshData();
             };
@@ -61,7 +72,7 @@ var Application;
         })();
         Controllers.ConfigVideoCtrl = ConfigVideoCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigVideoCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigVideoCtrl]);
+        myapp.controller("ConfigVideoCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigVideoCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configVideo.js.map

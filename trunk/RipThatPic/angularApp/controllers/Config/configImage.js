@@ -16,7 +16,6 @@ var Application;
                 this.EntityType = "image";
                 this.destructor = function () {
                     var __this = _this;
-                    window['tinymce'].EditorManager.execCommand('mceRemoveEditor', true, 'taDetails');
                     _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileStorageListSelectionsChanged, __this.PictureChanged);
                 };
                 this.DeleteItem = function () {

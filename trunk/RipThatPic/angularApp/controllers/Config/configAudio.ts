@@ -10,10 +10,20 @@
             public serviceHelperSvc: Application.Services.IServiceHelper,
             public dataSvc: Application.Services.IData,
             public instanceFactory: Application.Services.IInstanceFactory,
-            public authService: Application.Services.IAuthService) {
+            public authService: Application.Services.IAuthService,
+            public radioPubSubSvc: Application.Services.IRadioPubSubSvc,
+            public pubSubConstants: Application.Constants.PubSubConstants) {
+            this.$scope.$on('$destroy', this.destructor);
             this.init();
         }
+        destructor = () => {
+            var __this = this;
 
+            this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileStorageListSelectionsChanged, __this.FileStorageListSelectionsChanged);
+        }
+        private FileStorageListSelectionsChanged(ids: string) {
+            this.SelectedItem.FileStorageDisplayId = ids;
+        }
         DeleteItem = () => {
 
             var __this = this;
@@ -30,6 +40,7 @@
         }
 
         private init() {
+            this.radioPubSubSvc.subscribe(this.pubSubConstants.FileStorageListSelectionsChanged, this.FileStorageListSelectionsChanged.bind(this), undefined);
             this.InitSelectedItem();
             this.RefreshData();
         }
@@ -75,5 +86,5 @@
 
     }
     var myapp: ng.IModule = angular.module('bootstrapApp');
-    myapp.controller("ConfigAudioCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigAudioCtrl]);
+    myapp.controller("ConfigAudioCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigAudioCtrl]);
 }

@@ -3,7 +3,7 @@ var Application;
     var Controllers;
     (function (Controllers) {
         var ConfigDocumentCtrl = (function () {
-            function ConfigDocumentCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService) {
+            function ConfigDocumentCtrl($scope, $rootScope, serviceHelperSvc, dataSvc, instanceFactory, authService, radioPubSubSvc, pubSubConstants) {
                 var _this = this;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
@@ -11,7 +11,13 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.instanceFactory = instanceFactory;
                 this.authService = authService;
+                this.radioPubSubSvc = radioPubSubSvc;
+                this.pubSubConstants = pubSubConstants;
                 this.EntityType = "document";
+                this.destructor = function () {
+                    var __this = _this;
+                    _this.radioPubSubSvc.unsubscribe(_this.pubSubConstants.FileStorageListSelectionsChanged, __this.FileStorageListSelectionsChanged);
+                };
                 this.DeleteItem = function () {
                     var __this = _this;
                     _this.dataSvc
@@ -38,9 +44,14 @@ var Application;
                     _this.SelectedItem._Model = model;
                     _this.SelectedItem._Model.IsSelected = true;
                 };
+                this.$scope.$on('$destroy', this.destructor);
                 this.init();
             }
+            ConfigDocumentCtrl.prototype.FileStorageListSelectionsChanged = function (ids) {
+                this.SelectedItem.FileStorageDisplayId = ids;
+            };
             ConfigDocumentCtrl.prototype.init = function () {
+                this.radioPubSubSvc.subscribe(this.pubSubConstants.FileStorageListSelectionsChanged, this.FileStorageListSelectionsChanged.bind(this), undefined);
                 this.InitSelectedItem();
                 this.RefreshData();
             };
@@ -61,7 +72,7 @@ var Application;
         })();
         Controllers.ConfigDocumentCtrl = ConfigDocumentCtrl;
         var myapp = angular.module('bootstrapApp');
-        myapp.controller("ConfigDocumentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigDocumentCtrl]);
+        myapp.controller("ConfigDocumentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigDocumentCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=configDocument.js.map

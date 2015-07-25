@@ -21,7 +21,6 @@
 
         destructor = () => {
             var __this = this;
-            window['tinymce'].EditorManager.execCommand('mceRemoveEditor', true, 'taDetails');
 
             this.radioPubSubSvc.unsubscribe(this.pubSubConstants.FileStorageListSelectionsChanged, __this.PictureChanged);
         }

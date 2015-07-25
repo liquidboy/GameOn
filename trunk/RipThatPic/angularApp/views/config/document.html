@@ -2,63 +2,100 @@
 
 <div class="config">
 
+
+    <!-- GRID AREA -->
     <div>
-        <div>
-            <table class="jf-tbl">
-                <colgroup>
-                    <col style="width:157px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:155px" />
-                    <col style="width:180px" />
-                </colgroup>
+        <table class="jf-tbl">
+            <colgroup>
+                <col style="width:157px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:155px" />
+                <col style="width:180px" />
+            </colgroup>
 
-                <tr>
-                    <td><input type="text" ng-model="configdocument.SelectedItem.Grouping" style="width:150px" ng-readonly="configdocument.SelectedItem.GroupingIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configdocument.SelectedItem.Name" style="width:150px" ng-readonly="configdocument.SelectedItem.NameIsReadOnly" /></td>
-                    <td><input type="text" ng-model="configdocument.SelectedItem.LongName" style="width:150px" /></td>
-                    <td><input type="text" ng-model="configdocument.SelectedItem.Color" style="width:150px" /></td>
-                    <td>
-                        <input type="button" value="Save" ng-click="configdocument.SaveItem()" />
-                        <input type="button" value="Delete" ng-click="configdocument.DeleteItem()" />
-                        <input type="button" value="Clear" ng-click="configdocument.ClearEntryFields()" />
-                    </td>
-                </tr>
+            <tr>
+                <td><input type="text" ng-model="configdocument.SelectedItem.Grouping" style="width:150px" ng-readonly="configdocument.SelectedItem.GroupingIsReadOnly" /></td>
+                <td><input type="text" ng-model="configdocument.SelectedItem.Name" style="width:150px" ng-readonly="configdocument.SelectedItem.NameIsReadOnly" /></td>
+                <td><input type="text" ng-model="configdocument.SelectedItem.LongName" style="width:150px" /></td>
+                <td><input type="text" ng-model="configdocument.SelectedItem.Color" style="width:150px" /></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configdocument.SaveItem()" />
+                    <input type="button" value="Delete" ng-click="configdocument.DeleteItem()" />
+                    <input type="button" value="Clear" ng-click="configdocument.ClearEntryFields()" />
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="table-header">Grouping</td>
-                    <td class="table-header">Name</td>
-                    <td class="table-header">LongName</td>
-                    <td class="table-header">Color</td>
-                    <td class="table-header">Actions</td>
-                </tr>
+            <tr>
+                <td class="table-header">Grouping</td>
+                <td class="table-header">Name</td>
+                <td class="table-header">LongName</td>
+                <td class="table-header">Color</td>
+                <td class="table-header">Actions</td>
+            </tr>
 
-                <tr>
-                    <td colspan="5">
-                        <div class="jf-data-grid">
-                            <table class="jf-tbl">
-                                <colgroup>
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
-                                    <col style="width:155px" />
+            <tr>
+                <td colspan="5">
+                    <div class="jf-data-grid">
+                        <table class="jf-tbl">
+                            <colgroup>
+                                <col style="width:155px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
+                                <col style="width:155px" />
 
-                                </colgroup>
+                            </colgroup>
 
-                                <tr ng-repeat="item in configdocument.ItemsList"
-                                    ng-include="'itemlist.html'"
-                                    ng-click="configdocument.SelectItemRow(item, $event)"
-                                    class="table-content-row"></tr>
-                            </table>
-                        </div>
+                            <tr ng-repeat="item in configdocument.ItemsList"
+                                ng-include="'itemlist.html'"
+                                ng-click="configdocument.SelectItemRow(item, $event)"
+                                class="table-content-row"></tr>
+                        </table>
+                    </div>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </table>
-        </div>
+        </table>
+    </div>
 
+    <!-- SELECTED ITEM DETAILS AREA -->
+    <div>
+        <table class="jf-tbldetail">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tr><td class="label">Grouping :</td><td>{{configdocument.SelectedItem.Grouping}}</td></tr>
+            <tr><td class="label">Name :</td><td>{{configdocument.SelectedItem.Name}}</td></tr>
+            <tr><td class="label">LongName :</td><td>{{configdocument.SelectedItem.LongName}}</td></tr>
+            <tr><td class="label">Color :</td><td>{{configdocument.SelectedItem.Color}}</td></tr>
+            <tr><td class="label">DisplayId :</td><td>{{configdocument.SelectedItem.DisplayId}}</td></tr>
+
+            <tr><td class="label">Description :</td><td><textarea id="taDetails" type="text" ng-model="configdocument.SelectedItem.Description" style="width:545px;" rows="8" /></td></tr>
+
+            <tr><td class="label">Picture :</td><td style="font-size:10px; color:darkgray;">{{configdocument.SelectedItem.FileStorageDisplayId}}</td></tr>
+            <tr style="vertical-align:top;">
+                <td class="label"></td>
+                <td>
+                    <div style="width:550px;height:550px;position:relative;border:1px solid black;">
+                        <d-file-storage-picker da-left="0" da-bottom="50px" da-top="0" da-width="220px" da-cn=""></d-file-storage-picker>
+                        <d-file-storage-list da-item-height="140px"
+                                             da-right="0" da-left="220px" da-bottom="0" da-top="0"
+                                             da-is-multiple-selection="false" da-cn=""></d-file-storage-list>
+                    </div>
+                </td>
+            </tr>
+
+            <tr><td colspan="2"><br /></td></tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Save" ng-click="configdocument.SaveItem()" />
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 
