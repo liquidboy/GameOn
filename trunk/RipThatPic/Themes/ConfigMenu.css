@@ -199,9 +199,18 @@
       background-repeat: no-repeat;
       padding-left: 25px;
     }
+    .ui.menu .item.ico-audio {
+      background-image: url('/content/icons/audio-black.png');
+      background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 25px;
+    }
     .ui.menu .item.active {
       background-color: black;
       color: white;
+    }
+    .ui.menu .item.active.ico-audio {
+      background-image: url('/content/icons/audio-white.png');
     }
     .ui.menu .item.active.ico-post {
       background-image: url('/content/icons/post-white.png');

@@ -1,0 +1,73 @@
+﻿<d-config-menu da-selected-tab="audio"></d-config-menu>
+
+<div class="config">
+
+    <div>
+        <div>
+            <table class="jf-tbl">
+                <colgroup>
+                    <col style="width:157px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:155px" />
+                    <col style="width:180px" />
+                </colgroup>
+
+                <tr>
+                    <td><input type="text" ng-model="configaudio.SelectedItem.Grouping" style="width:150px" ng-readonly="configaudio.SelectedItem.GroupingIsReadOnly" /></td>
+                    <td><input type="text" ng-model="configaudio.SelectedItem.Name" style="width:150px" ng-readonly="configaudio.SelectedItem.NameIsReadOnly" /></td>
+                    <td><input type="text" ng-model="configaudio.SelectedItem.LongName" style="width:150px" /></td>
+                    <td><input type="text" ng-model="configaudio.SelectedItem.Color" style="width:150px" /></td>
+                    <td>
+                        <input type="button" value="Save" ng-click="configaudio.SaveItem()" />
+                        <input type="button" value="Delete" ng-click="configaudio.DeleteItem()" />
+                        <input type="button" value="Clear" ng-click="configaudio.ClearEntryFields()" />
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="table-header">Grouping</td>
+                    <td class="table-header">Name</td>
+                    <td class="table-header">LongName</td>
+                    <td class="table-header">Color</td>
+                    <td class="table-header">Actions</td>
+                </tr>
+
+                <tr>
+                    <td colspan="5">
+                        <div class="jf-data-grid">
+                            <table class="jf-tbl">
+                                <colgroup>
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+                                    <col style="width:155px" />
+
+                                </colgroup>
+
+                                <tr ng-repeat="item in configaudio.ItemsList"
+                                    ng-include="'itemlist.html'"
+                                    ng-click="configaudio.SelectItemRow(item, $event)"
+                                    class="table-content-row"></tr>
+                            </table>
+                        </div>
+
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<d-config-footer></d-config-footer>
+
+
+<script type="text/ng-template" id="itemlist.html">
+    <td><div class="jf-col1" ng-class="{'selected': item.IsSelected}">{{item.Grouping}}</div></td>
+    <td>{{item.Name}} </td>
+    <td>{{item.LongName}} </td>
+    <td>{{item.Color}} </td>
+</script>

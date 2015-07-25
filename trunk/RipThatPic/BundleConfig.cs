@@ -22,6 +22,7 @@ namespace RipThatPic
                .Include(
                    "~/angularApp/controllers/Config/config.js",
                    "~/angularApp/controllers/Config/configArea.js",
+                   "~/angularApp/controllers/Config/configAudio.js",
                    "~/angularApp/controllers/Config/configComment.js",
                    "~/angularApp/controllers/Config/configVideo.js",
                    "~/angularApp/controllers/Config/configImage.js",

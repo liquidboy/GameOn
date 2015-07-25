@@ -18,6 +18,7 @@ var BootstrapApp;
                 .when('/config/comment', { controller: 'ConfigCommentCtrl', templateUrl: '/angularApp/views/config/comment.html', controllerAs: 'configcomment' })
                 .when('/config/session', { controller: 'ConfigSessionCtrl', templateUrl: '/angularApp/views/config/session.html', controllerAs: 'configsession' })
                 .when('/config/user', { controller: 'ConfigUserCtrl', templateUrl: '/angularApp/views/config/user.html', controllerAs: 'configuser' })
+                .when('/config/audio', { controller: 'ConfigAudioCtrl', templateUrl: '/angularApp/views/config/audio.html', controllerAs: 'configaudio' })
                 .when('/config/video', { controller: 'ConfigVideoCtrl', templateUrl: '/angularApp/views/config/video.html', controllerAs: 'configvideo' })
                 .when('/config/install', { controller: 'ConfigInstallCtrl', templateUrl: '/angularApp/views/config/install.html', controllerAs: 'configinstall' })
                 .when('/config/image', { controller: 'ConfigImageCtrl', templateUrl: '/angularApp/views/config/image.html', controllerAs: 'configimage' })

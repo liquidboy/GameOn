@@ -258,6 +258,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Image") return table.ExecuteQuery(new TableQuery<ImageEntity>().Where(where));
             else if (type == "Video") return table.ExecuteQuery(new TableQuery<VideoEntity>().Where(where));
             else if (type == "Area") return table.ExecuteQuery(new TableQuery<AreaEntity>().Where(where));
+            else if (type == "Audio") return table.ExecuteQuery(new TableQuery<AudioEntity>().Where(where));
             else if (type == "Setting") return table.ExecuteQuery(new TableQuery<SettingEntity>().Where(where));
             else if (type == "Page") return table.ExecuteQuery(new TableQuery<PageEntity>().Where(where));
             else if (type == "DataCenter") return table.ExecuteQuery(new TableQuery<DataCenterEntity>().Where(where));
@@ -412,6 +413,7 @@ namespace Incite.Cloud.Storage
             else if (type == "Image") retrieveOp = TableOperation.Retrieve<ImageEntity>(partition, key);
             else if (type == "Video") retrieveOp = TableOperation.Retrieve<VideoEntity>(partition, key);
             else if (type == "Area") retrieveOp = TableOperation.Retrieve<AreaEntity>(partition, key);
+            else if (type == "Audio") retrieveOp = TableOperation.Retrieve<AudioEntity>(partition, key);
             else if (type == "Setting") retrieveOp = TableOperation.Retrieve<SettingEntity>(partition, key);
             else if (type == "Page") retrieveOp = TableOperation.Retrieve<PageEntity>(partition, key);
             else if (type == "DataCenter") retrieveOp = TableOperation.Retrieve<DataCenterEntity>(partition, key);

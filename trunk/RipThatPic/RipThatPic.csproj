@@ -199,6 +199,9 @@
     <Content Include="angularApp\controllers\Config\configArea.js">
       <DependentUpon>configArea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\Config\configAudio.js">
+      <DependentUpon>configAudio.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\Config\configBanner.js">
       <DependentUpon>configBanner.ts</DependentUpon>
     </Content>
@@ -385,6 +388,7 @@
     <Content Include="angularApp\views\config\comment.html" />
     <Content Include="angularApp\views\config\banner.html" />
     <Content Include="angularApp\views\config\datacenter.html" />
+    <Content Include="angularApp\views\config\audio.html" />
     <Content Include="angularApp\views\config\font.html" />
     <Content Include="angularApp\views\config\grouping.html" />
     <Content Include="angularApp\views\config\editor.html" />
@@ -421,6 +425,8 @@
     <Content Include="Content\icons\All-white.png" />
     <Content Include="Content\icons\area-black.png" />
     <Content Include="Content\icons\area-white.png" />
+    <Content Include="Content\icons\audio-black.png" />
+    <Content Include="Content\icons\audio-white.png" />
     <Content Include="Content\icons\Banner-black.png" />
     <Content Include="Content\icons\Banner-white.png" />
     <Content Include="Content\icons\comment-black.png" />
@@ -702,6 +708,9 @@
     </Content>
     <Content Include="angularApp\directives\linksList.js.map">
       <DependentUpon>linksList.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\Config\configAudio.js.map">
+      <DependentUpon>configAudio.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1699,6 +1708,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BundleConfig.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
+    <Compile Include="Controllers\AudioController.cs" />
+    <Compile Include="Controllers\AudiosController.cs" />
     <Compile Include="Controllers\FontController.cs" />
     <Compile Include="Controllers\FontsController.cs" />
     <Compile Include="Controllers\FileStorageController.cs" />
@@ -1788,6 +1799,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="angularApp\BootstrapApp.ts" />
     <TypeScriptCompile Include="angularApp\Constants.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\Config\configAudio.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Config\configFont.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Config\configFileStorage.ts" />
     <TypeScriptCompile Include="angularApp\controllers\explorer.ts" />
