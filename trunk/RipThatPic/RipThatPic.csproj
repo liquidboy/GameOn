@@ -283,6 +283,9 @@
     <Content Include="angularApp\controllers\home.js">
       <DependentUpon>home.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\imageexplorer.js">
+      <DependentUpon>imageexplorer.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\login.js">
       <DependentUpon>login.ts</DependentUpon>
     </Content>
@@ -417,6 +420,7 @@
     <Content Include="angularApp\views\config\user.html" />
     <Content Include="angularApp\views\config\area.html" />
     <Content Include="angularApp\views\config\config.html" />
+    <Content Include="angularApp\views\explorer\imageExplorer.html" />
     <Content Include="angularApp\views\explorer\explorer.html" />
     <Content Include="angularApp\views\home\home.html" />
     <Content Include="angularApp\views\login\login.html" />
@@ -728,6 +732,9 @@
     </Content>
     <Content Include="angularApp\directives\imageBillboard.js.map">
       <DependentUpon>imageBillboard.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\imageexplorer.js.map">
+      <DependentUpon>imageexplorer.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1820,6 +1827,7 @@
     <TypeScriptCompile Include="angularApp\controllers\Config\configAudio.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Config\configFont.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Config\configFileStorage.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\imageexplorer.ts" />
     <TypeScriptCompile Include="angularApp\controllers\explorer.ts" />
     <TypeScriptCompile Include="angularApp\controllers\login.ts" />
     <TypeScriptCompile Include="angularApp\controllers\post.ts" />

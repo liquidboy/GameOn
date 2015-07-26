@@ -12,6 +12,7 @@ var BootstrapApp;
                 .when('/login', { controller: 'LoginCtrl', templateUrl: '/angularApp/views/login/login.html', controllerAs: 'login' })
                 .when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html', controllerAs: 'config' })
                 .when('/explorer', { controller: 'ExplorerCtrl', templateUrl: '/angularApp/views/explorer/explorer.html', controllerAs: 'explorer' })
+                .when('/imageexplorer', { controller: 'ImageExplorerCtrl', templateUrl: '/angularApp/views/explorer/imageexplorer.html', controllerAs: 'explorer' })
                 .when('/page', { controller: 'PageCtrl', templateUrl: '/angularApp/views/page/page.html', controllerAs: 'page' })
                 .when('/post', { controller: 'PostCtrl', templateUrl: '/angularApp/views/post/post.html', controllerAs: 'post' })
                 .when('/config/area', { controller: 'ConfigAreaCtrl', templateUrl: '/angularApp/views/config/area.html', controllerAs: 'configarea' })

@@ -2,7 +2,6 @@
     //'use strict';
     export class ImageBillboardDirective implements ng.IDirective {
 
-       
         public templateUrl: string;
         public restrict: string;
         public replace: boolean;
