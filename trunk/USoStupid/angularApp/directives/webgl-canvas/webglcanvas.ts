@@ -1245,7 +1245,7 @@ module Application.Directives {
 
                 var viewDirection = camera.getViewDirection();
 
-                var halfVector;
+                var halfVector: Float32Array;
 
                 if (__this.dotVectors(viewDirection, __this.LIGHT_DIRECTION) > 0.0) {
                     halfVector = new Float32Array([
@@ -1532,10 +1532,10 @@ module Application.Directives {
             return true;
         }
         
-        private buildProgramWrapper(gl: webgl.WebGLRenderingContext, vertexShader, fragmentShader, attributeLocations) : any {
+        private buildProgramWrapper(gl: webgl.WebGLRenderingContext, vertexShader: webgl.WebGLShader, fragmentShader: webgl.WebGLShader, attributeLocations) : any {
             var programWrapper = { program: null, uniformLocations: null};
 
-            var program = gl.createProgram();
+            var program : webgl.WebGLProgram = gl.createProgram();
             gl.attachShader(program, vertexShader);
             gl.attachShader(program, fragmentShader);
             for (var attributeName in attributeLocations) {
@@ -1545,7 +1545,7 @@ module Application.Directives {
             var uniformLocations = {};
             var numberOfUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
             for (var i = 0; i < numberOfUniforms; i += 1) {
-                var activeUniform = gl.getActiveUniform(program, i),
+                var activeUniform : webgl.WebGLActiveInfo = gl.getActiveUniform(program, i),
                     uniformLocation = gl.getUniformLocation(program, activeUniform.name);
                 uniformLocations[activeUniform.name] = uniformLocation;
             }
@@ -1583,7 +1583,7 @@ module Application.Directives {
             return framebuffer;
         }
         
-        private normalizeVector(out, v) {
+        private normalizeVector(out: Float32Array, v: Float32Array) {
             var inverseMagnitude = 1.0 / Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
             out[0] = v[0] * inverseMagnitude;
             out[1] = v[1] * inverseMagnitude;
