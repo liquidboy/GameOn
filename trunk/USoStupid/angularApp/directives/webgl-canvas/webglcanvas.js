@@ -712,12 +712,12 @@ var Application;
                     offsetData[i * 4 + 2] = positionZ;
                     offsetData[i * 4 + 3] = 0.0;
                 }
-                var offsetTexture = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+                this.pso.offsetTexture = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
                 //delete randomNumbers;
                 //delete randomSpherePoints;
                 //delete offsetData;
-                var particleTextureA = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
-                var particleTextureB = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+                this.pso.particleTextureA = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+                this.pso.particleTextureB = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
                 var camera = new Camera(canvas, this.mathUtils);
                 var projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
                 var lightViewMatrix = new Float32Array(16);
@@ -725,7 +725,7 @@ var Application;
                 var lightProjectionMatrix = this.makeOrthographicMatrix(new Float32Array(16), this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
                 var lightViewProjectionMatrix = new Float32Array(16);
                 this.mathUtils.premultiplyMatrix(lightViewProjectionMatrix, lightViewMatrix, lightProjectionMatrix);
-                var resampleFramebuffer = gl.createFramebuffer();
+                this.pso.resampleFramebuffer = gl.createFramebuffer();
                 this.changeQualityLevel(0);
                 //variables used for sorting
                 this.pso.totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
@@ -793,15 +793,15 @@ var Application;
                                 particleData[i * 4 + 2] = positionZ;
                                 particleData[i * 4 + 3] = Math.random() * __this.BASE_LIFETIME;
                             }
-                            gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
                             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, particleData);
                             //delete particleData;
-                            gl.bindTexture(gl.TEXTURE_2D, particleTextureB);
+                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureB);
                             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
                         }
                         else {
                             //resample from A into B
-                            gl.bindTexture(gl.TEXTURE_2D, particleTextureB);
+                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureB);
                             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
                             gl.enableVertexAttribArray(0);
                             gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
@@ -817,18 +817,18 @@ var Application;
                                 gl.uniform1f(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
                             }
                             gl.activeTexture(gl.TEXTURE0);
-                            gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
                             gl.activeTexture(gl.TEXTURE1);
-                            gl.bindTexture(gl.TEXTURE_2D, offsetTexture);
-                            gl.bindFramebuffer(gl.FRAMEBUFFER, resampleFramebuffer);
-                            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
+                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.offsetTexture);
+                            gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.resampleFramebuffer);
+                            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
                             gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
                             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-                            gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
                             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
-                            var temp = particleTextureA;
-                            particleTextureA = particleTextureB;
-                            particleTextureB = temp;
+                            var temp = __this.pso.particleTextureA;
+                            __this.pso.particleTextureA = __this.pso.particleTextureB;
+                            __this.pso.particleTextureB = temp;
                         }
                     }
                     var flippedThisFrame = false; //if the order reversed this frame
@@ -879,13 +879,13 @@ var Application;
                         gl.bindTexture(gl.TEXTURE_2D, spawnTexture);
                         //render from A -> B
                         gl.activeTexture(gl.TEXTURE0);
-                        gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+                        gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
                         gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.simulationFramebuffer);
-                        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
+                        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
                         //swap A and B
-                        var temp = particleTextureA;
-                        particleTextureA = particleTextureB;
-                        particleTextureB = temp;
+                        var temp = __this.pso.particleTextureA;
+                        __this.pso.particleTextureA = __this.pso.particleTextureB;
+                        __this.pso.particleTextureB = temp;
                         gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
                         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
                         if (firstFrame)
@@ -914,14 +914,14 @@ var Application;
                         gl.uniform1f(__this.pso.sortProgramWrapper.uniformLocations['stage'], 1 << __this.pso.sortStage);
                         gl.uniform3fv(__this.pso.sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
                         gl.activeTexture(gl.TEXTURE0);
-                        gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+                        gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
                         gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.sortFramebuffer);
-                        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
+                        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
                         gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
                         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-                        var temp = particleTextureA;
-                        particleTextureA = particleTextureB;
-                        particleTextureB = temp;
+                        var temp = __this.pso.particleTextureA;
+                        __this.pso.particleTextureA = __this.pso.particleTextureB;
+                        __this.pso.particleTextureB = temp;
                         __this.pso.sortStepsLeft--;
                         if (__this.pso.sortStepsLeft === 0) {
                             __this.pso.sortStepsLeft = __this.pso.totalSortSteps;
@@ -949,7 +949,7 @@ var Application;
                         gl.uniform3f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
                         gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);
                         gl.activeTexture(gl.TEXTURE0);
-                        gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+                        gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
                         gl.activeTexture(gl.TEXTURE1);
                         gl.bindTexture(gl.TEXTURE_2D, __this.pso.opacityTexture);
                         gl.enableVertexAttribArray(0);
@@ -979,7 +979,7 @@ var Application;
                         gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_screenWidth'], __this.OPACITY_TEXTURE_RESOLUTION);
                         gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
                         gl.activeTexture(gl.TEXTURE0);
-                        gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
+                        gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
                         gl.enableVertexAttribArray(0);
                         gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffer);
                         gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
