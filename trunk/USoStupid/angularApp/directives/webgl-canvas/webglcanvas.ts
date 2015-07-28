@@ -52,7 +52,31 @@ module Application.Directives {
         hasWebGLSupportWithExtensions: (extensions: any) => boolean;
         initCanvas: (canvas: any) => void;
     }
+    
+    class PipelineState {
+        simulationProgramWrapper: any;
+        renderingProgramWrapper: any;
+        opacityProgramWrapper: any;
+        sortProgramWrapper: any;
+        resampleProgramWrapper: any;
+        floorProgramWrapper: any;
+        backgroundProgramWrapper: any;
 
+        fullscreenVertexBuffer: webgl.WebGLBuffer;
+        opacityFramebuffer: webgl.WebGLFramebuffer;
+
+
+        //variables used for sorting
+        totalSortSteps: number;
+        sortStepsLeft: number ;
+        sortPass: number ;
+        sortStage: number ;
+
+
+        opacityTexture: webgl.WebGLTexture;
+        simulationFramebuffer: webgl.WebGLFramebuffer;
+        sortFramebuffer: webgl.WebGLFramebuffer;
+    }
 
     class MathUtils {
 
@@ -881,13 +905,14 @@ module Application.Directives {
         private shaderLib: ShaderLib;
 
 
-       
+        private pso: PipelineState;
 
 
 
         constructor(private $scope: IFlowScope,
             private $routeParams: any) {
 
+            this.pso = new PipelineState();
             this.mathUtils = new MathUtils();
             this.shaderLib = new ShaderLib(this.FLOOR_ORIGIN, this.PARTICLE_SATURATION, this.PARTICLE_VALUE);
 
@@ -1026,62 +1051,65 @@ module Application.Directives {
             this.changeQualityLevel(0);
             
             //variables used for sorting
-            var totalSortSteps: number = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
-            var sortStepsLeft: number = totalSortSteps;
-            var sortPass: number = -1;
-            var sortStage: number = -1;
+            this.pso.totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
+            this.pso.sortStepsLeft = this.pso.totalSortSteps;
+            this.pso.sortPass = -1;
+            this.pso.sortStage = -1;
 
-            var opacityTexture = this.buildTexture(gl, 0, gl.RGBA, gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.LINEAR, gl.LINEAR); //opacity from the light's point of view
+            this.pso.opacityTexture = this.buildTexture(gl, 0, gl.RGBA, gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.LINEAR, gl.LINEAR); //opacity from the light's point of view
 
-            var simulationFramebuffer = gl.createFramebuffer();
-            var sortFramebuffer = gl.createFramebuffer();
+            this.pso.simulationFramebuffer = gl.createFramebuffer();
+            this.pso.sortFramebuffer = gl.createFramebuffer();
 
-            var opacityFramebuffer = this.buildFramebuffer(gl, opacityTexture);
+            this.pso.opacityFramebuffer = this.buildFramebuffer(gl, this.pso.opacityTexture);
 
-            var simulationProgramWrapper: any = this.buildProgramWrapper(gl,
+           
+            
+
+            this.pso.simulationProgramWrapper = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
-            var renderingProgramWrapper: any = this.buildProgramWrapper(gl,
+            this.pso.renderingProgramWrapper = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.RENDERING_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.RENDERING_FRAGMENT_SHADER_SOURCE),
                 { 'a_textureCoordinates': 0 }
                 );
 
-            var opacityProgramWrapper: any = this.buildProgramWrapper(gl,
+            this.pso.opacityProgramWrapper = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.OPACITY_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.OPACITY_FRAGMENT_SHADER_SOURCE),
                 { 'a_textureCoordinates': 0 }
                 );
 
-            var sortProgramWrapper : any = this.buildProgramWrapper(gl,
+            this.pso.sortProgramWrapper = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.SORT_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.SORT_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
-            var resampleProgramWrapper : any = this.buildProgramWrapper(gl,
+            this.pso.resampleProgramWrapper = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.RESAMPLE_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.RESAMPLE_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
-            var floorProgramWrapper: any = this.buildProgramWrapper(gl,
+            this.pso.floorProgramWrapper = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.FLOOR_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.FLOOR_FRAGMENT_SHADER_SOURCE),
                 { 'a_vertexPosition': 0 }
                 );
 
-            var backgroundProgramWrapper: any = this.buildProgramWrapper(gl,
+            this.pso.backgroundProgramWrapper = this.buildProgramWrapper(gl,
                 this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.BACKGROUND_VERTEX_SHADER_SOURCE),
                 this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.BACKGROUND_FRAGMENT_SHADER_SOURCE),
                 { 'a_position': 0 }
                 );
 
-            var fullscreenVertexBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+            this.pso.fullscreenVertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), gl.STATIC_DRAW);
 
             var floorVertexBuffer = gl.createBuffer();
@@ -1126,10 +1154,10 @@ module Application.Directives {
                     spawnTexture = spawnTextures[__this.qualityLevel];
 
                     //reset sort
-                    totalSortSteps = (__this.log2(__this.particleCount) * (__this.log2(__this.particleCount) + 1)) / 2;
-                    sortStepsLeft = totalSortSteps;
-                    sortPass = -1;
-                    sortStage = -1;
+                    __this.pso.totalSortSteps = (__this.log2(__this.particleCount) * (__this.log2(__this.particleCount) + 1)) / 2;
+                    __this.pso.sortStepsLeft = __this.pso.totalSortSteps;
+                    __this.pso.sortPass = -1;
+                    __this.pso.sortStage = -1;
 
                     if (__this.oldParticleCountHeight === 0 && __this.oldParticleCountWidth === 0) { //initial generation
                         var particleData = new Float32Array(__this.particleCount * 4);
@@ -1160,19 +1188,19 @@ module Application.Directives {
                         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
 
                         gl.enableVertexAttribArray(0);
-                        gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+                        gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
                         gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
                         gl.enableVertexAttribArray(0);
 
-                        gl.useProgram(resampleProgramWrapper.program);
-                        gl.uniform1i(resampleProgramWrapper.uniformLocations['u_particleTexture'], 0);
-                        gl.uniform1i(resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
+                        gl.useProgram(__this.pso.resampleProgramWrapper.program);
+                        gl.uniform1i(__this.pso.resampleProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                        gl.uniform1i(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
 
                         if (__this.particleCount > __this.oldParticleCountWidth * __this.oldParticleCountHeight) { //if we are upsampling we need to add random sphere offsets
-                            gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], __this.oldParticleDiameter);
+                            gl.uniform1f(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], __this.oldParticleDiameter);
                         } else { //if downsampling we can just leave positions as they are
-                            gl.uniform1f(resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
+                            gl.uniform1f(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
                         }
 
                         gl.activeTexture(gl.TEXTURE0);
@@ -1242,18 +1270,18 @@ module Application.Directives {
 
                 for (var i = 0; i < (firstFrame ? __this.BASE_LIFETIME / __this.PRESIMULATION_DELTA_TIME : 1); ++i) {
                     gl.enableVertexAttribArray(0);
-                    gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+                    gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
                     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
-                    gl.useProgram(simulationProgramWrapper.program);
-                    gl.uniform2f(simulationProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
-                    gl.uniform1f(simulationProgramWrapper.uniformLocations['u_deltaTime'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : deltaTime * __this.timeScale);
-                    gl.uniform1f(simulationProgramWrapper.uniformLocations['u_time'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : currentTime);
-                    gl.uniform1i(simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                    gl.useProgram(__this.pso.simulationProgramWrapper.program);
+                    gl.uniform2f(__this.pso.simulationProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
+                    gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_deltaTime'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : deltaTime * __this.timeScale);
+                    gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_time'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : currentTime);
+                    gl.uniform1i(__this.pso.simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
 
-                    gl.uniform1f(simulationProgramWrapper.uniformLocations['u_persistence'], __this.persistence);
+                    gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_persistence'], __this.persistence);
 
-                    gl.uniform1i(simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
+                    gl.uniform1i(__this.pso.simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
 
                     gl.disable(gl.BLEND);
 
@@ -1264,7 +1292,7 @@ module Application.Directives {
                     gl.activeTexture(gl.TEXTURE0);
                     gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
 
-                    gl.bindFramebuffer(gl.FRAMEBUFFER, simulationFramebuffer);
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.simulationFramebuffer);
                     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
 
                     //swap A and B
@@ -1284,36 +1312,36 @@ module Application.Directives {
                 gl.disable(gl.BLEND);
 
                 gl.enableVertexAttribArray(0);
-                gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+                gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
                 gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
                 if (flippedThisFrame) { //if the order reversed this frame sort everything
-                    sortPass = -1;
-                    sortStage = -1;
-                    sortStepsLeft = totalSortSteps;
+                    __this.pso.sortPass = -1;
+                    __this.pso.sortStage = -1;
+                    __this.pso.sortStepsLeft = __this.pso.totalSortSteps;
                 }
 
-                for (var i = 0; i < (flippedThisFrame ? totalSortSteps : __this.SORT_PASSES_PER_FRAME); ++i) {
-                    sortPass--;
-                    if (sortPass < 0) {
-                        sortStage++;
-                        sortPass = sortStage;
+                for (var i = 0; i < (flippedThisFrame ? __this.pso.totalSortSteps : __this.SORT_PASSES_PER_FRAME); ++i) {
+                    __this.pso.sortPass--;
+                    if (__this.pso.sortPass < 0) {
+                        __this.pso.sortStage++;
+                        __this.pso.sortPass = __this.pso.sortStage;
                     }
 
-                    gl.useProgram(sortProgramWrapper.program);
+                    gl.useProgram(__this.pso.sortProgramWrapper.program);
 
-                    gl.uniform1i(sortProgramWrapper.uniformLocations['u_dataTexture'], 0);
-                    gl.uniform2f(sortProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
+                    gl.uniform1i(__this.pso.sortProgramWrapper.uniformLocations['u_dataTexture'], 0);
+                    gl.uniform2f(__this.pso.sortProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
 
-                    gl.uniform1f(sortProgramWrapper.uniformLocations['pass'], 1 << sortPass);
-                    gl.uniform1f(sortProgramWrapper.uniformLocations['stage'], 1 << sortStage);
+                    gl.uniform1f(__this.pso.sortProgramWrapper.uniformLocations['pass'], 1 << __this.pso.sortPass);
+                    gl.uniform1f(__this.pso.sortProgramWrapper.uniformLocations['stage'], 1 << __this.pso.sortStage);
 
-                    gl.uniform3fv(sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
+                    gl.uniform3fv(__this.pso.sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
 
                     gl.activeTexture(gl.TEXTURE0);
                     gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
 
-                    gl.bindFramebuffer(gl.FRAMEBUFFER, sortFramebuffer);
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.sortFramebuffer);
                     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, particleTextureB, 0);
 
                     gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
@@ -1324,16 +1352,16 @@ module Application.Directives {
                     particleTextureA = particleTextureB;
                     particleTextureB = temp;
 
-                    sortStepsLeft--;
+                    __this.pso.sortStepsLeft--;
 
-                    if (sortStepsLeft === 0) {
-                        sortStepsLeft = totalSortSteps;
-                        sortPass = -1;
-                        sortStage = -1;
+                    if (__this.pso.sortStepsLeft === 0) {
+                        __this.pso.sortStepsLeft = __this.pso.totalSortSteps;
+                        __this.pso.sortPass = -1;
+                        __this.pso.sortStage = -1;
                     }
                 }
 
-                gl.bindFramebuffer(gl.FRAMEBUFFER, opacityFramebuffer);
+                gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.opacityFramebuffer);
                 gl.clearColor(0.0, 0.0, 0.0, 0.0);
                 gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -1342,31 +1370,31 @@ module Application.Directives {
                     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
                     gl.viewport(0, 0, canvas.width, canvas.height);
 
-                    gl.useProgram(renderingProgramWrapper.program);
+                    gl.useProgram(__this.pso.renderingProgramWrapper.program);
 
-                    gl.uniform1i(renderingProgramWrapper.uniformLocations['u_particleTexture'], 0);
-                    gl.uniform1i(renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
+                    gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                    gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
 
-                    gl.uniformMatrix4fv(renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
-                    gl.uniformMatrix4fv(renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, projectionMatrix);
+                    gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
+                    gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, projectionMatrix);
 
-                    gl.uniformMatrix4fv(renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, lightViewProjectionMatrix);
+                    gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, lightViewProjectionMatrix);
 
-                    gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
-                    gl.uniform1f(renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
+                    gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
+                    gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
 
-                    gl.uniform1f(renderingProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
+                    gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
 
                     var colorRGB = __this.hsvToRGB(__this.hue, __this.shaderLib.PARTICLE_SATURATION, __this.shaderLib.PARTICLE_VALUE);
-                    gl.uniform3f(renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
+                    gl.uniform3f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
 
-                    gl.uniform1i(renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);
+                    gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);
 
                     gl.activeTexture(gl.TEXTURE0);
                     gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
 
                     gl.activeTexture(gl.TEXTURE1);
-                    gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
+                    gl.bindTexture(gl.TEXTURE_2D, __this.pso.opacityTexture);
 
                     gl.enableVertexAttribArray(0);
                     gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffer);
@@ -1388,21 +1416,21 @@ module Application.Directives {
                     gl.drawArrays(gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
 
                     //render to opacity texture
-                    gl.bindFramebuffer(gl.FRAMEBUFFER, opacityFramebuffer);
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.opacityFramebuffer);
 
                     gl.viewport(0, 0, __this.OPACITY_TEXTURE_RESOLUTION, __this.OPACITY_TEXTURE_RESOLUTION);
 
-                    gl.useProgram(opacityProgramWrapper.program);
+                    gl.useProgram(__this.pso.opacityProgramWrapper.program);
 
-                    gl.uniform1i(opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                    gl.uniform1i(__this.pso.opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
 
-                    gl.uniformMatrix4fv(opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, lightViewMatrix);
-                    gl.uniformMatrix4fv(opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, lightProjectionMatrix);
+                    gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, lightViewMatrix);
+                    gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, lightProjectionMatrix);
 
-                    gl.uniform1f(opacityProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
-                    gl.uniform1f(opacityProgramWrapper.uniformLocations['u_screenWidth'], __this.OPACITY_TEXTURE_RESOLUTION);
+                    gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
+                    gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_screenWidth'], __this.OPACITY_TEXTURE_RESOLUTION);
 
-                    gl.uniform1f(opacityProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
+                    gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
 
                     gl.activeTexture(gl.TEXTURE0);
                     gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
@@ -1422,20 +1450,20 @@ module Application.Directives {
                 gl.bindFramebuffer(gl.FRAMEBUFFER, null);
                 gl.viewport(0, 0, canvas.width, canvas.height);
 
-                gl.useProgram(floorProgramWrapper.program);
+                gl.useProgram(__this.pso.floorProgramWrapper.program);
 
                 gl.enableVertexAttribArray(0);
                 gl.bindBuffer(gl.ARRAY_BUFFER, floorVertexBuffer);
                 gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
 
-                gl.uniformMatrix4fv(floorProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
-                gl.uniformMatrix4fv(floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, projectionMatrix);
+                gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
+                gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, projectionMatrix);
 
-                gl.uniformMatrix4fv(floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, lightViewProjectionMatrix);
+                gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, lightViewProjectionMatrix);
 
-                gl.uniform1i(floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
+                gl.uniform1i(__this.pso.floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
                 gl.activeTexture(gl.TEXTURE0);
-                gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
+                gl.bindTexture(gl.TEXTURE_2D, __this.pso.opacityTexture);
 
                 gl.enable(gl.BLEND);
                 //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
@@ -1447,10 +1475,10 @@ module Application.Directives {
                 gl.viewport(0, 0, canvas.width, canvas.height);
 
                 gl.enableVertexAttribArray(0);
-                gl.bindBuffer(gl.ARRAY_BUFFER, fullscreenVertexBuffer);
+                gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
                 gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
-                gl.useProgram(backgroundProgramWrapper.program);
+                gl.useProgram(__this.pso.backgroundProgramWrapper.program);
 
                 gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
@@ -1521,7 +1549,7 @@ module Application.Directives {
             return shader;
         }
 
-        private buildTexture(gl: webgl.WebGLRenderingContext, unit: number, format: number, type: number, width: number, height: number, data: ArrayBufferView, wrapS: number, wrapT: number, minFilter: number, magFilter: number) : any {
+        private buildTexture(gl: webgl.WebGLRenderingContext, unit: number, format: number, type: number, width: number, height: number, data: ArrayBufferView, wrapS: number, wrapT: number, minFilter: number, magFilter: number): webgl.WebGLTexture {
             var texture: webgl.WebGLTexture = gl.createTexture();
             gl.activeTexture(gl.TEXTURE0 + unit);
             gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -1533,7 +1561,7 @@ module Application.Directives {
             return texture;
         }
         
-        private buildFramebuffer(gl: webgl.WebGLRenderingContext, attachment) : any {
+        private buildFramebuffer(gl: webgl.WebGLRenderingContext, attachment): webgl.WebGLFramebuffer {
             var framebuffer: webgl.WebGLFramebuffer = gl.createFramebuffer();
             gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
             gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, attachment, 0);
