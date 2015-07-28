@@ -668,7 +668,6 @@ var Application;
                     var point = this.randomPointInSphere();
                     randomSpherePoints.push(point);
                 }
-                var particleVertexBuffer;
                 var spawnTexture;
                 var particleVertexBuffers = []; //one for each quality level
                 var spawnTextures = []; //one for each quality level
@@ -764,17 +763,17 @@ var Application;
                 onresize();
                 var firstFrame = true;
                 var flipped = false;
-                var lastTime = 0.0;
+                this.pso.lastTime = 0.0;
                 var render = function render(currentTime) {
-                    var deltaTime = (currentTime - lastTime) / 1000 || 0.0;
-                    lastTime = currentTime;
+                    var deltaTime = (currentTime - __this.pso.lastTime) / 1000 || 0.0;
+                    __this.pso.lastTime = currentTime;
                     if (deltaTime > __this.MAX_DELTA_TIME) {
                         deltaTime = 0;
                     }
                     if (__this.changingParticleCount) {
                         deltaTime = 0;
                         __this.changingParticleCount = false;
-                        particleVertexBuffer = particleVertexBuffers[__this.qualityLevel];
+                        __this.pso.particleVertexBuffer = particleVertexBuffers[__this.qualityLevel];
                         spawnTexture = spawnTextures[__this.qualityLevel];
                         //reset sort
                         __this.pso.totalSortSteps = (__this.log2(__this.particleCount) * (__this.log2(__this.particleCount) + 1)) / 2;
@@ -953,7 +952,7 @@ var Application;
                         gl.activeTexture(gl.TEXTURE1);
                         gl.bindTexture(gl.TEXTURE_2D, __this.pso.opacityTexture);
                         gl.enableVertexAttribArray(0);
-                        gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffer);
+                        gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
                         gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
                         if (!flipped) {
                             gl.enable(gl.BLEND);
@@ -981,7 +980,7 @@ var Application;
                         gl.activeTexture(gl.TEXTURE0);
                         gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
                         gl.enableVertexAttribArray(0);
-                        gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffer);
+                        gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
                         gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
                         gl.enable(gl.BLEND);
                         //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
@@ -1014,7 +1013,7 @@ var Application;
                     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
                     requestAnimationFrame(render);
                 };
-                render(lastTime);
+                render(this.pso.lastTime);
             };
             FlowController.prototype.hasWebGLSupportWithExtensions = function (extensions) {
                 var canvas = document.createElement('canvas');

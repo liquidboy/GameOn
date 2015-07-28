@@ -77,6 +77,7 @@ module Application.Directives {
 
 
         fullscreenVertexBuffer: webgl.WebGLBuffer;
+        particleVertexBuffer: webgl.WebGLBuffer;
 
 
         simulationFramebuffer: webgl.WebGLFramebuffer;
@@ -91,6 +92,8 @@ module Application.Directives {
         lightViewMatrix: Float32Array;
         lightProjectionMatrix: Float32Array;
         lightViewProjectionMatrix: Float32Array;
+
+        lastTime: number;
 
     }
 
@@ -978,7 +981,7 @@ module Application.Directives {
                 randomSpherePoints.push(point);
             }
 
-            var particleVertexBuffer;
+
             var spawnTexture;
 
             var particleVertexBuffers = []; //one for each quality level
@@ -1152,10 +1155,11 @@ module Application.Directives {
             
             var flipped = false;
 
-            var lastTime = 0.0;
+            this.pso.lastTime = 0.0;
+
             var render = function render(currentTime: number) {
-                var deltaTime = (currentTime - lastTime) / 1000 || 0.0;
-                lastTime = currentTime;
+                var deltaTime = (currentTime - __this.pso.lastTime) / 1000 || 0.0;
+                __this.pso.lastTime = currentTime;
 
                 if (deltaTime > __this.MAX_DELTA_TIME) {
                     deltaTime = 0;
@@ -1165,7 +1169,7 @@ module Application.Directives {
                     deltaTime = 0;
                     __this.changingParticleCount = false;
 
-                    particleVertexBuffer = particleVertexBuffers[__this.qualityLevel];
+                    __this.pso.particleVertexBuffer = particleVertexBuffers[__this.qualityLevel];
                     spawnTexture = spawnTextures[__this.qualityLevel];
 
                     //reset sort
@@ -1412,7 +1416,7 @@ module Application.Directives {
                     gl.bindTexture(gl.TEXTURE_2D, __this.pso.opacityTexture);
 
                     gl.enableVertexAttribArray(0);
-                    gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffer);
+                    gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
                     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
 
@@ -1451,7 +1455,7 @@ module Application.Directives {
                     gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
 
                     gl.enableVertexAttribArray(0);
-                    gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffer);
+                    gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
                     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
                     gl.enable(gl.BLEND);
@@ -1499,7 +1503,7 @@ module Application.Directives {
 
                 requestAnimationFrame(render);
             };
-            render(lastTime);
+            render(this.pso.lastTime);
 
 
         }
