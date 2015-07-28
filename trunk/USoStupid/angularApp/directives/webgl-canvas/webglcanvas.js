@@ -763,11 +763,8 @@ var Application;
                     this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
                     this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
                 ]), this.gl.STATIC_DRAW);
-                //window.addEventListener('resize', onresize); 
                 $(window).on("resize", this.onresize.bind(this));
                 this.onresize();
-                //var render = function render(currentTime: number) {
-                //};
                 this.render(this.pso.lastTime);
             };
             FlowController.prototype.onresize = function () {

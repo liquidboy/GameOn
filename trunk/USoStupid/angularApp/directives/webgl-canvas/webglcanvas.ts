@@ -1106,10 +1106,7 @@ module Application.Directives {
             this.pso.sortFramebuffer = this.gl.createFramebuffer();
 
             this.pso.opacityFramebuffer = this.buildFramebuffer(this.gl, this.pso.opacityTexture);
-
-           
             
-
             this.pso.simulationProgramWrapper = this.buildProgramWrapper(this.gl,
                 this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE),
                 this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE),
@@ -1167,16 +1164,9 @@ module Application.Directives {
 
 
 
-            //window.addEventListener('resize', onresize); 
+
             $(window).on("resize", this.onresize.bind(this));
             this.onresize();
-
-
-
-
-            //var render = function render(currentTime: number) {
-                
-            //};
             this.render(this.pso.lastTime);
 
 
