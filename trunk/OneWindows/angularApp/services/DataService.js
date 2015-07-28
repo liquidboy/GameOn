@@ -11,9 +11,7 @@ var Application;
             }
             DataSvc.prototype.injection = function () {
                 return [
-                    function () {
-                        return [Services.ServiceHelperSvc];
-                    }
+                    function () { return [Services.ServiceHelperSvc]; }
                 ];
             };
             DataSvc.prototype.getLatestPosts = function (batchSize, area, successCallback) {

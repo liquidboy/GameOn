@@ -36,22 +36,44 @@ var OneWindowsApp;
     myapp.controller("WindowsStoreCtrl", ["$scope", "resourceSvc", Application.Controllers.WindowsStoreCtrl]);
     myapp.controller("XAMLCtrl", ["$scope", "resourceSvc", Application.Controllers.XAMLCtrl]);
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {
-        //    //$locationProvider.html5Mode(true).hashPrefix('!');
-        //    $locationProvider.html5Mode(true);
-        //    $routeProvider
-        //        .when('/home/', { templateUrl: baseUrl + 'partials/home.html', controller: "unc" })
-        //        .otherwise({ redirectTo: baseUrl + 'angularApp/home/home.html', controller: "unc" });
-        //
-        //$httpProvider.defaults.useXDomain = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
-        //$httpProvider.defaults.useXDomain = true;
-        $locationProvider.html5Mode(true);
-        $routeProvider.when('/Login', { templateUrl: '/angularApp/views/shared/Login.html' }).when('/Register', { templateUrl: '/angularApp/views/shared/Register.html' }).when('/About', { templateUrl: '/angularApp/views/about/About.html' }).when('/Home', { templateUrl: '/angularApp/views/home/Home.html', controller: 'HomeCtrl' }).when('/DotNetNative', { templateUrl: '/angularApp/views/DotNetNative/DotNetNative.html', controller: 'DotNetNativeCtrl' }).when('/Metro', { templateUrl: '/angularApp/views/Metro/Metro.html', controller: 'MetroCtrl' }).when('/ModernDesktop', { templateUrl: '/angularApp/views/ModernDesktop/ModernDesktop.html', controller: 'ModernDesktopCtrl' }).when('/OneCore', { templateUrl: '/angularApp/views/OneCore/OneCore.html', controller: 'OneCoreCtrl' }).when('/Windows10', { templateUrl: '/angularApp/views/Windows10/Windows10.html', controller: 'Windows10Ctrl' }).when('/WindowsStore', { templateUrl: '/angularApp/views/WindowsStore/WindowsStore.html', controller: 'WindowsStoreCtrl' }).when('/DirectX12', { templateUrl: '/angularApp/views/DirectX12/DirectX12.html', controller: 'DirectX12Ctrl' }).when('/XAML', { templateUrl: '/angularApp/views/XAML/XAML.html', controller: 'XAMLCtrl' }).when('/DotNetNative/ShowPost/:postId', { templateUrl: '/angularApp/views/DotNetNative/ShowPost.html', controller: 'DotNetNativePostCtrl' }).when('/Metro/ShowPost/:postId', { templateUrl: '/angularApp/views/Metro/ShowPost.html', controller: 'MetroPostCtrl' }).when('/ModernDesktop/ShowPost/:postId', { templateUrl: '/angularApp/views/ModernDesktop/ShowPost.html', controller: 'ModernDesktopPostCtrl' }).when('/OneCore/ShowPost/:postId', { templateUrl: '/angularApp/views/OneCore/ShowPost.html', controller: 'OneCorePostCtrl' }).when('/Windows10/ShowPost/:postId', { templateUrl: '/angularApp/views/Windows10/ShowPost.html', controller: 'Windows10PostCtrl' }).when('/WindowsStore/ShowPost/:postId', { templateUrl: '/angularApp/views/WindowsStore/ShowPost.html', controller: 'WindowsStorePostCtrl' }).when('/DirectX12/ShowPost/:postId', { templateUrl: '/angularApp/views/DirectX12/ShowPost.html', controller: 'DirectX12PostCtrl' }).when('/XAML/ShowPost/:postId', { templateUrl: '/angularApp/views/XAML/ShowPost.html', controller: 'XAMLPostCtrl' }).when('/Error', { templateUrl: '/angularApp/views/shared/Error.html' }).otherwise({
-            redirectTo: '/Home'
-        });
-        //$httpProvider.interceptors.push('authorizationInterceptor');
-        //$httpProvider.interceptors.push('httpInterceptor');
-    }]);
+            //    //$locationProvider.html5Mode(true).hashPrefix('!');
+            //    $locationProvider.html5Mode(true);
+            //    $routeProvider
+            //        .when('/home/', { templateUrl: baseUrl + 'partials/home.html', controller: "unc" })
+            //        .otherwise({ redirectTo: baseUrl + 'angularApp/home/home.html', controller: "unc" });
+            //
+            //$httpProvider.defaults.useXDomain = true;
+            delete $httpProvider.defaults.headers.common['X-Requested-With'];
+            //$httpProvider.defaults.useXDomain = true;
+            $locationProvider.html5Mode(true);
+            $routeProvider
+                .when('/Login', { templateUrl: '/angularApp/views/shared/Login.html' })
+                .when('/Register', { templateUrl: '/angularApp/views/shared/Register.html' })
+                .when('/About', { templateUrl: '/angularApp/views/about/About.html' })
+                .when('/Home', { templateUrl: '/angularApp/views/home/Home.html', controller: 'HomeCtrl' })
+                .when('/DotNetNative', { templateUrl: '/angularApp/views/DotNetNative/DotNetNative.html', controller: 'DotNetNativeCtrl' })
+                .when('/Metro', { templateUrl: '/angularApp/views/Metro/Metro.html', controller: 'MetroCtrl' })
+                .when('/ModernDesktop', { templateUrl: '/angularApp/views/ModernDesktop/ModernDesktop.html', controller: 'ModernDesktopCtrl' })
+                .when('/OneCore', { templateUrl: '/angularApp/views/OneCore/OneCore.html', controller: 'OneCoreCtrl' })
+                .when('/Windows10', { templateUrl: '/angularApp/views/Windows10/Windows10.html', controller: 'Windows10Ctrl' })
+                .when('/WindowsStore', { templateUrl: '/angularApp/views/WindowsStore/WindowsStore.html', controller: 'WindowsStoreCtrl' })
+                .when('/DirectX12', { templateUrl: '/angularApp/views/DirectX12/DirectX12.html', controller: 'DirectX12Ctrl' })
+                .when('/XAML', { templateUrl: '/angularApp/views/XAML/XAML.html', controller: 'XAMLCtrl' })
+                .when('/DotNetNative/ShowPost/:postId', { templateUrl: '/angularApp/views/DotNetNative/ShowPost.html', controller: 'DotNetNativePostCtrl' })
+                .when('/Metro/ShowPost/:postId', { templateUrl: '/angularApp/views/Metro/ShowPost.html', controller: 'MetroPostCtrl' })
+                .when('/ModernDesktop/ShowPost/:postId', { templateUrl: '/angularApp/views/ModernDesktop/ShowPost.html', controller: 'ModernDesktopPostCtrl' })
+                .when('/OneCore/ShowPost/:postId', { templateUrl: '/angularApp/views/OneCore/ShowPost.html', controller: 'OneCorePostCtrl' })
+                .when('/Windows10/ShowPost/:postId', { templateUrl: '/angularApp/views/Windows10/ShowPost.html', controller: 'Windows10PostCtrl' })
+                .when('/WindowsStore/ShowPost/:postId', { templateUrl: '/angularApp/views/WindowsStore/ShowPost.html', controller: 'WindowsStorePostCtrl' })
+                .when('/DirectX12/ShowPost/:postId', { templateUrl: '/angularApp/views/DirectX12/ShowPost.html', controller: 'DirectX12PostCtrl' })
+                .when('/XAML/ShowPost/:postId', { templateUrl: '/angularApp/views/XAML/ShowPost.html', controller: 'XAMLPostCtrl' })
+                .when('/Error', { templateUrl: '/angularApp/views/shared/Error.html' })
+                .otherwise({
+                redirectTo: '/Home'
+            });
+            //$httpProvider.interceptors.push('authorizationInterceptor');
+            //$httpProvider.interceptors.push('httpInterceptor');
+        }]);
     myapp.factory('userProfileSvc', function () {
         return {};
     });

@@ -22,14 +22,10 @@ var Application;
             }
             WebGLCanvasDirective.prototype.injection = function () {
                 return [
-                    function () {
-                        return new WebGLCanvasDirective();
-                    }
+                    function () { return new WebGLCanvasDirective(); }
                 ];
             };
-            WebGLCanvasDirective.$inject = [function () {
-                return new WebGLCanvasDirective();
-            }];
+            WebGLCanvasDirective.$inject = [function () { return new WebGLCanvasDirective(); }];
             return WebGLCanvasDirective;
         })();
         Directives.WebGLCanvasDirective = WebGLCanvasDirective;
@@ -368,6 +364,7 @@ var Application;
                     'yNoisePotentialDerivatives += simplexNoiseDerivatives(vec4((noisePosition + vec3(123.4, 129845.6, -1239.1)) * pow(2.0, float(i)), noiseTime)) * noiseScale * scale;',
                     'zNoisePotentialDerivatives += simplexNoiseDerivatives(vec4((noisePosition + vec3(-9519.0, 9051.0, -123.0)) * pow(2.0, float(i)), noiseTime)) * noiseScale * scale;',
                     '}',
+                    //compute curl
                     'vec3 noiseVelocity = vec3(',
                     'zNoisePotentialDerivatives[1] - yNoisePotentialDerivatives[2],',
                     'xNoisePotentialDerivatives[2] - zNoisePotentialDerivatives[0],',
@@ -571,28 +568,23 @@ var Application;
                         resolution: [256, 256],
                         diameter: 0.03,
                         alpha: 0.5
-                    },
-                    {
+                    }, {
                         resolution: [512, 256],
                         diameter: 0.025,
                         alpha: 0.4
-                    },
-                    {
+                    }, {
                         resolution: [512, 512],
                         diameter: 0.02,
                         alpha: 0.3
-                    },
-                    {
+                    }, {
                         resolution: [1024, 512],
                         diameter: 0.015,
                         alpha: 0.25
-                    },
-                    {
+                    }, {
                         resolution: [1024, 1024],
                         diameter: 0.0125,
                         alpha: 0.2
-                    },
-                    {
+                    }, {
                         resolution: [2048, 1024],
                         diameter: 0.01,
                         alpha: 0.2
@@ -688,7 +680,7 @@ var Application;
                     }
                     gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffers[i]);
                     gl.bufferData(gl.ARRAY_BUFFER, particleTextureCoordinates, gl.STATIC_DRAW);
-                    delete particleTextureCoordinates;
+                    //delete particleTextureCoordinates;
                     var spawnData = new Float32Array(count * 4);
                     for (var j = 0; j < count; ++j) {
                         var position = randomSpherePoints[j];
@@ -702,7 +694,6 @@ var Application;
                         spawnData[j * 4 + 3] = lifetime;
                     }
                     spawnTextures[i] = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, width, height, spawnData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
-                    delete spawnData;
                 }
                 var offsetData = new Float32Array(maxParticleCount * 4);
                 for (var i = 0; i < maxParticleCount; ++i) {
@@ -716,9 +707,9 @@ var Application;
                     offsetData[i * 4 + 3] = 0.0;
                 }
                 var offsetTexture = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
-                delete randomNumbers;
-                delete randomSpherePoints;
-                delete offsetData;
+                //delete randomNumbers;
+                //delete randomSpherePoints;
+                //delete offsetData;
                 var particleTextureA = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
                 var particleTextureB = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
                 var camera = new Camera(canvas, this.mathUtils);
@@ -752,18 +743,10 @@ var Application;
                 var floorVertexBuffer = gl.createBuffer();
                 gl.bindBuffer(gl.ARRAY_BUFFER, floorVertexBuffer);
                 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-                    this.shaderLib.FLOOR_ORIGIN[0],
-                    this.shaderLib.FLOOR_ORIGIN[1],
-                    this.shaderLib.FLOOR_ORIGIN[2],
-                    this.shaderLib.FLOOR_ORIGIN[0],
-                    this.shaderLib.FLOOR_ORIGIN[1],
-                    this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
-                    this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH,
-                    this.shaderLib.FLOOR_ORIGIN[1],
-                    this.shaderLib.FLOOR_ORIGIN[2],
-                    this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH,
-                    this.shaderLib.FLOOR_ORIGIN[1],
-                    this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
+                    this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
+                    this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
+                    this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
+                    this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
                 ]), gl.STATIC_DRAW);
                 var onresize = function () {
                     var aspectRatio = window.innerWidth / window.innerHeight;
@@ -806,7 +789,7 @@ var Application;
                             }
                             gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
                             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, particleData);
-                            delete particleData;
+                            //delete particleData;
                             gl.bindTexture(gl.TEXTURE_2D, particleTextureB);
                             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
                         }

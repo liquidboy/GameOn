@@ -21,22 +21,25 @@ var USoStupidApp;
     //WIRE UP CONTROLLERS
     myapp.controller("HomeCtrl", ["$scope", "resourceSvc", "dataSvc", Application.Controllers.HomeCtrl]);
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {
-        //    //$locationProvider.html5Mode(true).hashPrefix('!');
-        //    $locationProvider.html5Mode(true);
-        //    $routeProvider
-        //        .when('/home/', { templateUrl: baseUrl + 'partials/home.html', controller: "unc" })
-        //        .otherwise({ redirectTo: baseUrl + 'angularApp/home/home.html', controller: "unc" });
-        //
-        //$httpProvider.defaults.useXDomain = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
-        //$httpProvider.defaults.useXDomain = true;
-        $locationProvider.html5Mode(true);
-        $routeProvider.when('/Home', { templateUrl: '/angularApp/views/home/Home.html', controller: 'HomeCtrl' }).when('/Error', { templateUrl: '/angularApp/views/shared/Error.html' }).otherwise({
-            redirectTo: '/Home'
-        });
-        //$httpProvider.interceptors.push('authorizationInterceptor');
-        //$httpProvider.interceptors.push('httpInterceptor');
-    }]);
+            //    //$locationProvider.html5Mode(true).hashPrefix('!');
+            //    $locationProvider.html5Mode(true);
+            //    $routeProvider
+            //        .when('/home/', { templateUrl: baseUrl + 'partials/home.html', controller: "unc" })
+            //        .otherwise({ redirectTo: baseUrl + 'angularApp/home/home.html', controller: "unc" });
+            //
+            //$httpProvider.defaults.useXDomain = true;
+            delete $httpProvider.defaults.headers.common['X-Requested-With'];
+            //$httpProvider.defaults.useXDomain = true;
+            $locationProvider.html5Mode(true);
+            $routeProvider
+                .when('/Home', { templateUrl: '/angularApp/views/home/Home.html', controller: 'HomeCtrl' })
+                .when('/Error', { templateUrl: '/angularApp/views/shared/Error.html' })
+                .otherwise({
+                redirectTo: '/Home'
+            });
+            //$httpProvider.interceptors.push('authorizationInterceptor');
+            //$httpProvider.interceptors.push('httpInterceptor');
+        }]);
     myapp.factory('userProfileSvc', function () {
         return {};
     });

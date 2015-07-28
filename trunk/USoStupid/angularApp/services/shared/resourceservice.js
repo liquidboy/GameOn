@@ -10,9 +10,7 @@ var Application;
             }
             ResourceSvc.prototype.injection = function () {
                 return [
-                    function () {
-                        return [Services.ServiceHelperSvc];
-                    }
+                    function () { return [Services.ServiceHelperSvc]; }
                 ];
             };
             ResourceSvc.prototype.something = function (successCallback) {

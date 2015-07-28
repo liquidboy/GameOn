@@ -13,9 +13,7 @@ var Application;
             }
             TopMenuDirective.prototype.injection = function () {
                 return [
-                    function () {
-                        return new TopMenuDirective();
-                    }
+                    function () { return new TopMenuDirective(); }
                 ];
             };
             TopMenuDirective.prototype.link = function ($scope, element, attributes) {

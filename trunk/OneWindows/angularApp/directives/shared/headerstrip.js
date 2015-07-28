@@ -11,9 +11,7 @@ var Application;
             }
             HeaderStripDirective.prototype.injection = function () {
                 return [
-                    function () {
-                        return new HeaderStripDirective();
-                    }
+                    function () { return new HeaderStripDirective(); }
                 ];
             };
             HeaderStripDirective.prototype.link = function ($scope, element, attributes) {

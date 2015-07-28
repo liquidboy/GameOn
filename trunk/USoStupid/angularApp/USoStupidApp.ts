@@ -18,12 +18,9 @@ module USoStupidApp {
 
 
     //SERVICES
-    myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location)
-        => new Application.Services.ServiceHelperSvc($http, $location)]);
-    myapp.factory("resourceSvc", ["$http", "serviceHelperSvc", ($http, $serviceHelperSvc)
-        => new Application.Services.ResourceSvc($http, $serviceHelperSvc)]);
-    myapp.factory("dataSvc", ["$http", "serviceHelperSvc", ($http, $serviceHelperSvc)
-        => new Application.Services.DataSvc($http, $serviceHelperSvc)]);
+    myapp.factory("serviceHelperSvc", ["$http", "$location", ($http, $location) => new Application.Services.ServiceHelperSvc($http, $location)]);
+    myapp.factory("resourceSvc", ["$http", "serviceHelperSvc", ($http, $serviceHelperSvc) => new Application.Services.ResourceSvc($http, $serviceHelperSvc)]);
+    myapp.factory("dataSvc", ["$http", "serviceHelperSvc", ($http, $serviceHelperSvc) => new Application.Services.DataSvc($http, $serviceHelperSvc)]);
 
 
     //WIRE UP DIRECTIVES

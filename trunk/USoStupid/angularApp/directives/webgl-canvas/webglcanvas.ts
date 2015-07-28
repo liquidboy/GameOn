@@ -949,7 +949,7 @@ module Application.Directives {
 
                 particleVertexBuffers[i] = gl.createBuffer();
 
-                var particleTextureCoordinates = new Float32Array(width * height * 2);
+                var particleTextureCoordinates= new Float32Array(width * height * 2);
                 for (var y = 0; y < height; ++y) {
                     for (var x = 0; x < width; ++x) {
                         particleTextureCoordinates[(y * width + x) * 2] = (x + 0.5) / width;
@@ -960,7 +960,7 @@ module Application.Directives {
                 gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffers[i]);
                 gl.bufferData(gl.ARRAY_BUFFER, particleTextureCoordinates, gl.STATIC_DRAW);
 
-                delete particleTextureCoordinates;
+                //delete particleTextureCoordinates;
 
                 var spawnData = new Float32Array(count * 4);
                 for (var j = 0; j < count; ++j) {
@@ -979,7 +979,7 @@ module Application.Directives {
 
                 spawnTextures[i] = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, width, height, spawnData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
 
-                delete spawnData;
+                //delete spawnData;
             }
 
             var offsetData = new Float32Array(maxParticleCount * 4);
@@ -998,9 +998,9 @@ module Application.Directives {
 
             var offsetTexture = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
 
-            delete randomNumbers;
-            delete randomSpherePoints;
-            delete offsetData;
+            //delete randomNumbers;
+            //delete randomSpherePoints;
+            //delete offsetData;
 
 
 
@@ -1148,7 +1148,7 @@ module Application.Directives {
                         gl.bindTexture(gl.TEXTURE_2D, particleTextureA);
                         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, particleData);
 
-                        delete particleData;
+                        //delete particleData;
 
                         gl.bindTexture(gl.TEXTURE_2D, particleTextureB);
                         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
