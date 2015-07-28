@@ -914,9 +914,9 @@ module Application.Directives {
             this.particleCount = this.particleCountWidth * this.particleCountHeight;
         }
 
-        private initCanvas(canvas: any): void {
-            var glCanvas: webgl.HTMLCanvasElement = canvas;
-            var gl: webgl.WebGLRenderingContext = glCanvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
+        private initCanvas(canvas: webgl.HTMLCanvasElement): void {
+
+            var gl: webgl.WebGLRenderingContext = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
 
             gl.getExtension('OES_texture_float');
             gl.clearColor(0.0, 0.0, 0.0, 0.0);

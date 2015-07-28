@@ -537,6 +537,8 @@ declare module webgl {
     //To make WebGL work 
     interface HTMLCanvasElement {
         getContext(contextId: string, params: {}): WebGLRenderingContext;
+        width: number;
+        height: number;
     }
 
 }

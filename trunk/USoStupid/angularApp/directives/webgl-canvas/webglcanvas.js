@@ -648,8 +648,7 @@ var Application;
                 this.particleCount = this.particleCountWidth * this.particleCountHeight;
             };
             FlowController.prototype.initCanvas = function (canvas) {
-                var glCanvas = canvas;
-                var gl = glCanvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
+                var gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
                 gl.getExtension('OES_texture_float');
                 gl.clearColor(0.0, 0.0, 0.0, 0.0);
                 var __this = this;
