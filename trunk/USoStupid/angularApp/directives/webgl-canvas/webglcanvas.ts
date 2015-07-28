@@ -1489,7 +1489,7 @@ module Application.Directives {
             return true;
         }
         
-        private buildProgramWrapper(gl, vertexShader, fragmentShader, attributeLocations) : any {
+        private buildProgramWrapper(gl: webgl.WebGLRenderingContext, vertexShader, fragmentShader, attributeLocations) : any {
             var programWrapper = { program: null, uniformLocations: null};
 
             var program = gl.createProgram();
@@ -1513,7 +1513,7 @@ module Application.Directives {
             return programWrapper;
         }
         
-        private buildShader (gl, type, source) : any {
+        private buildShader(gl: webgl.WebGLRenderingContext, type: number, source: string) : any {
             var shader = gl.createShader(type);
             gl.shaderSource(shader, source);
             gl.compileShader(shader);
@@ -1521,8 +1521,8 @@ module Application.Directives {
             return shader;
         }
 
-        private buildTexture(gl, unit, format, type, width, height, data, wrapS, wrapT, minFilter, magFilter) : any {
-            var texture = gl.createTexture();
+        private buildTexture(gl: webgl.WebGLRenderingContext, unit: number, format: number, type: number, width: number, height: number, data: ArrayBufferView, wrapS: number, wrapT: number, minFilter: number, magFilter: number) : any {
+            var texture: webgl.WebGLTexture = gl.createTexture();
             gl.activeTexture(gl.TEXTURE0 + unit);
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, 0, format, width, height, 0, format, type, data);
@@ -1533,8 +1533,8 @@ module Application.Directives {
             return texture;
         }
         
-        private buildFramebuffer(gl, attachment) : any {
-            var framebuffer = gl.createFramebuffer();
+        private buildFramebuffer(gl: webgl.WebGLRenderingContext, attachment) : any {
+            var framebuffer: webgl.WebGLFramebuffer = gl.createFramebuffer();
             gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
             gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, attachment, 0);
             return framebuffer;
