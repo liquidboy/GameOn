@@ -62,10 +62,7 @@ module Application.Directives {
         floorProgramWrapper: any;
         backgroundProgramWrapper: any;
 
-        fullscreenVertexBuffer: webgl.WebGLBuffer;
-        opacityFramebuffer: webgl.WebGLFramebuffer;
-
-
+        
         //variables used for sorting
         totalSortSteps: number;
         sortStepsLeft: number ;
@@ -79,9 +76,21 @@ module Application.Directives {
         offsetTexture: webgl.WebGLTexture;
 
 
+        fullscreenVertexBuffer: webgl.WebGLBuffer;
+
+
         simulationFramebuffer: webgl.WebGLFramebuffer;
         sortFramebuffer: webgl.WebGLFramebuffer;
         resampleFramebuffer: webgl.WebGLFramebuffer;
+        opacityFramebuffer: webgl.WebGLFramebuffer;
+
+
+        
+        projectionMatrix: Float32Array;
+
+        lightViewMatrix: Float32Array;
+        lightProjectionMatrix: Float32Array;
+        lightViewProjectionMatrix: Float32Array;
 
     }
 
@@ -1043,14 +1052,14 @@ module Application.Directives {
 
             var camera = new Camera(canvas, this.mathUtils);
 
-            var projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
+            this.pso.projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
 
-            var lightViewMatrix = new Float32Array(16);
-            this.makeLookAtMatrix(lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
-            var lightProjectionMatrix = this.makeOrthographicMatrix(new Float32Array(16), this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
+            this.pso.lightViewMatrix = new Float32Array(16);
+            this.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
+            this.pso.lightProjectionMatrix = this.makeOrthographicMatrix(new Float32Array(16), this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
 
-            var lightViewProjectionMatrix = new Float32Array(16);
-            this.mathUtils.premultiplyMatrix(lightViewProjectionMatrix, lightViewMatrix, lightProjectionMatrix);
+            this.pso.lightViewProjectionMatrix = new Float32Array(16);
+            this.mathUtils.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
             
             this.pso.resampleFramebuffer = gl.createFramebuffer();
             
@@ -1130,7 +1139,7 @@ module Application.Directives {
 
             var onresize = function () {
                 var aspectRatio = window.innerWidth / window.innerHeight;
-                __this.mathUtils.makePerspectiveMatrix(projectionMatrix, __this.PROJECTION_FOV, aspectRatio, __this.PROJECTION_NEAR, __this.PROJECTION_FAR);
+                __this.mathUtils.makePerspectiveMatrix(__this.pso.projectionMatrix, __this.PROJECTION_FOV, aspectRatio, __this.PROJECTION_NEAR, __this.PROJECTION_FAR);
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             };
@@ -1144,7 +1153,7 @@ module Application.Directives {
             var flipped = false;
 
             var lastTime = 0.0;
-            var render = function render(currentTime) {
+            var render = function render(currentTime: number) {
                 var deltaTime = (currentTime - lastTime) / 1000 || 0.0;
                 lastTime = currentTime;
 
@@ -1382,9 +1391,9 @@ module Application.Directives {
                     gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
 
                     gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
-                    gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, projectionMatrix);
+                    gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, __this.pso.projectionMatrix);
 
-                    gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, lightViewProjectionMatrix);
+                    gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, __this.pso.lightViewProjectionMatrix);
 
                     gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
                     gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
@@ -1430,8 +1439,8 @@ module Application.Directives {
 
                     gl.uniform1i(__this.pso.opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
 
-                    gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, lightViewMatrix);
-                    gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, lightProjectionMatrix);
+                    gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, __this.pso.lightViewMatrix);
+                    gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, __this.pso.lightProjectionMatrix);
 
                     gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
                     gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_screenWidth'], __this.OPACITY_TEXTURE_RESOLUTION);
@@ -1463,9 +1472,9 @@ module Application.Directives {
                 gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
 
                 gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
-                gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, projectionMatrix);
+                gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, __this.pso.projectionMatrix);
 
-                gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, lightViewProjectionMatrix);
+                gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, __this.pso.lightViewProjectionMatrix);
 
                 gl.uniform1i(__this.pso.floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
                 gl.activeTexture(gl.TEXTURE0);
