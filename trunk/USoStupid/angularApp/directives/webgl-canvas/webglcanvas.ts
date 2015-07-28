@@ -57,7 +57,7 @@ module Application.Directives {
     class MathUtils {
 
 
-        public makeIdentityMatrix(matrix): any {
+        public makeIdentityMatrix(matrix: Float32Array): Float32Array {
             matrix[0] = 1.0;
             matrix[1] = 0.0;
             matrix[2] = 0.0;
@@ -77,7 +77,7 @@ module Application.Directives {
             return matrix;
         }
 
-        public makeXRotationMatrix(matrix, angle): any {
+        public makeXRotationMatrix(matrix: Float32Array, angle: number): Float32Array {
             matrix[0] = 1.0;
             matrix[1] = 0.0;
             matrix[2] = 0.0;
@@ -97,7 +97,7 @@ module Application.Directives {
             return matrix;
         }
 
-        public makeYRotationMatrix(matrix, angle): any {
+        public makeYRotationMatrix(matrix: Float32Array, angle: number): Float32Array {
             matrix[0] = Math.cos(angle);
             matrix[1] = 0.0;
             matrix[2] = -Math.sin(angle);
@@ -117,8 +117,8 @@ module Application.Directives {
             return matrix;
         }
 
-        public makePerspectiveMatrix(matrix, fov, aspect, near, far): any {
-            var f = Math.tan(0.5 * (Math.PI - fov)),
+        public makePerspectiveMatrix(matrix: Float32Array, fov: number, aspect: number, near: number, far: number): Float32Array {
+            var f:number = Math.tan(0.5 * (Math.PI - fov)),
                 range = near - far;
 
             matrix[0] = f / aspect;
@@ -141,7 +141,7 @@ module Application.Directives {
             return matrix;
         }
 
-        public premultiplyMatrix(out, matrixA, matrixB): any { //out = matrixB * matrixA
+        public premultiplyMatrix(out: Float32Array, matrixA: Float32Array, matrixB: Float32Array): Float32Array { //out = matrixB * matrixA
             var b0 = matrixB[0], b4 = matrixB[4], b8 = matrixB[8], b12 = matrixB[12],
                 b1 = matrixB[1], b5 = matrixB[5], b9 = matrixB[9], b13 = matrixB[13],
                 b2 = matrixB[2], b6 = matrixB[6], b10 = matrixB[10], b14 = matrixB[14],
@@ -191,33 +191,33 @@ module Application.Directives {
     }
     
     class Camera {
-        private INITIAL_AZIMUTH = 0.6;
-        private INITIAL_ELEVATION = 0.4;
+        private INITIAL_AZIMUTH: number = 0.6;
+        private INITIAL_ELEVATION: number = 0.4;
         private CAMERA_ORBIT_POINT = [1.2, -0.3, 0.0];
-        private CAMERA_DISTANCE = 2.2;
-        private CAMERA_SENSITIVITY = 0.005;
+        private CAMERA_DISTANCE: number = 2.2;
+        private CAMERA_SENSITIVITY: number = 0.005;
 
 
         private viewMatrix = new Float32Array(16);
-        private azimuth = this.INITIAL_AZIMUTH;
-        private elevation = this.INITIAL_ELEVATION;
-        private MIN_ELEVATION = -0.1;
-        private MAX_ELEVATION = Math.PI / 2.0;
+        private azimuth: number = this.INITIAL_AZIMUTH;
+        private elevation: number = this.INITIAL_ELEVATION;
+        private MIN_ELEVATION: number = -0.1;
+        private MAX_ELEVATION: number = Math.PI / 2.0;
 
 
         constructor(element: any, mathUtils: MathUtils) {
            
 
-            var lastMouseX = 0,
-                lastMouseY = 0;
+            var lastMouseX: number = 0,
+                lastMouseY: number = 0;
 
-            var mouseDown = false;
+            var mouseDown:boolean = false;
             var __this = this;
 
             
             var recomputeViewMatrix = function () {
-                var xRotationMatrix = new Float32Array(16),
-                    yRotationMatrix = new Float32Array(16),
+                var xRotationMatrix: Float32Array = new Float32Array(16),
+                    yRotationMatrix: Float32Array = new Float32Array(16),
                     distanceTranslationMatrix = mathUtils.makeIdentityMatrix(new Float32Array(16)),
                     orbitTranslationMatrix = mathUtils.makeIdentityMatrix(new Float32Array(16));
 
@@ -283,12 +283,12 @@ module Application.Directives {
 
 
 
-        public getViewMatrix() : any {
+        public getViewMatrix(): Float32Array {
             return this.viewMatrix;
         }
 
-        public getPosition() : any {
-            var cameraPosition = new Float32Array(3);
+        public getPosition(): Float32Array {
+            var cameraPosition: Float32Array = new Float32Array(3);
             cameraPosition[0] = this.CAMERA_DISTANCE * Math.sin(Math.PI / 2 - this.elevation) * Math.sin(-this.azimuth) + this.CAMERA_ORBIT_POINT[0];
             cameraPosition[1] = this.CAMERA_DISTANCE * Math.cos(Math.PI / 2 - this.elevation) + this.CAMERA_ORBIT_POINT[1];
             cameraPosition[2] = this.CAMERA_DISTANCE * Math.sin(Math.PI / 2 - this.elevation) * Math.cos(-this.azimuth) + this.CAMERA_ORBIT_POINT[2];
@@ -296,8 +296,8 @@ module Application.Directives {
             return cameraPosition;
         }
 
-        public getViewDirection() : any {
-            var viewDirection = new Float32Array(3);
+        public getViewDirection(): Float32Array {
+            var viewDirection: Float32Array = new Float32Array(3);
             viewDirection[0] = -Math.sin(Math.PI / 2 - this.elevation) * Math.sin(-this.azimuth);
             viewDirection[1] = -Math.cos(Math.PI / 2 - this.elevation);
             viewDirection[2] = -Math.sin(Math.PI / 2 - this.elevation) * Math.cos(-this.azimuth);
@@ -780,9 +780,9 @@ module Application.Directives {
 
     class FlowController {
 
-        private MAX_DELTA_TIME = 0.2;
+        private MAX_DELTA_TIME: number = 0.2;
 
-        private PRESIMULATION_DELTA_TIME = 0.1;
+        private PRESIMULATION_DELTA_TIME: number = 0.1;
 
         private QUALITY_LEVELS = [
             {
@@ -812,20 +812,20 @@ module Application.Directives {
             },
         ];
 
-        private OPACITY_TEXTURE_RESOLUTION = 1024;
+        private OPACITY_TEXTURE_RESOLUTION: number = 1024;
 
         private LIGHT_DIRECTION = [0.0, -1.0, 0.0]; //points away from the light source
         private LIGHT_UP_VECTOR = [0.0, 0.0, 1.0];
 
-        private SLICES = 128;
+        private SLICES: number = 128;
 
-        private SORT_PASSES_PER_FRAME = 50;
+        private SORT_PASSES_PER_FRAME: number = 50;
         
-        private ASPECT_RATIO = 16 / 9;
+        private ASPECT_RATIO: number = 16 / 9;
 
-        private PROJECTION_NEAR = 0.01;
-        private PROJECTION_FAR = 10.0;
-        private PROJECTION_FOV = (60 / 180) * Math.PI;
+        private PROJECTION_NEAR: number = 0.01;
+        private PROJECTION_FAR: number = 10.0;
+        private PROJECTION_FOV: number = (60 / 180) * Math.PI;
 
         public PARTICLE_SATURATION: number = 0.75;
         public PARTICLE_VALUE: number = 1.0;
@@ -834,17 +834,17 @@ module Application.Directives {
         private FLOOR_WIDTH: number = 100.0;
         private FLOOR_HEIGHT: number = 100.0;
 
-        private LIGHT_PROJECTION_LEFT = -5.0;
-        private LIGHT_PROJECTION_RIGHT = 5.0;
-        private LIGHT_PROJECTION_BOTTOM = -5.0;
-        private LIGHT_PROJECTION_TOP = 5.0;
-        private LIGHT_PROJECTION_NEAR = -50.0;
-        private LIGHT_PROJECTION_FAR = 50.0;
+        private LIGHT_PROJECTION_LEFT: number = -5.0;
+        private LIGHT_PROJECTION_RIGHT: number = 5.0;
+        private LIGHT_PROJECTION_BOTTOM: number = -5.0;
+        private LIGHT_PROJECTION_TOP: number = 5.0;
+        private LIGHT_PROJECTION_NEAR: number = -50.0;
+        private LIGHT_PROJECTION_FAR: number = 50.0;
 
-        private SPAWN_RADIUS = 0.1;
-        private BASE_LIFETIME = 10;
-        private MAX_ADDITIONAL_LIFETIME = 5;
-        private OFFSET_RADIUS = 0.5;
+        private SPAWN_RADIUS: number = 0.1;
+        private BASE_LIFETIME: number = 10;
+        private MAX_ADDITIONAL_LIFETIME: number = 5;
+        private OFFSET_RADIUS: number = 0.5;
 
 
         public INITIAL_SPEED : number = 2;
@@ -1026,10 +1026,10 @@ module Application.Directives {
             this.changeQualityLevel(0);
             
             //variables used for sorting
-            var totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
-            var sortStepsLeft = totalSortSteps;
-            var sortPass = -1;
-            var sortStage = -1;
+            var totalSortSteps: number = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
+            var sortStepsLeft: number = totalSortSteps;
+            var sortPass: number = -1;
+            var sortStage: number = -1;
 
             var opacityTexture = this.buildTexture(gl, 0, gl.RGBA, gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.LINEAR, gl.LINEAR); //opacity from the light's point of view
 
