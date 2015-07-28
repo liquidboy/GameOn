@@ -21,4 +21,3 @@ var Application;
         Services.ResourceSvc = ResourceSvc;
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=ResourceService.js.map

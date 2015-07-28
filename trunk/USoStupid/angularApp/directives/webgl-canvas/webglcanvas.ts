@@ -78,6 +78,7 @@ module Application.Directives {
 
         fullscreenVertexBuffer: webgl.WebGLBuffer;
         particleVertexBuffer: webgl.WebGLBuffer;
+        floorVertexBuffer: webgl.WebGLBuffer;
 
 
         simulationFramebuffer: webgl.WebGLFramebuffer;
@@ -920,14 +921,18 @@ module Application.Directives {
         private oldParticleCountWidth : number;
         private oldParticleCountHeight: number;
 
+        private spawnTexture: any;
 
-
+        private firstFrame: boolean = false;
+        private flipped: boolean = false;
 
 
 
         private mathUtils: MathUtils;
         private shaderLib: ShaderLib;
 
+        private canvas: webgl.HTMLCanvasElement;
+        private camera: Camera;
         private gl: webgl.WebGLRenderingContext;
         private pso: PipelineState;
 
@@ -963,17 +968,23 @@ module Application.Directives {
             this.particleCount = this.particleCountWidth * this.particleCountHeight;
         }
 
+        private particleVertexBuffers: any; //one for each quality level
+        private spawnTextures: any; //one for each quality level
 
 
         private initCanvas(canvas: webgl.HTMLCanvasElement): void {
-
+            this.canvas = canvas;
             this.gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
 
             this.gl.getExtension('OES_texture_float');
             this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
+            
+            this.firstFrame = true;
+            this.flipped = false;
 
-            var __this = this;
+            this.pso.lastTime = 0.0;
+
             
             var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
 
@@ -989,10 +1000,8 @@ module Application.Directives {
             }
 
 
-            var spawnTexture;
-
-            var particleVertexBuffers = []; //one for each quality level
-            var spawnTextures = []; //one for each quality level
+            this.particleVertexBuffers = []; //one for each quality level
+            this.spawnTextures = []; //one for each quality level
 
             for (var i = 0; i < this.QUALITY_LEVELS.length; ++i) {
                 var width = this.QUALITY_LEVELS[i].resolution[0];
@@ -1000,7 +1009,7 @@ module Application.Directives {
 
                 var count = width * height;
 
-                particleVertexBuffers[i] = this.gl.createBuffer();
+                this.particleVertexBuffers[i] = this.gl.createBuffer();
 
                 var particleTextureCoordinates= new Float32Array(width * height * 2);
                 for (var y = 0; y < height; ++y) {
@@ -1010,7 +1019,7 @@ module Application.Directives {
                     }
                 }
 
-                this.gl.bindBuffer(this.gl.ARRAY_BUFFER, particleVertexBuffers[i]);
+                this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleVertexBuffers[i]);
                 this.gl.bufferData(this.gl.ARRAY_BUFFER, particleTextureCoordinates, this.gl.STATIC_DRAW);
 
                 //delete particleTextureCoordinates;
@@ -1030,7 +1039,7 @@ module Application.Directives {
                     spawnData[j * 4 + 3] = lifetime;
                 }
 
-                spawnTextures[i] = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, width, height, spawnData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
+                this.spawnTextures[i] = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, width, height, spawnData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
 
                 spawnData.length = 0; //delete spawnData;
             }
@@ -1070,7 +1079,7 @@ module Application.Directives {
             this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
             this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
 
-            var camera = new Camera(canvas, this.mathUtils);
+            this.camera = new Camera(canvas, this.mathUtils);
 
             this.pso.projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
 
@@ -1147,8 +1156,8 @@ module Application.Directives {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
             this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), this.gl.STATIC_DRAW);
 
-            var floorVertexBuffer = this.gl.createBuffer();
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, floorVertexBuffer);
+            this.pso.floorVertexBuffer = this.gl.createBuffer();
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.floorVertexBuffer);
             this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([
                 this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
                 this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
@@ -1157,375 +1166,383 @@ module Application.Directives {
             ]), this.gl.STATIC_DRAW);
 
 
-            var onresize = function () {
-                var aspectRatio = window.innerWidth / window.innerHeight;
-                __this.mathUtils.makePerspectiveMatrix(__this.pso.projectionMatrix, __this.PROJECTION_FOV, aspectRatio, __this.PROJECTION_NEAR, __this.PROJECTION_FAR);
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            };
 
-            window.addEventListener('resize', onresize);
-            onresize();
+            //window.addEventListener('resize', onresize); 
+            $(window).on("resize", this.onresize.bind(this));
+            this.onresize();
 
 
-            var firstFrame = true;
-            
-            var flipped = false;
 
-            this.pso.lastTime = 0.0;
 
-            var render = function render(currentTime: number) {
-                var deltaTime = (currentTime - __this.pso.lastTime) / 1000 || 0.0;
-                __this.pso.lastTime = currentTime;
-
-                if (deltaTime > __this.MAX_DELTA_TIME) {
-                    deltaTime = 0;
-                }
-
-                if (__this.changingParticleCount) {
-                    deltaTime = 0;
-                    __this.changingParticleCount = false;
-
-                    __this.pso.particleVertexBuffer = particleVertexBuffers[__this.qualityLevel];
-                    spawnTexture = spawnTextures[__this.qualityLevel];
-
-                    //reset sort
-                    __this.pso.totalSortSteps = (__this.log2(__this.particleCount) * (__this.log2(__this.particleCount) + 1)) / 2;
-                    __this.pso.sortStepsLeft = __this.pso.totalSortSteps;
-                    __this.pso.sortPass = -1;
-                    __this.pso.sortStage = -1;
-
-                    if (__this.oldParticleCountHeight === 0 && __this.oldParticleCountWidth === 0) { //initial generation
-                        var particleData = new Float32Array(__this.particleCount * 4);
-
-                        for (var i = 0; i < __this.particleCount; ++i) {
-                            var position = __this.randomPointInSphere();
-
-                            var positionX = position[0] * __this.SPAWN_RADIUS;
-                            var positionY = position[1] * __this.SPAWN_RADIUS;
-                            var positionZ = position[2] * __this.SPAWN_RADIUS;
-
-                            particleData[i * 4] = positionX;
-                            particleData[i * 4 + 1] = positionY;
-                            particleData[i * 4 + 2] = positionZ;
-                            particleData[i * 4 + 3] = Math.random() * __this.BASE_LIFETIME;
-                        }
-
-                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
-                        __this.gl.texImage2D(__this.gl.TEXTURE_2D, 0, __this.gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, __this.gl.RGBA, __this.gl.FLOAT, particleData);
-
-                        particleData.length = 0; //delete particleData;
-
-                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureB);
-                        __this.gl.texImage2D(__this.gl.TEXTURE_2D, 0, __this.gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, __this.gl.RGBA, __this.gl.FLOAT, null);
-                    } else {
-                        //resample from A into B
-                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureB);
-                        __this.gl.texImage2D(__this.gl.TEXTURE_2D, 0, __this.gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, __this.gl.RGBA, __this.gl.FLOAT, null);
-
-                        __this.gl.enableVertexAttribArray(0);
-                        __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
-                        __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
-
-                        __this.gl.enableVertexAttribArray(0);
-
-                        __this.gl.useProgram(__this.pso.resampleProgramWrapper.program);
-                        __this.gl.uniform1i(__this.pso.resampleProgramWrapper.uniformLocations['u_particleTexture'], 0);
-                        __this.gl.uniform1i(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
-
-                        if (__this.particleCount > __this.oldParticleCountWidth * __this.oldParticleCountHeight) { //if we are upsampling we need to add random sphere offsets
-                            __this.gl.uniform1f(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], __this.oldParticleDiameter);
-                        } else { //if downsampling we can just leave positions as they are
-                            __this.gl.uniform1f(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
-                        }
-
-                        __this.gl.activeTexture(__this.gl.TEXTURE0);
-                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
-
-                        __this.gl.activeTexture(__this.gl.TEXTURE1);
-                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.offsetTexture);
-
-                        __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.resampleFramebuffer);
-                        __this.gl.framebufferTexture2D(__this.gl.FRAMEBUFFER, __this.gl.COLOR_ATTACHMENT0, __this.gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
-
-                        __this.gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
-
-                        __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
-
-                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
-                        __this.gl.texImage2D(__this.gl.TEXTURE_2D, 0, __this.gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, __this.gl.RGBA, __this.gl.FLOAT, null);
-
-                        var temp = __this.pso.particleTextureA;
-                        __this.pso.particleTextureA = __this.pso.particleTextureB;
-                        __this.pso.particleTextureB = temp;
-                    }
-                }
-
-
-                var flippedThisFrame = false; //if the order reversed this frame
-
-                var viewDirection = camera.getViewDirection();
-
-                var halfVector: Float32Array;
-
-                if (__this.dotVectors(viewDirection, __this.LIGHT_DIRECTION) > 0.0) {
-                    halfVector = new Float32Array([
-                        __this.LIGHT_DIRECTION[0] + viewDirection[0],
-                        __this.LIGHT_DIRECTION[1] + viewDirection[1],
-                        __this.LIGHT_DIRECTION[2] + viewDirection[2],
-                    ]);
-                    __this.normalizeVector(halfVector, halfVector);
-
-                    if (flipped) {
-                        flippedThisFrame = true;
-                    }
-
-                    flipped = false;
-                } else {
-                    halfVector = new Float32Array([
-                        __this.LIGHT_DIRECTION[0] - viewDirection[0],
-                        __this.LIGHT_DIRECTION[1] - viewDirection[1],
-                        __this.LIGHT_DIRECTION[2] - viewDirection[2],
-                    ]);
-                    __this.normalizeVector(halfVector, halfVector);
-
-                    if (!flipped) {
-                        flippedThisFrame = true;
-                    }
-
-                    flipped = true;
-                }
-
-                __this.gl.disable(__this.gl.DEPTH_TEST);
-
-                __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, null);
-                __this.gl.viewport(0, 0, canvas.width, canvas.height);
-                __this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
-                __this.gl.clear(__this.gl.COLOR_BUFFER_BIT | __this.gl.DEPTH_BUFFER_BIT);
-
-
-                for (var i = 0; i < (firstFrame ? __this.BASE_LIFETIME / __this.PRESIMULATION_DELTA_TIME : 1); ++i) {
-                    __this.gl.enableVertexAttribArray(0);
-                    __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
-                    __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
-
-                    __this.gl.useProgram(__this.pso.simulationProgramWrapper.program);
-                    __this.gl.uniform2f(__this.pso.simulationProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
-                    __this.gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_deltaTime'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : deltaTime * __this.timeScale);
-                    __this.gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_time'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : currentTime);
-                    __this.gl.uniform1i(__this.pso.simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
-
-                    __this.gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_persistence'], __this.persistence);
-
-                    __this.gl.uniform1i(__this.pso.simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
-
-                    __this.gl.disable(__this.gl.BLEND);
-
-                    __this.gl.activeTexture(__this.gl.TEXTURE1);
-                    __this.gl.bindTexture(__this.gl.TEXTURE_2D, spawnTexture);
-
-                    //render from A -> B
-                    __this.gl.activeTexture(__this.gl.TEXTURE0);
-                    __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
-
-                    __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.simulationFramebuffer);
-                    __this.gl.framebufferTexture2D(__this.gl.FRAMEBUFFER, __this.gl.COLOR_ATTACHMENT0, __this.gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
-
-                    //swap A and B
-                    var temp = __this.pso.particleTextureA;
-                    __this.pso.particleTextureA = __this.pso.particleTextureB;
-                    __this.pso.particleTextureB = temp;
-
-                    __this.gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
-
-                    __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
-
-                    if (firstFrame) __this.gl.flush();
-                }
-
-                firstFrame = false;
-
-                __this.gl.disable(__this.gl.BLEND);
-
-                __this.gl.enableVertexAttribArray(0);
-                __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
-                __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
-
-                if (flippedThisFrame) { //if the order reversed this frame sort everything
-                    __this.pso.sortPass = -1;
-                    __this.pso.sortStage = -1;
-                    __this.pso.sortStepsLeft = __this.pso.totalSortSteps;
-                }
-
-                for (var i = 0; i < (flippedThisFrame ? __this.pso.totalSortSteps : __this.SORT_PASSES_PER_FRAME); ++i) {
-                    __this.pso.sortPass--;
-                    if (__this.pso.sortPass < 0) {
-                        __this.pso.sortStage++;
-                        __this.pso.sortPass = __this.pso.sortStage;
-                    }
-
-                    __this.gl.useProgram(__this.pso.sortProgramWrapper.program);
-
-                    __this.gl.uniform1i(__this.pso.sortProgramWrapper.uniformLocations['u_dataTexture'], 0);
-                    __this.gl.uniform2f(__this.pso.sortProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
-
-                    __this.gl.uniform1f(__this.pso.sortProgramWrapper.uniformLocations['pass'], 1 << __this.pso.sortPass);
-                    __this.gl.uniform1f(__this.pso.sortProgramWrapper.uniformLocations['stage'], 1 << __this.pso.sortStage);
-
-                    __this.gl.uniform3fv(__this.pso.sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
-
-                    __this.gl.activeTexture(__this.gl.TEXTURE0);
-                    __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
-
-                    __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.sortFramebuffer);
-                    __this.gl.framebufferTexture2D(__this.gl.FRAMEBUFFER, __this.gl.COLOR_ATTACHMENT0, __this.gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
-
-                    __this.gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
-
-                    __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
-
-                    var temp = __this.pso.particleTextureA;
-                    __this.pso.particleTextureA = __this.pso.particleTextureB;
-                    __this.pso.particleTextureB = temp;
-
-                    __this.pso.sortStepsLeft--;
-
-                    if (__this.pso.sortStepsLeft === 0) {
-                        __this.pso.sortStepsLeft = __this.pso.totalSortSteps;
-                        __this.pso.sortPass = -1;
-                        __this.pso.sortStage = -1;
-                    }
-                }
-
-                __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.opacityFramebuffer);
-                __this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
-                __this.gl.clear(__this.gl.COLOR_BUFFER_BIT);
-
-                for (var i = 0; i < __this.SLICES; ++i) {
-                    //render particles
-                    __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, null);
-                    __this.gl.viewport(0, 0, canvas.width, canvas.height);
-
-                    __this.gl.useProgram(__this.pso.renderingProgramWrapper.program);
-
-                    __this.gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_particleTexture'], 0);
-                    __this.gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
-
-                    __this.gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
-                    __this.gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, __this.pso.projectionMatrix);
-
-                    __this.gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, __this.pso.lightViewProjectionMatrix);
-
-                    __this.gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
-                    __this.gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
-
-                    __this.gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
-
-                    var colorRGB = __this.hsvToRGB(__this.hue, __this.shaderLib.PARTICLE_SATURATION, __this.shaderLib.PARTICLE_VALUE);
-                    __this.gl.uniform3f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
-
-                    __this.gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);
-
-                    __this.gl.activeTexture(__this.gl.TEXTURE0);
-                    __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
-
-                    __this.gl.activeTexture(__this.gl.TEXTURE1);
-                    __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.opacityTexture);
-
-                    __this.gl.enableVertexAttribArray(0);
-                    __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
-                    __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
-
-
-                    if (!flipped) {
-                        __this.gl.enable(__this.gl.BLEND);
-                        //__this.gl.blendEquation(__this.gl.FUNC_ADD, __this.gl.FUNC_ADD);
-                        __this.gl.blendEquation(__this.gl.FUNC_ADD);
-                        __this.gl.blendFunc(__this.gl.ONE_MINUS_DST_ALPHA, __this.gl.ONE);
-                    } else {
-                        __this.gl.enable(__this.gl.BLEND);
-                        //__this.gl.blendEquation(__this.gl.FUNC_ADD, __this.gl.FUNC_ADD);
-                        __this.gl.blendEquation(__this.gl.FUNC_ADD);
-                        __this.gl.blendFunc(__this.gl.ONE, __this.gl.ONE_MINUS_SRC_ALPHA);
-                    }
-
-                    __this.gl.drawArrays(__this.gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
-
-                    //render to opacity texture
-                    __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.opacityFramebuffer);
-
-                    __this.gl.viewport(0, 0, __this.OPACITY_TEXTURE_RESOLUTION, __this.OPACITY_TEXTURE_RESOLUTION);
-
-                    __this.gl.useProgram(__this.pso.opacityProgramWrapper.program);
-
-                    __this.gl.uniform1i(__this.pso.opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
-
-                    __this.gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, __this.pso.lightViewMatrix);
-                    __this.gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, __this.pso.lightProjectionMatrix);
-
-                    __this.gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
-                    __this.gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_screenWidth'], __this.OPACITY_TEXTURE_RESOLUTION);
-
-                    __this.gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
-
-                    __this.gl.activeTexture(__this.gl.TEXTURE0);
-                    __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
-
-                    __this.gl.enableVertexAttribArray(0);
-                    __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
-                    __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
-
-                    __this.gl.enable(__this.gl.BLEND);
-                    //__this.gl.blendEquation(__this.gl.FUNC_ADD, __this.gl.FUNC_ADD);
-                    __this.gl.blendEquation(__this.gl.FUNC_ADD);
-                    __this.gl.blendFunc(__this.gl.ONE, __this.gl.ONE_MINUS_SRC_ALPHA);
-
-                    __this.gl.drawArrays(__this.gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
-                }
-
-                __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, null);
-                __this.gl.viewport(0, 0, canvas.width, canvas.height);
-
-                __this.gl.useProgram(__this.pso.floorProgramWrapper.program);
-
-                __this.gl.enableVertexAttribArray(0);
-                __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, floorVertexBuffer);
-                __this.gl.vertexAttribPointer(0, 3, __this.gl.FLOAT, false, 0, 0);
-
-                __this.gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
-                __this.gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, __this.pso.projectionMatrix);
-
-                __this.gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, __this.pso.lightViewProjectionMatrix);
-
-                __this.gl.uniform1i(__this.pso.floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
-                __this.gl.activeTexture(__this.gl.TEXTURE0);
-                __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.opacityTexture);
-
-                __this.gl.enable(__this.gl.BLEND);
-                //__this.gl.blendEquation(__this.gl.FUNC_ADD, __this.gl.FUNC_ADD);
-                __this.gl.blendEquation(__this.gl.FUNC_ADD);
-                __this.gl.blendFunc(__this.gl.ONE_MINUS_DST_ALPHA, __this.gl.ONE);
-
-                __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
-
-                __this.gl.viewport(0, 0, canvas.width, canvas.height);
-
-                __this.gl.enableVertexAttribArray(0);
-                __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
-                __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
-
-                __this.gl.useProgram(__this.pso.backgroundProgramWrapper.program);
-
-                __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
-
-                requestAnimationFrame(render);
-            };
-            render(this.pso.lastTime);
+            //var render = function render(currentTime: number) {
+                
+            //};
+            this.render(this.pso.lastTime);
 
 
         }
 
+        private onresize() {
+            var aspectRatio = window.innerWidth / window.innerHeight;
+            this.mathUtils.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        };
 
+        private loadResources() {
+
+        }
+        
+
+        private render(currentTime: number) {
+            var deltaTime = (currentTime - this.pso.lastTime) / 1000 || 0.0;
+            this.pso.lastTime = currentTime;
+
+            if (deltaTime > this.MAX_DELTA_TIME) {
+                deltaTime = 0;
+            }
+
+
+
+            if (this.changingParticleCount) {
+                deltaTime = 0;
+                this.changingParticleCount = false;
+
+                this.pso.particleVertexBuffer = this.particleVertexBuffers[this.qualityLevel];
+                this.spawnTexture = this.spawnTextures[this.qualityLevel];
+
+                //reset sort
+                this.pso.totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
+                this.pso.sortStepsLeft = this.pso.totalSortSteps;
+                this.pso.sortPass = -1;
+                this.pso.sortStage = -1;
+
+                if (this.oldParticleCountHeight === 0 && this.oldParticleCountWidth === 0) { //initial generation
+                    var particleData = new Float32Array(this.particleCount * 4);
+
+                    for (var i = 0; i < this.particleCount; ++i) {
+                        var position = this.randomPointInSphere();
+
+                        var positionX = position[0] * this.SPAWN_RADIUS;
+                        var positionY = position[1] * this.SPAWN_RADIUS;
+                        var positionZ = position[2] * this.SPAWN_RADIUS;
+
+                        particleData[i * 4] = positionX;
+                        particleData[i * 4 + 1] = positionY;
+                        particleData[i * 4 + 2] = positionZ;
+                        particleData[i * 4 + 3] = Math.random() * this.BASE_LIFETIME;
+                    }
+
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
+                    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, particleData);
+
+                    particleData.length = 0; //delete particleData;
+
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureB);
+                    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, null);
+                } else {
+                    //resample from A into B
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureB);
+                    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, null);
+
+                    this.gl.enableVertexAttribArray(0);
+                    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
+                    this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
+
+                    this.gl.enableVertexAttribArray(0);
+
+                    this.gl.useProgram(this.pso.resampleProgramWrapper.program);
+                    this.gl.uniform1i(this.pso.resampleProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                    this.gl.uniform1i(this.pso.resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
+
+                    if (this.particleCount > this.oldParticleCountWidth * this.oldParticleCountHeight) { //if we are upsampling we need to add random sphere offsets
+                        this.gl.uniform1f(this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], this.oldParticleDiameter);
+                    } else { //if downsampling we can just leave positions as they are
+                        this.gl.uniform1f(this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
+                    }
+
+                    this.gl.activeTexture(this.gl.TEXTURE0);
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
+
+                    this.gl.activeTexture(this.gl.TEXTURE1);
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.offsetTexture);
+
+                    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.resampleFramebuffer);
+                    this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.pso.particleTextureB, 0);
+
+                    this.gl.viewport(0, 0, this.particleCountWidth, this.particleCountHeight);
+
+                    this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
+                    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, null);
+
+                    var temp = this.pso.particleTextureA;
+                    this.pso.particleTextureA = this.pso.particleTextureB;
+                    this.pso.particleTextureB = temp;
+                }
+            }
+
+
+            var flippedThisFrame = false; //if the order reversed this frame
+
+            var viewDirection = this.camera.getViewDirection();
+
+            var halfVector: Float32Array;
+
+            if (this.dotVectors(viewDirection, this.LIGHT_DIRECTION) > 0.0) {
+                halfVector = new Float32Array([
+                    this.LIGHT_DIRECTION[0] + viewDirection[0],
+                    this.LIGHT_DIRECTION[1] + viewDirection[1],
+                    this.LIGHT_DIRECTION[2] + viewDirection[2],
+                ]);
+                this.normalizeVector(halfVector, halfVector);
+
+                if (this.flipped) {
+                    flippedThisFrame = true;
+                }
+
+                this.flipped = false;
+            } else {
+                halfVector = new Float32Array([
+                    this.LIGHT_DIRECTION[0] - viewDirection[0],
+                    this.LIGHT_DIRECTION[1] - viewDirection[1],
+                    this.LIGHT_DIRECTION[2] - viewDirection[2],
+                ]);
+                this.normalizeVector(halfVector, halfVector);
+
+                if (!this.flipped) {
+                    flippedThisFrame = true;
+                }
+
+                this.flipped = true;
+            }
+
+            this.gl.disable(this.gl.DEPTH_TEST);
+
+            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+            this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+            this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+
+
+            for (var i = 0; i < (this.firstFrame ? this.BASE_LIFETIME / this.PRESIMULATION_DELTA_TIME : 1); ++i) {
+                this.gl.enableVertexAttribArray(0);
+                this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
+                this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
+
+                this.gl.useProgram(this.pso.simulationProgramWrapper.program);
+                this.gl.uniform2f(this.pso.simulationProgramWrapper.uniformLocations['u_resolution'], this.particleCountWidth, this.particleCountHeight);
+                this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_deltaTime'], this.firstFrame ? this.PRESIMULATION_DELTA_TIME : deltaTime * this.timeScale);
+                this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_time'], this.firstFrame ? this.PRESIMULATION_DELTA_TIME : currentTime);
+                this.gl.uniform1i(this.pso.simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
+
+                this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_persistence'], this.persistence);
+
+                this.gl.uniform1i(this.pso.simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
+
+                this.gl.disable(this.gl.BLEND);
+
+                this.gl.activeTexture(this.gl.TEXTURE1);
+                this.gl.bindTexture(this.gl.TEXTURE_2D, this.spawnTexture);
+
+                //render from A -> B
+                this.gl.activeTexture(this.gl.TEXTURE0);
+                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
+
+                this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.simulationFramebuffer);
+                this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.pso.particleTextureB, 0);
+
+                //swap A and B
+                var temp = this.pso.particleTextureA;
+                this.pso.particleTextureA = this.pso.particleTextureB;
+                this.pso.particleTextureB = temp;
+
+                this.gl.viewport(0, 0, this.particleCountWidth, this.particleCountHeight);
+
+                this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+                if (this.firstFrame) this.gl.flush();
+            }
+
+            this.firstFrame = false;
+
+            this.gl.disable(this.gl.BLEND);
+
+            this.gl.enableVertexAttribArray(0);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
+            this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
+
+            if (flippedThisFrame) { //if the order reversed this frame sort everything
+                this.pso.sortPass = -1;
+                this.pso.sortStage = -1;
+                this.pso.sortStepsLeft = this.pso.totalSortSteps;
+            }
+
+            for (var i = 0; i < (flippedThisFrame ? this.pso.totalSortSteps : this.SORT_PASSES_PER_FRAME); ++i) {
+                this.pso.sortPass--;
+                if (this.pso.sortPass < 0) {
+                    this.pso.sortStage++;
+                    this.pso.sortPass = this.pso.sortStage;
+                }
+
+                this.gl.useProgram(this.pso.sortProgramWrapper.program);
+
+                this.gl.uniform1i(this.pso.sortProgramWrapper.uniformLocations['u_dataTexture'], 0);
+                this.gl.uniform2f(this.pso.sortProgramWrapper.uniformLocations['u_resolution'], this.particleCountWidth, this.particleCountHeight);
+
+                this.gl.uniform1f(this.pso.sortProgramWrapper.uniformLocations['pass'], 1 << this.pso.sortPass);
+                this.gl.uniform1f(this.pso.sortProgramWrapper.uniformLocations['stage'], 1 << this.pso.sortStage);
+
+                this.gl.uniform3fv(this.pso.sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
+
+                this.gl.activeTexture(this.gl.TEXTURE0);
+                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
+
+                this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.sortFramebuffer);
+                this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.pso.particleTextureB, 0);
+
+                this.gl.viewport(0, 0, this.particleCountWidth, this.particleCountHeight);
+
+                this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+                var temp = this.pso.particleTextureA;
+                this.pso.particleTextureA = this.pso.particleTextureB;
+                this.pso.particleTextureB = temp;
+
+                this.pso.sortStepsLeft--;
+
+                if (this.pso.sortStepsLeft === 0) {
+                    this.pso.sortStepsLeft = this.pso.totalSortSteps;
+                    this.pso.sortPass = -1;
+                    this.pso.sortStage = -1;
+                }
+            }
+
+            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.opacityFramebuffer);
+            this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+
+            for (var i = 0; i < this.SLICES; ++i) {
+                //render particles
+                this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+                this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+
+                this.gl.useProgram(this.pso.renderingProgramWrapper.program);
+
+                this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
+
+                this.gl.uniformMatrix4fv(this.pso.renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, this.camera.getViewMatrix());
+                this.gl.uniformMatrix4fv(this.pso.renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, this.pso.projectionMatrix);
+
+                this.gl.uniformMatrix4fv(this.pso.renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, this.pso.lightViewProjectionMatrix);
+
+                this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], this.particleDiameter);
+                this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], this.canvas.width);
+
+                this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
+
+                var colorRGB = this.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
+                this.gl.uniform3f(this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
+
+                this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.flipped ? 1 : 0);
+
+                this.gl.activeTexture(this.gl.TEXTURE0);
+                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
+
+                this.gl.activeTexture(this.gl.TEXTURE1);
+                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.opacityTexture);
+
+                this.gl.enableVertexAttribArray(0);
+                this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.particleVertexBuffer);
+                this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
+
+
+                if (!this.flipped) {
+                    this.gl.enable(this.gl.BLEND);
+                    //this.gl.blendEquation(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
+                    this.gl.blendEquation(this.gl.FUNC_ADD);
+                    this.gl.blendFunc(this.gl.ONE_MINUS_DST_ALPHA, this.gl.ONE);
+                } else {
+                    this.gl.enable(this.gl.BLEND);
+                    //this.gl.blendEquation(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
+                    this.gl.blendEquation(this.gl.FUNC_ADD);
+                    this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
+                }
+
+                this.gl.drawArrays(this.gl.POINTS, i * (this.particleCount / this.SLICES), this.particleCount / this.SLICES);
+
+                //render to opacity texture
+                this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.opacityFramebuffer);
+
+                this.gl.viewport(0, 0, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION);
+
+                this.gl.useProgram(this.pso.opacityProgramWrapper.program);
+
+                this.gl.uniform1i(this.pso.opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
+
+                this.gl.uniformMatrix4fv(this.pso.opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, this.pso.lightViewMatrix);
+                this.gl.uniformMatrix4fv(this.pso.opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, this.pso.lightProjectionMatrix);
+
+                this.gl.uniform1f(this.pso.opacityProgramWrapper.uniformLocations['u_particleDiameter'], this.particleDiameter);
+                this.gl.uniform1f(this.pso.opacityProgramWrapper.uniformLocations['u_screenWidth'], this.OPACITY_TEXTURE_RESOLUTION);
+
+                this.gl.uniform1f(this.pso.opacityProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
+
+                this.gl.activeTexture(this.gl.TEXTURE0);
+                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
+
+                this.gl.enableVertexAttribArray(0);
+                this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.particleVertexBuffer);
+                this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
+
+                this.gl.enable(this.gl.BLEND);
+                //this.gl.blendEquation(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
+                this.gl.blendEquation(this.gl.FUNC_ADD);
+                this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
+
+                this.gl.drawArrays(this.gl.POINTS, i * (this.particleCount / this.SLICES), this.particleCount / this.SLICES);
+            }
+
+            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+            this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+
+            this.gl.useProgram(this.pso.floorProgramWrapper.program);
+
+            this.gl.enableVertexAttribArray(0);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.floorVertexBuffer);
+            this.gl.vertexAttribPointer(0, 3, this.gl.FLOAT, false, 0, 0);
+
+            this.gl.uniformMatrix4fv(this.pso.floorProgramWrapper.uniformLocations['u_viewMatrix'], false, this.camera.getViewMatrix());
+            this.gl.uniformMatrix4fv(this.pso.floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, this.pso.projectionMatrix);
+
+            this.gl.uniformMatrix4fv(this.pso.floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, this.pso.lightViewProjectionMatrix);
+
+            this.gl.uniform1i(this.pso.floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
+            this.gl.activeTexture(this.gl.TEXTURE0);
+            this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.opacityTexture);
+
+            this.gl.enable(this.gl.BLEND);
+            //this.gl.blendEquation(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
+            this.gl.blendEquation(this.gl.FUNC_ADD);
+            this.gl.blendFunc(this.gl.ONE_MINUS_DST_ALPHA, this.gl.ONE);
+
+            this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+            this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+
+            this.gl.enableVertexAttribArray(0);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
+            this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
+
+            this.gl.useProgram(this.pso.backgroundProgramWrapper.program);
+
+            this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+            
+            requestAnimationFrame(this.render.bind(this));
+        }
 
 
 
@@ -1751,7 +1768,12 @@ module Application.Directives {
 
     }
 
+    class Scene {
 
+        public Render() {
+
+        }
+    }
 
    
     //var myapp: ng.IModule = angular.module('USoStupidApp', ['ngRoute', 'ngResource', 'ngAnimate']);
