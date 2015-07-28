@@ -23,4 +23,3 @@ var Application;
         Services.DataSvc = DataSvc;
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=DataService.js.map

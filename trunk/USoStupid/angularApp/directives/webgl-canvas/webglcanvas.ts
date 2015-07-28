@@ -317,17 +317,17 @@ module Application.Directives {
 
     class ShaderLib {
 
-        private NOISE_OCTAVES = 3;
-        private NOISE_POSITION_SCALE = 1.5;
-        private NOISE_SCALE = 0.075;
-        private NOISE_TIME_SCALE = 1 / 4000;
+        private NOISE_OCTAVES:number = 3;
+        private NOISE_POSITION_SCALE: number = 1.5;
+        private NOISE_SCALE: number = 0.075;
+        private NOISE_TIME_SCALE: number = 1 / 4000;
         
-        private BASE_SPEED = 0.2;
+        private BASE_SPEED: number = 0.2;
         
 
-        private PARTICLE_OPACITY_SCALE = 0.75;
+        private PARTICLE_OPACITY_SCALE: number = 0.75;
         
-        private BACKGROUND_DISTANCE_SCALE = 0.1;
+        private BACKGROUND_DISTANCE_SCALE: number = 0.1;
 
 
         public constructor(public FLOOR_ORIGIN: any, public PARTICLE_SATURATION: number, public PARTICLE_VALUE: number) {
