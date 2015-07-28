@@ -897,7 +897,7 @@ module Application.Directives {
 
         }
 
-        private changeQualityLevel(newLevel: any) {
+        private changeQualityLevel(newLevel: number) {
             this.qualityLevel = newLevel;
 
             this.particleAlpha = this.QUALITY_LEVELS[this.qualityLevel].alpha;
