@@ -648,7 +648,8 @@ var Application;
                 this.particleCount = this.particleCountWidth * this.particleCountHeight;
             };
             FlowController.prototype.initCanvas = function (canvas) {
-                var gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
+                var glCanvas = canvas;
+                var gl = glCanvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
                 gl.getExtension('OES_texture_float');
                 gl.clearColor(0.0, 0.0, 0.0, 0.0);
                 var __this = this;
@@ -951,12 +952,14 @@ var Application;
                         gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
                         if (!flipped) {
                             gl.enable(gl.BLEND);
-                            gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                            //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                            gl.blendEquation(gl.FUNC_ADD);
                             gl.blendFunc(gl.ONE_MINUS_DST_ALPHA, gl.ONE);
                         }
                         else {
                             gl.enable(gl.BLEND);
-                            gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                            //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                            gl.blendEquation(gl.FUNC_ADD);
                             gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
                         }
                         gl.drawArrays(gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
@@ -976,7 +979,8 @@ var Application;
                         gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffer);
                         gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
                         gl.enable(gl.BLEND);
-                        gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                        //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                        gl.blendEquation(gl.FUNC_ADD);
                         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
                         gl.drawArrays(gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
                     }
@@ -993,7 +997,8 @@ var Application;
                     gl.activeTexture(gl.TEXTURE0);
                     gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
                     gl.enable(gl.BLEND);
-                    gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                    //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                    gl.blendEquation(gl.FUNC_ADD);
                     gl.blendFunc(gl.ONE_MINUS_DST_ALPHA, gl.ONE);
                     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
                     gl.viewport(0, 0, canvas.width, canvas.height);

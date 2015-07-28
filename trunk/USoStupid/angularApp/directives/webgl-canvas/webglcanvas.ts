@@ -915,7 +915,9 @@ module Application.Directives {
         }
 
         private initCanvas(canvas: any): void {
-            var gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
+            var glCanvas: webgl.HTMLCanvasElement = canvas;
+            var gl: webgl.WebGLRenderingContext = glCanvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
+
             gl.getExtension('OES_texture_float');
             gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
@@ -1373,11 +1375,13 @@ module Application.Directives {
 
                     if (!flipped) {
                         gl.enable(gl.BLEND);
-                        gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                        //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                        gl.blendEquation(gl.FUNC_ADD);
                         gl.blendFunc(gl.ONE_MINUS_DST_ALPHA, gl.ONE);
                     } else {
                         gl.enable(gl.BLEND);
-                        gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                        //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                        gl.blendEquation(gl.FUNC_ADD);
                         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
                     }
 
@@ -1408,7 +1412,8 @@ module Application.Directives {
                     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
                     gl.enable(gl.BLEND);
-                    gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                    //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                    gl.blendEquation(gl.FUNC_ADD);
                     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
                     gl.drawArrays(gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
@@ -1433,7 +1438,8 @@ module Application.Directives {
                 gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
 
                 gl.enable(gl.BLEND);
-                gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
+                gl.blendEquation(gl.FUNC_ADD);
                 gl.blendFunc(gl.ONE_MINUS_DST_ALPHA, gl.ONE);
 
                 gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -1483,7 +1489,7 @@ module Application.Directives {
             return true;
         }
         
-        private buildProgramWrapper (gl, vertexShader, fragmentShader, attributeLocations) : any {
+        private buildProgramWrapper(gl, vertexShader, fragmentShader, attributeLocations) : any {
             var programWrapper = { program: null, uniformLocations: null};
 
             var program = gl.createProgram();
@@ -1683,7 +1689,10 @@ module Application.Directives {
 
 
 
-    //angular.module('USoStupidApp').directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.$inject);
    
+    //var myapp: ng.IModule = angular.module('USoStupidApp', ['ngRoute', 'ngResource', 'ngAnimate']);
+    //myapp.directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.prototype.injection());
 
+    ////angular.module('USoStupidApp').directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.$inject);
+   
 }
