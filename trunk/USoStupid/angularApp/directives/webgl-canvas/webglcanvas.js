@@ -659,9 +659,9 @@ var Application;
                 this.particleCount = this.particleCountWidth * this.particleCountHeight;
             };
             FlowController.prototype.initCanvas = function (canvas) {
-                var gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
-                gl.getExtension('OES_texture_float');
-                gl.clearColor(0.0, 0.0, 0.0, 0.0);
+                this.gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
+                this.gl.getExtension('OES_texture_float');
+                this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
                 var __this = this;
                 var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
                 var randomNumbers = [];
@@ -680,7 +680,7 @@ var Application;
                     var width = this.QUALITY_LEVELS[i].resolution[0];
                     var height = this.QUALITY_LEVELS[i].resolution[1];
                     var count = width * height;
-                    particleVertexBuffers[i] = gl.createBuffer();
+                    particleVertexBuffers[i] = this.gl.createBuffer();
                     var particleTextureCoordinates = new Float32Array(width * height * 2);
                     for (var y = 0; y < height; ++y) {
                         for (var x = 0; x < width; ++x) {
@@ -688,8 +688,8 @@ var Application;
                             particleTextureCoordinates[(y * width + x) * 2 + 1] = (y + 0.5) / height;
                         }
                     }
-                    gl.bindBuffer(gl.ARRAY_BUFFER, particleVertexBuffers[i]);
-                    gl.bufferData(gl.ARRAY_BUFFER, particleTextureCoordinates, gl.STATIC_DRAW);
+                    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, particleVertexBuffers[i]);
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, particleTextureCoordinates, this.gl.STATIC_DRAW);
                     //delete particleTextureCoordinates;
                     var spawnData = new Float32Array(count * 4);
                     for (var j = 0; j < count; ++j) {
@@ -703,7 +703,7 @@ var Application;
                         spawnData[j * 4 + 2] = positionZ;
                         spawnData[j * 4 + 3] = lifetime;
                     }
-                    spawnTextures[i] = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, width, height, spawnData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+                    spawnTextures[i] = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, width, height, spawnData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                     spawnData.length = 0; //delete spawnData;
                 }
                 var offsetData = new Float32Array(maxParticleCount * 4);
@@ -717,12 +717,12 @@ var Application;
                     offsetData[i * 4 + 2] = positionZ;
                     offsetData[i * 4 + 3] = 0.0;
                 }
-                this.pso.offsetTexture = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+                this.pso.offsetTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                 randomNumbers.length = 0; //delete randomNumbers;
                 randomSpherePoints.length = 0; //delete randomSpherePoints;
                 offsetData.length = 0; //delete offsetData;
-                this.pso.particleTextureA = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
-                this.pso.particleTextureB = this.buildTexture(gl, 0, gl.RGBA, gl.FLOAT, 1, 1, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.NEAREST, gl.NEAREST);
+                this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
+                this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                 var camera = new Camera(canvas, this.mathUtils);
                 this.pso.projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
                 this.pso.lightViewMatrix = new Float32Array(16);
@@ -730,35 +730,35 @@ var Application;
                 this.pso.lightProjectionMatrix = this.makeOrthographicMatrix(new Float32Array(16), this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
                 this.pso.lightViewProjectionMatrix = new Float32Array(16);
                 this.mathUtils.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
-                this.pso.resampleFramebuffer = gl.createFramebuffer();
+                this.pso.resampleFramebuffer = this.gl.createFramebuffer();
                 this.changeQualityLevel(0);
                 //variables used for sorting
                 this.pso.totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
                 this.pso.sortStepsLeft = this.pso.totalSortSteps;
                 this.pso.sortPass = -1;
                 this.pso.sortStage = -1;
-                this.pso.opacityTexture = this.buildTexture(gl, 0, gl.RGBA, gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.LINEAR, gl.LINEAR); //opacity from the light's point of view
-                this.pso.simulationFramebuffer = gl.createFramebuffer();
-                this.pso.sortFramebuffer = gl.createFramebuffer();
-                this.pso.opacityFramebuffer = this.buildFramebuffer(gl, this.pso.opacityTexture);
-                this.pso.simulationProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                this.pso.renderingProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.RENDERING_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.RENDERING_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
-                this.pso.opacityProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.OPACITY_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.OPACITY_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
-                this.pso.sortProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.SORT_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.SORT_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                this.pso.resampleProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.RESAMPLE_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.RESAMPLE_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                this.pso.floorProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.FLOOR_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.FLOOR_FRAGMENT_SHADER_SOURCE), { 'a_vertexPosition': 0 });
-                this.pso.backgroundProgramWrapper = this.buildProgramWrapper(gl, this.buildShader(gl, gl.VERTEX_SHADER, this.shaderLib.BACKGROUND_VERTEX_SHADER_SOURCE), this.buildShader(gl, gl.FRAGMENT_SHADER, this.shaderLib.BACKGROUND_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                this.pso.fullscreenVertexBuffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), gl.STATIC_DRAW);
-                var floorVertexBuffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, floorVertexBuffer);
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                this.pso.opacityTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.LINEAR, this.gl.LINEAR); //opacity from the light's point of view
+                this.pso.simulationFramebuffer = this.gl.createFramebuffer();
+                this.pso.sortFramebuffer = this.gl.createFramebuffer();
+                this.pso.opacityFramebuffer = this.buildFramebuffer(this.gl, this.pso.opacityTexture);
+                this.pso.simulationProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                this.pso.renderingProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.RENDERING_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.RENDERING_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
+                this.pso.opacityProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.OPACITY_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.OPACITY_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
+                this.pso.sortProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SORT_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SORT_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                this.pso.resampleProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.RESAMPLE_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.RESAMPLE_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                this.pso.floorProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.FLOOR_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.FLOOR_FRAGMENT_SHADER_SOURCE), { 'a_vertexPosition': 0 });
+                this.pso.backgroundProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.BACKGROUND_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.BACKGROUND_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                this.pso.fullscreenVertexBuffer = this.gl.createBuffer();
+                this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
+                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), this.gl.STATIC_DRAW);
+                var floorVertexBuffer = this.gl.createBuffer();
+                this.gl.bindBuffer(this.gl.ARRAY_BUFFER, floorVertexBuffer);
+                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([
                     this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
                     this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
                     this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
                     this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
-                ]), gl.STATIC_DRAW);
+                ]), this.gl.STATIC_DRAW);
                 var onresize = function () {
                     var aspectRatio = window.innerWidth / window.innerHeight;
                     __this.mathUtils.makePerspectiveMatrix(__this.pso.projectionMatrix, __this.PROJECTION_FOV, aspectRatio, __this.PROJECTION_NEAR, __this.PROJECTION_FAR);
@@ -798,39 +798,39 @@ var Application;
                                 particleData[i * 4 + 2] = positionZ;
                                 particleData[i * 4 + 3] = Math.random() * __this.BASE_LIFETIME;
                             }
-                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
-                            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, particleData);
+                            __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
+                            __this.gl.texImage2D(__this.gl.TEXTURE_2D, 0, __this.gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, __this.gl.RGBA, __this.gl.FLOAT, particleData);
                             particleData.length = 0; //delete particleData;
-                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureB);
-                            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
+                            __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureB);
+                            __this.gl.texImage2D(__this.gl.TEXTURE_2D, 0, __this.gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, __this.gl.RGBA, __this.gl.FLOAT, null);
                         }
                         else {
                             //resample from A into B
-                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureB);
-                            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
-                            gl.enableVertexAttribArray(0);
-                            gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
-                            gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-                            gl.enableVertexAttribArray(0);
-                            gl.useProgram(__this.pso.resampleProgramWrapper.program);
-                            gl.uniform1i(__this.pso.resampleProgramWrapper.uniformLocations['u_particleTexture'], 0);
-                            gl.uniform1i(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
+                            __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureB);
+                            __this.gl.texImage2D(__this.gl.TEXTURE_2D, 0, __this.gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, __this.gl.RGBA, __this.gl.FLOAT, null);
+                            __this.gl.enableVertexAttribArray(0);
+                            __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
+                            __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
+                            __this.gl.enableVertexAttribArray(0);
+                            __this.gl.useProgram(__this.pso.resampleProgramWrapper.program);
+                            __this.gl.uniform1i(__this.pso.resampleProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                            __this.gl.uniform1i(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
                             if (__this.particleCount > __this.oldParticleCountWidth * __this.oldParticleCountHeight) {
-                                gl.uniform1f(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], __this.oldParticleDiameter);
+                                __this.gl.uniform1f(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], __this.oldParticleDiameter);
                             }
                             else {
-                                gl.uniform1f(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
+                                __this.gl.uniform1f(__this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
                             }
-                            gl.activeTexture(gl.TEXTURE0);
-                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
-                            gl.activeTexture(gl.TEXTURE1);
-                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.offsetTexture);
-                            gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.resampleFramebuffer);
-                            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
-                            gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
-                            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-                            gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
-                            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, gl.RGBA, gl.FLOAT, null);
+                            __this.gl.activeTexture(__this.gl.TEXTURE0);
+                            __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
+                            __this.gl.activeTexture(__this.gl.TEXTURE1);
+                            __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.offsetTexture);
+                            __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.resampleFramebuffer);
+                            __this.gl.framebufferTexture2D(__this.gl.FRAMEBUFFER, __this.gl.COLOR_ATTACHMENT0, __this.gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
+                            __this.gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
+                            __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
+                            __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
+                            __this.gl.texImage2D(__this.gl.TEXTURE_2D, 0, __this.gl.RGBA, __this.particleCountWidth, __this.particleCountHeight, 0, __this.gl.RGBA, __this.gl.FLOAT, null);
                             var temp = __this.pso.particleTextureA;
                             __this.pso.particleTextureA = __this.pso.particleTextureB;
                             __this.pso.particleTextureB = temp;
@@ -863,44 +863,44 @@ var Application;
                         }
                         flipped = true;
                     }
-                    gl.disable(gl.DEPTH_TEST);
-                    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-                    gl.viewport(0, 0, canvas.width, canvas.height);
-                    gl.clearColor(0.0, 0.0, 0.0, 0.0);
-                    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+                    __this.gl.disable(__this.gl.DEPTH_TEST);
+                    __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, null);
+                    __this.gl.viewport(0, 0, canvas.width, canvas.height);
+                    __this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
+                    __this.gl.clear(__this.gl.COLOR_BUFFER_BIT | __this.gl.DEPTH_BUFFER_BIT);
                     for (var i = 0; i < (firstFrame ? __this.BASE_LIFETIME / __this.PRESIMULATION_DELTA_TIME : 1); ++i) {
-                        gl.enableVertexAttribArray(0);
-                        gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
-                        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-                        gl.useProgram(__this.pso.simulationProgramWrapper.program);
-                        gl.uniform2f(__this.pso.simulationProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
-                        gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_deltaTime'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : deltaTime * __this.timeScale);
-                        gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_time'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : currentTime);
-                        gl.uniform1i(__this.pso.simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
-                        gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_persistence'], __this.persistence);
-                        gl.uniform1i(__this.pso.simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
-                        gl.disable(gl.BLEND);
-                        gl.activeTexture(gl.TEXTURE1);
-                        gl.bindTexture(gl.TEXTURE_2D, spawnTexture);
+                        __this.gl.enableVertexAttribArray(0);
+                        __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
+                        __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
+                        __this.gl.useProgram(__this.pso.simulationProgramWrapper.program);
+                        __this.gl.uniform2f(__this.pso.simulationProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
+                        __this.gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_deltaTime'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : deltaTime * __this.timeScale);
+                        __this.gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_time'], firstFrame ? __this.PRESIMULATION_DELTA_TIME : currentTime);
+                        __this.gl.uniform1i(__this.pso.simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                        __this.gl.uniform1f(__this.pso.simulationProgramWrapper.uniformLocations['u_persistence'], __this.persistence);
+                        __this.gl.uniform1i(__this.pso.simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
+                        __this.gl.disable(__this.gl.BLEND);
+                        __this.gl.activeTexture(__this.gl.TEXTURE1);
+                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, spawnTexture);
                         //render from A -> B
-                        gl.activeTexture(gl.TEXTURE0);
-                        gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
-                        gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.simulationFramebuffer);
-                        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
+                        __this.gl.activeTexture(__this.gl.TEXTURE0);
+                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
+                        __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.simulationFramebuffer);
+                        __this.gl.framebufferTexture2D(__this.gl.FRAMEBUFFER, __this.gl.COLOR_ATTACHMENT0, __this.gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
                         //swap A and B
                         var temp = __this.pso.particleTextureA;
                         __this.pso.particleTextureA = __this.pso.particleTextureB;
                         __this.pso.particleTextureB = temp;
-                        gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
-                        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                        __this.gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
+                        __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
                         if (firstFrame)
-                            gl.flush();
+                            __this.gl.flush();
                     }
                     firstFrame = false;
-                    gl.disable(gl.BLEND);
-                    gl.enableVertexAttribArray(0);
-                    gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
-                    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+                    __this.gl.disable(__this.gl.BLEND);
+                    __this.gl.enableVertexAttribArray(0);
+                    __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
+                    __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
                     if (flippedThisFrame) {
                         __this.pso.sortPass = -1;
                         __this.pso.sortStage = -1;
@@ -912,18 +912,18 @@ var Application;
                             __this.pso.sortStage++;
                             __this.pso.sortPass = __this.pso.sortStage;
                         }
-                        gl.useProgram(__this.pso.sortProgramWrapper.program);
-                        gl.uniform1i(__this.pso.sortProgramWrapper.uniformLocations['u_dataTexture'], 0);
-                        gl.uniform2f(__this.pso.sortProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
-                        gl.uniform1f(__this.pso.sortProgramWrapper.uniformLocations['pass'], 1 << __this.pso.sortPass);
-                        gl.uniform1f(__this.pso.sortProgramWrapper.uniformLocations['stage'], 1 << __this.pso.sortStage);
-                        gl.uniform3fv(__this.pso.sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
-                        gl.activeTexture(gl.TEXTURE0);
-                        gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
-                        gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.sortFramebuffer);
-                        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
-                        gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
-                        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                        __this.gl.useProgram(__this.pso.sortProgramWrapper.program);
+                        __this.gl.uniform1i(__this.pso.sortProgramWrapper.uniformLocations['u_dataTexture'], 0);
+                        __this.gl.uniform2f(__this.pso.sortProgramWrapper.uniformLocations['u_resolution'], __this.particleCountWidth, __this.particleCountHeight);
+                        __this.gl.uniform1f(__this.pso.sortProgramWrapper.uniformLocations['pass'], 1 << __this.pso.sortPass);
+                        __this.gl.uniform1f(__this.pso.sortProgramWrapper.uniformLocations['stage'], 1 << __this.pso.sortStage);
+                        __this.gl.uniform3fv(__this.pso.sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
+                        __this.gl.activeTexture(__this.gl.TEXTURE0);
+                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
+                        __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.sortFramebuffer);
+                        __this.gl.framebufferTexture2D(__this.gl.FRAMEBUFFER, __this.gl.COLOR_ATTACHMENT0, __this.gl.TEXTURE_2D, __this.pso.particleTextureB, 0);
+                        __this.gl.viewport(0, 0, __this.particleCountWidth, __this.particleCountHeight);
+                        __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
                         var temp = __this.pso.particleTextureA;
                         __this.pso.particleTextureA = __this.pso.particleTextureB;
                         __this.pso.particleTextureB = temp;
@@ -934,89 +934,89 @@ var Application;
                             __this.pso.sortStage = -1;
                         }
                     }
-                    gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.opacityFramebuffer);
-                    gl.clearColor(0.0, 0.0, 0.0, 0.0);
-                    gl.clear(gl.COLOR_BUFFER_BIT);
+                    __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.opacityFramebuffer);
+                    __this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
+                    __this.gl.clear(__this.gl.COLOR_BUFFER_BIT);
                     for (var i = 0; i < __this.SLICES; ++i) {
                         //render particles
-                        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-                        gl.viewport(0, 0, canvas.width, canvas.height);
-                        gl.useProgram(__this.pso.renderingProgramWrapper.program);
-                        gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_particleTexture'], 0);
-                        gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
-                        gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
-                        gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, __this.pso.projectionMatrix);
-                        gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, __this.pso.lightViewProjectionMatrix);
-                        gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
-                        gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
-                        gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
+                        __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, null);
+                        __this.gl.viewport(0, 0, canvas.width, canvas.height);
+                        __this.gl.useProgram(__this.pso.renderingProgramWrapper.program);
+                        __this.gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                        __this.gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
+                        __this.gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
+                        __this.gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, __this.pso.projectionMatrix);
+                        __this.gl.uniformMatrix4fv(__this.pso.renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, __this.pso.lightViewProjectionMatrix);
+                        __this.gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
+                        __this.gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], canvas.width);
+                        __this.gl.uniform1f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
                         var colorRGB = __this.hsvToRGB(__this.hue, __this.shaderLib.PARTICLE_SATURATION, __this.shaderLib.PARTICLE_VALUE);
-                        gl.uniform3f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
-                        gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);
-                        gl.activeTexture(gl.TEXTURE0);
-                        gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
-                        gl.activeTexture(gl.TEXTURE1);
-                        gl.bindTexture(gl.TEXTURE_2D, __this.pso.opacityTexture);
-                        gl.enableVertexAttribArray(0);
-                        gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
-                        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+                        __this.gl.uniform3f(__this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
+                        __this.gl.uniform1i(__this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], flipped ? 1 : 0);
+                        __this.gl.activeTexture(__this.gl.TEXTURE0);
+                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
+                        __this.gl.activeTexture(__this.gl.TEXTURE1);
+                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.opacityTexture);
+                        __this.gl.enableVertexAttribArray(0);
+                        __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
+                        __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
                         if (!flipped) {
-                            gl.enable(gl.BLEND);
-                            //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
-                            gl.blendEquation(gl.FUNC_ADD);
-                            gl.blendFunc(gl.ONE_MINUS_DST_ALPHA, gl.ONE);
+                            __this.gl.enable(__this.gl.BLEND);
+                            //__this.gl.blendEquation(__this.gl.FUNC_ADD, __this.gl.FUNC_ADD);
+                            __this.gl.blendEquation(__this.gl.FUNC_ADD);
+                            __this.gl.blendFunc(__this.gl.ONE_MINUS_DST_ALPHA, __this.gl.ONE);
                         }
                         else {
-                            gl.enable(gl.BLEND);
-                            //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
-                            gl.blendEquation(gl.FUNC_ADD);
-                            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+                            __this.gl.enable(__this.gl.BLEND);
+                            //__this.gl.blendEquation(__this.gl.FUNC_ADD, __this.gl.FUNC_ADD);
+                            __this.gl.blendEquation(__this.gl.FUNC_ADD);
+                            __this.gl.blendFunc(__this.gl.ONE, __this.gl.ONE_MINUS_SRC_ALPHA);
                         }
-                        gl.drawArrays(gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
+                        __this.gl.drawArrays(__this.gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
                         //render to opacity texture
-                        gl.bindFramebuffer(gl.FRAMEBUFFER, __this.pso.opacityFramebuffer);
-                        gl.viewport(0, 0, __this.OPACITY_TEXTURE_RESOLUTION, __this.OPACITY_TEXTURE_RESOLUTION);
-                        gl.useProgram(__this.pso.opacityProgramWrapper.program);
-                        gl.uniform1i(__this.pso.opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
-                        gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, __this.pso.lightViewMatrix);
-                        gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, __this.pso.lightProjectionMatrix);
-                        gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
-                        gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_screenWidth'], __this.OPACITY_TEXTURE_RESOLUTION);
-                        gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
-                        gl.activeTexture(gl.TEXTURE0);
-                        gl.bindTexture(gl.TEXTURE_2D, __this.pso.particleTextureA);
-                        gl.enableVertexAttribArray(0);
-                        gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
-                        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-                        gl.enable(gl.BLEND);
-                        //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
-                        gl.blendEquation(gl.FUNC_ADD);
-                        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-                        gl.drawArrays(gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
+                        __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, __this.pso.opacityFramebuffer);
+                        __this.gl.viewport(0, 0, __this.OPACITY_TEXTURE_RESOLUTION, __this.OPACITY_TEXTURE_RESOLUTION);
+                        __this.gl.useProgram(__this.pso.opacityProgramWrapper.program);
+                        __this.gl.uniform1i(__this.pso.opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
+                        __this.gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, __this.pso.lightViewMatrix);
+                        __this.gl.uniformMatrix4fv(__this.pso.opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, __this.pso.lightProjectionMatrix);
+                        __this.gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleDiameter'], __this.particleDiameter);
+                        __this.gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_screenWidth'], __this.OPACITY_TEXTURE_RESOLUTION);
+                        __this.gl.uniform1f(__this.pso.opacityProgramWrapper.uniformLocations['u_particleAlpha'], __this.particleAlpha);
+                        __this.gl.activeTexture(__this.gl.TEXTURE0);
+                        __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.particleTextureA);
+                        __this.gl.enableVertexAttribArray(0);
+                        __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.particleVertexBuffer);
+                        __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
+                        __this.gl.enable(__this.gl.BLEND);
+                        //__this.gl.blendEquation(__this.gl.FUNC_ADD, __this.gl.FUNC_ADD);
+                        __this.gl.blendEquation(__this.gl.FUNC_ADD);
+                        __this.gl.blendFunc(__this.gl.ONE, __this.gl.ONE_MINUS_SRC_ALPHA);
+                        __this.gl.drawArrays(__this.gl.POINTS, i * (__this.particleCount / __this.SLICES), __this.particleCount / __this.SLICES);
                     }
-                    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-                    gl.viewport(0, 0, canvas.width, canvas.height);
-                    gl.useProgram(__this.pso.floorProgramWrapper.program);
-                    gl.enableVertexAttribArray(0);
-                    gl.bindBuffer(gl.ARRAY_BUFFER, floorVertexBuffer);
-                    gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
-                    gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
-                    gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, __this.pso.projectionMatrix);
-                    gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, __this.pso.lightViewProjectionMatrix);
-                    gl.uniform1i(__this.pso.floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
-                    gl.activeTexture(gl.TEXTURE0);
-                    gl.bindTexture(gl.TEXTURE_2D, __this.pso.opacityTexture);
-                    gl.enable(gl.BLEND);
-                    //gl.blendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
-                    gl.blendEquation(gl.FUNC_ADD);
-                    gl.blendFunc(gl.ONE_MINUS_DST_ALPHA, gl.ONE);
-                    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-                    gl.viewport(0, 0, canvas.width, canvas.height);
-                    gl.enableVertexAttribArray(0);
-                    gl.bindBuffer(gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
-                    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-                    gl.useProgram(__this.pso.backgroundProgramWrapper.program);
-                    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                    __this.gl.bindFramebuffer(__this.gl.FRAMEBUFFER, null);
+                    __this.gl.viewport(0, 0, canvas.width, canvas.height);
+                    __this.gl.useProgram(__this.pso.floorProgramWrapper.program);
+                    __this.gl.enableVertexAttribArray(0);
+                    __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, floorVertexBuffer);
+                    __this.gl.vertexAttribPointer(0, 3, __this.gl.FLOAT, false, 0, 0);
+                    __this.gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_viewMatrix'], false, camera.getViewMatrix());
+                    __this.gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, __this.pso.projectionMatrix);
+                    __this.gl.uniformMatrix4fv(__this.pso.floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, __this.pso.lightViewProjectionMatrix);
+                    __this.gl.uniform1i(__this.pso.floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
+                    __this.gl.activeTexture(__this.gl.TEXTURE0);
+                    __this.gl.bindTexture(__this.gl.TEXTURE_2D, __this.pso.opacityTexture);
+                    __this.gl.enable(__this.gl.BLEND);
+                    //__this.gl.blendEquation(__this.gl.FUNC_ADD, __this.gl.FUNC_ADD);
+                    __this.gl.blendEquation(__this.gl.FUNC_ADD);
+                    __this.gl.blendFunc(__this.gl.ONE_MINUS_DST_ALPHA, __this.gl.ONE);
+                    __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
+                    __this.gl.viewport(0, 0, canvas.width, canvas.height);
+                    __this.gl.enableVertexAttribArray(0);
+                    __this.gl.bindBuffer(__this.gl.ARRAY_BUFFER, __this.pso.fullscreenVertexBuffer);
+                    __this.gl.vertexAttribPointer(0, 2, __this.gl.FLOAT, false, 0, 0);
+                    __this.gl.useProgram(__this.pso.backgroundProgramWrapper.program);
+                    __this.gl.drawArrays(__this.gl.TRIANGLE_STRIP, 0, 4);
                     requestAnimationFrame(render);
                 };
                 render(this.pso.lastTime);
