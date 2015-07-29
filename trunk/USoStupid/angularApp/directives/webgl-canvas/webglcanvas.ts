@@ -845,31 +845,31 @@ module Application.Directives {
                 diameter: 0.03,
                 alpha: 0.5
             },
-            {
-                resolution: [512, 256],
-                diameter: 0.025,
-                alpha: 0.4
-            },
-            {
-                resolution: [512, 512],
-                diameter: 0.02,
-                alpha: 0.3
-            },
-            {
-                resolution: [1024, 512],
-                diameter: 0.015,
-                alpha: 0.25
-            },
-            {
-                resolution: [1024, 1024],
-                diameter: 0.0125,
-                alpha: 0.2
-            },
-            {
-                resolution: [2048, 1024],
-                diameter: 0.01,
-                alpha: 0.2
-            },
+            //{
+            //    resolution: [512, 256],
+            //    diameter: 0.025,
+            //    alpha: 0.4
+            //},
+            //{
+            //    resolution: [512, 512],
+            //    diameter: 0.02,
+            //    alpha: 0.3
+            //},
+            //{
+            //    resolution: [1024, 512],
+            //    diameter: 0.015,
+            //    alpha: 0.25
+            //},
+            //{
+            //    resolution: [1024, 1024],
+            //    diameter: 0.0125,
+            //    alpha: 0.2
+            //},
+            //{
+            //    resolution: [2048, 1024],
+            //    diameter: 0.01,
+            //    alpha: 0.2
+            //},
         ];
 
         private OPACITY_TEXTURE_RESOLUTION: number = 1024;
@@ -991,10 +991,10 @@ module Application.Directives {
             this.gl.getExtension('OES_texture_float');
             this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
+            this.camera = new Camera(this.canvas, this.mathUtils);
             
             this.renderer.firstFrame = true;
             this.renderer.flipped = false;
-
             this.pso.lastTime = 0.0;
 
             this.initializeParticles();
@@ -1021,16 +1021,16 @@ module Application.Directives {
             var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
 
             var randomNumbers = [];
+            var randomSpherePoints = [];
+
             for (var i = 0; i < maxParticleCount; ++i) {
                 randomNumbers[i] = Math.random();
-            }
 
-            var randomSpherePoints = [];
-            for (var i = 0; i < maxParticleCount; ++i) {
                 var point = this.randomPointInSphere();
                 randomSpherePoints.push(point);
             }
 
+            
 
             this.particleVertexBuffers = []; //one for each quality level
             this.spawnTextures = []; //one for each quality level
@@ -1112,18 +1112,17 @@ module Application.Directives {
         }
         
         private loadResources(): void {
-
-
+            
             this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
             this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-
-            this.camera = new Camera(this.canvas, this.mathUtils);
-
+            
             this.pso.projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
 
             this.pso.lightViewMatrix = new Float32Array(16);
             this.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
-            this.pso.lightProjectionMatrix = this.makeOrthographicMatrix(new Float32Array(16), this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
+
+            this.pso.lightProjectionMatrix = new Float32Array(16);
+            this.makeOrthographicMatrix(this.pso.lightProjectionMatrix, this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
 
             this.pso.lightViewProjectionMatrix = new Float32Array(16);
             this.mathUtils.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
@@ -1212,9 +1211,7 @@ module Application.Directives {
             if (deltaTime > this.MAX_DELTA_TIME) {
                 deltaTime = 0;
             }
-
-
-
+            
             if (this.changingParticleCount) {
                 deltaTime = 0;
                 this.changingParticleCount = false;
@@ -1647,7 +1644,7 @@ module Application.Directives {
         
         
 
-        private makeOrthographicMatrix(matrix, left, right, bottom, top, near, far): any {
+        private makeOrthographicMatrix(matrix, left, right, bottom, top, near, far): void {
             matrix[0] = 2 / (right - left);
             matrix[1] = 0;
             matrix[2] = 0;
@@ -1664,8 +1661,6 @@ module Application.Directives {
             matrix[13] = -(top + bottom) / (top - bottom);
             matrix[14] = -(far + near) / (far - near);
             matrix[15] = 1;
-
-            return matrix;
         }
 
         private makeLookAtMatrix(matrix, eye, target, up) { //up is assumed to be normalized
