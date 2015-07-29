@@ -34,6 +34,15 @@ var Application;
             }
             return PipelineState;
         })();
+        var ParticleRenderer = (function () {
+            function ParticleRenderer() {
+            }
+            ParticleRenderer.prototype.Render = function () {
+                this.firstFrame = false;
+                this.flipped = false;
+            };
+            return ParticleRenderer;
+        })();
         var MathUtils = (function () {
             function MathUtils() {
             }
@@ -640,8 +649,7 @@ var Application;
                 this.particleDiameter = 0.0;
                 this.particleAlpha = 0.0;
                 this.changingParticleCount = false;
-                this.firstFrame = false;
-                this.flipped = false;
+                this.renderer = new ParticleRenderer();
                 this.pso = new PipelineState();
                 this.mathUtils = new MathUtils();
                 this.shaderLib = new ShaderLib(this.FLOOR_ORIGIN, this.PARTICLE_SATURATION, this.PARTICLE_VALUE);
@@ -665,8 +673,8 @@ var Application;
                 this.gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
                 this.gl.getExtension('OES_texture_float');
                 this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
-                this.firstFrame = true;
-                this.flipped = false;
+                this.renderer.firstFrame = true;
+                this.renderer.flipped = false;
                 this.pso.lastTime = 0.0;
                 this.initializeParticles();
                 this.loadResources();
@@ -856,10 +864,10 @@ var Application;
                         this.LIGHT_DIRECTION[2] + viewDirection[2],
                     ]);
                     this.normalizeVector(halfVector, halfVector);
-                    if (this.flipped) {
+                    if (this.renderer.flipped) {
                         flippedThisFrame = true;
                     }
-                    this.flipped = false;
+                    this.renderer.flipped = false;
                 }
                 else {
                     halfVector = new Float32Array([
@@ -868,24 +876,24 @@ var Application;
                         this.LIGHT_DIRECTION[2] - viewDirection[2],
                     ]);
                     this.normalizeVector(halfVector, halfVector);
-                    if (!this.flipped) {
+                    if (!this.renderer.flipped) {
                         flippedThisFrame = true;
                     }
-                    this.flipped = true;
+                    this.renderer.flipped = true;
                 }
                 this.gl.disable(this.gl.DEPTH_TEST);
                 this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
                 this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
                 this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
                 this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-                for (var i = 0; i < (this.firstFrame ? this.BASE_LIFETIME / this.PRESIMULATION_DELTA_TIME : 1); ++i) {
+                for (var i = 0; i < (this.renderer.firstFrame ? this.BASE_LIFETIME / this.PRESIMULATION_DELTA_TIME : 1); ++i) {
                     this.gl.enableVertexAttribArray(0);
                     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
                     this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
                     this.gl.useProgram(this.pso.simulationProgramWrapper.program);
                     this.gl.uniform2f(this.pso.simulationProgramWrapper.uniformLocations['u_resolution'], this.particleCountWidth, this.particleCountHeight);
-                    this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_deltaTime'], this.firstFrame ? this.PRESIMULATION_DELTA_TIME : deltaTime * this.timeScale);
-                    this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_time'], this.firstFrame ? this.PRESIMULATION_DELTA_TIME : currentTime);
+                    this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_deltaTime'], this.renderer.firstFrame ? this.PRESIMULATION_DELTA_TIME : deltaTime * this.timeScale);
+                    this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_time'], this.renderer.firstFrame ? this.PRESIMULATION_DELTA_TIME : currentTime);
                     this.gl.uniform1i(this.pso.simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
                     this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_persistence'], this.persistence);
                     this.gl.uniform1i(this.pso.simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
@@ -903,10 +911,10 @@ var Application;
                     this.pso.particleTextureB = temp;
                     this.gl.viewport(0, 0, this.particleCountWidth, this.particleCountHeight);
                     this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-                    if (this.firstFrame)
+                    if (this.renderer.firstFrame)
                         this.gl.flush();
                 }
-                this.firstFrame = false;
+                this.renderer.firstFrame = false;
                 this.gl.disable(this.gl.BLEND);
                 this.gl.enableVertexAttribArray(0);
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
@@ -962,7 +970,7 @@ var Application;
                     this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
                     var colorRGB = this.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
                     this.gl.uniform3f(this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
-                    this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.flipped ? 1 : 0);
+                    this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.renderer.flipped ? 1 : 0);
                     this.gl.activeTexture(this.gl.TEXTURE0);
                     this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
                     this.gl.activeTexture(this.gl.TEXTURE1);
@@ -970,7 +978,7 @@ var Application;
                     this.gl.enableVertexAttribArray(0);
                     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.particleVertexBuffer);
                     this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
-                    if (!this.flipped) {
+                    if (!this.renderer.flipped) {
                         this.gl.enable(this.gl.BLEND);
                         //this.gl.blendEquation(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
                         this.gl.blendEquation(this.gl.FUNC_ADD);
@@ -1197,13 +1205,6 @@ var Application;
                 this.persistence = newPersistence;
             };
             return FlowController;
-        })();
-        var Scene = (function () {
-            function Scene() {
-            }
-            Scene.prototype.Render = function () {
-            };
-            return Scene;
         })();
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
