@@ -5,6 +5,9 @@ var Application;
         //'use strict';
         var WebGLCanvasDirective = (function () {
             function WebGLCanvasDirective() {
+                var _this = this;
+                this.currentHue = 0;
+                this.hueStep = 0.01;
                 this.scope = {};
                 this.restrict = 'E';
                 this.replace = true;
@@ -14,9 +17,11 @@ var Application;
                     var renderCanvas = element.find("canvas[id='render']")[0];
                     if ($scope.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
                         $scope.initCanvas(renderCanvas);
-                        controller.setHue(0);
+                        _this.flowController = controller;
+                        controller.setHue(_this.currentHue);
                         controller.setTimeScale(controller.INITIAL_SPEED);
                         controller.setPersistence(controller.INITIAL_TURBULENCE);
+                        setInterval(_this.updateHueOverTime.bind(_this), 100);
                     }
                 };
             }
@@ -24,6 +29,12 @@ var Application;
                 return [
                     function () { return new WebGLCanvasDirective(); }
                 ];
+            };
+            WebGLCanvasDirective.prototype.updateHueOverTime = function () {
+                this.currentHue += this.hueStep;
+                if (this.currentHue > 1)
+                    this.currentHue = 0;
+                this.flowController.setHue(this.currentHue);
             };
             WebGLCanvasDirective.$inject = [function () { return new WebGLCanvasDirective(); }];
             return WebGLCanvasDirective;
@@ -676,6 +687,7 @@ var Application;
                 }
                 this.particleVertexBuffers = []; //one for each quality level
                 this.spawnTextures = []; //one for each quality level
+                //spawn texture
                 for (var i = 0; i < this.QUALITY_LEVELS.length; ++i) {
                     var width = this.QUALITY_LEVELS[i].resolution[0];
                     var height = this.QUALITY_LEVELS[i].resolution[1];
@@ -690,7 +702,7 @@ var Application;
                     }
                     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleVertexBuffers[i]);
                     this.gl.bufferData(this.gl.ARRAY_BUFFER, particleTextureCoordinates, this.gl.STATIC_DRAW);
-                    //delete particleTextureCoordinates;
+                    particleTextureCoordinates.length = 0; //delete particleTextureCoordinates;
                     var spawnData = new Float32Array(count * 4);
                     for (var j = 0; j < count; ++j) {
                         var position = randomSpherePoints[j];
@@ -706,6 +718,7 @@ var Application;
                     this.spawnTextures[i] = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, width, height, spawnData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                     spawnData.length = 0; //delete spawnData;
                 }
+                //offset texture
                 var offsetData = new Float32Array(maxParticleCount * 4);
                 for (var i = 0; i < maxParticleCount; ++i) {
                     var position = randomSpherePoints[i];
@@ -1181,4 +1194,3 @@ var Application;
         })();
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=webglcanvas.js.map

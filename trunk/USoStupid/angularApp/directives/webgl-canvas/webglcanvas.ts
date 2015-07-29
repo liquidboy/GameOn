@@ -16,6 +16,11 @@ module Application.Directives {
         public restrict: string;
         public replace: boolean;
         public controller: any;
+        public flowController: FlowController;
+
+        private currentHue: number = 0;
+        private hueStep: number = 0.01;
+
         public scope: any = {
 
         };
@@ -35,14 +40,24 @@ module Application.Directives {
                 if ($scope.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
                     $scope.initCanvas(renderCanvas);
 
-                    controller.setHue(0);
+                    this.flowController = controller;
+
+                    controller.setHue(this.currentHue);
                     controller.setTimeScale(controller.INITIAL_SPEED);
                     controller.setPersistence(controller.INITIAL_TURBULENCE);
+                    
+                    setInterval(this.updateHueOverTime.bind(this), 100);
 
                 }
 
             }
 
+        }
+
+        updateHueOverTime() {
+            this.currentHue += this.hueStep;
+            if (this.currentHue > 1) this.currentHue = 0;
+            this.flowController.setHue(this.currentHue);
         }
 
         
@@ -1035,7 +1050,7 @@ module Application.Directives {
             this.particleVertexBuffers = []; //one for each quality level
             this.spawnTextures = []; //one for each quality level
 
-
+            //spawn texture
             for (var i = 0; i < this.QUALITY_LEVELS.length; ++i) {
                 var width = this.QUALITY_LEVELS[i].resolution[0];
                 var height = this.QUALITY_LEVELS[i].resolution[1];
@@ -1055,7 +1070,7 @@ module Application.Directives {
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleVertexBuffers[i]);
                 this.gl.bufferData(this.gl.ARRAY_BUFFER, particleTextureCoordinates, this.gl.STATIC_DRAW);
 
-                //delete particleTextureCoordinates;
+                particleTextureCoordinates.length = 0; //delete particleTextureCoordinates;
 
                 var spawnData = new Float32Array(count * 4);
                 for (var j = 0; j < count; ++j) {
@@ -1077,6 +1092,7 @@ module Application.Directives {
                 spawnData.length = 0; //delete spawnData;
             }
 
+            //offset texture
             var offsetData = new Float32Array(maxParticleCount * 4);
             for (var i = 0; i < maxParticleCount; ++i) {
                 var position = randomSpherePoints[i];
@@ -1091,18 +1107,7 @@ module Application.Directives {
                 offsetData[i * 4 + 3] = 0.0;
             }
 
-            this.pso.offsetTexture = this.buildTexture(
-                this.gl,
-                0,
-                this.gl.RGBA,
-                this.gl.FLOAT,
-                this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0],
-                this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1],
-                offsetData,
-                this.gl.CLAMP_TO_EDGE,
-                this.gl.CLAMP_TO_EDGE,
-                this.gl.NEAREST,
-                this.gl.NEAREST);
+            this.pso.offsetTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
 
 
             randomNumbers.length = 0; //delete randomNumbers;
