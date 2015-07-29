@@ -18,9 +18,9 @@ var Application;
                     if ($scope.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
                         $scope.initCanvas(renderCanvas);
                         _this.flowController = controller;
-                        controller.setHue(_this.currentHue);
-                        controller.setTimeScale(controller.INITIAL_SPEED);
-                        controller.setPersistence(controller.INITIAL_TURBULENCE);
+                        controller.hue = _this.currentHue;
+                        controller.timeScale = controller.INITIAL_SPEED;
+                        controller.persistence = controller.INITIAL_TURBULENCE;
                         setInterval(_this.updateHueOverTime.bind(_this), 100);
                     }
                 };
@@ -34,7 +34,7 @@ var Application;
                 this.currentHue += this.hueStep;
                 if (this.currentHue > 1)
                     this.currentHue = 0;
-                this.flowController.setHue(this.currentHue);
+                this.flowController.hue = this.currentHue;
             };
             WebGLCanvasDirective.$inject = [function () { return new WebGLCanvasDirective(); }];
             return WebGLCanvasDirective;
@@ -597,15 +597,10 @@ var Application;
                 this.MAX_DELTA_TIME = 0.2;
                 this.PRESIMULATION_DELTA_TIME = 0.1;
                 this.QUALITY_LEVELS = [
-                    //{
-                    //    resolution: [256, 256],
-                    //    diameter: 0.03,
-                    //    alpha: 0.5
-                    //},
                     {
-                        resolution: [512, 256],
-                        diameter: 0.025,
-                        alpha: 0.4
+                        resolution: [256, 256],
+                        diameter: 0.03,
+                        alpha: 0.5
                     },
                 ];
                 this.OPACITY_TEXTURE_RESOLUTION = 1024;
@@ -695,7 +690,7 @@ var Application;
                 var randomSpherePoints = [];
                 for (var i = 0; i < maxParticleCount; ++i) {
                     randomNumbers[i] = Math.random();
-                    var point = this.randomPointInSphere();
+                    var point = GraphicsLib.randomPointInSphere();
                     randomSpherePoints.push(point);
                 }
                 this.particleVertexBuffers = []; //one for each quality level
@@ -753,15 +748,15 @@ var Application;
                 this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                 this.pso.projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
                 this.pso.lightViewMatrix = new Float32Array(16);
-                this.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
+                GraphicsLib.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
                 this.pso.lightProjectionMatrix = new Float32Array(16);
-                this.makeOrthographicMatrix(this.pso.lightProjectionMatrix, this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
+                GraphicsLib.makeOrthographicMatrix(this.pso.lightProjectionMatrix, this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
                 this.pso.lightViewProjectionMatrix = new Float32Array(16);
                 this.mathUtils.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
                 this.pso.resampleFramebuffer = this.gl.createFramebuffer();
                 this.changeQualityLevel(0);
                 //variables used for sorting
-                this.pso.totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
+                this.pso.totalSortSteps = (GraphicsLib.log2(this.particleCount) * (GraphicsLib.log2(this.particleCount) + 1)) / 2;
                 this.pso.sortStepsLeft = this.pso.totalSortSteps;
                 this.pso.sortPass = -1;
                 this.pso.sortStage = -1;
@@ -800,14 +795,14 @@ var Application;
                     this.pso.particleVertexBuffer = this.particleVertexBuffers[this.qualityLevel];
                     this.spawnTexture = this.spawnTextures[this.qualityLevel];
                     //reset sort
-                    this.pso.totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
+                    this.pso.totalSortSteps = (GraphicsLib.log2(this.particleCount) * (GraphicsLib.log2(this.particleCount) + 1)) / 2;
                     this.pso.sortStepsLeft = this.pso.totalSortSteps;
                     this.pso.sortPass = -1;
                     this.pso.sortStage = -1;
                     if (this.oldParticleCountHeight === 0 && this.oldParticleCountWidth === 0) {
                         var particleData = new Float32Array(this.particleCount * 4);
                         for (var i = 0; i < this.particleCount; ++i) {
-                            var position = this.randomPointInSphere();
+                            var position = GraphicsLib.randomPointInSphere();
                             var positionX = position[0] * this.SPAWN_RADIUS;
                             var positionY = position[1] * this.SPAWN_RADIUS;
                             var positionZ = position[2] * this.SPAWN_RADIUS;
@@ -857,13 +852,13 @@ var Application;
                 var flippedThisFrame = false; //if the order reversed this frame
                 var viewDirection = this.camera.getViewDirection();
                 var halfVector;
-                if (this.dotVectors(viewDirection, this.LIGHT_DIRECTION) > 0.0) {
+                if (GraphicsLib.dotVectors(viewDirection, this.LIGHT_DIRECTION) > 0.0) {
                     halfVector = new Float32Array([
                         this.LIGHT_DIRECTION[0] + viewDirection[0],
                         this.LIGHT_DIRECTION[1] + viewDirection[1],
                         this.LIGHT_DIRECTION[2] + viewDirection[2],
                     ]);
-                    this.normalizeVector(halfVector, halfVector);
+                    GraphicsLib.normalizeVector(halfVector, halfVector);
                     if (this.renderer.flipped) {
                         flippedThisFrame = true;
                     }
@@ -875,7 +870,7 @@ var Application;
                         this.LIGHT_DIRECTION[1] - viewDirection[1],
                         this.LIGHT_DIRECTION[2] - viewDirection[2],
                     ]);
-                    this.normalizeVector(halfVector, halfVector);
+                    GraphicsLib.normalizeVector(halfVector, halfVector);
                     if (!this.renderer.flipped) {
                         flippedThisFrame = true;
                     }
@@ -968,7 +963,7 @@ var Application;
                     this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], this.particleDiameter);
                     this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], this.canvas.width);
                     this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
-                    var colorRGB = this.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
+                    var colorRGB = GraphicsLib.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
                     this.gl.uniform3f(this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
                     this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.renderer.flipped ? 1 : 0);
                     this.gl.activeTexture(this.gl.TEXTURE0);
@@ -1099,16 +1094,21 @@ var Application;
                 gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, attachment, 0);
                 return framebuffer;
             };
-            FlowController.prototype.normalizeVector = function (out, v) {
+            return FlowController;
+        })();
+        var GraphicsLib = (function () {
+            function GraphicsLib() {
+            }
+            GraphicsLib.normalizeVector = function (out, v) {
                 var inverseMagnitude = 1.0 / Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
                 out[0] = v[0] * inverseMagnitude;
                 out[1] = v[1] * inverseMagnitude;
                 out[2] = v[2] * inverseMagnitude;
             };
-            FlowController.prototype.dotVectors = function (a, b) {
+            GraphicsLib.dotVectors = function (a, b) {
                 return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
             };
-            FlowController.prototype.makeOrthographicMatrix = function (matrix, left, right, bottom, top, near, far) {
+            GraphicsLib.makeOrthographicMatrix = function (matrix, left, right, bottom, top, near, far) {
                 matrix[0] = 2 / (right - left);
                 matrix[1] = 0;
                 matrix[2] = 0;
@@ -1126,7 +1126,7 @@ var Application;
                 matrix[14] = -(far + near) / (far - near);
                 matrix[15] = 1;
             };
-            FlowController.prototype.makeLookAtMatrix = function (matrix, eye, target, up) {
+            GraphicsLib.makeLookAtMatrix = function (matrix, eye, target, up) {
                 var forwardX = eye[0] - target[0], forwardY = eye[1] - target[1], forwardZ = eye[2] - target[2];
                 var forwardMagnitude = Math.sqrt(forwardX * forwardX + forwardY * forwardY + forwardZ * forwardZ);
                 forwardX /= forwardMagnitude;
@@ -1163,7 +1163,7 @@ var Application;
                 matrix[14] = -(forwardX * eye[0] + forwardY * eye[1] + forwardZ * eye[2]);
                 matrix[15] = 1;
             };
-            FlowController.prototype.randomPointInSphere = function () {
+            GraphicsLib.randomPointInSphere = function () {
                 var lambda = Math.random();
                 var u = Math.random() * 2.0 - 1.0;
                 var phi = Math.random() * 2.0 * Math.PI;
@@ -1173,10 +1173,10 @@ var Application;
                     Math.pow(lambda, 1 / 3) * u
                 ];
             };
-            FlowController.prototype.log2 = function (x) {
+            GraphicsLib.log2 = function (x) {
                 return Math.log(x) / Math.log(2);
             };
-            FlowController.prototype.hsvToRGB = function (h, s, v) {
+            GraphicsLib.hsvToRGB = function (h, s, v) {
                 h = h % 1;
                 var c = v * s;
                 var hDash = h * 6;
@@ -1191,19 +1191,10 @@ var Application;
                 b += m;
                 return [r, g, b];
             };
-            FlowController.prototype.rgbToString = function (color) {
+            GraphicsLib.rgbToString = function (color) {
                 return 'rgb(' + (color[0] * 255).toFixed(0) + ',' + (color[1] * 255).toFixed(0) + ',' + (color[2] * 255).toFixed(0) + ')';
             };
-            FlowController.prototype.setHue = function (newHue) {
-                this.hue = newHue;
-            };
-            FlowController.prototype.setTimeScale = function (newTimeScale) {
-                this.timeScale = newTimeScale;
-            };
-            FlowController.prototype.setPersistence = function (newPersistence) {
-                this.persistence = newPersistence;
-            };
-            return FlowController;
+            return GraphicsLib;
         })();
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));

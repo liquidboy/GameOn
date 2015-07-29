@@ -42,9 +42,9 @@ module Application.Directives {
 
                     this.flowController = controller;
 
-                    controller.setHue(this.currentHue);
-                    controller.setTimeScale(controller.INITIAL_SPEED);
-                    controller.setPersistence(controller.INITIAL_TURBULENCE);
+                    controller.hue = this.currentHue;
+                    controller.timeScale = controller.INITIAL_SPEED;
+                    controller.persistence = controller.INITIAL_TURBULENCE;
                     
                     setInterval(this.updateHueOverTime.bind(this), 100);
 
@@ -57,7 +57,7 @@ module Application.Directives {
         updateHueOverTime() {
             this.currentHue += this.hueStep;
             if (this.currentHue > 1) this.currentHue = 0;
-            this.flowController.setHue(this.currentHue);
+            this.flowController.hue = this.currentHue;
         }
 
         
@@ -869,16 +869,16 @@ module Application.Directives {
         private PRESIMULATION_DELTA_TIME: number = 0.1;
 
         private QUALITY_LEVELS = [
-            //{
-            //    resolution: [256, 256],
-            //    diameter: 0.03,
-            //    alpha: 0.5
-            //},
             {
-                resolution: [512, 256],
-                diameter: 0.025,
-                alpha: 0.4
+                resolution: [256, 256],
+                diameter: 0.03,
+                alpha: 0.5
             },
+            //{
+            //    resolution: [512, 256],
+            //    diameter: 0.025,
+            //    alpha: 0.4
+            //},
             //{
             //    resolution: [512, 512],
             //    diameter: 0.02,
@@ -944,9 +944,9 @@ module Application.Directives {
             alpha: true
         };
         
-        private hue : number = 0;
-        private timeScale: number = this.INITIAL_SPEED;
-        private persistence: number = this.INITIAL_TURBULENCE;
+        public hue : number = 0;
+        public timeScale: number = this.INITIAL_SPEED;
+        public persistence: number = this.INITIAL_TURBULENCE;
         private qualityLevel: any = -1;
         
         private particleCountWidth: number = 0;
@@ -1055,7 +1055,7 @@ module Application.Directives {
             for (var i = 0; i < maxParticleCount; ++i) {
                 randomNumbers[i] = Math.random();
 
-                var point = this.randomPointInSphere();
+                var point = GraphicsLib.randomPointInSphere();
                 randomSpherePoints.push(point);
             }
 
@@ -1138,10 +1138,10 @@ module Application.Directives {
             this.pso.projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
 
             this.pso.lightViewMatrix = new Float32Array(16);
-            this.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
+            GraphicsLib.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
 
             this.pso.lightProjectionMatrix = new Float32Array(16);
-            this.makeOrthographicMatrix(this.pso.lightProjectionMatrix, this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
+            GraphicsLib.makeOrthographicMatrix(this.pso.lightProjectionMatrix, this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
 
             this.pso.lightViewProjectionMatrix = new Float32Array(16);
             this.mathUtils.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
@@ -1152,7 +1152,7 @@ module Application.Directives {
             
 
             //variables used for sorting
-            this.pso.totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
+            this.pso.totalSortSteps = (GraphicsLib.log2(this.particleCount) * (GraphicsLib.log2(this.particleCount) + 1)) / 2;
             this.pso.sortStepsLeft = this.pso.totalSortSteps;
             this.pso.sortPass = -1;
             this.pso.sortStage = -1;
@@ -1221,8 +1221,7 @@ module Application.Directives {
                 this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
             ]), this.gl.STATIC_DRAW);
         }
-
-
+        
         private render(currentTime: number): void{
             var deltaTime = (currentTime - this.pso.lastTime) / 1000 || 0.0;
             this.pso.lastTime = currentTime;
@@ -1239,7 +1238,7 @@ module Application.Directives {
                 this.spawnTexture = this.spawnTextures[this.qualityLevel];
 
                 //reset sort
-                this.pso.totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
+                this.pso.totalSortSteps = (GraphicsLib.log2(this.particleCount) * (GraphicsLib.log2(this.particleCount) + 1)) / 2;
                 this.pso.sortStepsLeft = this.pso.totalSortSteps;
                 this.pso.sortPass = -1;
                 this.pso.sortStage = -1;
@@ -1248,7 +1247,7 @@ module Application.Directives {
                     var particleData = new Float32Array(this.particleCount * 4);
 
                     for (var i = 0; i < this.particleCount; ++i) {
-                        var position = this.randomPointInSphere();
+                        var position = GraphicsLib.randomPointInSphere();
 
                         var positionX = position[0] * this.SPAWN_RADIUS;
                         var positionY = position[1] * this.SPAWN_RADIUS;
@@ -1317,13 +1316,13 @@ module Application.Directives {
 
             var halfVector: Float32Array;
 
-            if (this.dotVectors(viewDirection, this.LIGHT_DIRECTION) > 0.0) {
+            if (GraphicsLib.dotVectors(viewDirection, this.LIGHT_DIRECTION) > 0.0) {
                 halfVector = new Float32Array([
                     this.LIGHT_DIRECTION[0] + viewDirection[0],
                     this.LIGHT_DIRECTION[1] + viewDirection[1],
                     this.LIGHT_DIRECTION[2] + viewDirection[2],
                 ]);
-                this.normalizeVector(halfVector, halfVector);
+                GraphicsLib.normalizeVector(halfVector, halfVector);
 
                 if (this.renderer.flipped) {
                     flippedThisFrame = true;
@@ -1338,7 +1337,7 @@ module Application.Directives {
                     this.LIGHT_DIRECTION[1] - viewDirection[1],
                     this.LIGHT_DIRECTION[2] - viewDirection[2],
                 ]);
-                this.normalizeVector(halfVector, halfVector);
+                GraphicsLib.normalizeVector(halfVector, halfVector);
 
                 if (!this.renderer.flipped) {
                     flippedThisFrame = true;
@@ -1472,7 +1471,7 @@ module Application.Directives {
 
                 this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
 
-                var colorRGB = this.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
+                var colorRGB = GraphicsLib.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
                 this.gl.uniform3f(this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
 
                 this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.renderer.flipped ? 1 : 0);
@@ -1650,20 +1649,26 @@ module Application.Directives {
             return framebuffer;
         }
         
-        private normalizeVector(out: Float32Array, v: Float32Array) {
+        
+
+    }
+
+    class GraphicsLib {
+
+        public static normalizeVector(out: Float32Array, v: Float32Array) {
             var inverseMagnitude = 1.0 / Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
             out[0] = v[0] * inverseMagnitude;
             out[1] = v[1] * inverseMagnitude;
             out[2] = v[2] * inverseMagnitude;
         }
 
-        private dotVectors(a, b) : any {
+        public static dotVectors(a, b): any {
             return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
         }
-        
-        
 
-        private makeOrthographicMatrix(matrix, left, right, bottom, top, near, far): void {
+
+
+        public static makeOrthographicMatrix(matrix, left, right, bottom, top, near, far): void {
             matrix[0] = 2 / (right - left);
             matrix[1] = 0;
             matrix[2] = 0;
@@ -1682,7 +1687,7 @@ module Application.Directives {
             matrix[15] = 1;
         }
 
-        private makeLookAtMatrix(matrix, eye, target, up) { //up is assumed to be normalized
+        public static makeLookAtMatrix(matrix, eye, target, up) { //up is assumed to be normalized
             var forwardX = eye[0] - target[0],
                 forwardY = eye[1] - target[1],
                 forwardZ = eye[2] - target[2];
@@ -1727,7 +1732,7 @@ module Application.Directives {
             matrix[15] = 1;
         }
 
-        private randomPointInSphere() {
+        public static randomPointInSphere() {
             var lambda = Math.random();
             var u = Math.random() * 2.0 - 1.0;
             var phi = Math.random() * 2.0 * Math.PI;
@@ -1738,13 +1743,13 @@ module Application.Directives {
                 Math.pow(lambda, 1 / 3) * u
             ];
         }
-        
-        private log2(x) : any{
+
+        public static log2(x): any {
             return Math.log(x) / Math.log(2);
         }
 
-        
-        private hsvToRGB(h, s, v) : any {
+
+        public static hsvToRGB(h, s, v): any {
             h = h % 1;
 
             var c = v * s;
@@ -1768,30 +1773,10 @@ module Application.Directives {
             return [r, g, b];
         }
 
-        private rgbToString(color) : any{
+        public static rgbToString(color): any {
             return 'rgb(' + (color[0] * 255).toFixed(0) + ',' + (color[1] * 255).toFixed(0) + ',' + (color[2] * 255).toFixed(0) + ')';
         }
-        
-        public setHue(newHue: number) {
-            this.hue = newHue;
-        }
-
-        public setTimeScale(newTimeScale: number) {
-            this.timeScale = newTimeScale;
-        }
-
-        public setPersistence(newPersistence: number) {
-            this.persistence = newPersistence;
-        }
-
-        
-
-
-
-
     }
-
-
 
    
     //var myapp: ng.IModule = angular.module('USoStupidApp', ['ngRoute', 'ngResource', 'ngAnimate']);
