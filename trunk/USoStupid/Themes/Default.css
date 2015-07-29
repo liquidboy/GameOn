@@ -6,8 +6,8 @@ body {
     background-color: #3b3b3b;
     color: white;
     font-family: Arial;
-    margin:0px;
-    padding:0px;
+    margin:0;
+    padding:0;
 
 }
 
@@ -21,9 +21,9 @@ body {
 
 
     .main-view .Absolute-Center-headphones {
-        width: 130px;
-        height: 150px;
-        overflow: auto;
+        width: 103px;
+        height: 100px;
+        overflow: hidden;
         margin: auto;
         position: absolute;
         top: 0;
@@ -31,15 +31,18 @@ body {
         bottom: 0;
         right: 0;
     }
-
+        .main-view .Absolute-Center-headphones img {
+            width:90%;
+            
+        }
     .main-view .Absolute-Center-onitsway {
-        width:200;
+        width:180px;
         text-align:center;
         height: 40px;
         overflow: auto;
         margin: auto;
         position: absolute;
-        top: 100px;
+        top: 130px;
         left: 0;
         bottom: 0;
         right: 0;

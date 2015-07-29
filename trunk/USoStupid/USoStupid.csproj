@@ -126,6 +126,7 @@
     <Content Include="angularApp\views\home\home.html" />
     <Content Include="angularApp\views\shared\Error.html" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
+    <Content Include="Content\windows-logo.png" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
     <Content Include="Scripts\angular-animate.js" />
@@ -995,7 +996,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51932</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
