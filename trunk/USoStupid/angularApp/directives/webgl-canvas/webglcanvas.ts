@@ -274,6 +274,9 @@ module Application.Directives {
         private MIN_ELEVATION: number = -0.1;
         private MAX_ELEVATION: number = Math.PI / 2.0;
 
+        private currentX: number = 0;
+        private recomputeViewMatrix: Function;
+
 
         constructor(element: any, mathUtils: MathUtils) {
            
@@ -285,7 +288,7 @@ module Application.Directives {
             var __this = this;
 
             
-            var recomputeViewMatrix = function () {
+            this.recomputeViewMatrix = function () {
                 var xRotationMatrix: Float32Array = new Float32Array(16),
                     yRotationMatrix: Float32Array = new Float32Array(16),
                     distanceTranslationMatrix = mathUtils.makeIdentityMatrix(new Float32Array(16)),
@@ -306,52 +309,63 @@ module Application.Directives {
                 mathUtils.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, distanceTranslationMatrix);
             };
 
-            element.addEventListener('mousedown', function (event) {
-                mouseDown = true;
-                lastMouseX = __this.getMousePosition(event, element).x;
-                lastMouseY = __this.getMousePosition(event, element).y;
-            });
 
-            document.addEventListener('mouseup', function (event) {
-                mouseDown = false;
-            });
+            //element.addEventListener('mousedown', function (event) {
+            //    mouseDown = true;
+            //    lastMouseX = __this.getMousePosition(event, element).x;
+            //    lastMouseY = __this.getMousePosition(event, element).y;
+            //});
 
-            element.addEventListener('mousemove', function (event) {
-                if (mouseDown) {
-                    var mouseX = __this.getMousePosition(event, element).x;
-                    var mouseY = __this.getMousePosition(event, element).y;
+            //document.addEventListener('mouseup', function (event) {
+            //    mouseDown = false;
+            //});
 
-                    var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
-                    var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
+            //element.addEventListener('mousemove', function (event) {
+            //    if (mouseDown) {
+            //        var mouseX = __this.getMousePosition(event, element).x;
+            //        var mouseY = __this.getMousePosition(event, element).y;
 
-                    __this.azimuth += deltaAzimuth;
-                    __this.elevation += deltaElevation;
+            //        var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
+            //        var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
 
-                    if (__this.elevation < __this.MIN_ELEVATION) {
-                        __this.elevation = __this.MIN_ELEVATION;
-                    } else if (__this.elevation > __this.MAX_ELEVATION) {
-                        __this.elevation = __this.MAX_ELEVATION;
-                    }
+            //        __this.azimuth += deltaAzimuth;
+            //        __this.elevation += deltaElevation;
 
-                    recomputeViewMatrix();
+            //        if (__this.elevation < __this.MIN_ELEVATION) {
+            //            __this.elevation = __this.MIN_ELEVATION;
+            //        } else if (__this.elevation > __this.MAX_ELEVATION) {
+            //            __this.elevation = __this.MAX_ELEVATION;
+            //        }
 
-                    lastMouseX = mouseX;
-                    lastMouseY = mouseY;
+            //        __this.recomputeViewMatrix();
 
-                    element.style.cursor = '-webkit-grabbing';
-                    element.style.cursor = '-moz-grabbing';
-                    element.style.cursor = 'grabbing';
-                } else {
-                    element.style.cursor = '-webkit-grab';
-                    element.style.cursor = '-moz-grab';
-                    element.style.cursor = 'grab';
-                }
-            });
+            //        lastMouseX = mouseX;
+            //        lastMouseY = mouseY;
 
-            recomputeViewMatrix();
+            //        element.style.cursor = '-webkit-grabbing';
+            //        element.style.cursor = '-moz-grabbing';
+            //        element.style.cursor = 'grabbing';
+            //    } else {
+            //        element.style.cursor = '-webkit-grab';
+            //        element.style.cursor = '-moz-grab';
+            //        element.style.cursor = 'grab';
+            //    }
+            //});
+
+            //setInterval(this.AutoMoveCamera.bind(this), 10);
+            this.azimuth = -300 * this.CAMERA_SENSITIVITY;
+
+            this.recomputeViewMatrix();
         }
 
+        private AutoMoveCamera() {
+            this.currentX += 0.1;
+            if (this.currentX > 600) this.currentX = 0;
 
+            this.azimuth = -this.currentX * this.CAMERA_SENSITIVITY;
+
+            this.recomputeViewMatrix();
+        }
 
         public getViewMatrix(): Float32Array {
             return this.viewMatrix;
@@ -855,16 +869,16 @@ module Application.Directives {
         private PRESIMULATION_DELTA_TIME: number = 0.1;
 
         private QUALITY_LEVELS = [
-            {
-                resolution: [256, 256],
-                diameter: 0.03,
-                alpha: 0.5
-            },
             //{
-            //    resolution: [512, 256],
-            //    diameter: 0.025,
-            //    alpha: 0.4
+            //    resolution: [256, 256],
+            //    diameter: 0.03,
+            //    alpha: 0.5
             //},
+            {
+                resolution: [512, 256],
+                diameter: 0.025,
+                alpha: 0.4
+            },
             //{
             //    resolution: [512, 512],
             //    diameter: 0.02,
@@ -916,7 +930,7 @@ module Application.Directives {
         private LIGHT_PROJECTION_NEAR: number = -50.0;
         private LIGHT_PROJECTION_FAR: number = 50.0;
 
-        private SPAWN_RADIUS: number = 0.1;
+        private SPAWN_RADIUS: number = 0.6;
         private BASE_LIFETIME: number = 10;
         private MAX_ADDITIONAL_LIFETIME: number = 5;
         private OFFSET_RADIUS: number = 0.5;

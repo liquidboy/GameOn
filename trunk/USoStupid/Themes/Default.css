@@ -32,11 +32,11 @@ body {
         right: 0;
     }
         .main-view .Absolute-Center-headphones img {
-            width:90%;
-            
+            width:95%;
+            opacity:0.7;
         }
     .main-view .Absolute-Center-onitsway {
-        width:180px;
+        width:185px;
         text-align:center;
         height: 40px;
         overflow: auto;
@@ -47,7 +47,48 @@ body {
         bottom: 0;
         right: 0;
         font-size:x-large;
+        display:none;
     }
+
+    .main-view .Absolute-Bottom-Left {
+        font-family: 'Arimo';
+        font-size:28px;
+        margin: auto;
+        position: absolute;
+        bottom:10px;
+        left:10px;
+    }
+
+    .main-view .Absolute-Bottom-Right {
+
+        font-family: 'Oswald';
+        margin: auto;
+        position: absolute;
+        bottom:10px;
+        right:10px;
+    }
+
+    .main-view .Absolute-Bottom-Center {
+        width:200px;
+        font-family: 'Arimo';
+        margin: auto;
+        color:white;
+        position: absolute;
+        bottom:5px;
+        left:0;
+        right:0;
+        font-size:10px;
+        opacity:0.2;
+    }
+
+        .main-view .Absolute-Bottom-Center a {
+            text-decoration:none;
+            color:white;
+        }
+
+            .main-view .Absolute-Bottom-Center a::selection {
+                color:white;
+            }
 
     .main-view .header-1 {
         font-family: 'Lobster', cursive;    

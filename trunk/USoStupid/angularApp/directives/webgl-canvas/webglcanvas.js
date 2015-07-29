@@ -180,10 +180,11 @@ var Application;
                 this.elevation = this.INITIAL_ELEVATION;
                 this.MIN_ELEVATION = -0.1;
                 this.MAX_ELEVATION = Math.PI / 2.0;
+                this.currentX = 0;
                 var lastMouseX = 0, lastMouseY = 0;
                 var mouseDown = false;
                 var __this = this;
-                var recomputeViewMatrix = function () {
+                this.recomputeViewMatrix = function () {
                     var xRotationMatrix = new Float32Array(16), yRotationMatrix = new Float32Array(16), distanceTranslationMatrix = mathUtils.makeIdentityMatrix(new Float32Array(16)), orbitTranslationMatrix = mathUtils.makeIdentityMatrix(new Float32Array(16));
                     mathUtils.makeIdentityMatrix(__this.viewMatrix);
                     mathUtils.makeXRotationMatrix(xRotationMatrix, __this.elevation);
@@ -197,43 +198,50 @@ var Application;
                     mathUtils.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, xRotationMatrix);
                     mathUtils.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, distanceTranslationMatrix);
                 };
-                element.addEventListener('mousedown', function (event) {
-                    mouseDown = true;
-                    lastMouseX = __this.getMousePosition(event, element).x;
-                    lastMouseY = __this.getMousePosition(event, element).y;
-                });
-                document.addEventListener('mouseup', function (event) {
-                    mouseDown = false;
-                });
-                element.addEventListener('mousemove', function (event) {
-                    if (mouseDown) {
-                        var mouseX = __this.getMousePosition(event, element).x;
-                        var mouseY = __this.getMousePosition(event, element).y;
-                        var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
-                        var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
-                        __this.azimuth += deltaAzimuth;
-                        __this.elevation += deltaElevation;
-                        if (__this.elevation < __this.MIN_ELEVATION) {
-                            __this.elevation = __this.MIN_ELEVATION;
-                        }
-                        else if (__this.elevation > __this.MAX_ELEVATION) {
-                            __this.elevation = __this.MAX_ELEVATION;
-                        }
-                        recomputeViewMatrix();
-                        lastMouseX = mouseX;
-                        lastMouseY = mouseY;
-                        element.style.cursor = '-webkit-grabbing';
-                        element.style.cursor = '-moz-grabbing';
-                        element.style.cursor = 'grabbing';
-                    }
-                    else {
-                        element.style.cursor = '-webkit-grab';
-                        element.style.cursor = '-moz-grab';
-                        element.style.cursor = 'grab';
-                    }
-                });
-                recomputeViewMatrix();
+                //element.addEventListener('mousedown', function (event) {
+                //    mouseDown = true;
+                //    lastMouseX = __this.getMousePosition(event, element).x;
+                //    lastMouseY = __this.getMousePosition(event, element).y;
+                //});
+                //document.addEventListener('mouseup', function (event) {
+                //    mouseDown = false;
+                //});
+                //element.addEventListener('mousemove', function (event) {
+                //    if (mouseDown) {
+                //        var mouseX = __this.getMousePosition(event, element).x;
+                //        var mouseY = __this.getMousePosition(event, element).y;
+                //        var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
+                //        var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
+                //        __this.azimuth += deltaAzimuth;
+                //        __this.elevation += deltaElevation;
+                //        if (__this.elevation < __this.MIN_ELEVATION) {
+                //            __this.elevation = __this.MIN_ELEVATION;
+                //        } else if (__this.elevation > __this.MAX_ELEVATION) {
+                //            __this.elevation = __this.MAX_ELEVATION;
+                //        }
+                //        __this.recomputeViewMatrix();
+                //        lastMouseX = mouseX;
+                //        lastMouseY = mouseY;
+                //        element.style.cursor = '-webkit-grabbing';
+                //        element.style.cursor = '-moz-grabbing';
+                //        element.style.cursor = 'grabbing';
+                //    } else {
+                //        element.style.cursor = '-webkit-grab';
+                //        element.style.cursor = '-moz-grab';
+                //        element.style.cursor = 'grab';
+                //    }
+                //});
+                //setInterval(this.AutoMoveCamera.bind(this), 10);
+                this.azimuth = -300 * this.CAMERA_SENSITIVITY;
+                this.recomputeViewMatrix();
             }
+            Camera.prototype.AutoMoveCamera = function () {
+                this.currentX += 0.1;
+                if (this.currentX > 600)
+                    this.currentX = 0;
+                this.azimuth = -this.currentX * this.CAMERA_SENSITIVITY;
+                this.recomputeViewMatrix();
+            };
             Camera.prototype.getViewMatrix = function () {
                 return this.viewMatrix;
             };
@@ -589,10 +597,15 @@ var Application;
                 this.MAX_DELTA_TIME = 0.2;
                 this.PRESIMULATION_DELTA_TIME = 0.1;
                 this.QUALITY_LEVELS = [
+                    //{
+                    //    resolution: [256, 256],
+                    //    diameter: 0.03,
+                    //    alpha: 0.5
+                    //},
                     {
-                        resolution: [256, 256],
-                        diameter: 0.03,
-                        alpha: 0.5
+                        resolution: [512, 256],
+                        diameter: 0.025,
+                        alpha: 0.4
                     },
                 ];
                 this.OPACITY_TEXTURE_RESOLUTION = 1024;
@@ -615,7 +628,7 @@ var Application;
                 this.LIGHT_PROJECTION_TOP = 5.0;
                 this.LIGHT_PROJECTION_NEAR = -50.0;
                 this.LIGHT_PROJECTION_FAR = 50.0;
-                this.SPAWN_RADIUS = 0.1;
+                this.SPAWN_RADIUS = 0.6;
                 this.BASE_LIFETIME = 10;
                 this.MAX_ADDITIONAL_LIFETIME = 5;
                 this.OFFSET_RADIUS = 0.5;

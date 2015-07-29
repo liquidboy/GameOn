@@ -914,6 +914,7 @@
     <Content Include="angularApp\directives\webgl-canvas\webglcanvas.js.map">
       <DependentUpon>webglcanvas.js</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\HelloWindows.pubxml" />
     <None Include="Properties\PublishProfiles\USoStupid - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\USoStupid - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\USoStupid.pubxml" />
