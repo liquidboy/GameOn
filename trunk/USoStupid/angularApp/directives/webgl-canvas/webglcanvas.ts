@@ -937,6 +937,8 @@ module Application.Directives {
         private pso: PipelineState;
 
 
+        private particleVertexBuffers: any; //one for each quality level
+        private spawnTextures: any; //one for each quality level
 
         constructor(private $scope: IFlowScope,
             private $routeParams: any) {
@@ -951,7 +953,7 @@ module Application.Directives {
 
         }
 
-        private changeQualityLevel(newLevel: number) {
+        private changeQualityLevel(newLevel: number): void {
             this.qualityLevel = newLevel;
 
             this.particleAlpha = this.QUALITY_LEVELS[this.qualityLevel].alpha;
@@ -968,8 +970,6 @@ module Application.Directives {
             this.particleCount = this.particleCountWidth * this.particleCountHeight;
         }
 
-        private particleVertexBuffers: any; //one for each quality level
-        private spawnTextures: any; //one for each quality level
 
 
         private initCanvas(canvas: webgl.HTMLCanvasElement): void {
@@ -985,7 +985,27 @@ module Application.Directives {
 
             this.pso.lastTime = 0.0;
 
+            this.initializeParticles();
+
+            this.loadResources();
             
+
+            $(window).on("resize", this.onresize.bind(this));
+            this.onresize();
+            this.render(this.pso.lastTime);
+
+
+        }
+
+        private onresize(): void{
+            var aspectRatio = window.innerWidth / window.innerHeight;
+            this.mathUtils.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        };
+
+        private initializeParticles(): void{
+
             var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
 
             var randomNumbers = [];
@@ -1003,6 +1023,7 @@ module Application.Directives {
             this.particleVertexBuffers = []; //one for each quality level
             this.spawnTextures = []; //one for each quality level
 
+
             for (var i = 0; i < this.QUALITY_LEVELS.length; ++i) {
                 var width = this.QUALITY_LEVELS[i].resolution[0];
                 var height = this.QUALITY_LEVELS[i].resolution[1];
@@ -1011,7 +1032,7 @@ module Application.Directives {
 
                 this.particleVertexBuffers[i] = this.gl.createBuffer();
 
-                var particleTextureCoordinates= new Float32Array(width * height * 2);
+                var particleTextureCoordinates = new Float32Array(width * height * 2);
                 for (var y = 0; y < height; ++y) {
                     for (var x = 0; x < width; ++x) {
                         particleTextureCoordinates[(y * width + x) * 2] = (x + 0.5) / width;
@@ -1071,15 +1092,20 @@ module Application.Directives {
                 this.gl.NEAREST,
                 this.gl.NEAREST);
 
-            
+
             randomNumbers.length = 0; //delete randomNumbers;
             randomSpherePoints.length = 0; //delete randomSpherePoints;
             offsetData.length = 0; //delete offsetData;
-            
+
+        }
+        
+        private loadResources(): void {
+
+
             this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
             this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
 
-            this.camera = new Camera(canvas, this.mathUtils);
+            this.camera = new Camera(this.canvas, this.mathUtils);
 
             this.pso.projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
 
@@ -1089,16 +1115,19 @@ module Application.Directives {
 
             this.pso.lightViewProjectionMatrix = new Float32Array(16);
             this.mathUtils.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
-            
+
             this.pso.resampleFramebuffer = this.gl.createFramebuffer();
-            
+
             this.changeQualityLevel(0);
             
+
             //variables used for sorting
             this.pso.totalSortSteps = (this.log2(this.particleCount) * (this.log2(this.particleCount) + 1)) / 2;
             this.pso.sortStepsLeft = this.pso.totalSortSteps;
             this.pso.sortPass = -1;
             this.pso.sortStage = -1;
+
+
 
             this.pso.opacityTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.LINEAR, this.gl.LINEAR); //opacity from the light's point of view
 
@@ -1106,7 +1135,7 @@ module Application.Directives {
             this.pso.sortFramebuffer = this.gl.createFramebuffer();
 
             this.pso.opacityFramebuffer = this.buildFramebuffer(this.gl, this.pso.opacityTexture);
-            
+
             this.pso.simulationProgramWrapper = this.buildProgramWrapper(this.gl,
                 this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE),
                 this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE),
@@ -1161,30 +1190,10 @@ module Application.Directives {
                 this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
                 this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
             ]), this.gl.STATIC_DRAW);
-
-
-
-
-            $(window).on("resize", this.onresize.bind(this));
-            this.onresize();
-            this.render(this.pso.lastTime);
-
-
         }
 
-        private onresize() {
-            var aspectRatio = window.innerWidth / window.innerHeight;
-            this.mathUtils.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-        };
 
-        private loadResources() {
-
-        }
-        
-
-        private render(currentTime: number) {
+        private render(currentTime: number): void{
             var deltaTime = (currentTime - this.pso.lastTime) / 1000 || 0.0;
             this.pso.lastTime = currentTime;
 
@@ -1293,7 +1302,9 @@ module Application.Directives {
                 }
 
                 this.flipped = false;
-            } else {
+            }
+            else
+            {
                 halfVector = new Float32Array([
                     this.LIGHT_DIRECTION[0] - viewDirection[0],
                     this.LIGHT_DIRECTION[1] - viewDirection[1],
@@ -1622,10 +1633,6 @@ module Application.Directives {
             return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
         }
         
-        
-        
-       
-
         
 
         private makeOrthographicMatrix(matrix, left, right, bottom, top, near, far): any {

@@ -25,3 +25,4 @@ var Application;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
 //window["app"].controller("HomeCtrl", ["$scope", "resourceSvc", Application.Controllers.HomeCtrl]); 
+//# sourceMappingURL=HomeController.js.map

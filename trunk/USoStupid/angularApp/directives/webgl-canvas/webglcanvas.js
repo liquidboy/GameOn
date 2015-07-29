@@ -668,6 +668,20 @@ var Application;
                 this.firstFrame = true;
                 this.flipped = false;
                 this.pso.lastTime = 0.0;
+                this.initializeParticles();
+                this.loadResources();
+                $(window).on("resize", this.onresize.bind(this));
+                this.onresize();
+                this.render(this.pso.lastTime);
+            };
+            FlowController.prototype.onresize = function () {
+                var aspectRatio = window.innerWidth / window.innerHeight;
+                this.mathUtils.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            };
+            ;
+            FlowController.prototype.initializeParticles = function () {
                 var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
                 var randomNumbers = [];
                 for (var i = 0; i < maxParticleCount; ++i) {
@@ -725,9 +739,11 @@ var Application;
                 randomNumbers.length = 0; //delete randomNumbers;
                 randomSpherePoints.length = 0; //delete randomSpherePoints;
                 offsetData.length = 0; //delete offsetData;
+            };
+            FlowController.prototype.loadResources = function () {
                 this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                 this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-                this.camera = new Camera(canvas, this.mathUtils);
+                this.camera = new Camera(this.canvas, this.mathUtils);
                 this.pso.projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
                 this.pso.lightViewMatrix = new Float32Array(16);
                 this.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
@@ -763,18 +779,6 @@ var Application;
                     this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
                     this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
                 ]), this.gl.STATIC_DRAW);
-                $(window).on("resize", this.onresize.bind(this));
-                this.onresize();
-                this.render(this.pso.lastTime);
-            };
-            FlowController.prototype.onresize = function () {
-                var aspectRatio = window.innerWidth / window.innerHeight;
-                this.mathUtils.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-            };
-            ;
-            FlowController.prototype.loadResources = function () {
             };
             FlowController.prototype.render = function (currentTime) {
                 var deltaTime = (currentTime - this.pso.lastTime) / 1000 || 0.0;
@@ -1203,3 +1207,4 @@ var Application;
         })();
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=webglcanvas.js.map
