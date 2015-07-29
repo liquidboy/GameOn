@@ -20,6 +20,7 @@ module Application.Directives {
 
         private currentHue: number = 0;
         private hueStep: number = 0.01;
+        private hueIntervalAnimationPointer: number;
 
         public scope: any = {
 
@@ -46,7 +47,7 @@ module Application.Directives {
                     controller.timeScale = controller.INITIAL_SPEED;
                     controller.persistence = controller.INITIAL_TURBULENCE;
                     
-                    setInterval(this.updateHueOverTime.bind(this), 100);
+                    this.hueIntervalAnimationPointer = setInterval(this.updateHueOverTime.bind(this), 100);
 
                 }
 

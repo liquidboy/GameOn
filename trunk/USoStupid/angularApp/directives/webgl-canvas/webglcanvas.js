@@ -21,7 +21,7 @@ var Application;
                         controller.hue = _this.currentHue;
                         controller.timeScale = controller.INITIAL_SPEED;
                         controller.persistence = controller.INITIAL_TURBULENCE;
-                        setInterval(_this.updateHueOverTime.bind(_this), 100);
+                        _this.hueIntervalAnimationPointer = setInterval(_this.updateHueOverTime.bind(_this), 100);
                     }
                 };
             }
@@ -1198,4 +1198,3 @@ var Application;
         })();
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=webglcanvas.js.map
