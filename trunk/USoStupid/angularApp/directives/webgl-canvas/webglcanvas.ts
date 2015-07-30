@@ -1481,7 +1481,7 @@ module Application.Directives {
             this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-
+            //SIMULATION
             for (var i = 0; i < (this.renderer.firstFrame ? this.BASE_LIFETIME / this.PRESIMULATION_DELTA_TIME : 1); ++i) {
                 this.gl.enableVertexAttribArray(0);
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
@@ -1579,8 +1579,11 @@ module Application.Directives {
             this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
             this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
+
+            //RENDERING
             for (var i = 0; i < this.SLICES; ++i) {
-                //render particles
+
+                //particle
                 this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
                 this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
 
@@ -1629,7 +1632,7 @@ module Application.Directives {
 
                 this.gl.drawArrays(this.gl.POINTS, i * (this.particleCount / this.SLICES), this.particleCount / this.SLICES);
 
-                //render to opacity texture
+                //particle opacity
                 this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.opacityFramebuffer);
 
                 this.gl.viewport(0, 0, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION);
@@ -1664,6 +1667,9 @@ module Application.Directives {
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
             this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
 
+
+
+            //FLOOR (SHADOW)
             this.gl.useProgram(this.pso.floorProgramWrapper.program);
 
             this.gl.enableVertexAttribArray(0);
@@ -1692,8 +1698,9 @@ module Application.Directives {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
             this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
 
-            this.gl.useProgram(this.pso.backgroundProgramWrapper.program);
 
+            //BACKGROUND
+            this.gl.useProgram(this.pso.backgroundProgramWrapper.program);
             this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 
             

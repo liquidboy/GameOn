@@ -980,6 +980,7 @@ var Application;
                 this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
                 this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
                 this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+                //SIMULATION
                 for (var i = 0; i < (this.renderer.firstFrame ? this.BASE_LIFETIME / this.PRESIMULATION_DELTA_TIME : 1); ++i) {
                     this.gl.enableVertexAttribArray(0);
                     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
@@ -1049,8 +1050,9 @@ var Application;
                 this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.opacityFramebuffer);
                 this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
                 this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+                //RENDERING
                 for (var i = 0; i < this.SLICES; ++i) {
-                    //render particles
+                    //particle
                     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
                     this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
                     this.gl.useProgram(this.pso.renderingProgramWrapper.program);
@@ -1085,7 +1087,7 @@ var Application;
                         this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
                     }
                     this.gl.drawArrays(this.gl.POINTS, i * (this.particleCount / this.SLICES), this.particleCount / this.SLICES);
-                    //render to opacity texture
+                    //particle opacity
                     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.opacityFramebuffer);
                     this.gl.viewport(0, 0, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION);
                     this.gl.useProgram(this.pso.opacityProgramWrapper.program);
@@ -1108,6 +1110,7 @@ var Application;
                 }
                 this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
                 this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+                //FLOOR (SHADOW)
                 this.gl.useProgram(this.pso.floorProgramWrapper.program);
                 this.gl.enableVertexAttribArray(0);
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.floorVertexBuffer);
@@ -1127,6 +1130,7 @@ var Application;
                 this.gl.enableVertexAttribArray(0);
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
                 this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
+                //BACKGROUND
                 this.gl.useProgram(this.pso.backgroundProgramWrapper.program);
                 this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
                 requestAnimationFrame(this.render.bind(this));
