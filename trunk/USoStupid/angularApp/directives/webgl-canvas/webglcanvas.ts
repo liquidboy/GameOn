@@ -1049,8 +1049,7 @@ module Application.Directives {
         private BASE_LIFETIME: number = 10;
         private MAX_ADDITIONAL_LIFETIME: number = 5;
         private OFFSET_RADIUS: number = 0.5;
-
-
+        
         public INITIAL_SPEED : number = 2;
         public INITIAL_TURBULENCE: number = 0.2;
         
@@ -1137,7 +1136,7 @@ module Application.Directives {
             this.renderer.flipped = false;
             this.pso.lastTime = 0.0;
 
-            this.initializeParticles();
+            this.loadParticleResources();
 
             this.loadResources();
             
@@ -1156,7 +1155,7 @@ module Application.Directives {
             this.canvas.height = window.innerHeight;
         };
 
-        private initializeParticles(): void{
+        private loadParticleResources(): void{
 
             var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
 
@@ -1243,9 +1242,41 @@ module Application.Directives {
         
         private loadResources(): void {
             
+
+
+            //TEXTURES
             this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
             this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-            
+            this.pso.opacityTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.LINEAR, this.gl.LINEAR); //opacity from the light's point of view
+
+
+
+            //FRAMEBUFFERS
+            this.pso.resampleFramebuffer = this.gl.createFramebuffer();
+            this.pso.simulationFramebuffer = this.gl.createFramebuffer();
+            this.pso.sortFramebuffer = this.gl.createFramebuffer();
+            this.pso.opacityFramebuffer = this.buildFramebuffer(this.gl, this.pso.opacityTexture);
+
+
+
+            //BUFFERS
+            this.pso.fullscreenVertexBuffer = this.gl.createBuffer();
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
+            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), this.gl.STATIC_DRAW);
+
+            this.pso.floorVertexBuffer = this.gl.createBuffer();
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.floorVertexBuffer);
+            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([
+                this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
+                this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
+                this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
+                this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
+            ]), this.gl.STATIC_DRAW);
+
+
+
+        
+            //MATRIX'S
             this.pso.projectionMatrix = GraphicsLib.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
 
             this.pso.lightViewMatrix = new Float32Array(16);
@@ -1257,12 +1288,10 @@ module Application.Directives {
             this.pso.lightViewProjectionMatrix = new Float32Array(16);
             GraphicsLib.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
 
-            this.pso.resampleFramebuffer = this.gl.createFramebuffer();
-
-            this.changeQualityLevel(0);
             
 
-            //variables used for sorting
+
+            //SORTING
             this.pso.totalSortSteps = (GraphicsLib.log2(this.particleCount) * (GraphicsLib.log2(this.particleCount) + 1)) / 2;
             this.pso.sortStepsLeft = this.pso.totalSortSteps;
             this.pso.sortPass = -1;
@@ -1270,13 +1299,8 @@ module Application.Directives {
 
 
 
-            this.pso.opacityTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.LINEAR, this.gl.LINEAR); //opacity from the light's point of view
-
-            this.pso.simulationFramebuffer = this.gl.createFramebuffer();
-            this.pso.sortFramebuffer = this.gl.createFramebuffer();
-
-            this.pso.opacityFramebuffer = this.buildFramebuffer(this.gl, this.pso.opacityTexture);
-
+            
+            //PROGRAMS
             this.pso.simulationProgramWrapper = this.buildProgramWrapper(this.gl,
                 this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE),
                 this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE),
@@ -1319,18 +1343,10 @@ module Application.Directives {
                 { 'a_position': 0 }
                 );
 
-            this.pso.fullscreenVertexBuffer = this.gl.createBuffer();
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), this.gl.STATIC_DRAW);
 
-            this.pso.floorVertexBuffer = this.gl.createBuffer();
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.floorVertexBuffer);
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([
-                this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
-                this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
-                this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
-                this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
-            ]), this.gl.STATIC_DRAW);
+
+            this.changeQualityLevel(0);
+
         }
         
         private render(currentTime: number): void{
@@ -1341,6 +1357,7 @@ module Application.Directives {
                 deltaTime = 0;
             }
             
+
             if (this.changingParticleCount) {
                 deltaTime = 0;
                 this.changingParticleCount = false;

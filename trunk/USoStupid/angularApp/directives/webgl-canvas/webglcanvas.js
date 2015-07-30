@@ -765,7 +765,7 @@ var Application;
                 this.renderer.firstFrame = true;
                 this.renderer.flipped = false;
                 this.pso.lastTime = 0.0;
-                this.initializeParticles();
+                this.loadParticleResources();
                 this.loadResources();
                 $(window).on("resize", this.onresize.bind(this));
                 this.onresize();
@@ -778,7 +778,7 @@ var Application;
                 this.canvas.height = window.innerHeight;
             };
             ;
-            FlowController.prototype.initializeParticles = function () {
+            FlowController.prototype.loadParticleResources = function () {
                 var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
                 var randomNumbers = [];
                 var randomSpherePoints = [];
@@ -838,33 +838,16 @@ var Application;
                 offsetData.length = 0; //delete offsetData;
             };
             FlowController.prototype.loadResources = function () {
+                //TEXTURES
                 this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                 this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-                this.pso.projectionMatrix = GraphicsLib.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
-                this.pso.lightViewMatrix = new Float32Array(16);
-                GraphicsLib.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
-                this.pso.lightProjectionMatrix = new Float32Array(16);
-                GraphicsLib.makeOrthographicMatrix(this.pso.lightProjectionMatrix, this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
-                this.pso.lightViewProjectionMatrix = new Float32Array(16);
-                GraphicsLib.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
-                this.pso.resampleFramebuffer = this.gl.createFramebuffer();
-                this.changeQualityLevel(0);
-                //variables used for sorting
-                this.pso.totalSortSteps = (GraphicsLib.log2(this.particleCount) * (GraphicsLib.log2(this.particleCount) + 1)) / 2;
-                this.pso.sortStepsLeft = this.pso.totalSortSteps;
-                this.pso.sortPass = -1;
-                this.pso.sortStage = -1;
                 this.pso.opacityTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.LINEAR, this.gl.LINEAR); //opacity from the light's point of view
+                //FRAMEBUFFERS
+                this.pso.resampleFramebuffer = this.gl.createFramebuffer();
                 this.pso.simulationFramebuffer = this.gl.createFramebuffer();
                 this.pso.sortFramebuffer = this.gl.createFramebuffer();
                 this.pso.opacityFramebuffer = this.buildFramebuffer(this.gl, this.pso.opacityTexture);
-                this.pso.simulationProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                this.pso.renderingProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.RENDERING_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.RENDERING_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
-                this.pso.opacityProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.OPACITY_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.OPACITY_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
-                this.pso.sortProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SORT_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SORT_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                this.pso.resampleProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.RESAMPLE_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.RESAMPLE_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
-                this.pso.floorProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.FLOOR_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.FLOOR_FRAGMENT_SHADER_SOURCE), { 'a_vertexPosition': 0 });
-                this.pso.backgroundProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.BACKGROUND_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.BACKGROUND_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                //BUFFERS
                 this.pso.fullscreenVertexBuffer = this.gl.createBuffer();
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
                 this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), this.gl.STATIC_DRAW);
@@ -876,6 +859,28 @@ var Application;
                     this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
                     this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
                 ]), this.gl.STATIC_DRAW);
+                //MATRIX'S
+                this.pso.projectionMatrix = GraphicsLib.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
+                this.pso.lightViewMatrix = new Float32Array(16);
+                GraphicsLib.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
+                this.pso.lightProjectionMatrix = new Float32Array(16);
+                GraphicsLib.makeOrthographicMatrix(this.pso.lightProjectionMatrix, this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
+                this.pso.lightViewProjectionMatrix = new Float32Array(16);
+                GraphicsLib.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
+                //SORTING
+                this.pso.totalSortSteps = (GraphicsLib.log2(this.particleCount) * (GraphicsLib.log2(this.particleCount) + 1)) / 2;
+                this.pso.sortStepsLeft = this.pso.totalSortSteps;
+                this.pso.sortPass = -1;
+                this.pso.sortStage = -1;
+                //PROGRAMS
+                this.pso.simulationProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                this.pso.renderingProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.RENDERING_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.RENDERING_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
+                this.pso.opacityProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.OPACITY_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.OPACITY_FRAGMENT_SHADER_SOURCE), { 'a_textureCoordinates': 0 });
+                this.pso.sortProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SORT_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SORT_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                this.pso.resampleProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.RESAMPLE_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.RESAMPLE_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                this.pso.floorProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.FLOOR_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.FLOOR_FRAGMENT_SHADER_SOURCE), { 'a_vertexPosition': 0 });
+                this.pso.backgroundProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.BACKGROUND_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.BACKGROUND_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
+                this.changeQualityLevel(0);
             };
             FlowController.prototype.render = function (currentTime) {
                 var deltaTime = (currentTime - this.pso.lastTime) / 1000 || 0.0;
@@ -1192,3 +1197,4 @@ var Application;
         })();
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=webglcanvas.js.map
