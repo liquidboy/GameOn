@@ -46,3 +46,4 @@ var USoStupidApp;
     localWindow.app = myapp;
     localWindow.utilities = angular.module("custom-utilities", []);
 })(USoStupidApp || (USoStupidApp = {}));
+//# sourceMappingURL=USoStupidApp.js.map

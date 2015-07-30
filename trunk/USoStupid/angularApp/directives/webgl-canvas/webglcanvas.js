@@ -56,8 +56,8 @@ var Application;
         })();
         var Camera = (function () {
             function Camera(element) {
-                this.INITIAL_AZIMUTH = -1.0; //-1.6 is directly out of screen .. 0.6 <-- left to right
-                this.INITIAL_ELEVATION = 0.4;
+                this.INITIAL_AZIMUTH = -1.6; //-1.6 is directly out of screen .. 0.6 <-- left to right
+                this.INITIAL_ELEVATION = 0.4; //0.4 default
                 this.CAMERA_ORBIT_POINT = [1.2, -0.3, 0.0];
                 this.CAMERA_DISTANCE = 2.2;
                 this.CAMERA_SENSITIVITY = 0.005;
@@ -1200,3 +1200,4 @@ var Application;
         })();
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=webglcanvas.js.map
