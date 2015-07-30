@@ -54,122 +54,8 @@ var Application;
             };
             return ParticleRenderer;
         })();
-        var MathUtils = (function () {
-            function MathUtils() {
-            }
-            MathUtils.prototype.makeIdentityMatrix = function (matrix) {
-                matrix[0] = 1.0;
-                matrix[1] = 0.0;
-                matrix[2] = 0.0;
-                matrix[3] = 0.0;
-                matrix[4] = 0.0;
-                matrix[5] = 1.0;
-                matrix[6] = 0.0;
-                matrix[7] = 0.0;
-                matrix[8] = 0.0;
-                matrix[9] = 0.0;
-                matrix[10] = 1.0;
-                matrix[11] = 0.0;
-                matrix[12] = 0.0;
-                matrix[13] = 0.0;
-                matrix[14] = 0.0;
-                matrix[15] = 1.0;
-                return matrix;
-            };
-            MathUtils.prototype.makeXRotationMatrix = function (matrix, angle) {
-                matrix[0] = 1.0;
-                matrix[1] = 0.0;
-                matrix[2] = 0.0;
-                matrix[3] = 0.0;
-                matrix[4] = 0.0;
-                matrix[5] = Math.cos(angle);
-                matrix[6] = Math.sin(angle);
-                matrix[7] = 0.0;
-                matrix[8] = 0.0;
-                matrix[9] = -Math.sin(angle);
-                matrix[10] = Math.cos(angle);
-                matrix[11] = 0.0;
-                matrix[12] = 0.0;
-                matrix[13] = 0.0;
-                matrix[14] = 0.0;
-                matrix[15] = 1.0;
-                return matrix;
-            };
-            MathUtils.prototype.makeYRotationMatrix = function (matrix, angle) {
-                matrix[0] = Math.cos(angle);
-                matrix[1] = 0.0;
-                matrix[2] = -Math.sin(angle);
-                matrix[3] = 0.0;
-                matrix[4] = 0.0;
-                matrix[5] = 1.0;
-                matrix[6] = 0.0;
-                matrix[7] = 0.0;
-                matrix[8] = Math.sin(angle);
-                matrix[9] = 0.0;
-                matrix[10] = Math.cos(angle);
-                matrix[11] = 0.0;
-                matrix[12] = 0.0;
-                matrix[13] = 0.0;
-                matrix[14] = 0.0;
-                matrix[15] = 1.0;
-                return matrix;
-            };
-            MathUtils.prototype.makePerspectiveMatrix = function (matrix, fov, aspect, near, far) {
-                var f = Math.tan(0.5 * (Math.PI - fov)), range = near - far;
-                matrix[0] = f / aspect;
-                matrix[1] = 0;
-                matrix[2] = 0;
-                matrix[3] = 0;
-                matrix[4] = 0;
-                matrix[5] = f;
-                matrix[6] = 0;
-                matrix[7] = 0;
-                matrix[8] = 0;
-                matrix[9] = 0;
-                matrix[10] = far / range;
-                matrix[11] = -1;
-                matrix[12] = 0;
-                matrix[13] = 0;
-                matrix[14] = (near * far) / range;
-                matrix[15] = 0.0;
-                return matrix;
-            };
-            MathUtils.prototype.premultiplyMatrix = function (out, matrixA, matrixB) {
-                var b0 = matrixB[0], b4 = matrixB[4], b8 = matrixB[8], b12 = matrixB[12], b1 = matrixB[1], b5 = matrixB[5], b9 = matrixB[9], b13 = matrixB[13], b2 = matrixB[2], b6 = matrixB[6], b10 = matrixB[10], b14 = matrixB[14], b3 = matrixB[3], b7 = matrixB[7], b11 = matrixB[11], b15 = matrixB[15], aX = matrixA[0], aY = matrixA[1], aZ = matrixA[2], aW = matrixA[3];
-                out[0] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
-                out[1] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
-                out[2] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
-                out[3] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
-                aX = matrixA[4];
-                aY = matrixA[5];
-                aZ = matrixA[6];
-                aW = matrixA[7];
-                out[4] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
-                out[5] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
-                out[6] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
-                out[7] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
-                aX = matrixA[8];
-                aY = matrixA[9];
-                aZ = matrixA[10];
-                aW = matrixA[11];
-                out[8] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
-                out[9] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
-                out[10] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
-                out[11] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
-                aX = matrixA[12];
-                aY = matrixA[13];
-                aZ = matrixA[14];
-                aW = matrixA[15];
-                out[12] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
-                out[13] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
-                out[14] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
-                out[15] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
-                return out;
-            };
-            return MathUtils;
-        })();
         var Camera = (function () {
-            function Camera(element, mathUtils) {
+            function Camera(element) {
                 this.INITIAL_AZIMUTH = 0.6;
                 this.INITIAL_ELEVATION = 0.4;
                 this.CAMERA_ORBIT_POINT = [1.2, -0.3, 0.0];
@@ -185,18 +71,18 @@ var Application;
                 var mouseDown = false;
                 var __this = this;
                 this.recomputeViewMatrix = function () {
-                    var xRotationMatrix = new Float32Array(16), yRotationMatrix = new Float32Array(16), distanceTranslationMatrix = mathUtils.makeIdentityMatrix(new Float32Array(16)), orbitTranslationMatrix = mathUtils.makeIdentityMatrix(new Float32Array(16));
-                    mathUtils.makeIdentityMatrix(__this.viewMatrix);
-                    mathUtils.makeXRotationMatrix(xRotationMatrix, __this.elevation);
-                    mathUtils.makeYRotationMatrix(yRotationMatrix, __this.azimuth);
+                    var xRotationMatrix = new Float32Array(16), yRotationMatrix = new Float32Array(16), distanceTranslationMatrix = GraphicsLib.makeIdentityMatrix(new Float32Array(16)), orbitTranslationMatrix = GraphicsLib.makeIdentityMatrix(new Float32Array(16));
+                    GraphicsLib.makeIdentityMatrix(__this.viewMatrix);
+                    GraphicsLib.makeXRotationMatrix(xRotationMatrix, __this.elevation);
+                    GraphicsLib.makeYRotationMatrix(yRotationMatrix, __this.azimuth);
                     distanceTranslationMatrix[14] = -__this.CAMERA_DISTANCE;
                     orbitTranslationMatrix[12] = -__this.CAMERA_ORBIT_POINT[0];
                     orbitTranslationMatrix[13] = -__this.CAMERA_ORBIT_POINT[1];
                     orbitTranslationMatrix[14] = -__this.CAMERA_ORBIT_POINT[2];
-                    mathUtils.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, orbitTranslationMatrix);
-                    mathUtils.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, yRotationMatrix);
-                    mathUtils.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, xRotationMatrix);
-                    mathUtils.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, distanceTranslationMatrix);
+                    GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, orbitTranslationMatrix);
+                    GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, yRotationMatrix);
+                    GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, xRotationMatrix);
+                    GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, distanceTranslationMatrix);
                 };
                 //element.addEventListener('mousedown', function (event) {
                 //    mouseDown = true;
@@ -589,6 +475,215 @@ var Application;
             }
             return ShaderLib;
         })();
+        var GraphicsLib = (function () {
+            function GraphicsLib() {
+            }
+            GraphicsLib.makeIdentityMatrix = function (matrix) {
+                matrix[0] = 1.0;
+                matrix[1] = 0.0;
+                matrix[2] = 0.0;
+                matrix[3] = 0.0;
+                matrix[4] = 0.0;
+                matrix[5] = 1.0;
+                matrix[6] = 0.0;
+                matrix[7] = 0.0;
+                matrix[8] = 0.0;
+                matrix[9] = 0.0;
+                matrix[10] = 1.0;
+                matrix[11] = 0.0;
+                matrix[12] = 0.0;
+                matrix[13] = 0.0;
+                matrix[14] = 0.0;
+                matrix[15] = 1.0;
+                return matrix;
+            };
+            GraphicsLib.makeXRotationMatrix = function (matrix, angle) {
+                matrix[0] = 1.0;
+                matrix[1] = 0.0;
+                matrix[2] = 0.0;
+                matrix[3] = 0.0;
+                matrix[4] = 0.0;
+                matrix[5] = Math.cos(angle);
+                matrix[6] = Math.sin(angle);
+                matrix[7] = 0.0;
+                matrix[8] = 0.0;
+                matrix[9] = -Math.sin(angle);
+                matrix[10] = Math.cos(angle);
+                matrix[11] = 0.0;
+                matrix[12] = 0.0;
+                matrix[13] = 0.0;
+                matrix[14] = 0.0;
+                matrix[15] = 1.0;
+                return matrix;
+            };
+            GraphicsLib.makeYRotationMatrix = function (matrix, angle) {
+                matrix[0] = Math.cos(angle);
+                matrix[1] = 0.0;
+                matrix[2] = -Math.sin(angle);
+                matrix[3] = 0.0;
+                matrix[4] = 0.0;
+                matrix[5] = 1.0;
+                matrix[6] = 0.0;
+                matrix[7] = 0.0;
+                matrix[8] = Math.sin(angle);
+                matrix[9] = 0.0;
+                matrix[10] = Math.cos(angle);
+                matrix[11] = 0.0;
+                matrix[12] = 0.0;
+                matrix[13] = 0.0;
+                matrix[14] = 0.0;
+                matrix[15] = 1.0;
+                return matrix;
+            };
+            GraphicsLib.makePerspectiveMatrix = function (matrix, fov, aspect, near, far) {
+                var f = Math.tan(0.5 * (Math.PI - fov)), range = near - far;
+                matrix[0] = f / aspect;
+                matrix[1] = 0;
+                matrix[2] = 0;
+                matrix[3] = 0;
+                matrix[4] = 0;
+                matrix[5] = f;
+                matrix[6] = 0;
+                matrix[7] = 0;
+                matrix[8] = 0;
+                matrix[9] = 0;
+                matrix[10] = far / range;
+                matrix[11] = -1;
+                matrix[12] = 0;
+                matrix[13] = 0;
+                matrix[14] = (near * far) / range;
+                matrix[15] = 0.0;
+                return matrix;
+            };
+            GraphicsLib.premultiplyMatrix = function (out, matrixA, matrixB) {
+                var b0 = matrixB[0], b4 = matrixB[4], b8 = matrixB[8], b12 = matrixB[12], b1 = matrixB[1], b5 = matrixB[5], b9 = matrixB[9], b13 = matrixB[13], b2 = matrixB[2], b6 = matrixB[6], b10 = matrixB[10], b14 = matrixB[14], b3 = matrixB[3], b7 = matrixB[7], b11 = matrixB[11], b15 = matrixB[15], aX = matrixA[0], aY = matrixA[1], aZ = matrixA[2], aW = matrixA[3];
+                out[0] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
+                out[1] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
+                out[2] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
+                out[3] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
+                aX = matrixA[4];
+                aY = matrixA[5];
+                aZ = matrixA[6];
+                aW = matrixA[7];
+                out[4] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
+                out[5] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
+                out[6] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
+                out[7] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
+                aX = matrixA[8];
+                aY = matrixA[9];
+                aZ = matrixA[10];
+                aW = matrixA[11];
+                out[8] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
+                out[9] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
+                out[10] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
+                out[11] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
+                aX = matrixA[12];
+                aY = matrixA[13];
+                aZ = matrixA[14];
+                aW = matrixA[15];
+                out[12] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
+                out[13] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
+                out[14] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
+                out[15] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
+                return out;
+            };
+            GraphicsLib.normalizeVector = function (out, v) {
+                var inverseMagnitude = 1.0 / Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+                out[0] = v[0] * inverseMagnitude;
+                out[1] = v[1] * inverseMagnitude;
+                out[2] = v[2] * inverseMagnitude;
+            };
+            GraphicsLib.dotVectors = function (a, b) {
+                return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+            };
+            GraphicsLib.makeOrthographicMatrix = function (matrix, left, right, bottom, top, near, far) {
+                matrix[0] = 2 / (right - left);
+                matrix[1] = 0;
+                matrix[2] = 0;
+                matrix[3] = 0;
+                matrix[4] = 0;
+                matrix[5] = 2 / (top - bottom);
+                matrix[6] = 0;
+                matrix[7] = 0;
+                matrix[8] = 0;
+                matrix[9] = 0;
+                matrix[10] = -2 / (far - near);
+                matrix[11] = 0;
+                matrix[12] = -(right + left) / (right - left);
+                matrix[13] = -(top + bottom) / (top - bottom);
+                matrix[14] = -(far + near) / (far - near);
+                matrix[15] = 1;
+            };
+            GraphicsLib.makeLookAtMatrix = function (matrix, eye, target, up) {
+                var forwardX = eye[0] - target[0], forwardY = eye[1] - target[1], forwardZ = eye[2] - target[2];
+                var forwardMagnitude = Math.sqrt(forwardX * forwardX + forwardY * forwardY + forwardZ * forwardZ);
+                forwardX /= forwardMagnitude;
+                forwardY /= forwardMagnitude;
+                forwardZ /= forwardMagnitude;
+                var rightX = up[2] * forwardY - up[1] * forwardZ;
+                var rightY = up[0] * forwardZ - up[2] * forwardX;
+                var rightZ = up[1] * forwardX - up[0] * forwardY;
+                var rightMagnitude = Math.sqrt(rightX * rightX + rightY * rightY + rightZ * rightZ);
+                rightX /= rightMagnitude;
+                rightY /= rightMagnitude;
+                rightZ /= rightMagnitude;
+                var newUpX = forwardY * rightZ - forwardZ * rightY;
+                var newUpY = forwardZ * rightX - forwardX * rightZ;
+                var newUpZ = forwardX * rightY - forwardY * rightX;
+                var newUpMagnitude = Math.sqrt(newUpX * newUpX + newUpY * newUpY + newUpZ * newUpZ);
+                newUpX /= newUpMagnitude;
+                newUpY /= newUpMagnitude;
+                newUpZ /= newUpMagnitude;
+                matrix[0] = rightX;
+                matrix[1] = newUpX;
+                matrix[2] = forwardX;
+                matrix[3] = 0;
+                matrix[4] = rightY;
+                matrix[5] = newUpY;
+                matrix[6] = forwardY;
+                matrix[7] = 0;
+                matrix[8] = rightZ;
+                matrix[9] = newUpZ;
+                matrix[10] = forwardZ;
+                matrix[11] = 0;
+                matrix[12] = -(rightX * eye[0] + rightY * eye[1] + rightZ * eye[2]);
+                matrix[13] = -(newUpX * eye[0] + newUpY * eye[1] + newUpZ * eye[2]);
+                matrix[14] = -(forwardX * eye[0] + forwardY * eye[1] + forwardZ * eye[2]);
+                matrix[15] = 1;
+            };
+            GraphicsLib.randomPointInSphere = function () {
+                var lambda = Math.random();
+                var u = Math.random() * 2.0 - 1.0;
+                var phi = Math.random() * 2.0 * Math.PI;
+                return [
+                    Math.pow(lambda, 1 / 3) * Math.sqrt(1.0 - u * u) * Math.cos(phi),
+                    Math.pow(lambda, 1 / 3) * Math.sqrt(1.0 - u * u) * Math.sin(phi),
+                    Math.pow(lambda, 1 / 3) * u
+                ];
+            };
+            GraphicsLib.log2 = function (x) {
+                return Math.log(x) / Math.log(2);
+            };
+            GraphicsLib.hsvToRGB = function (h, s, v) {
+                h = h % 1;
+                var c = v * s;
+                var hDash = h * 6;
+                var x = c * (1 - Math.abs(hDash % 2 - 1));
+                var mod = Math.floor(hDash);
+                var r = [c, x, 0, 0, x, c][mod];
+                var g = [x, c, c, x, 0, 0][mod];
+                var b = [0, 0, x, c, c, x][mod];
+                var m = v - c;
+                r += m;
+                g += m;
+                b += m;
+                return [r, g, b];
+            };
+            GraphicsLib.rgbToString = function (color) {
+                return 'rgb(' + (color[0] * 255).toFixed(0) + ',' + (color[1] * 255).toFixed(0) + ',' + (color[2] * 255).toFixed(0) + ')';
+            };
+            return GraphicsLib;
+        })();
         var FlowController = (function () {
             function FlowController($scope, $routeParams) {
                 var _this = this;
@@ -645,7 +740,6 @@ var Application;
                 this.changingParticleCount = false;
                 this.renderer = new ParticleRenderer();
                 this.pso = new PipelineState();
-                this.mathUtils = new MathUtils();
                 this.shaderLib = new ShaderLib(this.FLOOR_ORIGIN, this.PARTICLE_SATURATION, this.PARTICLE_VALUE);
                 $scope.hasWebGLSupportWithExtensions = function (extensions) { return _this.hasWebGLSupportWithExtensions(extensions); };
                 $scope.initCanvas = function (canvas) { return _this.initCanvas(canvas); };
@@ -667,7 +761,7 @@ var Application;
                 this.gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
                 this.gl.getExtension('OES_texture_float');
                 this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
-                this.camera = new Camera(this.canvas, this.mathUtils);
+                this.camera = new Camera(this.canvas);
                 this.renderer.firstFrame = true;
                 this.renderer.flipped = false;
                 this.pso.lastTime = 0.0;
@@ -679,7 +773,7 @@ var Application;
             };
             FlowController.prototype.onresize = function () {
                 var aspectRatio = window.innerWidth / window.innerHeight;
-                this.mathUtils.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
+                GraphicsLib.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
                 this.canvas.width = window.innerWidth;
                 this.canvas.height = window.innerHeight;
             };
@@ -746,13 +840,13 @@ var Application;
             FlowController.prototype.loadResources = function () {
                 this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                 this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-                this.pso.projectionMatrix = this.mathUtils.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
+                this.pso.projectionMatrix = GraphicsLib.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
                 this.pso.lightViewMatrix = new Float32Array(16);
                 GraphicsLib.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
                 this.pso.lightProjectionMatrix = new Float32Array(16);
                 GraphicsLib.makeOrthographicMatrix(this.pso.lightProjectionMatrix, this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
                 this.pso.lightViewProjectionMatrix = new Float32Array(16);
-                this.mathUtils.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
+                GraphicsLib.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
                 this.pso.resampleFramebuffer = this.gl.createFramebuffer();
                 this.changeQualityLevel(0);
                 //variables used for sorting
@@ -1095,106 +1189,6 @@ var Application;
                 return framebuffer;
             };
             return FlowController;
-        })();
-        var GraphicsLib = (function () {
-            function GraphicsLib() {
-            }
-            GraphicsLib.normalizeVector = function (out, v) {
-                var inverseMagnitude = 1.0 / Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-                out[0] = v[0] * inverseMagnitude;
-                out[1] = v[1] * inverseMagnitude;
-                out[2] = v[2] * inverseMagnitude;
-            };
-            GraphicsLib.dotVectors = function (a, b) {
-                return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-            };
-            GraphicsLib.makeOrthographicMatrix = function (matrix, left, right, bottom, top, near, far) {
-                matrix[0] = 2 / (right - left);
-                matrix[1] = 0;
-                matrix[2] = 0;
-                matrix[3] = 0;
-                matrix[4] = 0;
-                matrix[5] = 2 / (top - bottom);
-                matrix[6] = 0;
-                matrix[7] = 0;
-                matrix[8] = 0;
-                matrix[9] = 0;
-                matrix[10] = -2 / (far - near);
-                matrix[11] = 0;
-                matrix[12] = -(right + left) / (right - left);
-                matrix[13] = -(top + bottom) / (top - bottom);
-                matrix[14] = -(far + near) / (far - near);
-                matrix[15] = 1;
-            };
-            GraphicsLib.makeLookAtMatrix = function (matrix, eye, target, up) {
-                var forwardX = eye[0] - target[0], forwardY = eye[1] - target[1], forwardZ = eye[2] - target[2];
-                var forwardMagnitude = Math.sqrt(forwardX * forwardX + forwardY * forwardY + forwardZ * forwardZ);
-                forwardX /= forwardMagnitude;
-                forwardY /= forwardMagnitude;
-                forwardZ /= forwardMagnitude;
-                var rightX = up[2] * forwardY - up[1] * forwardZ;
-                var rightY = up[0] * forwardZ - up[2] * forwardX;
-                var rightZ = up[1] * forwardX - up[0] * forwardY;
-                var rightMagnitude = Math.sqrt(rightX * rightX + rightY * rightY + rightZ * rightZ);
-                rightX /= rightMagnitude;
-                rightY /= rightMagnitude;
-                rightZ /= rightMagnitude;
-                var newUpX = forwardY * rightZ - forwardZ * rightY;
-                var newUpY = forwardZ * rightX - forwardX * rightZ;
-                var newUpZ = forwardX * rightY - forwardY * rightX;
-                var newUpMagnitude = Math.sqrt(newUpX * newUpX + newUpY * newUpY + newUpZ * newUpZ);
-                newUpX /= newUpMagnitude;
-                newUpY /= newUpMagnitude;
-                newUpZ /= newUpMagnitude;
-                matrix[0] = rightX;
-                matrix[1] = newUpX;
-                matrix[2] = forwardX;
-                matrix[3] = 0;
-                matrix[4] = rightY;
-                matrix[5] = newUpY;
-                matrix[6] = forwardY;
-                matrix[7] = 0;
-                matrix[8] = rightZ;
-                matrix[9] = newUpZ;
-                matrix[10] = forwardZ;
-                matrix[11] = 0;
-                matrix[12] = -(rightX * eye[0] + rightY * eye[1] + rightZ * eye[2]);
-                matrix[13] = -(newUpX * eye[0] + newUpY * eye[1] + newUpZ * eye[2]);
-                matrix[14] = -(forwardX * eye[0] + forwardY * eye[1] + forwardZ * eye[2]);
-                matrix[15] = 1;
-            };
-            GraphicsLib.randomPointInSphere = function () {
-                var lambda = Math.random();
-                var u = Math.random() * 2.0 - 1.0;
-                var phi = Math.random() * 2.0 * Math.PI;
-                return [
-                    Math.pow(lambda, 1 / 3) * Math.sqrt(1.0 - u * u) * Math.cos(phi),
-                    Math.pow(lambda, 1 / 3) * Math.sqrt(1.0 - u * u) * Math.sin(phi),
-                    Math.pow(lambda, 1 / 3) * u
-                ];
-            };
-            GraphicsLib.log2 = function (x) {
-                return Math.log(x) / Math.log(2);
-            };
-            GraphicsLib.hsvToRGB = function (h, s, v) {
-                h = h % 1;
-                var c = v * s;
-                var hDash = h * 6;
-                var x = c * (1 - Math.abs(hDash % 2 - 1));
-                var mod = Math.floor(hDash);
-                var r = [c, x, 0, 0, x, c][mod];
-                var g = [x, c, c, x, 0, 0][mod];
-                var b = [0, 0, x, c, c, x][mod];
-                var m = v - c;
-                r += m;
-                g += m;
-                b += m;
-                return [r, g, b];
-            };
-            GraphicsLib.rgbToString = function (color) {
-                return 'rgb(' + (color[0] * 255).toFixed(0) + ',' + (color[1] * 255).toFixed(0) + ',' + (color[2] * 255).toFixed(0) + ')';
-            };
-            return GraphicsLib;
         })();
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
