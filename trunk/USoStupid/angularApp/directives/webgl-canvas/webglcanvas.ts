@@ -126,7 +126,7 @@ module Application.Directives {
     }
     
     class Camera {
-        private INITIAL_AZIMUTH: number = 0.6;
+        private INITIAL_AZIMUTH: number = -1.0;  //-1.6 is directly out of screen .. 0.6 <-- left to right
         private INITIAL_ELEVATION: number = 0.4;
         private CAMERA_ORBIT_POINT = [1.2, -0.3, 0.0];
         private CAMERA_DISTANCE: number = 2.2;
@@ -218,7 +218,7 @@ module Application.Directives {
             //});
 
             //setInterval(this.AutoMoveCamera.bind(this), 10);
-            this.azimuth = -300 * this.CAMERA_SENSITIVITY;
+            //this.azimuth = -300 * this.CAMERA_SENSITIVITY; //coming out of the screen to user
 
             this.recomputeViewMatrix();
         }

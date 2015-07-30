@@ -56,7 +56,7 @@ var Application;
         })();
         var Camera = (function () {
             function Camera(element) {
-                this.INITIAL_AZIMUTH = 0.6;
+                this.INITIAL_AZIMUTH = -1.0; //-1.6 is directly out of screen .. 0.6 <-- left to right
                 this.INITIAL_ELEVATION = 0.4;
                 this.CAMERA_ORBIT_POINT = [1.2, -0.3, 0.0];
                 this.CAMERA_DISTANCE = 2.2;
@@ -118,7 +118,7 @@ var Application;
                 //    }
                 //});
                 //setInterval(this.AutoMoveCamera.bind(this), 10);
-                this.azimuth = -300 * this.CAMERA_SENSITIVITY;
+                //this.azimuth = -300 * this.CAMERA_SENSITIVITY; //coming out of the screen to user
                 this.recomputeViewMatrix();
             }
             Camera.prototype.AutoMoveCamera = function () {
@@ -1201,4 +1201,3 @@ var Application;
         })();
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=webglcanvas.js.map
