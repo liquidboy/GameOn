@@ -701,8 +701,8 @@ var Application;
                 this.OPACITY_TEXTURE_RESOLUTION = 1024;
                 this.LIGHT_DIRECTION = [0.0, -1.0, 0.0]; //points away from the light source
                 this.LIGHT_UP_VECTOR = [0.0, 0.0, 1.0];
-                this.SLICES = 128;
-                this.SORT_PASSES_PER_FRAME = 50;
+                this.SLICES = 128; //128;
+                this.SORT_PASSES_PER_FRAME = 50; //50;
                 this.ASPECT_RATIO = 16 / 9;
                 this.PROJECTION_NEAR = 0.01;
                 this.PROJECTION_FAR = 10.0;

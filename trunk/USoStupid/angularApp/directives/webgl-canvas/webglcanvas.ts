@@ -1021,9 +1021,9 @@ module Application.Directives {
         private LIGHT_DIRECTION = [0.0, -1.0, 0.0]; //points away from the light source
         private LIGHT_UP_VECTOR = [0.0, 0.0, 1.0];
 
-        private SLICES: number = 128;
+        private SLICES: number = 128; //128;
 
-        private SORT_PASSES_PER_FRAME: number = 50;
+        private SORT_PASSES_PER_FRAME: number = 50; //50;
         
         private ASPECT_RATIO: number = 16 / 9;
 
