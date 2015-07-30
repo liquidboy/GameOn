@@ -84,39 +84,41 @@ var Application;
                     GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, xRotationMatrix);
                     GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, distanceTranslationMatrix);
                 };
-                //element.addEventListener('mousedown', function (event) {
-                //    mouseDown = true;
-                //    lastMouseX = __this.getMousePosition(event, element).x;
-                //    lastMouseY = __this.getMousePosition(event, element).y;
-                //});
-                //document.addEventListener('mouseup', function (event) {
-                //    mouseDown = false;
-                //});
-                //element.addEventListener('mousemove', function (event) {
-                //    if (mouseDown) {
-                //        var mouseX = __this.getMousePosition(event, element).x;
-                //        var mouseY = __this.getMousePosition(event, element).y;
-                //        var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
-                //        var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
-                //        __this.azimuth += deltaAzimuth;
-                //        __this.elevation += deltaElevation;
-                //        if (__this.elevation < __this.MIN_ELEVATION) {
-                //            __this.elevation = __this.MIN_ELEVATION;
-                //        } else if (__this.elevation > __this.MAX_ELEVATION) {
-                //            __this.elevation = __this.MAX_ELEVATION;
-                //        }
-                //        __this.recomputeViewMatrix();
-                //        lastMouseX = mouseX;
-                //        lastMouseY = mouseY;
-                //        element.style.cursor = '-webkit-grabbing';
-                //        element.style.cursor = '-moz-grabbing';
-                //        element.style.cursor = 'grabbing';
-                //    } else {
-                //        element.style.cursor = '-webkit-grab';
-                //        element.style.cursor = '-moz-grab';
-                //        element.style.cursor = 'grab';
-                //    }
-                //});
+                element.addEventListener('mousedown', function (event) {
+                    mouseDown = true;
+                    lastMouseX = __this.getMousePosition(event, element).x;
+                    lastMouseY = __this.getMousePosition(event, element).y;
+                });
+                document.addEventListener('mouseup', function (event) {
+                    mouseDown = false;
+                });
+                element.addEventListener('mousemove', function (event) {
+                    if (mouseDown) {
+                        var mouseX = __this.getMousePosition(event, element).x;
+                        var mouseY = __this.getMousePosition(event, element).y;
+                        var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
+                        var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
+                        __this.azimuth += deltaAzimuth;
+                        __this.elevation += deltaElevation;
+                        if (__this.elevation < __this.MIN_ELEVATION) {
+                            __this.elevation = __this.MIN_ELEVATION;
+                        }
+                        else if (__this.elevation > __this.MAX_ELEVATION) {
+                            __this.elevation = __this.MAX_ELEVATION;
+                        }
+                        __this.recomputeViewMatrix();
+                        lastMouseX = mouseX;
+                        lastMouseY = mouseY;
+                        element.style.cursor = '-webkit-grabbing';
+                        element.style.cursor = '-moz-grabbing';
+                        element.style.cursor = 'grabbing';
+                    }
+                    else {
+                        element.style.cursor = '-webkit-grab';
+                        element.style.cursor = '-moz-grab';
+                        element.style.cursor = 'grab';
+                    }
+                });
                 //setInterval(this.AutoMoveCamera.bind(this), 10);
                 //this.azimuth = -300 * this.CAMERA_SENSITIVITY; //coming out of the screen to user
                 this.recomputeViewMatrix();
@@ -702,7 +704,7 @@ var Application;
                 this.LIGHT_DIRECTION = [0.0, -1.0, 0.0]; //points away from the light source
                 this.LIGHT_UP_VECTOR = [0.0, 0.0, 1.0];
                 this.SLICES = 128; //128;
-                this.SORT_PASSES_PER_FRAME = 50; //50;
+                this.SORT_PASSES_PER_FRAME = 100; //50;
                 this.ASPECT_RATIO = 16 / 9;
                 this.PROJECTION_NEAR = 0.01;
                 this.PROJECTION_FAR = 10.0;
@@ -1064,9 +1066,9 @@ var Application;
                     this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], this.particleDiameter);
                     this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], this.canvas.width);
                     this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
+                    this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.renderer.flipped ? 1 : 0);
                     var colorRGB = GraphicsLib.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
                     this.gl.uniform3f(this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
-                    this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.renderer.flipped ? 1 : 0);
                     this.gl.activeTexture(this.gl.TEXTURE0);
                     this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
                     this.gl.activeTexture(this.gl.TEXTURE1);
@@ -1108,9 +1110,9 @@ var Application;
                     this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
                     this.gl.drawArrays(this.gl.POINTS, i * (this.particleCount / this.SLICES), this.particleCount / this.SLICES);
                 }
+                //FLOOR (SHADOW) & BACKGROUND
                 this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
                 this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-                //FLOOR (SHADOW) & BACKGROUND
                 this.gl.useProgram(this.pso.floorProgramWrapper.program);
                 this.gl.enableVertexAttribArray(0);
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.floorVertexBuffer);
@@ -1132,6 +1134,7 @@ var Application;
                 this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
                 this.gl.useProgram(this.pso.backgroundProgramWrapper.program);
                 this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+                //NEXT FRAME
                 requestAnimationFrame(this.render.bind(this));
             };
             FlowController.prototype.hasWebGLSupportWithExtensions = function (extensions) {

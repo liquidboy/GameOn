@@ -175,47 +175,47 @@ module Application.Directives {
             };
 
 
-            //element.addEventListener('mousedown', function (event) {
-            //    mouseDown = true;
-            //    lastMouseX = __this.getMousePosition(event, element).x;
-            //    lastMouseY = __this.getMousePosition(event, element).y;
-            //});
+            element.addEventListener('mousedown', function (event) {
+                mouseDown = true;
+                lastMouseX = __this.getMousePosition(event, element).x;
+                lastMouseY = __this.getMousePosition(event, element).y;
+            });
 
-            //document.addEventListener('mouseup', function (event) {
-            //    mouseDown = false;
-            //});
+            document.addEventListener('mouseup', function (event) {
+                mouseDown = false;
+            });
 
-            //element.addEventListener('mousemove', function (event) {
-            //    if (mouseDown) {
-            //        var mouseX = __this.getMousePosition(event, element).x;
-            //        var mouseY = __this.getMousePosition(event, element).y;
+            element.addEventListener('mousemove', function (event) {
+                if (mouseDown) {
+                    var mouseX = __this.getMousePosition(event, element).x;
+                    var mouseY = __this.getMousePosition(event, element).y;
 
-            //        var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
-            //        var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
+                    var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
+                    var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
 
-            //        __this.azimuth += deltaAzimuth;
-            //        __this.elevation += deltaElevation;
+                    __this.azimuth += deltaAzimuth;
+                    __this.elevation += deltaElevation;
 
-            //        if (__this.elevation < __this.MIN_ELEVATION) {
-            //            __this.elevation = __this.MIN_ELEVATION;
-            //        } else if (__this.elevation > __this.MAX_ELEVATION) {
-            //            __this.elevation = __this.MAX_ELEVATION;
-            //        }
+                    if (__this.elevation < __this.MIN_ELEVATION) {
+                        __this.elevation = __this.MIN_ELEVATION;
+                    } else if (__this.elevation > __this.MAX_ELEVATION) {
+                        __this.elevation = __this.MAX_ELEVATION;
+                    }
 
-            //        __this.recomputeViewMatrix();
+                    __this.recomputeViewMatrix();
 
-            //        lastMouseX = mouseX;
-            //        lastMouseY = mouseY;
+                    lastMouseX = mouseX;
+                    lastMouseY = mouseY;
 
-            //        element.style.cursor = '-webkit-grabbing';
-            //        element.style.cursor = '-moz-grabbing';
-            //        element.style.cursor = 'grabbing';
-            //    } else {
-            //        element.style.cursor = '-webkit-grab';
-            //        element.style.cursor = '-moz-grab';
-            //        element.style.cursor = 'grab';
-            //    }
-            //});
+                    element.style.cursor = '-webkit-grabbing';
+                    element.style.cursor = '-moz-grabbing';
+                    element.style.cursor = 'grabbing';
+                } else {
+                    element.style.cursor = '-webkit-grab';
+                    element.style.cursor = '-moz-grab';
+                    element.style.cursor = 'grab';
+                }
+            });
 
             //setInterval(this.AutoMoveCamera.bind(this), 10);
             //this.azimuth = -300 * this.CAMERA_SENSITIVITY; //coming out of the screen to user
@@ -952,7 +952,7 @@ module Application.Directives {
 
         private SLICES: number = 128; //128;
 
-        private SORT_PASSES_PER_FRAME: number = 50; //50;
+        private SORT_PASSES_PER_FRAME: number = 100; //50;
         
         private ASPECT_RATIO: number = 16 / 9;
 
@@ -1421,9 +1421,7 @@ module Application.Directives {
                 this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_deltaTime'], this.renderer.firstFrame ? this.PRESIMULATION_DELTA_TIME : deltaTime * this.timeScale);
                 this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_time'], this.renderer.firstFrame ? this.PRESIMULATION_DELTA_TIME : currentTime);
                 this.gl.uniform1i(this.pso.simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
-
                 this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_persistence'], this.persistence);
-
                 this.gl.uniform1i(this.pso.simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
 
                 this.gl.disable(this.gl.BLEND);
@@ -1475,10 +1473,8 @@ module Application.Directives {
 
                 this.gl.uniform1i(this.pso.sortProgramWrapper.uniformLocations['u_dataTexture'], 0);
                 this.gl.uniform2f(this.pso.sortProgramWrapper.uniformLocations['u_resolution'], this.particleCountWidth, this.particleCountHeight);
-
                 this.gl.uniform1f(this.pso.sortProgramWrapper.uniformLocations['pass'], 1 << this.pso.sortPass);
                 this.gl.uniform1f(this.pso.sortProgramWrapper.uniformLocations['stage'], 1 << this.pso.sortStage);
-
                 this.gl.uniform3fv(this.pso.sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
 
                 this.gl.activeTexture(this.gl.TEXTURE0);
@@ -1520,22 +1516,18 @@ module Application.Directives {
 
                 this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_particleTexture'], 0);
                 this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
-
                 this.gl.uniformMatrix4fv(this.pso.renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, this.camera.getViewMatrix());
                 this.gl.uniformMatrix4fv(this.pso.renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, this.pso.projectionMatrix);
-
                 this.gl.uniformMatrix4fv(this.pso.renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, this.pso.lightViewProjectionMatrix);
-
                 this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], this.particleDiameter);
                 this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], this.canvas.width);
-
                 this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
+                this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.renderer.flipped ? 1 : 0);
 
                 var colorRGB = GraphicsLib.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
                 this.gl.uniform3f(this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
 
-                this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.renderer.flipped ? 1 : 0);
-
+                
                 this.gl.activeTexture(this.gl.TEXTURE0);
                 this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
 
@@ -1561,6 +1553,10 @@ module Application.Directives {
 
                 this.gl.drawArrays(this.gl.POINTS, i * (this.particleCount / this.SLICES), this.particleCount / this.SLICES);
 
+
+
+
+
                 //particle opacity
                 this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.opacityFramebuffer);
 
@@ -1569,13 +1565,10 @@ module Application.Directives {
                 this.gl.useProgram(this.pso.opacityProgramWrapper.program);
 
                 this.gl.uniform1i(this.pso.opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
-
                 this.gl.uniformMatrix4fv(this.pso.opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, this.pso.lightViewMatrix);
                 this.gl.uniformMatrix4fv(this.pso.opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, this.pso.lightProjectionMatrix);
-
                 this.gl.uniform1f(this.pso.opacityProgramWrapper.uniformLocations['u_particleDiameter'], this.particleDiameter);
                 this.gl.uniform1f(this.pso.opacityProgramWrapper.uniformLocations['u_screenWidth'], this.OPACITY_TEXTURE_RESOLUTION);
-
                 this.gl.uniform1f(this.pso.opacityProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
 
                 this.gl.activeTexture(this.gl.TEXTURE0);
@@ -1593,12 +1586,12 @@ module Application.Directives {
                 this.gl.drawArrays(this.gl.POINTS, i * (this.particleCount / this.SLICES), this.particleCount / this.SLICES);
             }
 
+
+            
+            //FLOOR (SHADOW) & BACKGROUND
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
             this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
 
-
-
-            //FLOOR (SHADOW) & BACKGROUND
             this.gl.useProgram(this.pso.floorProgramWrapper.program);
 
             this.gl.enableVertexAttribArray(0);
@@ -1607,10 +1600,9 @@ module Application.Directives {
 
             this.gl.uniformMatrix4fv(this.pso.floorProgramWrapper.uniformLocations['u_viewMatrix'], false, this.camera.getViewMatrix());
             this.gl.uniformMatrix4fv(this.pso.floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, this.pso.projectionMatrix);
-
             this.gl.uniformMatrix4fv(this.pso.floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, this.pso.lightViewProjectionMatrix);
-
             this.gl.uniform1i(this.pso.floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
+
             this.gl.activeTexture(this.gl.TEXTURE0);
             this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.opacityTexture);
 
@@ -1633,6 +1625,9 @@ module Application.Directives {
             this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 
             
+
+
+            //NEXT FRAME
             requestAnimationFrame(this.render.bind(this));
         }
 
