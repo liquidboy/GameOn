@@ -1110,7 +1110,7 @@ var Application;
                 }
                 this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
                 this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-                //FLOOR (SHADOW)
+                //FLOOR (SHADOW) & BACKGROUND
                 this.gl.useProgram(this.pso.floorProgramWrapper.program);
                 this.gl.enableVertexAttribArray(0);
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.floorVertexBuffer);
@@ -1130,7 +1130,6 @@ var Application;
                 this.gl.enableVertexAttribArray(0);
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
                 this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
-                //BACKGROUND
                 this.gl.useProgram(this.pso.backgroundProgramWrapper.program);
                 this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
                 requestAnimationFrame(this.render.bind(this));

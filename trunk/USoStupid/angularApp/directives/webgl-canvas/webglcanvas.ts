@@ -1598,7 +1598,7 @@ module Application.Directives {
 
 
 
-            //FLOOR (SHADOW)
+            //FLOOR (SHADOW) & BACKGROUND
             this.gl.useProgram(this.pso.floorProgramWrapper.program);
 
             this.gl.enableVertexAttribArray(0);
@@ -1620,7 +1620,7 @@ module Application.Directives {
             this.gl.blendFunc(this.gl.ONE_MINUS_DST_ALPHA, this.gl.ONE);
 
             this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-
+           
             this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
 
             this.gl.enableVertexAttribArray(0);
@@ -1628,7 +1628,7 @@ module Application.Directives {
             this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
 
 
-            //BACKGROUND
+            
             this.gl.useProgram(this.pso.backgroundProgramWrapper.program);
             this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 
