@@ -358,12 +358,16 @@
     <Content Include="angularApp\directives\publicFooter.js">
       <DependentUpon>publicFooter.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\shaderToy\shaderToy.js">
+      <DependentUpon>shaderToy.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
     <Content Include="angularApp\partials\extension-full.html" />
     <Content Include="angularApp\partials\extension-lite.html" />
     <Content Include="angularApp\partials\banner-square.html" />
+    <Content Include="angularApp\partials\shader-toy.html" />
     <Content Include="angularApp\partials\image-billboard.html" />
     <Content Include="angularApp\partials\links-list.html" />
     <Content Include="angularApp\partials\pages-list.html" />
@@ -517,6 +521,15 @@
     <Content Include="Global.asax" />
     <Content Include="Index.cshtml" />
     <Content Include="babylon-example-index.js" />
+    <Content Include="Libs\ShaderToy\cmGeneral.js" />
+    <Content Include="Libs\ShaderToy\cmLive.js" />
+    <Content Include="Libs\ShaderToy\cmRenderUtils.js" />
+    <Content Include="Libs\ShaderToy\cmVecTypes.js" />
+    <Content Include="Libs\ShaderToy\cmWebVR.js" />
+    <Content Include="Libs\ShaderToy\effect.js" />
+    <Content Include="Libs\ShaderToy\glsl.js" />
+    <Content Include="Libs\ShaderToy\home.html" />
+    <Content Include="Libs\ShaderToy\pgWatch.js" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
@@ -749,6 +762,9 @@
     </Content>
     <Content Include="angularApp\controllers\flow.js.map">
       <DependentUpon>flow.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\shaderToy\shaderToy.js.map">
+      <DependentUpon>shaderToy.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1892,6 +1908,7 @@
     <TypeScriptCompile Include="angularApp\directives\configMenu.ts" />
     <TypeScriptCompile Include="angularApp\directives\postLite.ts" />
     <TypeScriptCompile Include="angularApp\directives\pageLite.ts" />
+    <TypeScriptCompile Include="angularApp\directives\shaderToy\shaderToy.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />
