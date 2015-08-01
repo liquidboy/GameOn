@@ -558,6 +558,8 @@
     <Content Include="Scripts\babylon.js" />
     <Content Include="Scripts\babylon.max.js" />
     <Content Include="Scripts\babylon.noworker.js" />
+    <Content Include="Scripts\codemirror\codemirror.css" />
+    <Content Include="Scripts\codemirror\codemirror.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
