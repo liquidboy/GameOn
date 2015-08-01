@@ -217,12 +217,15 @@
         mEffect: any;
         mDocs: any;
 
+        mCharCounter: any;
+
         constructor(
             public playerElement: any,
             public editorElement: any,
             public passElement: ng.IAugmentedJQuery) {
 
-            var canvas : any = $(playerElement).find('#demogl')[0];
+            var canvas: any = $(playerElement).find('#demogl')[0];
+            this.mCharCounter = $('#shaderCharCounter');
             this.mCanvas = canvas;
             this.mDocs = {};
 
@@ -312,7 +315,10 @@
             divText.innerHTML = 'Shadertoy needs a WebGL-enabled browser. Minimum Requirements: <ul><li>Firefox 17</li><li>Chrome 23</li><li>Internet Explorer 11</li><li>Safari 8</li></ul>';
             div.appendChild(divText);
         }
-        newScriptJSON = function (jsn) {
+
+        mActiveDoc: any;
+        mInfo: any;
+        newScriptJSON(jsn) {
             try {
                 var res = this.mEffect.newScriptJSON(jsn);
 
@@ -570,10 +576,10 @@
 
                 me.mFpsFrame++;
 
-                document.getElementById("myTime").innerHTML = (ltime / 1000.0).toFixed(2);
+                //document.getElementById("myTime").innerHTML = (ltime / 1000.0).toFixed(2);
                 if ((time - me.mFpsTo) > 1000) {
                     var ffps = 1000.0 * me.mFpsFrame / (time - me.mFpsTo);
-                    document.getElementById("myFramerate").innerHTML = ffps.toFixed(1) + " fps";
+                    //document.getElementById("myFramerate").innerHTML = ffps.toFixed(1) + " fps";
                     me.mFpsFrame = 0;
                     me.mFpsTo = time;
                 }
@@ -599,7 +605,13 @@
             }
         }
 
-        resetTime = function () {
+        mTOffset: number;
+        mTo: any;
+        mTf: number;
+        mFpsTo: any;
+        mFpsFrame: any;
+
+        resetTime() {
             this.mTOffset = 0;
             this.mTo = performance.now();
             this.mTf = 0;
@@ -627,8 +639,8 @@
 
             var flags = this.mEffect.calcFlags();
 
-            var eleVR = document.getElementById("myVR");
-            eleVR.style.visibility = (flags.mFlagVR == true) ? "visible" : "hidden";
+            //var eleVR = document.getElementById("myVR");
+            //eleVR.style.visibility = (flags.mFlagVR == true) ? "visible" : "hidden";
         }
 
 
@@ -802,7 +814,64 @@
             return str;
         }
 
+        SetErrors = function (result, fromScript) {
+            //var eleWrapper = document.getElementById('editorWrapper');
 
+            //while (this.mErrors.length > 0) {
+            //    var mark = this.mErrors.pop();
+            //    this.mCodeEditor.removeLineWidget(mark);
+            //}
+
+            //var eleWrapper = document.getElementById('editorWrapper');
+
+            //if (result == null) {
+            //    this.mForceFrame = true;
+            //    if (fromScript == false) {
+            //        eleWrapper.className = "errorNo";
+            //        setTimeout(function () { eleWrapper.className = ""; }, 500);
+            //    }
+            //}
+            //else {
+            //    eleWrapper.className = "errorYes";
+
+            //    var lineOffset = this.mEffect.GetHeaderSize(this.mActiveDoc);
+            //    var lines = result.match(/^.*((\r\n|\n|\r)|$)/gm);
+            //    for (var i = 0; i < lines.length; i++) {
+            //        var parts = lines[i].split(":");
+            //        if (parts.length === 5 || parts.length === 6) {
+            //            var lineNumber = parseInt(parts[2]) - lineOffset;
+            //            var msg = document.createElement("div");
+            //            msg.appendChild(document.createTextNode(parts[3] + " : " + parts[4]));
+            //            msg.className = "errorMessage";
+            //            var mark = this.mCodeEditor.addLineWidget(lineNumber - 1, msg, { coverGutter: false, noHScroll: true });
+
+            //            this.mErrors.push(mark);
+            //        }
+            //        else if (lines[i] != null && lines[i] != "" && lines[i].length > 1 && parts[0] != "Warning") {
+            //            console.log(parts.length + " **" + lines[i]);
+
+            //            var txt = "";
+            //            if (parts.length == 4)
+            //                txt = parts[2] + " : " + parts[3];
+            //            else
+            //                txt = "Unknown error";
+
+            //            var msg = document.createElement("div");
+            //            msg.appendChild(document.createTextNode(txt));
+            //            msg.className = "errorMessage";
+            //            var mark = this.mCodeEditor.addLineWidget(0, msg, { coverGutter: false, noHScroll: true, above: true });
+            //            this.mErrors.push(mark);
+
+            //        }
+            //    }
+            //}
+        }
+
+        SetPasses = function (passes) {
+            //for (var i = 0; i < passes.length; i++)
+            //    this.AddTab(passes[i].mType, i, i == 0);
+            //this.AddPlusTab();
+        }
     }
 
     class Effect {
@@ -1022,6 +1091,75 @@
             this.mPasses[passid].NewTexture(this.mAudioContext, this.mGLContext, slot, url);
         }
 
+        calcFlags() {
+            var flagVR = false;
+            var flagWebcam = false;
+            var flagSoundInput = false;
+            var flagSoundOutput = false;
+            var flagKeyboard = false;
+
+            var numPasses = this.mPasses.length;
+            for (var j = 0; j < numPasses; j++) {
+                var pass = this.mPasses[j];
+                if (!pass.mUsed) continue;
+
+                if (pass.mType == "sound") flagSoundOutput = true;
+
+                for (var i = 0; i < 4; i++) {
+                    if (pass.mInputs[i] == null) continue;
+
+                    if (pass.mInputs[i].mInfo.mType == "webcam") flagWebcam = true;
+                    else if (pass.mInputs[i].mInfo.mType == "keyboard") flagKeyboard = true;
+                    else if (pass.mInputs[i].mInfo.mType == "mic") flagSoundInput = true;
+                }
+
+                var n1 = pass.mSource.indexOf("mainVR(");
+                var n2 = pass.mSource.indexOf("mainVR (");
+                if (n1 > 0 || n2 > 0) flagVR = true;
+            }
+
+            return {
+                mFlagVR: flagVR,
+                mFlagWebcam: flagWebcam,
+                mFlagSoundInput: flagSoundInput,
+                mFlagSoundOutput: flagSoundOutput,
+                mFlagKeyboard: flagKeyboard
+            };
+        }
+
+        ResetTime() {
+            var gothere = '';
+            //this.mTOffset = 0;
+            //this.mTo = performance.now();
+            //this.mTf = 0;
+            //this.mFpsTo = this.mTo;
+            //this.mFpsFrame = 0;
+            //this.mForceFrame = true;
+            //this.mEffect.ResetTime();
+        }
+
+        Paint(time, mouseOriX, mouseOriY, mousePosX, mousePosY, isPaused) {
+            var gl = this.mGLContext;
+            var wa = this.mAudioContext;
+
+            if (gl == null) return;
+
+            var da = new Date();
+
+            var vrData = null;
+            if (this.mRenderingStereo) vrData = this.mWebVR.GetData();
+
+            var xres = this.mXres / 1; // iqiq
+            var yres = this.mYres / 1; // iqiq
+
+            var num = this.mPasses.length;
+            for (var i = 0; i < num; i++) {
+                if (!this.mPasses[i].mUsed) continue;
+                if (this.mPasses[i].mProgram == null) continue;
+
+                this.mPasses[i].Paint(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused);
+            }
+        }
     }
 
 
@@ -1044,7 +1182,14 @@
         mForcePaused: any;
 
         mQuadVBO: any;
-
+        mRenderFBO: any;
+        mTextureDimensions: any;
+        mSampleRate: any;
+        mBuffer: any;
+        mPlaySamples: any;
+        mTmpBufferSamples: any;
+        mData: any;
+        mPlayNode: any;
 
         constructor(gl, precission, supportDerivatives, callback, obj, forceMuted, forcePaused, quadVBO, outputGainNode, id) {
 
@@ -1642,6 +1787,527 @@
 
         deleteFBO(gl, fbo) {
             gl.deleteFramebuffer(fbo);
+        }
+
+        Paint (vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused) {
+            if (this.mType == "sound") {
+                if (this.mFrame == 0 && !isPaused) {
+                    // make sure all textures are loaded
+                    for (var i = 0; i < this.mInputs.length; i++) {
+                        var inp = this.mInputs[i];
+                        if (inp == null) continue;
+
+                        if (inp.mInfo.mType == "texture" && !inp.loaded) return;
+                        if (inp.mInfo.mType == "cubemap" && !inp.loaded) return;
+                    }
+
+                    this.Paint_Sound(wa, gl, da);
+                    this.mFrame++;
+                }
+            }
+            else {
+                this.Paint_Image(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres);
+                this.mFrame++;
+            }
+
+        }
+
+
+        Paint_Sound(wa, gl, d) {
+            var dates = [d.getFullYear(), // the year (four digits)
+                d.getMonth(),	   // the month (from 0-11)
+                d.getDate(),     // the day of the month (from 1-31)
+                d.getHours() * 60.0 * 60 + d.getMinutes() * 60 + d.getSeconds()];
+
+            var resos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+
+
+            gl.bindFramebuffer(gl.FRAMEBUFFER, this.mRenderFBO);
+
+            gl.viewport(0, 0, this.mTextureDimensions, this.mTextureDimensions);
+            gl.useProgram(this.mProgram);
+
+
+            for (var i = 0; i < this.mInputs.length; i++) {
+                var inp = this.mInputs[i];
+
+                gl.activeTexture(gl.TEXTURE0 + i);
+
+                if (inp == null) {
+                    gl.bindTexture(gl.TEXTURE_2D, null);
+                }
+                else if (inp.mInfo.mType == "texture") {
+                    if (inp.loaded == false) {
+                        gl.bindTexture(gl.TEXTURE_2D, null);
+                    }
+                    else {
+                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+                        resos[3 * i + 0] = inp.image.width;
+                        resos[3 * i + 1] = inp.image.height;
+                        resos[3 * i + 2] = 1;
+                    }
+                }
+            }
+
+            var l2 = gl.getUniformLocation(this.mProgram, "iBlockOffset");
+            var l7 = gl.getUniformLocation(this.mProgram, "iDate"); gl.uniform4fv(l7, dates);
+            var l8 = gl.getUniformLocation(this.mProgram, "iChannelResolution"); gl.uniform3fv(l8, resos);
+            var l9 = gl.getUniformLocation(this.mProgram, "iSampleRate"); gl.uniform1f(l9, this.mSampleRate);
+            var ich0 = gl.getUniformLocation(this.mProgram, "iChannel0"); if (ich0 != null) gl.uniform1i(ich0, 0);
+            var ich1 = gl.getUniformLocation(this.mProgram, "iChannel1"); if (ich1 != null) gl.uniform1i(ich1, 1);
+            var ich2 = gl.getUniformLocation(this.mProgram, "iChannel2"); if (ich2 != null) gl.uniform1i(ich2, 2);
+            var ich3 = gl.getUniformLocation(this.mProgram, "iChannel3"); if (ich3 != null) gl.uniform1i(ich3, 3);
+
+
+
+            var l1 = gl.getAttribLocation(this.mProgram, "pos");
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.mQuadVBO);
+            gl.vertexAttribPointer(l1, 2, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(l1);
+
+            //--------------------------------
+
+            var bufL = this.mBuffer.getChannelData(0); // Float32Array
+            var bufR = this.mBuffer.getChannelData(1); // Float32Array
+            var numBlocks = this.mPlaySamples / this.mTmpBufferSamples;
+            for (var j = 0; j < numBlocks; j++) {
+                var off = j * this.mTmpBufferSamples;
+
+                gl.uniform1f(l2, off / this.mSampleRate);
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                gl.readPixels(0, 0, this.mTextureDimensions, this.mTextureDimensions, gl.RGBA, gl.UNSIGNED_BYTE, this.mData);
+
+                for (var i = 0; i < this.mTmpBufferSamples; i++) {
+                    bufL[off + i] = -1.0 + 2.0 * (this.mData[4 * i + 0] + 256.0 * this.mData[4 * i + 1]) / 65535.0;
+                    bufR[off + i] = -1.0 + 2.0 * (this.mData[4 * i + 2] + 256.0 * this.mData[4 * i + 3]) / 65535.0;
+                }
+            }
+
+            gl.disableVertexAttribArray(l1);
+            gl.useProgram(null);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+            //-------------------------------
+
+            if (this.mPlayNode != null) { this.mPlayNode.disconnect(); this.mPlayNode.stop(); }
+
+            this.mPlayNode = wa.createBufferSource();
+            this.mPlayNode.buffer = this.mBuffer;
+            this.mPlayNode.connect(this.mGainNode);
+            this.mPlayNode.state = this.mPlayNode.noteOn;
+            this.mPlayNode.start(0);
+        }
+
+        Paint_Image(vrData, wa, gl, d, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres) {
+            var times = [0.0, 0.0, 0.0, 0.0];
+
+            var dates = [d.getFullYear(), // the year (four digits)
+                d.getMonth(),	   // the month (from 0-11)
+                d.getDate(),     // the day of the month (from 1-31)
+                d.getHours() * 60.0 * 60 + d.getMinutes() * 60 + d.getSeconds() + d.getMilliseconds() / 1000.0];
+
+            var mouse = [mousePosX, mousePosY, mouseOriX, mouseOriY];
+
+            var resos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+
+
+
+            //------------------------
+
+
+            for (var i = 0; i < this.mInputs.length; i++) {
+                var inp = this.mInputs[i];
+
+                gl.activeTexture(gl.TEXTURE0 + i);
+
+                if (inp == null) {
+                    gl.bindTexture(gl.TEXTURE_2D, null);
+                }
+                else if (inp.mInfo.mType == "texture") {
+                    if (inp.loaded == false)
+                        gl.bindTexture(gl.TEXTURE_2D, null);
+                    else {
+                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+                        resos[3 * i + 0] = inp.image.width;
+                        resos[3 * i + 1] = inp.image.height;
+                        resos[3 * i + 2] = 1;
+                    }
+                }
+                else if (inp.mInfo.mType == "keyboard") {
+                    if (inp.loaded == false)
+                        gl.bindTexture(gl.TEXTURE_2D, null);
+                    else {
+                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+                        if (inp.keyboard.mNewTextureReady == true) {
+
+                            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+                            gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 256, 2, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.keyboard.mData);
+                            inp.keyboard.mNewTextureReady = false;
+
+                            if (this.mTextureCallbackFun != null)
+                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, { mImage: inp.keyboard.mImage, mData: inp.keyboard.mData }, false, false, 4, -1.0, this.mID);
+                        }
+                    }
+                }
+                else if (inp.mInfo.mType == "cubemap") {
+                    if (inp.loaded == false)
+                        gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+                    else
+                        gl.bindTexture(gl.TEXTURE_CUBE_MAP, inp.globject);
+                }
+                else if (inp.mInfo.mType == "webcam") {
+                    if (inp.video.readyState === inp.video.HAVE_ENOUGH_DATA) {
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.video, false, false, 0, -1, this.mID);
+
+                        if (inp.loaded == false) {
+                            gl.bindTexture(gl.TEXTURE_2D, null);
+                        }
+                        else {
+                            gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+                            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+                            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, inp.video);
+                            resos[3 * i + 0] = inp.video.width;
+                            resos[3 * i + 1] = inp.video.height;
+                            resos[3 * i + 2] = 1;
+                        }
+                    }
+                }
+                else if (inp.mInfo.mType == "video") {
+                    if (inp.video.mPaused == false) {
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.video, false, false, 0, inp.video.currentTime, this.mID);
+                    }
+
+                    if (inp.loaded == false) {
+                        gl.bindTexture(gl.TEXTURE_2D, null);
+                    }
+                    else {
+                        times[i] = inp.video.currentTime;
+
+                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+
+                        if (inp.video.mPaused == false) {
+                            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+                            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, inp.video);
+                        }
+                        resos[3 * i + 0] = inp.video.width;
+                        resos[3 * i + 1] = inp.video.height;
+                        resos[3 * i + 2] = 1;
+                    }
+                }
+                else if (inp.mInfo.mType == "music") {
+                    if (inp.audio.mPaused == false && inp.audio.mForceMuted == false) {
+                        if (wa != null) {
+                            inp.audio.mSound.mAnalyser.getByteFrequencyData(inp.audio.mSound.mFreqData);
+                            inp.audio.mSound.mAnalyser.getByteTimeDomainData(inp.audio.mSound.mWaveData);
+                        }
+
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.audio.mSound.mFreqData, false, false, 2, inp.audio.currentTime, this.mID);
+                    }
+
+                    if (inp.loaded == false) {
+                        gl.bindTexture(gl.TEXTURE_2D, null);
+                    }
+                    else {
+                        times[i] = inp.audio.currentTime;
+
+                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+                        if (inp.audio.mForceMuted == true) {
+                            times[i] = 10.0 + time;
+                            var num = inp.audio.mSound.mFreqData.length;
+                            for (var j = 0; j < num; j++) {
+                                var x = j / num;
+                                var f = (0.75 + 0.25 * Math.sin(10.0 * j + 13.0 * time)) * Math.exp(-3.0 * x);
+
+                                if (j < 3)
+                                    f = Math.pow(0.50 + 0.5 * Math.sin(6.2831 * time), 4.0) * (1.0 - j / 3.0);
+
+                                inp.audio.mSound.mFreqData[j] = Math.floor(255.0 * f) | 0;
+                            }
+
+                            var num = inp.audio.mSound.mFreqData.length;
+                            for (var j = 0; j < num; j++) {
+                                var f = 0.5 + 0.15 * Math.sin(17.0 * time + 10.0 * 6.2831 * j / num) * Math.sin(23.0 * time + 1.9 * j / num);
+                                inp.audio.mSound.mWaveData[j] = Math.floor(255.0 * f) | 0;
+                            }
+
+                        }
+
+                        if (inp.audio.mPaused == false) {
+                            var waveLen = Math.min(inp.audio.mSound.mWaveData.length, 512);
+                            gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 512, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.audio.mSound.mFreqData);
+                            gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 1, waveLen, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.audio.mSound.mWaveData);
+                        }
+
+                        resos[3 * i + 0] = 512;
+                        resos[3 * i + 1] = 2;
+                        resos[3 * i + 2] = 1;
+                    }
+                }
+                else if (inp.mInfo.mType == "mic") {
+                    if (inp.mForceMuted == false) {
+                        if (wa != null && inp.mAnalyser != null) {
+                            inp.mAnalyser.getByteFrequencyData(inp.mFreqData);
+                            inp.mAnalyser.getByteTimeDomainData(inp.mWaveData);
+                        }
+
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.mFreqData, false, false, 2, 0, this.mID);
+                    }
+
+
+                    if (inp.loaded == false) {
+                        gl.bindTexture(gl.TEXTURE_2D, null);
+                    }
+                    else {
+                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+                        if (inp.mForceMuted == true) {
+                            times[i] = 10.0 + time;
+                            var num = inp.mFreqData.length;
+                            for (var j = 0; j < num; j++) {
+                                var x = j / num;
+                                var f = (0.75 + 0.25 * Math.sin(10.0 * j + 13.0 * time)) * Math.exp(-3.0 * x);
+
+                                if (j < 3)
+                                    f = Math.pow(0.50 + 0.5 * Math.sin(6.2831 * time), 4.0) * (1.0 - j / 3.0);
+
+                                inp.mFreqData[j] = Math.floor(255.0 * f) | 0;
+                            }
+
+                            var num = inp.mFreqData.length;
+                            for (var j = 0; j < num; j++) {
+                                var f = 0.5 + 0.15 * Math.sin(17.0 * time + 10.0 * 6.2831 * j / num) * Math.sin(23.0 * time + 1.9 * j / num);
+                                inp.mWaveData[j] = Math.floor(255.0 * f) | 0;
+                            }
+
+                            if (this.mTextureCallbackFun != null)
+                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.mFreqData, false, false, 2, 0, this.mID);
+                        }
+
+                        var waveLen = Math.min(inp.mWaveData.length, 512);
+
+                        gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 512, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.mFreqData);
+                        gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 1, waveLen, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.mWaveData);
+
+                        resos[3 * i + 0] = 512;
+                        resos[3 * i + 1] = 2;
+                        resos[3 * i + 2] = 1;
+                    }
+                }
+
+            }
+
+            //-----------------------------------
+            var prog = (vrData == null) ? this.mProgram : this.mProgramVR;
+
+            gl.useProgram(prog);
+
+            var l2 = gl.getUniformLocation(prog, "iGlobalTime"); if (l2 != null) gl.uniform1f(l2, time);
+            var l3 = gl.getUniformLocation(prog, "iResolution"); if (l3 != null) gl.uniform3f(l3, xres, yres, 1.0);
+            var l4 = gl.getUniformLocation(prog, "iMouse"); if (l4 != null) gl.uniform4fv(l4, mouse);
+            var l5 = gl.getUniformLocation(prog, "iChannelTime"); if (l5 != null) gl.uniform1fv(l5, times);
+            var l7 = gl.getUniformLocation(prog, "iDate"); if (l7 != null) gl.uniform4fv(l7, dates);
+            var l8 = gl.getUniformLocation(prog, "iChannelResolution"); if (l8 != null) gl.uniform3fv(l8, resos);
+            var l9 = gl.getUniformLocation(prog, "iSampleRate"); if (l9 != null) gl.uniform1f(l9, this.mSampleRate);
+            var ich0 = gl.getUniformLocation(prog, "iChannel0"); if (ich0 != null) gl.uniform1i(ich0, 0);
+            var ich1 = gl.getUniformLocation(prog, "iChannel1"); if (ich1 != null) gl.uniform1i(ich1, 1);
+            var ich2 = gl.getUniformLocation(prog, "iChannel2"); if (ich2 != null) gl.uniform1i(ich2, 2);
+            var ich3 = gl.getUniformLocation(prog, "iChannel3"); if (ich3 != null) gl.uniform1i(ich3, 3);
+
+            var l1 = gl.getAttribLocation(prog, "pos");
+
+
+            if (vrData == null) {
+                gl.viewport(0, 0, xres, yres);
+
+                gl.bindBuffer(gl.ARRAY_BUFFER, this.mQuadVBO);
+                gl.vertexAttribPointer(l1, 2, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(l1);
+
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+                gl.disableVertexAttribArray(l1);
+            }
+            else {
+                gl.bindBuffer(gl.ARRAY_BUFFER, this.mQuadVBO);
+                gl.vertexAttribPointer(l1, 2, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(l1);
+
+                for (var i = 0; i < 2; i++) {
+                    var ei = (i == 0) ? vrData.mLeftEye : vrData.mRightEye;
+
+                    var vp = [i * xres / 2, 0, xres / 2, yres];
+                    //vp = ei.mVP;
+                    gl.viewport(vp[0], vp[1], vp[2], vp[3]);
+
+                    var fov = ei.mProjection;
+                    var corA = [-fov[2], -fov[1], -1.0];
+                    var corB = [fov[3], -fov[1], -1.0];
+                    var corC = [fov[3], fov[0], -1.0];
+                    var corD = [-fov[2], fov[0], -1.0];
+                    var apex = [0.0, 0.0, 0.0];
+
+                    var ma = this.invertFast(ei.mCamera);
+                    corA = this.matMulpoint(ma, corA);
+                    corB = this.matMulpoint(ma, corB);
+                    corC = this.matMulpoint(ma, corC);
+                    corD = this.matMulpoint(ma, corD);
+                    apex = this.matMulpoint(ma, apex);
+
+                    var corners = [corA[0], corA[1], corA[2],
+                        corB[0], corB[1], corB[2],
+                        corC[0], corC[1], corC[2],
+                        corD[0], corD[1], corD[2],
+                        apex[0], apex[1], apex[2]];
+                    gl.uniform3fv(gl.getUniformLocation(prog, "unCorners"), corners);
+                    gl.uniform4fv(gl.getUniformLocation(prog, "unViewport"), vp);
+
+                    gl.drawArrays(gl.TRIANGLES, 0, 6);
+                }
+
+                gl.disableVertexAttribArray(l1);
+
+
+
+            }
+
+        }
+
+        
+        invertFast(m) {
+            var inv = [
+
+                m[5] * m[10] * m[15] -
+                m[5] * m[11] * m[14] -
+                m[9] * m[6] * m[15] +
+                m[9] * m[7] * m[14] +
+                m[13] * m[6] * m[11] -
+                m[13] * m[7] * m[10],
+
+                -m[1] * m[10] * m[15] +
+                m[1] * m[11] * m[14] +
+                m[9] * m[2] * m[15] -
+                m[9] * m[3] * m[14] -
+                m[13] * m[2] * m[11] +
+                m[13] * m[3] * m[10],
+
+                m[1] * m[6] * m[15] -
+                m[1] * m[7] * m[14] -
+                m[5] * m[2] * m[15] +
+                m[5] * m[3] * m[14] +
+                m[13] * m[2] * m[7] -
+                m[13] * m[3] * m[6],
+
+                -m[1] * m[6] * m[11] +
+                m[1] * m[7] * m[10] +
+                m[5] * m[2] * m[11] -
+                m[5] * m[3] * m[10] -
+                m[9] * m[2] * m[7] +
+                m[9] * m[3] * m[6],
+
+                -m[4] * m[10] * m[15] +
+                m[4] * m[11] * m[14] +
+                m[8] * m[6] * m[15] -
+                m[8] * m[7] * m[14] -
+                m[12] * m[6] * m[11] +
+                m[12] * m[7] * m[10],
+
+                m[0] * m[10] * m[15] -
+                m[0] * m[11] * m[14] -
+                m[8] * m[2] * m[15] +
+                m[8] * m[3] * m[14] +
+                m[12] * m[2] * m[11] -
+                m[12] * m[3] * m[10],
+
+                -m[0] * m[6] * m[15] +
+                m[0] * m[7] * m[14] +
+                m[4] * m[2] * m[15] -
+                m[4] * m[3] * m[14] -
+                m[12] * m[2] * m[7] +
+                m[12] * m[3] * m[6],
+
+
+                m[0] * m[6] * m[11] -
+                m[0] * m[7] * m[10] -
+                m[4] * m[2] * m[11] +
+                m[4] * m[3] * m[10] +
+                m[8] * m[2] * m[7] -
+                m[8] * m[3] * m[6],
+
+
+                m[4] * m[9] * m[15] -
+                m[4] * m[11] * m[13] -
+                m[8] * m[5] * m[15] +
+                m[8] * m[7] * m[13] +
+                m[12] * m[5] * m[11] -
+                m[12] * m[7] * m[9],
+
+
+
+                -m[0] * m[9] * m[15] +
+                m[0] * m[11] * m[13] +
+                m[8] * m[1] * m[15] -
+                m[8] * m[3] * m[13] -
+                m[12] * m[1] * m[11] +
+                m[12] * m[3] * m[9],
+
+                m[0] * m[5] * m[15] -
+                m[0] * m[7] * m[13] -
+                m[4] * m[1] * m[15] +
+                m[4] * m[3] * m[13] +
+                m[12] * m[1] * m[7] -
+                m[12] * m[3] * m[5],
+
+                -m[0] * m[5] * m[11] +
+                m[0] * m[7] * m[9] +
+                m[4] * m[1] * m[11] -
+                m[4] * m[3] * m[9] -
+                m[8] * m[1] * m[7] +
+                m[8] * m[3] * m[5],
+
+                -m[4] * m[9] * m[14] +
+                m[4] * m[10] * m[13] +
+                m[8] * m[5] * m[14] -
+                m[8] * m[6] * m[13] -
+                m[12] * m[5] * m[10] +
+                m[12] * m[6] * m[9],
+
+                m[0] * m[9] * m[14] -
+                m[0] * m[10] * m[13] -
+                m[8] * m[1] * m[14] +
+                m[8] * m[2] * m[13] +
+                m[12] * m[1] * m[10] -
+                m[12] * m[2] * m[9],
+
+                -m[0] * m[5] * m[14] +
+                m[0] * m[6] * m[13] +
+                m[4] * m[1] * m[14] -
+                m[4] * m[2] * m[13] -
+                m[12] * m[1] * m[6] +
+                m[12] * m[2] * m[5],
+
+                m[0] * m[5] * m[10] -
+                m[0] * m[6] * m[9] -
+                m[4] * m[1] * m[10] +
+                m[4] * m[2] * m[9] +
+                m[8] * m[1] * m[6] -
+                m[8] * m[2] * m[5]];
+
+            var det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+            det = 1.0 / det;
+
+            for (var i = 0; i < 16; i++) inv[i] = inv[i] * det;
+
+            return inv;
+        }
+
+        matMulpoint(m, v) {
+            return [m[0] * v[0] + m[1] * v[1] + m[2] * v[2] + m[3],
+                m[4] * v[0] + m[5] * v[1] + m[6] * v[2] + m[7],
+                m[8] * v[0] + m[9] * v[1] + m[10] * v[2] + m[11]];
         }
     }
 
