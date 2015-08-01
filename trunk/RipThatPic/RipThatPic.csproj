@@ -440,6 +440,7 @@
     <Content Include="angularApp\views\page\page.html" />
     <Content Include="angularApp\views\splash\splash.html" />
     <Content Include="Assets\Spaceship\0.png" />
+    <Content Include="Assets\Textures\tex00.jpg" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
     <Content Include="Content\icons\All-black.png" />
     <Content Include="Content\icons\All-white.png" />
@@ -1733,6 +1734,7 @@
     <Content Include="script\vs\nls.js" />
     <Content Include="script\vs\text.js" />
     <Content Include="script\Word.js" />
+    <Content Include="temp.js" />
     <Content Include="Themes\ExtensionFull.css" />
     <Content Include="Themes\ExtensionLite.css" />
     <Content Include="Themes\BannerSquare.css" />
