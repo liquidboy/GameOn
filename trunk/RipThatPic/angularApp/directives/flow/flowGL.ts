@@ -1,74 +1,80 @@
-﻿
-module Application.Directives {
+﻿module Application.Directives {
     //'use strict';
-    export class WebGLCanvasDirective implements ng.IDirective {
+    export class FlowGlDirective implements ng.IDirective {
 
         public injection(): Array<any> {
             return [
-                () => { return new WebGLCanvasDirective(); }
+                "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new FlowGlDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
             ];
         }
-
-        public static $inject: any[] = [() => { return new WebGLCanvasDirective(); }];
-
+         
 
         public templateUrl: string;
         public restrict: string;
         public replace: boolean;
-        public controller: any;
-        public flowController: FlowController;
+        public sc: IFlowGlScope;
 
-        private currentHue: number = 0;
-        private hueStep: number = 0.01;
-        private hueIntervalAnimationPointer: number;
+        public link: ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => void;
 
-        public scope: any = {
 
-        };
-        public link: ($scope: IFlowScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: FlowController) => void;
 
-        constructor() {
+
+        constructor(
+            public pubSubConstants: Application.Constants.PubSubConstants,
+            public dataSvc: Application.Services.IData,
+            public authService: Application.Services.IAuthService,
+            public radioPubSubSvc: Application.Services.IRadioPubSubSvc) {
 
 
             this.restrict = 'E';
             this.replace = true;
-            this.templateUrl = '/angularApp/directives/webgl-canvas/WebGLCanvas.html';
-            this.controller = ['$scope', '$routeParams', FlowController];
-            this.link = ($scope: IFlowScope, element: ng.IAugmentedJQuery, attributes: ng.IAttributes, controller: FlowController) => {
+            this.templateUrl = '/angularApp/partials/flow-gl.html';
+            this.link = ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => {
+                this.sc = $scope;
+                this.sc.scene = new Scene($scope);  //inits webgl bits for use in next few lines
 
                 var renderCanvas = element.find("canvas[id='render']")[0];
-
                 if ($scope.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
                     $scope.initCanvas(renderCanvas);
 
-                    this.flowController = controller;
-
-                    controller.hue = this.currentHue;
-                    controller.timeScale = controller.INITIAL_SPEED;
-                    controller.persistence = controller.INITIAL_TURBULENCE;
+                    this.sc.currentHue = 0;
+                    this.sc.hueStep = 0.01;
                     
-                    this.hueIntervalAnimationPointer = setInterval(this.updateHueOverTime.bind(this), 100);
+                    this.sc.scene.hue = this.sc.currentHue;
+                    this.sc.scene.timeScale = this.sc.scene.INITIAL_SPEED;
+                    this.sc.scene.persistence = this.sc.scene.INITIAL_TURBULENCE;
+
+                    this.sc.hueIntervalAnimationPointer = setInterval(this.updateHueOverTime.bind(this), 100);
 
                 }
-
             }
 
+
         }
+
 
         updateHueOverTime() {
-            this.currentHue += this.hueStep;
-            if (this.currentHue > 1) this.currentHue = 0;
-            this.flowController.hue = this.currentHue;
+            this.sc.currentHue += this.sc.hueStep;
+            if (this.sc.currentHue > 1) this.sc.currentHue = 0;
+            this.sc.scene.hue = this.sc.currentHue;
         }
 
-        
     }
 
-    interface IFlowScope extends ng.IScope {
+    export interface IFlowGlScope extends ng.IScope {
+
+        currentHue: number ;
+        hueStep: number ;
+        hueIntervalAnimationPointer: number;
+
+        scene: Scene;
+
         hasWebGLSupportWithExtensions: (extensions: any) => boolean;
         initCanvas: (canvas: any) => void;
     }
-    
+
+
     class PipelineState {
         simulationProgramWrapper: any;
         renderingProgramWrapper: any;
@@ -81,9 +87,9 @@ module Application.Directives {
         
         //variables used for sorting
         totalSortSteps: number;
-        sortStepsLeft: number ;
-        sortPass: number ;
-        sortStage: number ;
+        sortStepsLeft: number;
+        sortPass: number;
+        sortStage: number;
 
 
         opacityTexture: webgl.WebGLTexture;
@@ -103,7 +109,7 @@ module Application.Directives {
         opacityFramebuffer: webgl.WebGLFramebuffer;
 
 
-        
+
         projectionMatrix: Float32Array;
 
         lightViewMatrix: Float32Array;
@@ -116,15 +122,15 @@ module Application.Directives {
 
     class ParticleRenderer {
 
-        firstFrame: boolean ;
-        flipped: boolean ;
+        firstFrame: boolean;
+        flipped: boolean;
 
         public Render() {
             this.firstFrame = false;
             this.flipped = false;
         }
     }
-    
+
     class Camera {
         private INITIAL_AZIMUTH: number = -1.6;  //-1.6 is directly out of screen .. 0.6 <-- left to right
         private INITIAL_ELEVATION: number = 0.4; //0.4 default
@@ -144,15 +150,15 @@ module Application.Directives {
 
 
         constructor(element: any) {
-           
+
 
             var lastMouseX: number = 0,
                 lastMouseY: number = 0;
 
-            var mouseDown:boolean = false;
+            var mouseDown: boolean = false;
             var __this = this;
 
-            
+
             this.recomputeViewMatrix = function () {
                 var xRotationMatrix: Float32Array = new Float32Array(16),
                     yRotationMatrix: Float32Array = new Float32Array(16),
@@ -253,7 +259,7 @@ module Application.Directives {
 
             return viewDirection;
         }
-        
+
         public getMousePosition(event, element): any {
             var boundingRect = element.getBoundingClientRect();
             return {
@@ -266,15 +272,15 @@ module Application.Directives {
 
     class ShaderLib {
 
-        private NOISE_OCTAVES:number = 3;
+        private NOISE_OCTAVES: number = 3;
         private NOISE_POSITION_SCALE: number = 1.5;
         private NOISE_SCALE: number = 0.075;
         private NOISE_TIME_SCALE: number = 1 / 4000;
-        
+
         private BASE_SPEED: number = 0.2;
-        
+
         private PARTICLE_OPACITY_SCALE: number = 0.75;
-        
+
         private BACKGROUND_DISTANCE_SCALE: number = 0.1;
 
 
@@ -403,7 +409,7 @@ module Application.Directives {
             '       yNoisePotentialDerivatives += simplexNoiseDerivatives(vec4((noisePosition + vec3(123.4, 129845.6, -1239.1)) * pow(2.0, float(i)), noiseTime)) * noiseScale * scale;',
             '       zNoisePotentialDerivatives += simplexNoiseDerivatives(vec4((noisePosition + vec3(-9519.0, 9051.0, -123.0)) * pow(2.0, float(i)), noiseTime)) * noiseScale * scale;',
             '   }',
-                //compute curl
+        //compute curl
             '   vec3 noiseVelocity = vec3(',
             '      zNoisePotentialDerivatives[1] - yNoisePotentialDerivatives[2],',
             '      xNoisePotentialDerivatives[2] - zNoisePotentialDerivatives[0],',
@@ -785,7 +791,7 @@ module Application.Directives {
 
             return out;
         }
-        
+
         public static normalizeVector(out: Float32Array, v: Float32Array) {
             var inverseMagnitude = 1.0 / Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
             out[0] = v[0] * inverseMagnitude;
@@ -796,7 +802,7 @@ module Application.Directives {
         public static dotVectors(a, b): any {
             return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
         }
-        
+
         public static makeOrthographicMatrix(matrix, left, right, bottom, top, near, far): void {
             matrix[0] = 2 / (right - left);
             matrix[1] = 0;
@@ -876,7 +882,7 @@ module Application.Directives {
         public static log2(x): any {
             return Math.log(x) / Math.log(2);
         }
-        
+
         public static hsvToRGB(h, s, v): any {
             h = h % 1;
 
@@ -905,8 +911,9 @@ module Application.Directives {
             return 'rgb(' + (color[0] * 255).toFixed(0) + ',' + (color[1] * 255).toFixed(0) + ',' + (color[2] * 255).toFixed(0) + ')';
         }
     }
+    
+    class Scene {
 
-    class FlowController {
 
         private MAX_DELTA_TIME: number = 0.2;
 
@@ -978,30 +985,30 @@ module Application.Directives {
         private BASE_LIFETIME: number = 10;
         private MAX_ADDITIONAL_LIFETIME: number = 5;
         private OFFSET_RADIUS: number = 0.5;
-        
-        public INITIAL_SPEED : number = 2;
+
+        public INITIAL_SPEED: number = 2;
         public INITIAL_TURBULENCE: number = 0.2;
-        
+
         private options: any = {
             premultipliedAlpha: false,
             alpha: true
         };
-        
-        public hue : number = 0;
+
+        public hue: number = 0;
         public timeScale: number = this.INITIAL_SPEED;
         public persistence: number = this.INITIAL_TURBULENCE;
         private qualityLevel: any = -1;
-        
+
         private particleCountWidth: number = 0;
-        private particleCountHeight: number= 0;
+        private particleCountHeight: number = 0;
         private particleCount: number = this.particleCountWidth * this.particleCountHeight;
 
         private particleDiameter: number = 0.0;
-        private particleAlpha : number = 0.0;
+        private particleAlpha: number = 0.0;
 
         private changingParticleCount: boolean = false;
         private oldParticleDiameter: number;
-        private oldParticleCountWidth : number;
+        private oldParticleCountWidth: number;
         private oldParticleCountHeight: number;
 
         private spawnTexture: any;
@@ -1010,7 +1017,7 @@ module Application.Directives {
 
         private shaderLib: ShaderLib;
 
-        
+
         private canvas: webgl.HTMLCanvasElement;
         private camera: Camera;
         private gl: webgl.WebGLRenderingContext;
@@ -1020,8 +1027,7 @@ module Application.Directives {
         private particleVertexBuffers: any; //one for each quality level
         private spawnTextures: any; //one for each quality level
 
-        constructor(private $scope: IFlowScope,
-            private $routeParams: any) {
+        constructor(private $scope: IFlowGlScope) {
 
             this.renderer = new ParticleRenderer();
             this.pso = new PipelineState();
@@ -1029,7 +1035,7 @@ module Application.Directives {
 
             $scope.hasWebGLSupportWithExtensions = (extensions: any) => this.hasWebGLSupportWithExtensions(extensions);
             $scope.initCanvas = (canvas: any) => this.initCanvas(canvas);
-        
+
 
         }
 
@@ -1060,7 +1066,7 @@ module Application.Directives {
             this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
             this.camera = new Camera(this.canvas);
-            
+
             this.renderer.firstFrame = true;
             this.renderer.flipped = false;
             this.pso.lastTime = 0.0;
@@ -1068,7 +1074,7 @@ module Application.Directives {
             this.loadParticleResources();
 
             this.loadResources();
-            
+
 
             $(window).on("resize", this.onresize.bind(this));
             this.onresize();
@@ -1077,14 +1083,14 @@ module Application.Directives {
 
         }
 
-        private onresize(): void{
+        private onresize(): void {
             var aspectRatio = window.innerWidth / window.innerHeight;
             GraphicsLib.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
         };
 
-        private loadParticleResources(): void{
+        private loadParticleResources(): void {
 
             var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
 
@@ -1098,7 +1104,7 @@ module Application.Directives {
                 randomSpherePoints.push(point);
             }
 
-            
+
 
             this.particleVertexBuffers = []; //one for each quality level
             this.spawnTextures = []; //one for each quality level
@@ -1168,7 +1174,7 @@ module Application.Directives {
             offsetData.length = 0; //delete offsetData;
 
         }
-        
+
         private loadResources(): void {
             
 
@@ -1277,15 +1283,15 @@ module Application.Directives {
             this.changeQualityLevel(0);
 
         }
-        
-        private render(currentTime: number): void{
+
+        private render(currentTime: number): void {
             var deltaTime = (currentTime - this.pso.lastTime) / 1000 || 0.0;
             this.pso.lastTime = currentTime;
 
             if (deltaTime > this.MAX_DELTA_TIME) {
                 deltaTime = 0;
             }
-            
+
 
             if (this.changingParticleCount) {
                 deltaTime = 0;
@@ -1389,8 +1395,7 @@ module Application.Directives {
 
                 this.renderer.flipped = false;
             }
-            else
-            {
+            else {
                 halfVector = new Float32Array([
                     this.LIGHT_DIRECTION[0] - viewDirection[0],
                     this.LIGHT_DIRECTION[1] - viewDirection[1],
@@ -1529,7 +1534,7 @@ module Application.Directives {
                 var colorRGB = GraphicsLib.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
                 this.gl.uniform3f(this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
 
-                
+
                 this.gl.activeTexture(this.gl.TEXTURE0);
                 this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
 
@@ -1614,7 +1619,7 @@ module Application.Directives {
             this.gl.blendFunc(this.gl.ONE_MINUS_DST_ALPHA, this.gl.ONE);
 
             this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-           
+
             this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
 
             this.gl.enableVertexAttribArray(0);
@@ -1622,7 +1627,7 @@ module Application.Directives {
             this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
 
 
-            
+
             this.gl.useProgram(this.pso.backgroundProgramWrapper.program);
             this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 
@@ -1636,9 +1641,9 @@ module Application.Directives {
 
 
 
-        
 
-        private hasWebGLSupportWithExtensions(extensions) : boolean{
+
+        private hasWebGLSupportWithExtensions(extensions): boolean {
             var canvas = document.createElement('canvas');
             var gl = null;
             try {
@@ -1658,11 +1663,11 @@ module Application.Directives {
 
             return true;
         }
-        
-        private buildProgramWrapper(gl: webgl.WebGLRenderingContext, vertexShader: webgl.WebGLShader, fragmentShader: webgl.WebGLShader, attributeLocations) : any {
-            var programWrapper = { program: null, uniformLocations: null};
 
-            var program : webgl.WebGLProgram = gl.createProgram();
+        private buildProgramWrapper(gl: webgl.WebGLRenderingContext, vertexShader: webgl.WebGLShader, fragmentShader: webgl.WebGLShader, attributeLocations): any {
+            var programWrapper = { program: null, uniformLocations: null };
+
+            var program: webgl.WebGLProgram = gl.createProgram();
             gl.attachShader(program, vertexShader);
             gl.attachShader(program, fragmentShader);
             for (var attributeName in attributeLocations) {
@@ -1672,7 +1677,7 @@ module Application.Directives {
             var uniformLocations = {};
             var numberOfUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
             for (var i = 0; i < numberOfUniforms; i += 1) {
-                var activeUniform : webgl.WebGLActiveInfo = gl.getActiveUniform(program, i),
+                var activeUniform: webgl.WebGLActiveInfo = gl.getActiveUniform(program, i),
                     uniformLocation = gl.getUniformLocation(program, activeUniform.name);
                 uniformLocations[activeUniform.name] = uniformLocation;
             }
@@ -1682,8 +1687,8 @@ module Application.Directives {
 
             return programWrapper;
         }
-        
-        private buildShader(gl: webgl.WebGLRenderingContext, type: number, source: string) : any {
+
+        private buildShader(gl: webgl.WebGLRenderingContext, type: number, source: string): any {
             var shader = gl.createShader(type);
             gl.shaderSource(shader, source);
             gl.compileShader(shader);
@@ -1702,7 +1707,7 @@ module Application.Directives {
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, magFilter);
             return texture;
         }
-        
+
         private buildFramebuffer(gl: webgl.WebGLRenderingContext, attachment): webgl.WebGLFramebuffer {
             var framebuffer: webgl.WebGLFramebuffer = gl.createFramebuffer();
             gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
@@ -1712,14 +1717,11 @@ module Application.Directives {
         
         
 
+
     }
 
 
+    var myapp: ng.IModule = angular.module('bootstrapApp');
+    myapp.directive("dFlowGl", FlowGlDirective.prototype.injection());
 
-   
-    //var myapp: ng.IModule = angular.module('USoStupidApp', ['ngRoute', 'ngResource', 'ngAnimate']);
-    //myapp.directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.prototype.injection());
-
-    ////angular.module('USoStupidApp').directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.$inject);
-   
 }

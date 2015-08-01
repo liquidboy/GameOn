@@ -280,6 +280,9 @@
     <Content Include="angularApp\controllers\explorer.js">
       <DependentUpon>explorer.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\flow.js">
+      <DependentUpon>flow.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\home.js">
       <DependentUpon>home.ts</DependentUpon>
     </Content>
@@ -328,6 +331,9 @@
     <Content Include="angularApp\directives\fileUpload.js">
       <DependentUpon>fileUpload.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\flow\flowGL.js">
+      <DependentUpon>flowGL.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\fontPicker.js">
       <DependentUpon>fontPicker.ts</DependentUpon>
     </Content>
@@ -372,6 +378,7 @@
     <Content Include="angularApp\partials\file-storage-list.html" />
     <Content Include="angularApp\partials\file-upload.html" />
     <Content Include="angularApp\partials\config-menu.html" />
+    <Content Include="angularApp\partials\flow-gl.html" />
     <Content Include="angularApp\partials\workarea.html" />
     <Content Include="angularApp\partials\billboard.html" />
     <Content Include="angularApp\services\authService.js">
@@ -422,6 +429,7 @@
     <Content Include="angularApp\views\config\config.html" />
     <Content Include="angularApp\views\explorer\imageExplorer.html" />
     <Content Include="angularApp\views\explorer\explorer.html" />
+    <Content Include="angularApp\views\flow\flow.html" />
     <Content Include="angularApp\views\home\home.html" />
     <Content Include="angularApp\views\login\login.html" />
     <Content Include="angularApp\views\post\post.html" />
@@ -735,6 +743,12 @@
     </Content>
     <Content Include="angularApp\controllers\imageexplorer.js.map">
       <DependentUpon>imageexplorer.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\flow\flowGL.js.map">
+      <DependentUpon>flowGL.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\flow.js.map">
+      <DependentUpon>flow.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1830,6 +1844,7 @@
     <TypeScriptCompile Include="angularApp\controllers\imageexplorer.ts" />
     <TypeScriptCompile Include="angularApp\controllers\explorer.ts" />
     <TypeScriptCompile Include="angularApp\controllers\login.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\flow.ts" />
     <TypeScriptCompile Include="angularApp\controllers\post.ts" />
     <TypeScriptCompile Include="angularApp\controllers\splash.ts" />
     <TypeScriptCompile Include="angularApp\controllers\page.ts" />
@@ -1861,6 +1876,7 @@
     <TypeScriptCompile Include="angularApp\controllers\home.ts" />
     <TypeScriptCompile Include="angularApp\directives\extensionFull.ts" />
     <TypeScriptCompile Include="angularApp\directives\extensionLite.ts" />
+    <TypeScriptCompile Include="angularApp\directives\flow\flowGL.ts" />
     <TypeScriptCompile Include="angularApp\directives\imageBillboard.ts" />
     <TypeScriptCompile Include="angularApp\directives\linksList.ts" />
     <TypeScriptCompile Include="angularApp\directives\pagesList.ts" />
@@ -1892,6 +1908,7 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\webgl\webgl.d.ts" />
     <TypeScriptCompile Include="script\vs\languages\typescript\lib\lib.d.ts" />
   </ItemGroup>
   <ItemGroup>

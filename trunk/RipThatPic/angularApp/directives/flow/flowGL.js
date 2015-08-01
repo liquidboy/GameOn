@@ -3,43 +3,46 @@ var Application;
     var Directives;
     (function (Directives) {
         //'use strict';
-        var WebGLCanvasDirective = (function () {
-            function WebGLCanvasDirective() {
+        var FlowGlDirective = (function () {
+            function FlowGlDirective(pubSubConstants, dataSvc, authService, radioPubSubSvc) {
                 var _this = this;
-                this.currentHue = 0;
-                this.hueStep = 0.01;
-                this.scope = {};
+                this.pubSubConstants = pubSubConstants;
+                this.dataSvc = dataSvc;
+                this.authService = authService;
+                this.radioPubSubSvc = radioPubSubSvc;
                 this.restrict = 'E';
                 this.replace = true;
-                this.templateUrl = '/angularApp/directives/webgl-canvas/WebGLCanvas.html';
-                this.controller = ['$scope', '$routeParams', FlowController];
-                this.link = function ($scope, element, attributes, controller) {
+                this.templateUrl = '/angularApp/partials/flow-gl.html';
+                this.link = function ($scope, element, attributes) {
+                    _this.sc = $scope;
+                    _this.sc.scene = new Scene($scope); //inits webgl bits for use in next few lines
                     var renderCanvas = element.find("canvas[id='render']")[0];
                     if ($scope.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
                         $scope.initCanvas(renderCanvas);
-                        _this.flowController = controller;
-                        controller.hue = _this.currentHue;
-                        controller.timeScale = controller.INITIAL_SPEED;
-                        controller.persistence = controller.INITIAL_TURBULENCE;
-                        _this.hueIntervalAnimationPointer = setInterval(_this.updateHueOverTime.bind(_this), 100);
+                        _this.sc.currentHue = 0;
+                        _this.sc.hueStep = 0.01;
+                        _this.sc.scene.hue = _this.sc.currentHue;
+                        _this.sc.scene.timeScale = _this.sc.scene.INITIAL_SPEED;
+                        _this.sc.scene.persistence = _this.sc.scene.INITIAL_TURBULENCE;
+                        _this.sc.hueIntervalAnimationPointer = setInterval(_this.updateHueOverTime.bind(_this), 100);
                     }
                 };
             }
-            WebGLCanvasDirective.prototype.injection = function () {
+            FlowGlDirective.prototype.injection = function () {
                 return [
-                    function () { return new WebGLCanvasDirective(); }
+                    "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
+                    function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new FlowGlDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
                 ];
             };
-            WebGLCanvasDirective.prototype.updateHueOverTime = function () {
-                this.currentHue += this.hueStep;
-                if (this.currentHue > 1)
-                    this.currentHue = 0;
-                this.flowController.hue = this.currentHue;
+            FlowGlDirective.prototype.updateHueOverTime = function () {
+                this.sc.currentHue += this.sc.hueStep;
+                if (this.sc.currentHue > 1)
+                    this.sc.currentHue = 0;
+                this.sc.scene.hue = this.sc.currentHue;
             };
-            WebGLCanvasDirective.$inject = [function () { return new WebGLCanvasDirective(); }];
-            return WebGLCanvasDirective;
+            return FlowGlDirective;
         })();
-        Directives.WebGLCanvasDirective = WebGLCanvasDirective;
+        Directives.FlowGlDirective = FlowGlDirective;
         var PipelineState = (function () {
             function PipelineState() {
             }
@@ -686,11 +689,10 @@ var Application;
             };
             return GraphicsLib;
         })();
-        var FlowController = (function () {
-            function FlowController($scope, $routeParams) {
+        var Scene = (function () {
+            function Scene($scope) {
                 var _this = this;
                 this.$scope = $scope;
-                this.$routeParams = $routeParams;
                 this.MAX_DELTA_TIME = 0.2;
                 this.PRESIMULATION_DELTA_TIME = 0.1;
                 this.QUALITY_LEVELS = [
@@ -746,7 +748,7 @@ var Application;
                 $scope.hasWebGLSupportWithExtensions = function (extensions) { return _this.hasWebGLSupportWithExtensions(extensions); };
                 $scope.initCanvas = function (canvas) { return _this.initCanvas(canvas); };
             }
-            FlowController.prototype.changeQualityLevel = function (newLevel) {
+            Scene.prototype.changeQualityLevel = function (newLevel) {
                 this.qualityLevel = newLevel;
                 this.particleAlpha = this.QUALITY_LEVELS[this.qualityLevel].alpha;
                 this.changingParticleCount = true;
@@ -758,7 +760,7 @@ var Application;
                 this.particleCountHeight = this.QUALITY_LEVELS[this.qualityLevel].resolution[1];
                 this.particleCount = this.particleCountWidth * this.particleCountHeight;
             };
-            FlowController.prototype.initCanvas = function (canvas) {
+            Scene.prototype.initCanvas = function (canvas) {
                 this.canvas = canvas;
                 this.gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
                 this.gl.getExtension('OES_texture_float');
@@ -773,14 +775,14 @@ var Application;
                 this.onresize();
                 this.render(this.pso.lastTime);
             };
-            FlowController.prototype.onresize = function () {
+            Scene.prototype.onresize = function () {
                 var aspectRatio = window.innerWidth / window.innerHeight;
                 GraphicsLib.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
                 this.canvas.width = window.innerWidth;
                 this.canvas.height = window.innerHeight;
             };
             ;
-            FlowController.prototype.loadParticleResources = function () {
+            Scene.prototype.loadParticleResources = function () {
                 var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
                 var randomNumbers = [];
                 var randomSpherePoints = [];
@@ -839,7 +841,7 @@ var Application;
                 randomSpherePoints.length = 0; //delete randomSpherePoints;
                 offsetData.length = 0; //delete offsetData;
             };
-            FlowController.prototype.loadResources = function () {
+            Scene.prototype.loadResources = function () {
                 //TEXTURES
                 this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                 this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, null, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
@@ -884,7 +886,7 @@ var Application;
                 this.pso.backgroundProgramWrapper = this.buildProgramWrapper(this.gl, this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.BACKGROUND_VERTEX_SHADER_SOURCE), this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.BACKGROUND_FRAGMENT_SHADER_SOURCE), { 'a_position': 0 });
                 this.changeQualityLevel(0);
             };
-            FlowController.prototype.render = function (currentTime) {
+            Scene.prototype.render = function (currentTime) {
                 var deltaTime = (currentTime - this.pso.lastTime) / 1000 || 0.0;
                 this.pso.lastTime = currentTime;
                 if (deltaTime > this.MAX_DELTA_TIME) {
@@ -1138,7 +1140,7 @@ var Application;
                 //NEXT FRAME
                 requestAnimationFrame(this.render.bind(this));
             };
-            FlowController.prototype.hasWebGLSupportWithExtensions = function (extensions) {
+            Scene.prototype.hasWebGLSupportWithExtensions = function (extensions) {
                 var canvas = document.createElement('canvas');
                 var gl = null;
                 try {
@@ -1157,7 +1159,7 @@ var Application;
                 }
                 return true;
             };
-            FlowController.prototype.buildProgramWrapper = function (gl, vertexShader, fragmentShader, attributeLocations) {
+            Scene.prototype.buildProgramWrapper = function (gl, vertexShader, fragmentShader, attributeLocations) {
                 var programWrapper = { program: null, uniformLocations: null };
                 var program = gl.createProgram();
                 gl.attachShader(program, vertexShader);
@@ -1176,14 +1178,14 @@ var Application;
                 programWrapper.uniformLocations = uniformLocations;
                 return programWrapper;
             };
-            FlowController.prototype.buildShader = function (gl, type, source) {
+            Scene.prototype.buildShader = function (gl, type, source) {
                 var shader = gl.createShader(type);
                 gl.shaderSource(shader, source);
                 gl.compileShader(shader);
                 //console.log(gl.getShaderInfoLog(shader));
                 return shader;
             };
-            FlowController.prototype.buildTexture = function (gl, unit, format, type, width, height, data, wrapS, wrapT, minFilter, magFilter) {
+            Scene.prototype.buildTexture = function (gl, unit, format, type, width, height, data, wrapS, wrapT, minFilter, magFilter) {
                 var texture = gl.createTexture();
                 gl.activeTexture(gl.TEXTURE0 + unit);
                 gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -1194,14 +1196,16 @@ var Application;
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, magFilter);
                 return texture;
             };
-            FlowController.prototype.buildFramebuffer = function (gl, attachment) {
+            Scene.prototype.buildFramebuffer = function (gl, attachment) {
                 var framebuffer = gl.createFramebuffer();
                 gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
                 gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, attachment, 0);
                 return framebuffer;
             };
-            return FlowController;
+            return Scene;
         })();
+        var myapp = angular.module('bootstrapApp');
+        myapp.directive("dFlowGl", FlowGlDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=webglcanvas.js.map
+//# sourceMappingURL=flowGL.js.map
