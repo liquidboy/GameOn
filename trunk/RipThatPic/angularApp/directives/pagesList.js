@@ -48,4 +48,3 @@ var Application;
         myapp.directive("dPagesList", PagesListDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=pagesList.js.map

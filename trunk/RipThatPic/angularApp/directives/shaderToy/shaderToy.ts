@@ -216,25 +216,6 @@
         res: any;
     }
 
-    class LiveCreator {
-
-        constructor(public username: string, public shadertoy: ShaderToy) {
-
-        }
-
-        SendUpdate() {
-            //if (this.mState != 3) return;
-
-            ////console.log( "Sending Shader" );
-
-            //var dataJSON = gShaderToy.exportToJSON();
-            //dataJSON.info.username = gUserName;
-            //var canvas = document.getElementById("demogl");
-            //var dataURL = canvas.toDataURL("image/jpeg");
-            //lSend(this.mSocket, 'CREATOR_SHADER', { code: dataJSON, image: dataURL });
-        }
-    }
-
     class ShaderToy {
 
         mCanvas: webgl.HTMLCanvasElement;
@@ -248,7 +229,7 @@
         mEditorState: any;
 
         mEffect: Effect;
-        mLiveCreator: LiveCreator;
+
         mDocs: any;
 
         mCharCounter: any;
@@ -262,7 +243,6 @@
             this.mCharCounter = $('#shaderCharCounter');
             this.mCanvas = canvas;
             this.mDocs = {};
-            this.mLiveCreator = new LiveCreator('username', this);
 
             this.mGLContext = this.createGlContext(this.mCanvas, false, true);
             if (this.mGLContext == null) {
@@ -604,8 +584,7 @@
 
                 me.mEffect.Paint(ltime / 1000.0, me.mMouseOriX, me.mMouseOriY, me.mMousePosX, me.mMousePosY, me.mIsPaused);
 
-                if (me.mSendFrame)
-                    me.mLiveCreator.SendUpdate();
+                //if (me.mSendFrame) me.mLiveCreator.SendUpdate();
                 me.mSendFrame = false;
 
 
@@ -1217,8 +1196,7 @@
             }
         }
     }
-
-
+    
     class EffectPass{
 
         mID: any;
@@ -2405,5 +2383,4 @@
 
     var myapp: ng.IModule = angular.module('bootstrapApp');
     myapp.directive("dShaderToy", ShaderToyDirective.prototype.injection());
-
 }

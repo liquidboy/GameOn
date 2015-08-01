@@ -34,4 +34,3 @@ var Application;
         myapp.service("instanceFactory", ["$location", function ($location) { return new InstanceFactory($location); }]);
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=instanceFactory.js.map

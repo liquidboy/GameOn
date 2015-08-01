@@ -29,4 +29,3 @@ var Application;
         myapp.constant("pubSubConstants", new PubSubConstants());
     })(Constants = Application.Constants || (Application.Constants = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=Constants.js.map

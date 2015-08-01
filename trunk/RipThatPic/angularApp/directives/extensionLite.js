@@ -61,4 +61,3 @@ var Application;
         myapp.directive("dExtensionLite", ExtensionLiteDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=extensionLite.js.map

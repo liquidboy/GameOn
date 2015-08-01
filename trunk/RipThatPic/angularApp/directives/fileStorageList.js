@@ -195,4 +195,3 @@ var Application;
         myapp.directive("dFileStorageList", FileStorageListDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=fileStorageList.js.map

@@ -1208,4 +1208,3 @@ var Application;
         myapp.directive("dFlowGl", FlowGlDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=flowGL.js.map

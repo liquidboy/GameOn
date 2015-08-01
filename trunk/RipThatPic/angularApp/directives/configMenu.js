@@ -52,4 +52,3 @@ var Application;
         myapp.directive("dConfigMenu", ConfigMenuDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=configMenu.js.map

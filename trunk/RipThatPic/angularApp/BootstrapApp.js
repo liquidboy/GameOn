@@ -51,4 +51,3 @@ var BootstrapApp;
 eval('BootstrapApp.radio = radio');
 eval('BootstrapApp.tinymce = tinymce');
 //eval('BootstrapApp.CodeMirror = CodeMirror');
-//# sourceMappingURL=BootstrapApp.js.map

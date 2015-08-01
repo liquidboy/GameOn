@@ -46,4 +46,3 @@ var Application;
         myapp.directive("dBannerSquare", BannerSquareDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=bannerSquare.js.map

@@ -169,22 +169,6 @@ var Application;
             return ShaderToyDirective;
         })();
         Directives.ShaderToyDirective = ShaderToyDirective;
-        var LiveCreator = (function () {
-            function LiveCreator(username, shadertoy) {
-                this.username = username;
-                this.shadertoy = shadertoy;
-            }
-            LiveCreator.prototype.SendUpdate = function () {
-                //if (this.mState != 3) return;
-                ////console.log( "Sending Shader" );
-                //var dataJSON = gShaderToy.exportToJSON();
-                //dataJSON.info.username = gUserName;
-                //var canvas = document.getElementById("demogl");
-                //var dataURL = canvas.toDataURL("image/jpeg");
-                //lSend(this.mSocket, 'CREATOR_SHADER', { code: dataJSON, image: dataURL });
-            };
-            return LiveCreator;
-        })();
         var ShaderToy = (function () {
             function ShaderToy(playerElement, editorElement, passElement) {
                 this.playerElement = playerElement;
@@ -411,8 +395,7 @@ var Application;
                         else
                             me.mTf = ltime;
                         me.mEffect.Paint(ltime / 1000.0, me.mMouseOriX, me.mMouseOriY, me.mMousePosX, me.mMousePosY, me.mIsPaused);
-                        if (me.mSendFrame)
-                            me.mLiveCreator.SendUpdate();
+                        //if (me.mSendFrame) me.mLiveCreator.SendUpdate();
                         me.mSendFrame = false;
                         me.mFpsFrame++;
                         //document.getElementById("myTime").innerHTML = (ltime / 1000.0).toFixed(2);
@@ -517,7 +500,6 @@ var Application;
                 this.mCharCounter = $('#shaderCharCounter');
                 this.mCanvas = canvas;
                 this.mDocs = {};
-                this.mLiveCreator = new LiveCreator('username', this);
                 this.mGLContext = this.createGlContext(this.mCanvas, false, true);
                 if (this.mGLContext == null) {
                     this.createNoWebGLMessage(this.playerElement, this.mCanvas);
@@ -1969,4 +1951,3 @@ var Application;
         myapp.directive("dShaderToy", ShaderToyDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=shaderToy.js.map
