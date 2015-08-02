@@ -86,12 +86,12 @@ var Application;
                 this.dataLoadShader([kk]);
             };
             ShaderToyDirective.prototype.dataLoadShader = function (jsnShader) {
-                this.sc.res = this.sc.shaderToy.newScriptJSON(jsnShader[0]);
+                this.sc.res = this.sc.shaderToy.NewScriptJSON(jsnShader[0]);
                 if (this.sc.res.mSuccess == false)
                     return;
                 document.title = this.sc.res.mName;
-                this.sc.shaderToy.startRendering();
-                this.sc.shaderToy.resetTime();
+                this.sc.shaderToy.StartRendering();
+                this.sc.shaderToy.ResetTime();
                 if (!this.sc.res.mFailed) {
                 }
             };
@@ -248,7 +248,7 @@ var Application;
                 this.mEffect = new Effect(null, null, this.mGLContext, this.mCanvas.width, this.mCanvas.height, this.refreshTexturThumbail, this, false, false);
                 this.mCreated = true;
             }
-            ShaderToy.prototype.newScriptJSON = function (jsn) {
+            ShaderToy.prototype.NewScriptJSON = function (jsn) {
                 try {
                     var res = this.mEffect.newScriptJSON(jsn);
                     var num = res.length;
@@ -262,7 +262,7 @@ var Application;
                     this.mCodeEditor.clearHistory();
                     this.setErrors(res[this.mActiveDoc].mError, true);
                     this.setPasses(res);
-                    this.resetTime();
+                    this.ResetTime();
                     this.mInfo = jsn.info;
                     return {
                         mSuccess: true,
@@ -440,7 +440,7 @@ var Application;
                     ele = e.srcElement;
                 return ele;
             };
-            ShaderToy.prototype.startRendering = function () {
+            ShaderToy.prototype.StartRendering = function () {
                 var me = this;
                 function renderLoop2() {
                     if (me.mGLContext == null)
@@ -471,7 +471,7 @@ var Application;
                 }
                 renderLoop2();
             };
-            ShaderToy.prototype.pauseTime = function () {
+            ShaderToy.prototype.PauseTime = function () {
                 var time = performance.now();
                 if (!this.mIsPaused) {
                     document.getElementById("myPauseButton").style.background = "url('/img/play.png')";
@@ -486,7 +486,7 @@ var Application;
                     this.mEffect.ResumeOutputs();
                 }
             };
-            ShaderToy.prototype.resetTime = function () {
+            ShaderToy.prototype.ResetTime = function () {
                 this.mTOffset = 0;
                 this.mTo = performance.now();
                 this.mTf = 0;
@@ -730,7 +730,7 @@ var Application;
                 return this.setErrors(result, false);
             };
             //gShaderToy.SetTexture(gCurrentEditingSlot, {mType:'texture', mID:28, mSrc:'/presets/tex15.png'})
-            ShaderToy.prototype.setTexture = function (slot, url) {
+            ShaderToy.prototype.SetTexture = function (slot, url) {
                 this.mEffect.NewTexture(this.mActiveDoc, slot, url);
             };
             return ShaderToy;

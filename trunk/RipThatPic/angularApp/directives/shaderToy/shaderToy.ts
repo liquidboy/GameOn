@@ -113,15 +113,15 @@
         }
 
         private dataLoadShader(jsnShader) {
-            this.sc.res = this.sc.shaderToy.newScriptJSON(jsnShader[0])
+            this.sc.res = this.sc.shaderToy.NewScriptJSON(jsnShader[0])
             if (this.sc.res.mSuccess == false)
                 return;
 
             document.title = this.sc.res.mName;
 
            
-            this.sc.shaderToy.startRendering();
-            this.sc.shaderToy.resetTime();
+            this.sc.shaderToy.StartRendering();
+            this.sc.shaderToy.ResetTime();
 
             if (!this.sc.res.mFailed) {
                 //gShaderToy.pauseTime();
@@ -348,7 +348,7 @@
             div.appendChild(divText);
         }
         
-        newScriptJSON(jsn) {
+        NewScriptJSON(jsn) {
             try {
                 var res = this.mEffect.newScriptJSON(jsn);
 
@@ -366,7 +366,7 @@
                 this.setErrors(res[this.mActiveDoc].mError, true);
 
                 this.setPasses(res);
-                this.resetTime();
+                this.ResetTime();
 
                 this.mInfo = jsn.info;
 
@@ -580,7 +580,7 @@
             return ele;
         }
 
-        startRendering() {
+        StartRendering() {
             var me = this;
 
             function renderLoop2() {
@@ -621,7 +621,7 @@
             renderLoop2();
         }
 
-        pauseTime() {
+        PauseTime() {
             var time = performance.now();
             if (!this.mIsPaused) {
                 document.getElementById("myPauseButton").style.background = "url('/img/play.png')";
@@ -637,7 +637,7 @@
             }
         }
         
-        resetTime() {
+        ResetTime() {
             this.mTOffset = 0;
             this.mTo = performance.now();
             this.mTf = 0;
@@ -913,7 +913,7 @@
         }
 
         //gShaderToy.SetTexture(gCurrentEditingSlot, {mType:'texture', mID:28, mSrc:'/presets/tex15.png'})
-        setTexture(slot, url) {
+        SetTexture(slot, url) {
             this.mEffect.NewTexture(this.mActiveDoc, slot, url);
         }
     }
