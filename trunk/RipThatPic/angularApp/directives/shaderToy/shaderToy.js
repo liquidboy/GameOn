@@ -23,9 +23,9 @@ var Application;
                     if (!_this.sc.shaderToy.mCreated)
                         return;
                     //-- get info --------------------------------------------------------
-                    //this.sc.shaderId = '4t23RR';
+                    _this.sc.shaderId = '4t23RR';
                     //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                    _this.sc.shaderId = 'MlS3Rc';
+                    //this.sc.shaderId = 'MlS3Rc';
                     if (_this.sc.shaderId == null) {
                         _this.loadNew();
                     }

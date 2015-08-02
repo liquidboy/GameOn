@@ -45,9 +45,9 @@
                     return;
 
                 //-- get info --------------------------------------------------------
-                //this.sc.shaderId = '4t23RR';
+                this.sc.shaderId = '4t23RR';
                 //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                this.sc.shaderId = 'MlS3Rc';
+                //this.sc.shaderId = 'MlS3Rc';
                 if (this.sc.shaderId == null) {
                     this.loadNew();
                 }
@@ -64,6 +64,7 @@
         }
 
         private loadNew() {
+
             var kk = {
                 "ver": "0.1",
                 "info": {
