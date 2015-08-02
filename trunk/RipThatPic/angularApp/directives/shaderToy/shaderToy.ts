@@ -45,9 +45,9 @@
                     return;
 
                 //-- get info --------------------------------------------------------
-                //this.sc.shaderId = '4t23RR';
+                this.sc.shaderId = '4t23RR';
                 //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                this.sc.shaderId = 'MlS3Rc';
+                //this.sc.shaderId = 'MlS3Rc';
                 if (this.sc.shaderId == null) {
                     this.loadNew();
                 }
@@ -1308,8 +1308,7 @@
 
             var res = null;
 
-            if (this.mType == "sound") res = this.NewShader_Sound(gl, shaderCode);
-            else res = this.NewShader_Image(gl, shaderCode);
+            if (this.mType == "image") res = this.NewShader_Image(gl, shaderCode);
 
             this.mSource = shaderCode;
 
@@ -1582,25 +1581,7 @@
 
             return null;
         }
-
-        private NewShader_Sound(gl, shaderCode) {
-            var vsSource = "attribute vec2 pos; void main() { gl_Position = vec4(pos.xy,0.0,1.0); }";
-
-            var res = this.CreateShader(gl, vsSource, this.mHeader + shaderCode + this.mSoundPassFooter, false);
-            if (res.mSuccess == false)
-                return res.mInfo;
-
-            if (this.mProgram != null)
-                gl.deleteProgram(this.mProgram);
-
-            this.mProgram = res.mProgram;
-
-            // force sound to be regenerated
-            this.mFrame = 0;
-
-            return null;
-        }
-
+        
         private createGLTexture(ctx, image, format, texture) {
             if (ctx == null) return;
 
@@ -1683,7 +1664,7 @@
             this.mSource = null;
 
             if (passType == "image") this.Create_Image(wa, gl);
-            else this.Create_Sound(wa, gl);
+
         }
 
         private CreateShader(gl, tvs, tfs, nativeDebug) : any {
@@ -1739,56 +1720,9 @@
 
         private Destroy_Image (wa, gl) {
         }
-
-        private Create_Sound(wa, gl) {
-            this.MakeHeader(null, null);
-
-            this.mSoundPassFooter = "void main()" +
-            "{" +
-            "float t = iBlockOffset + (gl_FragCoord.x + gl_FragCoord.y*512.0)/44100.0;" +
-
-            "vec2 y = mainSound( t );" +
-
-            "vec2 v  = floor((0.5+0.5*y)*65536.0);" +
-            "vec2 vl =   mod(v,256.0)/255.0;" +
-            "vec2 vh = floor(v/256.0)/255.0;" +
-            "gl_FragColor = vec4(vl.x,vh.x,vl.y,vh.y);" +
-            "}";
-
-            this.mProgram = null;
-
-            this.mSampleRate = 44100;
-            this.mPlayTime = 60;
-            this.mPlaySamples = this.mPlayTime * this.mSampleRate;
-            this.mBuffer = wa.createBuffer(2, this.mPlaySamples, this.mSampleRate);
-
-
-            //-------------------
-            this.mTextureDimensions = 512;
-            this.mRenderTexture = this.createEmptyTextureNearest(gl, this.mTextureDimensions, this.mTextureDimensions);
-            this.mRenderFBO = this.createFBO(gl, this.mRenderTexture);
-
-            //-----------------------------
-
-            // ArrayBufferView pixels;
-            this.mTmpBufferSamples = this.mTextureDimensions * this.mTextureDimensions;
-            this.mData = new Uint8Array(this.mTmpBufferSamples * 4);
-
-            this.mPlayNode = null;
-        }
-
-        private Destroy_Sound(wa, gl) {
-            if (this.mPlayNode != null) this.mPlayNode.stop();
-            this.mPlayNode = null;
-            this.mBuffer = null;
-            this.mData = null;
-            this.deleteFBO(gl, this.mRenderFBO);
-            this.deleteTexture(gl, this.mRenderTexture);
-        }
-
+        
         private MakeHeader(precission, supportDerivatives) {
             if (this.mType == "image") this.MakeHeader_Image(precission, supportDerivatives);
-            else this.MakeHeader_Sound(precission, supportDerivatives);
         }
 
         private MakeHeader_Image(precission, supportDerivatives) {
@@ -1845,33 +1779,6 @@
             this.mHeader = header;
             this.mHeaderLength = headerlength;
         }
-
-        private MakeHeader_Sound(precission, supportDerivatives) {
-            var header = this.mPrecision;
-            var headerlength = 3;
-
-            if (this.mSupportsDerivatives) { header += "#extension GL_OES_standard_derivatives : enable\n"; headerlength++; }
-
-            header += "uniform float     iChannelTime[4];\n" +
-            "uniform float     iBlockOffset;\n" +
-            "uniform vec4      iDate;\n" +
-            "uniform float     iSampleRate;\n" +
-            "uniform vec3      iChannelResolution[4];\n";
-            headerlength += 5;
-
-            for (var i = 0; i < this.mInputs.length; i++) {
-                var inp = this.mInputs[i];
-
-                if (inp != null && inp.mInfo.mType == "cubemap")
-                    header += "uniform samplerCube iChannel" + i + ";\n";
-                else
-                    header += "uniform sampler2D iChannel" + i + ";\n";
-                headerlength++;
-            }
-
-            this.mHeader = header;
-            this.mHeaderLength = headerlength;
-        }
         
         private createEmptyTextureNearest(gl, xres, yres) {
             var tex = gl.createTexture();
@@ -1897,111 +1804,10 @@
         }
 
         private Paint (vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused) {
-            if (this.mType == "sound") {
-                if (this.mFrame == 0 && !isPaused) {
-                    // make sure all textures are loaded
-                    for (var i = 0; i < this.mInputs.length; i++) {
-                        var inp = this.mInputs[i];
-                        if (inp == null) continue;
-
-                        if (inp.mInfo.mType == "texture" && !inp.loaded) return;
-                        if (inp.mInfo.mType == "cubemap" && !inp.loaded) return;
-                    }
-
-                    this.Paint_Sound(wa, gl, da);
-                    this.mFrame++;
-                }
-            }
-            else {
+            if (this.mType == "image") {
                 this.Paint_Image(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres);
                 this.mFrame++;
             }
-
-        }
-        
-        private Paint_Sound(wa, gl, d) {
-            var dates = [d.getFullYear(), // the year (four digits)
-                d.getMonth(),	   // the month (from 0-11)
-                d.getDate(),     // the day of the month (from 1-31)
-                d.getHours() * 60.0 * 60 + d.getMinutes() * 60 + d.getSeconds()];
-
-            var resos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
-
-
-            gl.bindFramebuffer(gl.FRAMEBUFFER, this.mRenderFBO);
-
-            gl.viewport(0, 0, this.mTextureDimensions, this.mTextureDimensions);
-            gl.useProgram(this.mProgram);
-
-
-            for (var i = 0; i < this.mInputs.length; i++) {
-                var inp = this.mInputs[i];
-
-                gl.activeTexture(gl.TEXTURE0 + i);
-
-                if (inp == null) {
-                    gl.bindTexture(gl.TEXTURE_2D, null);
-                }
-                else if (inp.mInfo.mType == "texture") {
-                    if (inp.loaded == false) {
-                        gl.bindTexture(gl.TEXTURE_2D, null);
-                    }
-                    else {
-                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
-                        resos[3 * i + 0] = inp.image.width;
-                        resos[3 * i + 1] = inp.image.height;
-                        resos[3 * i + 2] = 1;
-                    }
-                }
-            }
-
-            var l2 = gl.getUniformLocation(this.mProgram, "iBlockOffset");
-            var l7 = gl.getUniformLocation(this.mProgram, "iDate"); gl.uniform4fv(l7, dates);
-            var l8 = gl.getUniformLocation(this.mProgram, "iChannelResolution"); gl.uniform3fv(l8, resos);
-            var l9 = gl.getUniformLocation(this.mProgram, "iSampleRate"); gl.uniform1f(l9, this.mSampleRate);
-            var ich0 = gl.getUniformLocation(this.mProgram, "iChannel0"); if (ich0 != null) gl.uniform1i(ich0, 0);
-            var ich1 = gl.getUniformLocation(this.mProgram, "iChannel1"); if (ich1 != null) gl.uniform1i(ich1, 1);
-            var ich2 = gl.getUniformLocation(this.mProgram, "iChannel2"); if (ich2 != null) gl.uniform1i(ich2, 2);
-            var ich3 = gl.getUniformLocation(this.mProgram, "iChannel3"); if (ich3 != null) gl.uniform1i(ich3, 3);
-
-
-
-            var l1 = gl.getAttribLocation(this.mProgram, "pos");
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.mQuadVBO);
-            gl.vertexAttribPointer(l1, 2, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(l1);
-
-            //--------------------------------
-
-            var bufL = this.mBuffer.getChannelData(0); // Float32Array
-            var bufR = this.mBuffer.getChannelData(1); // Float32Array
-            var numBlocks = this.mPlaySamples / this.mTmpBufferSamples;
-            for (var j = 0; j < numBlocks; j++) {
-                var off = j * this.mTmpBufferSamples;
-
-                gl.uniform1f(l2, off / this.mSampleRate);
-                gl.drawArrays(gl.TRIANGLES, 0, 6);
-                gl.readPixels(0, 0, this.mTextureDimensions, this.mTextureDimensions, gl.RGBA, gl.UNSIGNED_BYTE, this.mData);
-
-                for (var i = 0; i < this.mTmpBufferSamples; i++) {
-                    bufL[off + i] = -1.0 + 2.0 * (this.mData[4 * i + 0] + 256.0 * this.mData[4 * i + 1]) / 65535.0;
-                    bufR[off + i] = -1.0 + 2.0 * (this.mData[4 * i + 2] + 256.0 * this.mData[4 * i + 3]) / 65535.0;
-                }
-            }
-
-            gl.disableVertexAttribArray(l1);
-            gl.useProgram(null);
-            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
-            //-------------------------------
-
-            if (this.mPlayNode != null) { this.mPlayNode.disconnect(); this.mPlayNode.stop(); }
-
-            this.mPlayNode = wa.createBufferSource();
-            this.mPlayNode.buffer = this.mBuffer;
-            this.mPlayNode.connect(this.mGainNode);
-            this.mPlayNode.state = this.mPlayNode.noteOn;
-            this.mPlayNode.start(0);
         }
 
         private Paint_Image(vrData, wa, gl, d, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres) {
@@ -2102,106 +1908,8 @@
                         resos[3 * i + 2] = 1;
                     }
                 }
-                else if (inp.mInfo.mType == "music") {
-                    if (inp.audio.mPaused == false && inp.audio.mForceMuted == false) {
-                        if (wa != null) {
-                            inp.audio.mSound.mAnalyser.getByteFrequencyData(inp.audio.mSound.mFreqData);
-                            inp.audio.mSound.mAnalyser.getByteTimeDomainData(inp.audio.mSound.mWaveData);
-                        }
-
-                        if (this.mTextureCallbackFun != null)
-                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.audio.mSound.mFreqData, false, false, 2, inp.audio.currentTime, this.mID);
-                    }
-
-                    if (inp.loaded == false) {
-                        gl.bindTexture(gl.TEXTURE_2D, null);
-                    }
-                    else {
-                        times[i] = inp.audio.currentTime;
-
-                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
-                        if (inp.audio.mForceMuted == true) {
-                            times[i] = 10.0 + time;
-                            var num = inp.audio.mSound.mFreqData.length;
-                            for (var j = 0; j < num; j++) {
-                                var x = j / num;
-                                var f = (0.75 + 0.25 * Math.sin(10.0 * j + 13.0 * time)) * Math.exp(-3.0 * x);
-
-                                if (j < 3)
-                                    f = Math.pow(0.50 + 0.5 * Math.sin(6.2831 * time), 4.0) * (1.0 - j / 3.0);
-
-                                inp.audio.mSound.mFreqData[j] = Math.floor(255.0 * f) | 0;
-                            }
-
-                            var num = inp.audio.mSound.mFreqData.length;
-                            for (var j = 0; j < num; j++) {
-                                var f = 0.5 + 0.15 * Math.sin(17.0 * time + 10.0 * 6.2831 * j / num) * Math.sin(23.0 * time + 1.9 * j / num);
-                                inp.audio.mSound.mWaveData[j] = Math.floor(255.0 * f) | 0;
-                            }
-
-                        }
-
-                        if (inp.audio.mPaused == false) {
-                            var waveLen = Math.min(inp.audio.mSound.mWaveData.length, 512);
-                            gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 512, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.audio.mSound.mFreqData);
-                            gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 1, waveLen, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.audio.mSound.mWaveData);
-                        }
-
-                        resos[3 * i + 0] = 512;
-                        resos[3 * i + 1] = 2;
-                        resos[3 * i + 2] = 1;
-                    }
-                }
-                else if (inp.mInfo.mType == "mic") {
-                    if (inp.mForceMuted == false) {
-                        if (wa != null && inp.mAnalyser != null) {
-                            inp.mAnalyser.getByteFrequencyData(inp.mFreqData);
-                            inp.mAnalyser.getByteTimeDomainData(inp.mWaveData);
-                        }
-
-                        if (this.mTextureCallbackFun != null)
-                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.mFreqData, false, false, 2, 0, this.mID);
-                    }
-
-
-                    if (inp.loaded == false) {
-                        gl.bindTexture(gl.TEXTURE_2D, null);
-                    }
-                    else {
-                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
-                        if (inp.mForceMuted == true) {
-                            times[i] = 10.0 + time;
-                            var num = inp.mFreqData.length;
-                            for (var j = 0; j < num; j++) {
-                                var x = j / num;
-                                var f = (0.75 + 0.25 * Math.sin(10.0 * j + 13.0 * time)) * Math.exp(-3.0 * x);
-
-                                if (j < 3)
-                                    f = Math.pow(0.50 + 0.5 * Math.sin(6.2831 * time), 4.0) * (1.0 - j / 3.0);
-
-                                inp.mFreqData[j] = Math.floor(255.0 * f) | 0;
-                            }
-
-                            var num = inp.mFreqData.length;
-                            for (var j = 0; j < num; j++) {
-                                var f = 0.5 + 0.15 * Math.sin(17.0 * time + 10.0 * 6.2831 * j / num) * Math.sin(23.0 * time + 1.9 * j / num);
-                                inp.mWaveData[j] = Math.floor(255.0 * f) | 0;
-                            }
-
-                            if (this.mTextureCallbackFun != null)
-                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.mFreqData, false, false, 2, 0, this.mID);
-                        }
-
-                        var waveLen = Math.min(inp.mWaveData.length, 512);
-
-                        gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 512, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.mFreqData);
-                        gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 1, waveLen, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.mWaveData);
-
-                        resos[3 * i + 0] = 512;
-                        resos[3 * i + 1] = 2;
-                        resos[3 * i + 2] = 1;
-                    }
-                }
+                
+               
 
             }
 
