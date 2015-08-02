@@ -64,3 +64,4 @@ var Application;
         myapp.controller("ConfigExtensionCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigExtensionCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=configExtension.js.map

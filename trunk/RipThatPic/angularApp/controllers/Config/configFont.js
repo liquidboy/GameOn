@@ -64,3 +64,4 @@ var Application;
         myapp.controller("ConfigFontCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigFontCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=configFont.js.map

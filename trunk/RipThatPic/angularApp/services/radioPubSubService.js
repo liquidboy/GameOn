@@ -43,3 +43,4 @@ var Application;
         myapp.service("radioPubSubSvc", ["$http", "$location", RadioPubSubSvc]); //($http, $location) => new RadioPubSubSvc($http, $location)]);
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=radioPubSubService.js.map

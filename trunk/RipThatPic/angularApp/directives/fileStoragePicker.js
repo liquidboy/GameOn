@@ -89,3 +89,4 @@ var Application;
         myapp.directive("dFileStoragePicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new FileStoragePickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=fileStoragePicker.js.map

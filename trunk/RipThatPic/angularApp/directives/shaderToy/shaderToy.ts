@@ -8,7 +8,7 @@
                 (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) => { return new ShaderToyDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
             ];
         }
-
+        
 
         public templateUrl: string;
         public restrict: string;
@@ -37,7 +37,7 @@
                 var player = element.find('#player')[0];
                 var passManager = element.find('#passManager');
 
-                $(element.find('#butUpdateShader')[0]).on('click', this.updateShader);
+                $(element.find('#butUpdateShader')[0]).on('click', this.updateShader.bind(this));
 
                 this.sc.shaderToy = new ShaderToy(player, editor, passManager);
 
@@ -45,9 +45,9 @@
                     return;
 
                 //-- get info --------------------------------------------------------
-                //this.sc.shaderId = '4t23RR';
-                //this.sc.shaderId = 'll23Rd';
-                this.sc.shaderId = 'MlS3Rc';
+                this.sc.shaderId = '4t23RR';
+                //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
+                //this.sc.shaderId = 'MlS3Rc';
                 if (this.sc.shaderId == null) {
                     this.loadNew();
                 }
@@ -59,11 +59,11 @@
 
         }
 
-        updateShader = () => {
+        private updateShader(){
             this.sc.shaderToy.SetShaderFromEditor();
         }
 
-        loadNew() {
+        private loadNew() {
             var kk = {
                 "ver": "0.1",
                 "info": {
@@ -111,7 +111,7 @@
             this.dataLoadShader([kk]);
         }
 
-        dataLoadShader(jsnShader) {
+        private dataLoadShader(jsnShader) {
             this.sc.res = this.sc.shaderToy.newScriptJSON(jsnShader[0])
             if (this.sc.res.mSuccess == false)
                 return;
@@ -128,7 +128,7 @@
 
         }
 
-        loadShader(gShaderID: string) {
+        private loadShader(gShaderID: string) {
 
             try {
                 var res: any;
@@ -160,7 +160,7 @@
             
         }
 
-        loadShaderOld(gShaderID: string) {
+        private loadShaderOld(gShaderID: string) {
             try {
                 var httpReq = this.createHttpRequest();
                 httpReq.open("POST", "https://www.shadertoy.com/shadertoy", true);
@@ -181,7 +181,7 @@
             }
         }
         
-        createHttpRequest() {
+        private createHttpRequest() {
 
             var xmlHttp = null;
             try {
@@ -233,6 +233,19 @@
         mDocs: any;
 
         mCharCounter: any;
+        mActiveDoc: any;
+        mInfo: any;
+        mTOffset: number;
+        mTo: any;
+        mTf: number;
+        mFpsTo: any;
+        mFpsFrame: any;
+
+        mMouseIsDown: boolean;
+        mMouseOriX : number;
+        mMouseOriY: number;
+        mMousePosX: number;
+        mMousePosY: number;
 
         constructor(
             public playerElement: any,
@@ -331,8 +344,7 @@
             div.appendChild(divText);
         }
 
-        mActiveDoc: any;
-        mInfo: any;
+       
         newScriptJSON(jsn) {
             try {
                 var res = this.mEffect.newScriptJSON(jsn);
@@ -376,7 +388,7 @@
             }
 
         }
-        refreshTexturThumbail = function (myself, slot, img, forceFrame, gui, guiID, time, passID) {
+        refreshTexturThumbail(myself, slot, img, forceFrame, gui, guiID, time, passID) {
             if (passID != myself.mActiveDoc) return;
 
             //var canvas: any = document.getElementById('myUnitCanvas' + slot);
@@ -556,13 +568,13 @@
 
             myself.mForceFrame = forceFrame;
         }
-        getSourceElement = function(e) {
+        getSourceElement(e) {
             var ele = null;
             if (e.target) ele = e.target;
             if (e.srcElement) ele = e.srcElement;
             return ele;
         }
-        startRendering = function () {
+        startRendering() {
             var me = this;
 
             function renderLoop2() {
@@ -603,7 +615,7 @@
             renderLoop2();
         }
 
-        pauseTime = function () {
+        pauseTime() {
             var time = performance.now();
             if (!this.mIsPaused) {
                 document.getElementById("myPauseButton").style.background = "url('/img/play.png')";
@@ -619,12 +631,7 @@
             }
         }
 
-        mTOffset: number;
-        mTo: any;
-        mTf: number;
-        mFpsTo: any;
-        mFpsFrame: any;
-
+  
         resetTime() {
             this.mTOffset = 0;
             this.mTo = performance.now();
@@ -635,7 +642,7 @@
             this.mEffect.ResetTime();
         }
 
-        setChars = function () {
+        setChars () {
             var str = this.mCodeEditor.getValue();
 
             str = this.replaceChars(str);
@@ -648,7 +655,7 @@
             this.mCharCounter.innerHTML = str.length + " chars";
         }
 
-        setFlags = function () {
+        setFlags() {
             if (this.mEffect == null) return;
 
             var flags = this.mEffect.calcFlags();
@@ -658,7 +665,7 @@
         }
 
 
-        showChars = function () {
+        showChars() {
             var str = this.mCodeEditor.getValue();
 
             str = this.minify(str);
@@ -903,6 +910,11 @@
 
             return this.SetErrors(result, false);
         }
+
+        //gShaderToy.SetTexture(gCurrentEditingSlot, {mType:'texture', mID:28, mSrc:'/presets/tex15.png'})
+        SetTexture(slot, url) {
+            this.mEffect.NewTexture(this.mActiveDoc, slot, url);
+        }
     }
 
     class Effect {
@@ -1118,7 +1130,7 @@
             return res;
         }
 
-        NewTexture(passid: number, slot :any, url: number) {
+        NewTexture(passid: number, slot :any, url: any) {
             this.mPasses[passid].NewTexture(this.mAudioContext, this.mGLContext, slot, url);
         }
 
@@ -1193,6 +1205,33 @@
                 if (this.mPasses[i].mProgram == null) continue;
 
                 this.mPasses[i].Paint(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused);
+            }
+        }
+
+        UpdateInputs(passid, forceUpdate) {
+            this.mPasses[passid].UpdateInputs(this.mAudioContext, forceUpdate);
+        }
+
+        StopOutputs() {
+            var gl = this.mGLContext;
+            var wa = this.mAudioContext;
+
+            var num = this.mPasses.length;
+            for (var i = 0; i < num; i++) {
+                if (!this.mPasses[i].mUsed) continue;
+                this.mPasses[i].StopOutput(wa, gl);
+            }
+        }
+
+        ResumeOutputs() {
+            var gl = this.mGLContext;
+            var wa = this.mAudioContext;
+            if (gl == null) return;
+
+            var num = this.mPasses.length;
+            for (var i = 0; i < num; i++) {
+                if (!this.mPasses[i].mUsed) continue;
+                this.mPasses[i].ResumeOutput(wa, gl);
             }
         }
     }
@@ -2378,6 +2417,59 @@
 
         deleteTexture(gl, tex) {
             gl.deleteTexture(tex);
+        }
+
+        UpdateInputs(wa, forceUpdate) {
+            for (var i = 0; i < this.mInputs.length; i++) {
+                var inp = this.mInputs[i];
+
+                if (inp == null) {
+                    if (forceUpdate) {
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, null, false, true, 0, -1.0, this.mID);
+                    }
+                }
+                else if (inp.mInfo.mType == "texture") {
+                    if (inp.loaded && forceUpdate) {
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.image, true, true, 0, -1.0, this.mID);
+                    }
+
+                }
+                else if (inp.mInfo.mType == "cubemap") {
+                    if (inp.loaded && forceUpdate) {
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.image[0], true, true, 0, -1.0, this.mID);
+                    }
+
+                }
+                else if (inp.mInfo.mType == "video") {
+                    if (inp.video.readyState === inp.video.HAVE_ENOUGH_DATA) {
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.video, false, false, 0, -1, this.mID);
+                    }
+                }
+                else if (inp.mInfo.mType == "music") {
+                    if (inp.audio.mPaused == false && inp.audio.mForceMuted == false) {
+                        if (wa != null) {
+                            inp.audio.mSound.mAnalyser.getByteFrequencyData(inp.audio.mSound.mFreqData);
+                            inp.audio.mSound.mAnalyser.getByteTimeDomainData(inp.audio.mSound.mWaveData);
+                        }
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.audio.mSound.mFreqData, false, false, 2, inp.audio.currentTime, this.mID);
+                    }
+                }
+                else if (inp.mInfo.mType == "mic") {
+                    if (inp.mForceMuted == false) {
+                        if (wa != null) {
+                            inp.mAnalyser.getByteFrequencyData(inp.mFreqData);
+                            inp.mAnalyser.getByteTimeDomainData(inp.mWaveData);
+                        }
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.mFreqData, false, false, 2, 0, this.mID);
+                    }
+                }
+            }
         }
     }
 

@@ -31,3 +31,4 @@ var Application;
         myapp.directive("dPublicFooter", PublicFooterDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=publicFooter.js.map

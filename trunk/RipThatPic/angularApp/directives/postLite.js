@@ -48,3 +48,4 @@ var Application;
         myapp.directive("dPostLite", PostLiteDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=postLite.js.map

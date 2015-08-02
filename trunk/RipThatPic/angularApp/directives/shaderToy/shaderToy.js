@@ -10,9 +10,6 @@ var Application;
                 this.dataSvc = dataSvc;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
-                this.updateShader = function () {
-                    _this.sc.shaderToy.SetShaderFromEditor();
-                };
                 this.restrict = 'E';
                 this.replace = true;
                 this.templateUrl = '/angularApp/partials/shader-toy.html';
@@ -21,14 +18,14 @@ var Application;
                     var editor = element.find('#editor')[0];
                     var player = element.find('#player')[0];
                     var passManager = element.find('#passManager');
-                    $(element.find('#butUpdateShader')[0]).on('click', _this.updateShader);
+                    $(element.find('#butUpdateShader')[0]).on('click', _this.updateShader.bind(_this));
                     _this.sc.shaderToy = new ShaderToy(player, editor, passManager);
                     if (!_this.sc.shaderToy.mCreated)
                         return;
                     //-- get info --------------------------------------------------------
-                    //this.sc.shaderId = '4t23RR';
-                    //this.sc.shaderId = 'll23Rd';
-                    _this.sc.shaderId = 'MlS3Rc';
+                    _this.sc.shaderId = '4t23RR';
+                    //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
+                    //this.sc.shaderId = 'MlS3Rc';
                     if (_this.sc.shaderId == null) {
                         _this.loadNew();
                     }
@@ -42,6 +39,9 @@ var Application;
                     "pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc",
                     function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new ShaderToyDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }
                 ];
+            };
+            ShaderToyDirective.prototype.updateShader = function () {
+                this.sc.shaderToy.SetShaderFromEditor();
             };
             ShaderToyDirective.prototype.loadNew = function () {
                 var kk = {
@@ -220,233 +220,6 @@ var Application;
                     divText.innerHTML = 'Shadertoy needs a WebGL-enabled browser. Minimum Requirements: <ul><li>Firefox 17</li><li>Chrome 23</li><li>Internet Explorer 11</li><li>Safari 8</li></ul>';
                     div.appendChild(divText);
                 };
-                this.refreshTexturThumbail = function (myself, slot, img, forceFrame, gui, guiID, time, passID) {
-                    if (passID != myself.mActiveDoc)
-                        return;
-                    //var canvas: any = document.getElementById('myUnitCanvas' + slot);
-                    //var w = canvas.width;
-                    //var h = canvas.height;
-                    //var ctx = canvas.getContext('2d');
-                    //if (img == null) {
-                    //    ctx.fillStyle = "#000000";
-                    //    ctx.fillRect(0, 0, w, h);
-                    //    if (guiID == 2) {
-                    //        ctx.strokeStyle = "#808080";
-                    //        ctx.lineWidth = 1;
-                    //        ctx.beginPath();
-                    //        var num = w / 2;
-                    //        for (var i = 0; i < num; i++) {
-                    //            var y = Math.sin(64.0 * 6.2831 * i / num + time) * Math.sin(2.0 * 6.2831 * i / num + time);
-                    //            var ix = w * i / num;
-                    //            var iy = h * (0.5 + 0.4 * y);
-                    //            if (i == 0) ctx.moveTo(ix, iy);
-                    //            else ctx.lineTo(ix, iy);
-                    //        }
-                    //        ctx.stroke();
-                    //        var str = "Audio error";
-                    //        ctx.font = "normal bold 20px Arial";
-                    //        ctx.lineWidth = 4;
-                    //        ctx.strokeStyle = "#000000";
-                    //        ctx.strokeText(str, 14, h / 2);
-                    //        ctx.fillStyle = "#ff0000";
-                    //        ctx.fillText(str, 14, h / 2);
-                    //        var pb: any = document.getElementById("myPauseButton" + slot);
-                    //        pb.src = "/img/pause.png";
-                    //    }
-                    //}
-                    //else {
-                    //    if (guiID == 0 || guiID == 1 || guiID == 3) {
-                    //        ctx.fillStyle = "#000000";
-                    //        ctx.fillRect(0, 0, w, h);
-                    //        ctx.drawImage(img, 0, 0, w, h);
-                    //    }
-                    //    else if (guiID == 2) {
-                    //        ctx.fillStyle = "#000000";
-                    //        ctx.fillRect(0, 0, w - 24, h);
-                    //        ctx.fillStyle = "#ffffff";
-                    //        var numfft = img.length; numfft /= 2; if (numfft > 512) numfft = 512;
-                    //        var num = 32;
-                    //        var numb = (numfft / num) | 0;
-                    //        var s = ((w - 24 - 8 * 2) / num);
-                    //        var k = 0;
-                    //        for (var i = 0; i < num; i++) {
-                    //            var f = 0.0;
-                    //            for (var j = 0; j < numb; j++) {
-                    //                f += img[k++];
-                    //            }
-                    //            f /= numb;
-                    //            f /= 255.0;
-                    //            var fr = f;
-                    //            var fg = 4.0 * f * (1.0 - f);
-                    //            var fb = 1.0 - f;
-                    //            var rr = (255.0 * fr) | 0;
-                    //            var gg = (255.0 * fg) | 0;
-                    //            var bb = (255.0 * fb) | 0;
-                    //            //             ctx.fillStyle = "rgb(" + rr + "," + gg + "," + bb + ");"
-                    //            var decColor = 0x1000000 + bb + 0x100 * gg + 0x10000 * rr;
-                    //            ctx.fillStyle = '#' + decColor.toString(16).substr(1);
-                    //            var a = Math.max(2, f * (h - 2 * 20));
-                    //            ctx.fillRect(8 + i * s, h - 20 - a, 3 * s / 4, a);
-                    //        }
-                    //    }
-                    //    else if (guiID == 4) {
-                    //        /*
-                    //                 ctx.fillStyle = "#404040";
-                    //                 ctx.fillRect(0,0,w,h);
-                    //                 ctx.lineWidth = 2;
-                    //                 ctx.strokeStyle = "#ffffff";
-                    //                 ctx.strokeRect(w/10,3*h/10,8*w/10,5*h/10);
-                    //                 ctx.fillStyle = "#ffffff";
-                    //                 var s = (7*w/10)/(2*12);
-                    //                 for( var i=0; i<48; i++ )
-                    //                 {
-                    //                     var u = (i%12) | 0;
-                    //                     var v = (i/12) | 0;
-                    //                     ctx.fillRect( w/10+s+s*2*u, 3*h/10 + s + s*2*v, s, s );
-                    //                 }
-                    //          */
-                    //        var thereskey = false;
-                    //        ctx.fillStyle = "#ffffff";
-                    //        for (var i = 0; i < 256; i++) {
-                    //            var x = (w * i / 256) | 0;
-                    //            if (img.mData[i] > 0) {
-                    //                thereskey = true;
-                    //                //ctx.fillRect( x, 0+h/4, 1, h/2 );
-                    //                break;
-                    //            }
-                    //        }
-                    //        ctx.fillStyle = "#000000";
-                    //        ctx.fillRect(0, 0, w, h);
-                    //        ctx.drawImage(img.mImage, 0, 20, w, h - 20);
-                    //        if (thereskey) {
-                    //            ctx.fillStyle = "#ff8040";
-                    //            ctx.globalAlpha = 0.4;
-                    //            ctx.fillRect(0, 0, w, h);
-                    //            ctx.globalAlpha = 1.0;
-                    //        }
-                    //    }
-                    //}
-                    //ctx.font = "normal normal 12px Arial";
-                    //ctx.strokeStyle = "#000000";
-                    //ctx.fillStyle = "#000000";
-                    //ctx.lineWidth = 4;
-                    //ctx.strokeText("iChannel" + slot, 4, 14);
-                    //ctx.fillStyle = "#ffffff";
-                    //ctx.strokeStyle = "#ffffff";
-                    //ctx.fillText("iChannel" + slot, 4, 14);
-                    //if (time > 0.0) {
-                    //    var str = time.toFixed(2) + "s";
-                    //    ctx.font = "normal normal 10px Arial";
-                    //    ctx.strokeStyle = "#000000";
-                    //    ctx.lineWidth = 4;
-                    //    ctx.strokeText(str, 4, 96);
-                    //    ctx.fillStyle = "#ffffff";
-                    //    ctx.fillText(str, 4, 96);
-                    //}
-                    ////--------------
-                    //if (gui == true) {
-                    //    var ele: any = document.getElementById("inputSelectorControls" + slot);
-                    //    if (guiID == 0) ele.style.visibility = "hidden";
-                    //    if (guiID == 1) ele.style.visibility = "visible";
-                    //    if (guiID == 2) ele.style.visibility = "visible";
-                    //    if (guiID == 3) ele.style.visibility = "visible";
-                    //    if (guiID == 3) {
-                    //        var me = this;
-                    //        var ele1: any = document.getElementById("myPauseButton" + slot);
-                    //        ele1.src = "/img/next.png";
-                    //        ele1.title = "next";
-                    //        ele1.onclick = function (ev) { var ele = this.getSourceElement(ev); var r = me.PauseInput(ele.mId); }
-                    //        var ele2: any = document.getElementById("myRewindButton" + slot);
-                    //        ele2.src = "/img/previous.png";
-                    //        ele2.title = "previous";
-                    //        ele2.onclick = function (ev) { var ele = this.getSourceElement(ev); var r = me.RewindInput(ele.mId); }
-                    //        var ele3: any = document.getElementById("myMuteButton" + slot);
-                    //        ele3.src = "/img/rewind.png";
-                    //        ele3.title = "rewind";
-                    //        ele3.onclick = function (ev) { var ele = this.getSourceElement(ev); var r = me.MuteInput(ele.mId); }
-                    //    }
-                    //}
-                    //--------------
-                    myself.mForceFrame = forceFrame;
-                };
-                this.getSourceElement = function (e) {
-                    var ele = null;
-                    if (e.target)
-                        ele = e.target;
-                    if (e.srcElement)
-                        ele = e.srcElement;
-                    return ele;
-                };
-                this.startRendering = function () {
-                    var me = this;
-                    function renderLoop2() {
-                        if (me.mGLContext == null)
-                            return;
-                        requestAnimationFrame(renderLoop2);
-                        if (me.mIsPaused && !me.mForceFrame) {
-                            me.mEffect.UpdateInputs(me.mActiveDoc, false);
-                            return;
-                        }
-                        me.mForceFrame = false;
-                        var time = performance.now();
-                        var ltime = me.mTOffset + time - me.mTo;
-                        if (me.mIsPaused)
-                            ltime = me.mTf;
-                        else
-                            me.mTf = ltime;
-                        me.mEffect.Paint(ltime / 1000.0, me.mMouseOriX, me.mMouseOriY, me.mMousePosX, me.mMousePosY, me.mIsPaused);
-                        //if (me.mSendFrame) me.mLiveCreator.SendUpdate();
-                        me.mSendFrame = false;
-                        me.mFpsFrame++;
-                        //document.getElementById("myTime").innerHTML = (ltime / 1000.0).toFixed(2);
-                        if ((time - me.mFpsTo) > 1000) {
-                            var ffps = 1000.0 * me.mFpsFrame / (time - me.mFpsTo);
-                            //document.getElementById("myFramerate").innerHTML = ffps.toFixed(1) + " fps";
-                            me.mFpsFrame = 0;
-                            me.mFpsTo = time;
-                        }
-                    }
-                    renderLoop2();
-                };
-                this.pauseTime = function () {
-                    var time = performance.now();
-                    if (!this.mIsPaused) {
-                        document.getElementById("myPauseButton").style.background = "url('/img/play.png')";
-                        this.mIsPaused = true;
-                        this.mEffect.StopOutputs();
-                    }
-                    else {
-                        document.getElementById("myPauseButton").style.background = "url('/img/pause.png')";
-                        this.mTOffset = this.mTf;
-                        this.mTo = time;
-                        this.mIsPaused = false;
-                        this.mEffect.ResumeOutputs();
-                    }
-                };
-                this.setChars = function () {
-                    var str = this.mCodeEditor.getValue();
-                    str = this.replaceChars(str);
-                    str = this.removeSingleComments(str);
-                    str = this.removeMultiComments(str);
-                    str = this.removeMultiSpaces(str);
-                    str = this.removeSingleSpaces(str);
-                    str = this.removeEmptyLines(str);
-                    this.mCharCounter.innerHTML = str.length + " chars";
-                };
-                this.setFlags = function () {
-                    if (this.mEffect == null)
-                        return;
-                    var flags = this.mEffect.calcFlags();
-                    //var eleVR = document.getElementById("myVR");
-                    //eleVR.style.visibility = (flags.mFlagVR == true) ? "visible" : "hidden";
-                };
-                this.showChars = function () {
-                    var str = this.mCodeEditor.getValue();
-                    str = this.minify(str);
-                    //alert( str );
-                    var ve = document.getElementById("centerScreen");
-                    //doAlert(getCoords(ve), { mX: 480, mY: 400 }, "Minimal Shader Code, (" + str.length + " chars)", "<pre>" + str + "</pre>", false, null);
-                };
                 this.SetErrors = function (result, fromScript) {
                     //var eleWrapper = document.getElementById('editorWrapper');
                     //while (this.mErrors.length > 0) {
@@ -559,6 +332,209 @@ var Application;
                     return { mSuccess: false };
                 }
             };
+            ShaderToy.prototype.refreshTexturThumbail = function (myself, slot, img, forceFrame, gui, guiID, time, passID) {
+                if (passID != myself.mActiveDoc)
+                    return;
+                //var canvas: any = document.getElementById('myUnitCanvas' + slot);
+                //var w = canvas.width;
+                //var h = canvas.height;
+                //var ctx = canvas.getContext('2d');
+                //if (img == null) {
+                //    ctx.fillStyle = "#000000";
+                //    ctx.fillRect(0, 0, w, h);
+                //    if (guiID == 2) {
+                //        ctx.strokeStyle = "#808080";
+                //        ctx.lineWidth = 1;
+                //        ctx.beginPath();
+                //        var num = w / 2;
+                //        for (var i = 0; i < num; i++) {
+                //            var y = Math.sin(64.0 * 6.2831 * i / num + time) * Math.sin(2.0 * 6.2831 * i / num + time);
+                //            var ix = w * i / num;
+                //            var iy = h * (0.5 + 0.4 * y);
+                //            if (i == 0) ctx.moveTo(ix, iy);
+                //            else ctx.lineTo(ix, iy);
+                //        }
+                //        ctx.stroke();
+                //        var str = "Audio error";
+                //        ctx.font = "normal bold 20px Arial";
+                //        ctx.lineWidth = 4;
+                //        ctx.strokeStyle = "#000000";
+                //        ctx.strokeText(str, 14, h / 2);
+                //        ctx.fillStyle = "#ff0000";
+                //        ctx.fillText(str, 14, h / 2);
+                //        var pb: any = document.getElementById("myPauseButton" + slot);
+                //        pb.src = "/img/pause.png";
+                //    }
+                //}
+                //else {
+                //    if (guiID == 0 || guiID == 1 || guiID == 3) {
+                //        ctx.fillStyle = "#000000";
+                //        ctx.fillRect(0, 0, w, h);
+                //        ctx.drawImage(img, 0, 0, w, h);
+                //    }
+                //    else if (guiID == 2) {
+                //        ctx.fillStyle = "#000000";
+                //        ctx.fillRect(0, 0, w - 24, h);
+                //        ctx.fillStyle = "#ffffff";
+                //        var numfft = img.length; numfft /= 2; if (numfft > 512) numfft = 512;
+                //        var num = 32;
+                //        var numb = (numfft / num) | 0;
+                //        var s = ((w - 24 - 8 * 2) / num);
+                //        var k = 0;
+                //        for (var i = 0; i < num; i++) {
+                //            var f = 0.0;
+                //            for (var j = 0; j < numb; j++) {
+                //                f += img[k++];
+                //            }
+                //            f /= numb;
+                //            f /= 255.0;
+                //            var fr = f;
+                //            var fg = 4.0 * f * (1.0 - f);
+                //            var fb = 1.0 - f;
+                //            var rr = (255.0 * fr) | 0;
+                //            var gg = (255.0 * fg) | 0;
+                //            var bb = (255.0 * fb) | 0;
+                //            //             ctx.fillStyle = "rgb(" + rr + "," + gg + "," + bb + ");"
+                //            var decColor = 0x1000000 + bb + 0x100 * gg + 0x10000 * rr;
+                //            ctx.fillStyle = '#' + decColor.toString(16).substr(1);
+                //            var a = Math.max(2, f * (h - 2 * 20));
+                //            ctx.fillRect(8 + i * s, h - 20 - a, 3 * s / 4, a);
+                //        }
+                //    }
+                //    else if (guiID == 4) {
+                //        /*
+                //                 ctx.fillStyle = "#404040";
+                //                 ctx.fillRect(0,0,w,h);
+                //                 ctx.lineWidth = 2;
+                //                 ctx.strokeStyle = "#ffffff";
+                //                 ctx.strokeRect(w/10,3*h/10,8*w/10,5*h/10);
+                //                 ctx.fillStyle = "#ffffff";
+                //                 var s = (7*w/10)/(2*12);
+                //                 for( var i=0; i<48; i++ )
+                //                 {
+                //                     var u = (i%12) | 0;
+                //                     var v = (i/12) | 0;
+                //                     ctx.fillRect( w/10+s+s*2*u, 3*h/10 + s + s*2*v, s, s );
+                //                 }
+                //          */
+                //        var thereskey = false;
+                //        ctx.fillStyle = "#ffffff";
+                //        for (var i = 0; i < 256; i++) {
+                //            var x = (w * i / 256) | 0;
+                //            if (img.mData[i] > 0) {
+                //                thereskey = true;
+                //                //ctx.fillRect( x, 0+h/4, 1, h/2 );
+                //                break;
+                //            }
+                //        }
+                //        ctx.fillStyle = "#000000";
+                //        ctx.fillRect(0, 0, w, h);
+                //        ctx.drawImage(img.mImage, 0, 20, w, h - 20);
+                //        if (thereskey) {
+                //            ctx.fillStyle = "#ff8040";
+                //            ctx.globalAlpha = 0.4;
+                //            ctx.fillRect(0, 0, w, h);
+                //            ctx.globalAlpha = 1.0;
+                //        }
+                //    }
+                //}
+                //ctx.font = "normal normal 12px Arial";
+                //ctx.strokeStyle = "#000000";
+                //ctx.fillStyle = "#000000";
+                //ctx.lineWidth = 4;
+                //ctx.strokeText("iChannel" + slot, 4, 14);
+                //ctx.fillStyle = "#ffffff";
+                //ctx.strokeStyle = "#ffffff";
+                //ctx.fillText("iChannel" + slot, 4, 14);
+                //if (time > 0.0) {
+                //    var str = time.toFixed(2) + "s";
+                //    ctx.font = "normal normal 10px Arial";
+                //    ctx.strokeStyle = "#000000";
+                //    ctx.lineWidth = 4;
+                //    ctx.strokeText(str, 4, 96);
+                //    ctx.fillStyle = "#ffffff";
+                //    ctx.fillText(str, 4, 96);
+                //}
+                ////--------------
+                //if (gui == true) {
+                //    var ele: any = document.getElementById("inputSelectorControls" + slot);
+                //    if (guiID == 0) ele.style.visibility = "hidden";
+                //    if (guiID == 1) ele.style.visibility = "visible";
+                //    if (guiID == 2) ele.style.visibility = "visible";
+                //    if (guiID == 3) ele.style.visibility = "visible";
+                //    if (guiID == 3) {
+                //        var me = this;
+                //        var ele1: any = document.getElementById("myPauseButton" + slot);
+                //        ele1.src = "/img/next.png";
+                //        ele1.title = "next";
+                //        ele1.onclick = function (ev) { var ele = this.getSourceElement(ev); var r = me.PauseInput(ele.mId); }
+                //        var ele2: any = document.getElementById("myRewindButton" + slot);
+                //        ele2.src = "/img/previous.png";
+                //        ele2.title = "previous";
+                //        ele2.onclick = function (ev) { var ele = this.getSourceElement(ev); var r = me.RewindInput(ele.mId); }
+                //        var ele3: any = document.getElementById("myMuteButton" + slot);
+                //        ele3.src = "/img/rewind.png";
+                //        ele3.title = "rewind";
+                //        ele3.onclick = function (ev) { var ele = this.getSourceElement(ev); var r = me.MuteInput(ele.mId); }
+                //    }
+                //}
+                //--------------
+                myself.mForceFrame = forceFrame;
+            };
+            ShaderToy.prototype.getSourceElement = function (e) {
+                var ele = null;
+                if (e.target)
+                    ele = e.target;
+                if (e.srcElement)
+                    ele = e.srcElement;
+                return ele;
+            };
+            ShaderToy.prototype.startRendering = function () {
+                var me = this;
+                function renderLoop2() {
+                    if (me.mGLContext == null)
+                        return;
+                    requestAnimationFrame(renderLoop2);
+                    if (me.mIsPaused && !me.mForceFrame) {
+                        me.mEffect.UpdateInputs(me.mActiveDoc, false);
+                        return;
+                    }
+                    me.mForceFrame = false;
+                    var time = performance.now();
+                    var ltime = me.mTOffset + time - me.mTo;
+                    if (me.mIsPaused)
+                        ltime = me.mTf;
+                    else
+                        me.mTf = ltime;
+                    me.mEffect.Paint(ltime / 1000.0, me.mMouseOriX, me.mMouseOriY, me.mMousePosX, me.mMousePosY, me.mIsPaused);
+                    //if (me.mSendFrame) me.mLiveCreator.SendUpdate();
+                    me.mSendFrame = false;
+                    me.mFpsFrame++;
+                    //document.getElementById("myTime").innerHTML = (ltime / 1000.0).toFixed(2);
+                    if ((time - me.mFpsTo) > 1000) {
+                        var ffps = 1000.0 * me.mFpsFrame / (time - me.mFpsTo);
+                        //document.getElementById("myFramerate").innerHTML = ffps.toFixed(1) + " fps";
+                        me.mFpsFrame = 0;
+                        me.mFpsTo = time;
+                    }
+                }
+                renderLoop2();
+            };
+            ShaderToy.prototype.pauseTime = function () {
+                var time = performance.now();
+                if (!this.mIsPaused) {
+                    document.getElementById("myPauseButton").style.background = "url('/img/play.png')";
+                    this.mIsPaused = true;
+                    this.mEffect.StopOutputs();
+                }
+                else {
+                    document.getElementById("myPauseButton").style.background = "url('/img/pause.png')";
+                    this.mTOffset = this.mTf;
+                    this.mTo = time;
+                    this.mIsPaused = false;
+                    this.mEffect.ResumeOutputs();
+                }
+            };
             ShaderToy.prototype.resetTime = function () {
                 this.mTOffset = 0;
                 this.mTo = performance.now();
@@ -567,6 +543,30 @@ var Application;
                 this.mFpsFrame = 0;
                 this.mForceFrame = true;
                 this.mEffect.ResetTime();
+            };
+            ShaderToy.prototype.setChars = function () {
+                var str = this.mCodeEditor.getValue();
+                str = this.replaceChars(str);
+                str = this.removeSingleComments(str);
+                str = this.removeMultiComments(str);
+                str = this.removeMultiSpaces(str);
+                str = this.removeSingleSpaces(str);
+                str = this.removeEmptyLines(str);
+                this.mCharCounter.innerHTML = str.length + " chars";
+            };
+            ShaderToy.prototype.setFlags = function () {
+                if (this.mEffect == null)
+                    return;
+                var flags = this.mEffect.calcFlags();
+                //var eleVR = document.getElementById("myVR");
+                //eleVR.style.visibility = (flags.mFlagVR == true) ? "visible" : "hidden";
+            };
+            ShaderToy.prototype.showChars = function () {
+                var str = this.mCodeEditor.getValue();
+                str = this.minify(str);
+                //alert( str );
+                var ve = document.getElementById("centerScreen");
+                //doAlert(getCoords(ve), { mX: 480, mY: 400 }, "Minimal Shader Code, (" + str.length + " chars)", "<pre>" + str + "</pre>", false, null);
             };
             ShaderToy.prototype.isSpace = function (str, i) {
                 return (str[i] === ' ') || (str[i] === '\t');
@@ -728,6 +728,10 @@ var Application;
                 this.setChars();
                 this.setFlags();
                 return this.SetErrors(result, false);
+            };
+            //gShaderToy.SetTexture(gCurrentEditingSlot, {mType:'texture', mID:28, mSrc:'/presets/tex15.png'})
+            ShaderToy.prototype.SetTexture = function (slot, url) {
+                this.mEffect.NewTexture(this.mActiveDoc, slot, url);
             };
             return ShaderToy;
         })();
@@ -964,6 +968,31 @@ var Application;
                     if (this.mPasses[i].mProgram == null)
                         continue;
                     this.mPasses[i].Paint(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused);
+                }
+            };
+            Effect.prototype.UpdateInputs = function (passid, forceUpdate) {
+                this.mPasses[passid].UpdateInputs(this.mAudioContext, forceUpdate);
+            };
+            Effect.prototype.StopOutputs = function () {
+                var gl = this.mGLContext;
+                var wa = this.mAudioContext;
+                var num = this.mPasses.length;
+                for (var i = 0; i < num; i++) {
+                    if (!this.mPasses[i].mUsed)
+                        continue;
+                    this.mPasses[i].StopOutput(wa, gl);
+                }
+            };
+            Effect.prototype.ResumeOutputs = function () {
+                var gl = this.mGLContext;
+                var wa = this.mAudioContext;
+                if (gl == null)
+                    return;
+                var num = this.mPasses.length;
+                for (var i = 0; i < num; i++) {
+                    if (!this.mPasses[i].mUsed)
+                        continue;
+                    this.mPasses[i].ResumeOutput(wa, gl);
                 }
             };
             return Effect;
@@ -1945,9 +1974,59 @@ var Application;
             EffectPass.prototype.deleteTexture = function (gl, tex) {
                 gl.deleteTexture(tex);
             };
+            EffectPass.prototype.UpdateInputs = function (wa, forceUpdate) {
+                for (var i = 0; i < this.mInputs.length; i++) {
+                    var inp = this.mInputs[i];
+                    if (inp == null) {
+                        if (forceUpdate) {
+                            if (this.mTextureCallbackFun != null)
+                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, null, false, true, 0, -1.0, this.mID);
+                        }
+                    }
+                    else if (inp.mInfo.mType == "texture") {
+                        if (inp.loaded && forceUpdate) {
+                            if (this.mTextureCallbackFun != null)
+                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.image, true, true, 0, -1.0, this.mID);
+                        }
+                    }
+                    else if (inp.mInfo.mType == "cubemap") {
+                        if (inp.loaded && forceUpdate) {
+                            if (this.mTextureCallbackFun != null)
+                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.image[0], true, true, 0, -1.0, this.mID);
+                        }
+                    }
+                    else if (inp.mInfo.mType == "video") {
+                        if (inp.video.readyState === inp.video.HAVE_ENOUGH_DATA) {
+                            if (this.mTextureCallbackFun != null)
+                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.video, false, false, 0, -1, this.mID);
+                        }
+                    }
+                    else if (inp.mInfo.mType == "music") {
+                        if (inp.audio.mPaused == false && inp.audio.mForceMuted == false) {
+                            if (wa != null) {
+                                inp.audio.mSound.mAnalyser.getByteFrequencyData(inp.audio.mSound.mFreqData);
+                                inp.audio.mSound.mAnalyser.getByteTimeDomainData(inp.audio.mSound.mWaveData);
+                            }
+                            if (this.mTextureCallbackFun != null)
+                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.audio.mSound.mFreqData, false, false, 2, inp.audio.currentTime, this.mID);
+                        }
+                    }
+                    else if (inp.mInfo.mType == "mic") {
+                        if (inp.mForceMuted == false) {
+                            if (wa != null) {
+                                inp.mAnalyser.getByteFrequencyData(inp.mFreqData);
+                                inp.mAnalyser.getByteTimeDomainData(inp.mWaveData);
+                            }
+                            if (this.mTextureCallbackFun != null)
+                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.mFreqData, false, false, 2, 0, this.mID);
+                        }
+                    }
+                }
+            };
             return EffectPass;
         })();
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dShaderToy", ShaderToyDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=shaderToy.js.map
