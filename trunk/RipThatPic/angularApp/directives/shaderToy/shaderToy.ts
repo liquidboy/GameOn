@@ -45,9 +45,9 @@
                     return;
 
                 //-- get info --------------------------------------------------------
-                this.sc.shaderId = '4t23RR';
+                //this.sc.shaderId = '4t23RR';
                 //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                //this.sc.shaderId = 'MlS3Rc';
+                this.sc.shaderId = 'MlS3Rc';
                 if (this.sc.shaderId == null) {
                     this.loadNew();
                 }
@@ -350,7 +350,7 @@
         
         NewScriptJSON(jsn) {
             try {
-                var res = this.mEffect.newScriptJSON(jsn);
+                var res = this.mEffect.NewScriptJSON(jsn);
 
                 var num = res.length;
                 for (var i = 0; i < num; i++) {
@@ -663,7 +663,7 @@
         private setFlags() {
             if (this.mEffect == null) return;
 
-            var flags = this.mEffect.calcFlags();
+            var flags = this.mEffect.CalcFlags();
 
             //var eleVR = document.getElementById("myVR");
             //eleVR.style.visibility = (flags.mFlagVR == true) ? "visible" : "hidden";
@@ -974,7 +974,7 @@
             }
         }
         
-        determineShaderPrecission(gl) {
+        private determineShaderPrecission(gl) {
             var h1 = "#ifdef GL_ES\n" +
                 "precision highp float;\n" +
                 "#endif\n";
@@ -997,7 +997,7 @@
             return "";
         }
 
-        createShader(gl, tvs, tfs, nativeDebug) : any {
+        private createShader(gl, tvs, tfs, nativeDebug) : any {
             if (gl == null) return { mSuccess: false, mInfo: "no GL" };
 
             var vs = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(vs, tvs); gl.compileShader(vs);
@@ -1040,7 +1040,7 @@
             return { mSuccess: true, mProgram: tmpProgram };
         }
 
-        createQuadVBO(gl) {
+        private createQuadVBO(gl) {
             var vertices = new Float32Array([-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0]);
 
             var vbo = gl.createBuffer();
@@ -1051,7 +1051,7 @@
             return vbo;
         }
         
-        createCubeVBO(gl) {
+        private createCubeVBO(gl) {
             var vertices = new Float32Array([-1.0, -1.0, -1.0,
                 1.0, -1.0, -1.0,
                 -1.0, 1.0, -1.0,
@@ -1069,7 +1069,7 @@
             return vbo;
         }
         
-        newScriptJSON(jobj): any {
+        NewScriptJSON(jobj): any {
             if (jobj.ver != "0.1") {
                 return { mFailed: true };
             }
@@ -1137,7 +1137,7 @@
             return this.mPasses[passid].NewShader(this.mGLContext, shaderCode);
         }
 
-        calcFlags() {
+        CalcFlags() {
             var flagVR = false;
             var flagWebcam = false;
             var flagSoundInput = false;
@@ -1303,7 +1303,7 @@
 
         }
 
-        NewShader(gl, shaderCode) {
+        private NewShader(gl, shaderCode) {
             if (gl == null) return "No GL";
 
             var res = null;
@@ -1316,7 +1316,7 @@
             return res;
         }
 
-        NewTexture(wa, gl, slot, url) {
+        private NewTexture(wa, gl, slot, url) {
             var me = this;
 
             var texture = null;
@@ -1546,7 +1546,7 @@
             //this.MakeHeader();
         }
         
-        NewShader_Image(gl, shaderCode) {
+        private NewShader_Image(gl, shaderCode) {
             //--------------
             {
                 var vsSource = "attribute vec2 pos; void main() { gl_Position = vec4(pos.xy,0.0,1.0); }";
@@ -1583,7 +1583,7 @@
             return null;
         }
 
-        NewShader_Sound(gl, shaderCode) {
+        private NewShader_Sound(gl, shaderCode) {
             var vsSource = "attribute vec2 pos; void main() { gl_Position = vec4(pos.xy,0.0,1.0); }";
 
             var res = this.CreateShader(gl, vsSource, this.mHeader + shaderCode + this.mSoundPassFooter, false);
@@ -1601,7 +1601,7 @@
             return null;
         }
 
-        createGLTexture(ctx, image, format, texture) {
+        private createGLTexture(ctx, image, format, texture) {
             if (ctx == null) return;
 
             ctx.bindTexture(ctx.TEXTURE_2D, texture);
@@ -1615,7 +1615,7 @@
             ctx.bindTexture(ctx.TEXTURE_2D, null);
         }
 
-        createGLTextureNearestRepeat(ctx, image, texture) {
+        private createGLTextureNearestRepeat(ctx, image, texture) {
             if (ctx == null) return;
 
             ctx.bindTexture(ctx.TEXTURE_2D, texture);
@@ -1626,7 +1626,7 @@
             ctx.bindTexture(ctx.TEXTURE_2D, null);
         }
 
-        createGLTextureNearest(ctx, image, texture) {
+        private createGLTextureNearest(ctx, image, texture) {
             if (ctx == null) return;
 
             ctx.bindTexture(ctx.TEXTURE_2D, texture);
@@ -1640,7 +1640,7 @@
             ctx.bindTexture(ctx.TEXTURE_2D, null);
         }
 
-        createGLTextureLinear(ctx, image, texture) {
+        private createGLTextureLinear(ctx, image, texture) {
             if (ctx == null) return;
 
             ctx.bindTexture(ctx.TEXTURE_2D, texture);
@@ -1653,7 +1653,7 @@
             ctx.bindTexture(ctx.TEXTURE_2D, null);
         }
 
-        createAudioTexture(ctx, texture) {
+        private createAudioTexture(ctx, texture) {
             if (ctx == null) return;
 
             ctx.bindTexture(ctx.TEXTURE_2D, texture);
@@ -1665,7 +1665,7 @@
             ctx.bindTexture(ctx.TEXTURE_2D, null);
         }
 
-        createKeyboardTexture(ctx, texture) {
+        private createKeyboardTexture(ctx, texture) {
             if (ctx == null) return;
 
             ctx.bindTexture(ctx.TEXTURE_2D, texture);
@@ -1677,7 +1677,7 @@
             ctx.bindTexture(ctx.TEXTURE_2D, null);
         }
 
-        Create(passType, wa, gl) {
+        private Create(passType, wa, gl) {
             this.mType = passType;
             this.mUsed = true;
             this.mSource = null;
@@ -1686,7 +1686,7 @@
             else this.Create_Sound(wa, gl);
         }
 
-        CreateShader(gl, tvs, tfs, nativeDebug) : any {
+        private CreateShader(gl, tvs, tfs, nativeDebug) : any {
             if (gl == null) return { mSuccess: false, mInfo: "no GL" };
 
             var vs = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(vs, tvs); gl.compileShader(vs);
@@ -1729,7 +1729,7 @@
             return { mSuccess: true, mProgram: tmpProgram };
         }
 
-        Create_Image(wa, gl) {
+        private Create_Image(wa, gl) {
             this.MakeHeader(null, null);
             this.mSampleRate = 44100;
             this.mSupportsVR = false;
@@ -1737,10 +1737,10 @@
             this.mProgramVR = null;
         }
 
-        Destroy_Image (wa, gl) {
+        private Destroy_Image (wa, gl) {
         }
 
-        Create_Sound(wa, gl) {
+        private Create_Sound(wa, gl) {
             this.MakeHeader(null, null);
 
             this.mSoundPassFooter = "void main()" +
@@ -1777,7 +1777,7 @@
             this.mPlayNode = null;
         }
 
-        Destroy_Sound(wa, gl) {
+        private Destroy_Sound(wa, gl) {
             if (this.mPlayNode != null) this.mPlayNode.stop();
             this.mPlayNode = null;
             this.mBuffer = null;
@@ -1786,12 +1786,12 @@
             this.deleteTexture(gl, this.mRenderTexture);
         }
 
-        MakeHeader(precission, supportDerivatives) {
+        private MakeHeader(precission, supportDerivatives) {
             if (this.mType == "image") this.MakeHeader_Image(precission, supportDerivatives);
             else this.MakeHeader_Sound(precission, supportDerivatives);
         }
 
-        MakeHeader_Image(precission, supportDerivatives) {
+        private MakeHeader_Image(precission, supportDerivatives) {
             var header = this.mPrecision;
             var headerlength = 3;
 
@@ -1846,7 +1846,7 @@
             this.mHeaderLength = headerlength;
         }
 
-        MakeHeader_Sound(precission, supportDerivatives) {
+        private MakeHeader_Sound(precission, supportDerivatives) {
             var header = this.mPrecision;
             var headerlength = 3;
 
@@ -1873,7 +1873,7 @@
             this.mHeaderLength = headerlength;
         }
         
-        createEmptyTextureNearest(gl, xres, yres) {
+        private createEmptyTextureNearest(gl, xres, yres) {
             var tex = gl.createTexture();
             gl.bindTexture(gl.TEXTURE_2D, tex);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
@@ -1883,7 +1883,7 @@
             return tex;
         }
 
-        createFBO(gl, texture0) {
+        private createFBO(gl, texture0) {
             var fbo = gl.createFramebuffer();
             gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
             gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture0, 0);
@@ -1892,11 +1892,11 @@
             return fbo;
         }
 
-        deleteFBO(gl, fbo) {
+        private deleteFBO(gl, fbo) {
             gl.deleteFramebuffer(fbo);
         }
 
-        Paint (vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused) {
+        private Paint (vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused) {
             if (this.mType == "sound") {
                 if (this.mFrame == 0 && !isPaused) {
                     // make sure all textures are loaded
@@ -1919,7 +1919,7 @@
 
         }
         
-        Paint_Sound(wa, gl, d) {
+        private Paint_Sound(wa, gl, d) {
             var dates = [d.getFullYear(), // the year (four digits)
                 d.getMonth(),	   // the month (from 0-11)
                 d.getDate(),     // the day of the month (from 1-31)
@@ -2004,7 +2004,7 @@
             this.mPlayNode.start(0);
         }
 
-        Paint_Image(vrData, wa, gl, d, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres) {
+        private Paint_Image(vrData, wa, gl, d, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres) {
             var times = [0.0, 0.0, 0.0, 0.0];
 
             var dates = [d.getFullYear(), // the year (four digits)
@@ -2281,7 +2281,7 @@
 
         }
         
-        invertFast(m) {
+        private invertFast(m) {
             var inv = [
 
                 m[5] * m[10] * m[15] -
@@ -2409,17 +2409,17 @@
             return inv;
         }
 
-        matMulpoint(m, v) {
+        private matMulpoint(m, v) {
             return [m[0] * v[0] + m[1] * v[1] + m[2] * v[2] + m[3],
                 m[4] * v[0] + m[5] * v[1] + m[6] * v[2] + m[7],
                 m[8] * v[0] + m[9] * v[1] + m[10] * v[2] + m[11]];
         }
 
-        deleteTexture(gl, tex) {
+        private deleteTexture(gl, tex) {
             gl.deleteTexture(tex);
         }
 
-        UpdateInputs(wa, forceUpdate) {
+        private updateInputs(wa, forceUpdate) {
             for (var i = 0; i < this.mInputs.length; i++) {
                 var inp = this.mInputs[i];
 

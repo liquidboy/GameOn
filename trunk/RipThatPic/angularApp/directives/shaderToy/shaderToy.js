@@ -23,9 +23,9 @@ var Application;
                     if (!_this.sc.shaderToy.mCreated)
                         return;
                     //-- get info --------------------------------------------------------
-                    _this.sc.shaderId = '4t23RR';
+                    //this.sc.shaderId = '4t23RR';
                     //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                    //this.sc.shaderId = 'MlS3Rc';
+                    _this.sc.shaderId = 'MlS3Rc';
                     if (_this.sc.shaderId == null) {
                         _this.loadNew();
                     }
@@ -250,7 +250,7 @@ var Application;
             }
             ShaderToy.prototype.NewScriptJSON = function (jsn) {
                 try {
-                    var res = this.mEffect.newScriptJSON(jsn);
+                    var res = this.mEffect.NewScriptJSON(jsn);
                     var num = res.length;
                     for (var i = 0; i < num; i++) {
                         this.mDocs[i] = window['CodeMirror'].Doc(res[i].mShader, "text/x-glsl");
@@ -508,7 +508,7 @@ var Application;
             ShaderToy.prototype.setFlags = function () {
                 if (this.mEffect == null)
                     return;
-                var flags = this.mEffect.calcFlags();
+                var flags = this.mEffect.CalcFlags();
                 //var eleVR = document.getElementById("myVR");
                 //eleVR.style.visibility = (flags.mFlagVR == true) ? "visible" : "hidden";
             };
@@ -848,7 +848,7 @@ var Application;
                 gl.bindBuffer(gl.ARRAY_BUFFER, null);
                 return vbo;
             };
-            Effect.prototype.newScriptJSON = function (jobj) {
+            Effect.prototype.NewScriptJSON = function (jobj) {
                 if (jobj.ver != "0.1") {
                     return { mFailed: true };
                 }
@@ -904,7 +904,7 @@ var Application;
             Effect.prototype.NewShader = function (shaderCode, passid) {
                 return this.mPasses[passid].NewShader(this.mGLContext, shaderCode);
             };
-            Effect.prototype.calcFlags = function () {
+            Effect.prototype.CalcFlags = function () {
                 var flagVR = false;
                 var flagWebcam = false;
                 var flagSoundInput = false;
@@ -1974,7 +1974,7 @@ var Application;
             EffectPass.prototype.deleteTexture = function (gl, tex) {
                 gl.deleteTexture(tex);
             };
-            EffectPass.prototype.UpdateInputs = function (wa, forceUpdate) {
+            EffectPass.prototype.updateInputs = function (wa, forceUpdate) {
                 for (var i = 0; i < this.mInputs.length; i++) {
                     var inp = this.mInputs[i];
                     if (inp == null) {
