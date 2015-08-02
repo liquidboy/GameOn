@@ -242,6 +242,8 @@
         mFpsTo: any;
         mFpsFrame: any;
 
+        mSendFrame: boolean;
+
         mMouseIsDown: boolean;
         mMouseOriX : number;
         mMouseOriY: number;
@@ -298,7 +300,7 @@
         }
 
 
-        createGlContext = function (cv, useAlpha, usePreserveBuffer) {
+        private createGlContext = function (cv, useAlpha, usePreserveBuffer) {
             var gGLContext = null;
             var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
             for (var i = 0; i < names.length; i++) {
@@ -315,7 +317,7 @@
             return gGLContext;
         }
 
-        createNoWebGLMessage = function(base : any, old) {
+        private createNoWebGLMessage = function(base : any, old) {
             var div = document.createElement("div");
             div.style.left = "0px";
             div.style.top = "0px";
@@ -361,9 +363,9 @@
                 this.setChars();
                 this.setFlags();
                 this.mCodeEditor.clearHistory()
-                this.SetErrors(res[this.mActiveDoc].mError, true);
+                this.setErrors(res[this.mActiveDoc].mError, true);
 
-                this.SetPasses(res);
+                this.setPasses(res);
                 this.resetTime();
 
                 this.mInfo = jsn.info;
@@ -390,7 +392,7 @@
 
         }
 
-        refreshTexturThumbail(myself, slot, img, forceFrame, gui, guiID, time, passID) {
+        private refreshTexturThumbail(myself, slot, img, forceFrame, gui, guiID, time, passID) {
             if (passID != myself.mActiveDoc) return;
 
             //var canvas: any = document.getElementById('myUnitCanvas' + slot);
@@ -571,7 +573,7 @@
             myself.mForceFrame = forceFrame;
         }
 
-        getSourceElement(e) {
+        private getSourceElement(e) {
             var ele = null;
             if (e.target) ele = e.target;
             if (e.srcElement) ele = e.srcElement;
@@ -645,7 +647,7 @@
             this.mEffect.ResetTime();
         }
 
-        setChars () {
+        private setChars () {
             var str = this.mCodeEditor.getValue();
 
             str = this.replaceChars(str);
@@ -658,7 +660,7 @@
             this.mCharCounter.innerHTML = str.length + " chars";
         }
 
-        setFlags() {
+        private setFlags() {
             if (this.mEffect == null) return;
 
             var flags = this.mEffect.calcFlags();
@@ -667,7 +669,7 @@
             //eleVR.style.visibility = (flags.mFlagVR == true) ? "visible" : "hidden";
         }
         
-        showChars() {
+        private showChars() {
             var str = this.mCodeEditor.getValue();
 
             str = this.minify(str);
@@ -677,15 +679,15 @@
             //doAlert(getCoords(ve), { mX: 480, mY: 400 }, "Minimal Shader Code, (" + str.length + " chars)", "<pre>" + str + "</pre>", false, null);
         }
         
-        isSpace(str, i) {
+        private isSpace(str, i) {
             return (str[i] === ' ') || (str[i] === '\t');
         }
 
-        isLine(str, i) {
+        private isLine(str, i) {
             return (str[i] === '\n');
         }
 
-        replaceChars(str) {
+        private replaceChars(str) {
             var dst = "";
             var num = str.length;
             for (var i = 0; i < num; i++) {
@@ -697,7 +699,7 @@
             return dst;
         }
         
-        removeEmptyLines(str) {
+        private removeEmptyLines(str) {
             var dst = "";
             var num = str.length;
             var isPreprocessor = false;
@@ -713,7 +715,7 @@
             return dst;
         }
 
-        removeMultiSpaces(str) {
+        private removeMultiSpaces(str) {
             var dst = "";
             var num = str.length;
             for (var i = 0; i < num; i++) {
@@ -726,7 +728,7 @@
             return dst;
         }
 
-        removeSingleSpaces(str) {
+        private removeSingleSpaces(str) {
             var dst = "";
             var num = str.length;
             for (var i = 0; i < num; i++) {
@@ -783,7 +785,7 @@
             return dst;
         }
 
-        removeSingleComments(str) {
+        private removeSingleComments(str) {
             var dst = "";
             var num = str.length;
             var detected = false;
@@ -802,7 +804,7 @@
             return dst;
         }
 
-        removeMultiComments(str) {
+        private removeMultiComments(str) {
             var dst = "";
             var num = str.length;
             var detected = false;
@@ -826,7 +828,7 @@
             return dst;
         }
 
-        minify(str) {
+        private minify(str) {
             str = this.replaceChars(str);
             str = this.removeSingleComments(str);
             str = this.removeMultiComments(str);
@@ -836,7 +838,7 @@
             return str;
         }
 
-        SetErrors(result, fromScript) {
+        private setErrors(result, fromScript) {
             //var eleWrapper = document.getElementById('editorWrapper');
 
             //while (this.mErrors.length > 0) {
@@ -889,14 +891,12 @@
             //}
         }
 
-        SetPasses(passes) {
+        private setPasses(passes) {
             //for (var i = 0; i < passes.length; i++)
             //    this.AddTab(passes[i].mType, i, i == 0);
             //this.AddPlusTab();
         }
-
-        mSendFrame: boolean;
-
+        
         SetShaderFromEditor() : any{
             var shaderCode = this.mCodeEditor.getValue();
 
@@ -909,11 +909,11 @@
             this.setChars();
             this.setFlags();
 
-            return this.SetErrors(result, false);
+            return this.setErrors(result, false);
         }
 
         //gShaderToy.SetTexture(gCurrentEditingSlot, {mType:'texture', mID:28, mSrc:'/presets/tex15.png'})
-        SetTexture(slot, url) {
+        setTexture(slot, url) {
             this.mEffect.NewTexture(this.mActiveDoc, slot, url);
         }
     }
@@ -956,7 +956,7 @@
             var ext2 = gl.getExtension('OES_texture_float');
             this.mSupportTextureFloat = (ext2 != null);
 
-            var precision = this.DetermineShaderPrecission(gl);
+            var precision = this.determineShaderPrecission(gl);
 
 
             //-------------
@@ -974,7 +974,7 @@
             }
         }
         
-        DetermineShaderPrecission(gl) {
+        determineShaderPrecission(gl) {
             var h1 = "#ifdef GL_ES\n" +
                 "precision highp float;\n" +
                 "#endif\n";
@@ -990,14 +990,14 @@
             var vstr = "void main() { gl_Position = vec4(1.0); }\n";
             var fstr = "void main() { gl_FragColor = vec4(1.0); }\n";
 
-            if (this.CreateShader(gl, vstr, h1 + fstr, false).mSuccess == true) return h1;
-            if (this.CreateShader(gl, vstr, h2 + fstr, false).mSuccess == true) return h2;
-            if (this.CreateShader(gl, vstr, h3 + fstr, false).mSuccess == true) return h3;
+            if (this.createShader(gl, vstr, h1 + fstr, false).mSuccess == true) return h1;
+            if (this.createShader(gl, vstr, h2 + fstr, false).mSuccess == true) return h2;
+            if (this.createShader(gl, vstr, h3 + fstr, false).mSuccess == true) return h3;
 
             return "";
         }
 
-        CreateShader(gl, tvs, tfs, nativeDebug) : any {
+        createShader(gl, tvs, tfs, nativeDebug) : any {
             if (gl == null) return { mSuccess: false, mInfo: "no GL" };
 
             var vs = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(vs, tvs); gl.compileShader(vs);

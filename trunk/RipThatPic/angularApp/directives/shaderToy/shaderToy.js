@@ -260,8 +260,8 @@ var Application;
                     this.setChars();
                     this.setFlags();
                     this.mCodeEditor.clearHistory();
-                    this.SetErrors(res[this.mActiveDoc].mError, true);
-                    this.SetPasses(res);
+                    this.setErrors(res[this.mActiveDoc].mError, true);
+                    this.setPasses(res);
                     this.resetTime();
                     this.mInfo = jsn.info;
                     return {
@@ -669,7 +669,7 @@ var Application;
                 str = this.removeEmptyLines(str);
                 return str;
             };
-            ShaderToy.prototype.SetErrors = function (result, fromScript) {
+            ShaderToy.prototype.setErrors = function (result, fromScript) {
                 //var eleWrapper = document.getElementById('editorWrapper');
                 //while (this.mErrors.length > 0) {
                 //    var mark = this.mErrors.pop();
@@ -713,7 +713,7 @@ var Application;
                 //    }
                 //}
             };
-            ShaderToy.prototype.SetPasses = function (passes) {
+            ShaderToy.prototype.setPasses = function (passes) {
                 //for (var i = 0; i < passes.length; i++)
                 //    this.AddTab(passes[i].mType, i, i == 0);
                 //this.AddPlusTab();
@@ -727,10 +727,10 @@ var Application;
                 }
                 this.setChars();
                 this.setFlags();
-                return this.SetErrors(result, false);
+                return this.setErrors(result, false);
             };
             //gShaderToy.SetTexture(gCurrentEditingSlot, {mType:'texture', mID:28, mSrc:'/presets/tex15.png'})
-            ShaderToy.prototype.SetTexture = function (slot, url) {
+            ShaderToy.prototype.setTexture = function (slot, url) {
                 this.mEffect.NewTexture(this.mActiveDoc, slot, url);
             };
             return ShaderToy;
@@ -755,7 +755,7 @@ var Application;
                     gl.hint(ext.FRAGMENT_SHADER_DERIVATIVE_HINT_OES, gl.NICEST);
                 var ext2 = gl.getExtension('OES_texture_float');
                 this.mSupportTextureFloat = (ext2 != null);
-                var precision = this.DetermineShaderPrecission(gl);
+                var precision = this.determineShaderPrecission(gl);
                 //-------------
                 if (ac != null) {
                     this.mGainNode = ac.createGain();
@@ -768,7 +768,7 @@ var Application;
                     this.mPasses[i] = new EffectPass(gl, precision, supportsDerivatives, callback, obj, forceMuted, forcePaused, this.mQuadVBO, this.mGainNode, i);
                 }
             }
-            Effect.prototype.DetermineShaderPrecission = function (gl) {
+            Effect.prototype.determineShaderPrecission = function (gl) {
                 var h1 = "#ifdef GL_ES\n" +
                     "precision highp float;\n" +
                     "#endif\n";
@@ -780,15 +780,15 @@ var Application;
                     "#endif\n";
                 var vstr = "void main() { gl_Position = vec4(1.0); }\n";
                 var fstr = "void main() { gl_FragColor = vec4(1.0); }\n";
-                if (this.CreateShader(gl, vstr, h1 + fstr, false).mSuccess == true)
+                if (this.createShader(gl, vstr, h1 + fstr, false).mSuccess == true)
                     return h1;
-                if (this.CreateShader(gl, vstr, h2 + fstr, false).mSuccess == true)
+                if (this.createShader(gl, vstr, h2 + fstr, false).mSuccess == true)
                     return h2;
-                if (this.CreateShader(gl, vstr, h3 + fstr, false).mSuccess == true)
+                if (this.createShader(gl, vstr, h3 + fstr, false).mSuccess == true)
                     return h3;
                 return "";
             };
-            Effect.prototype.CreateShader = function (gl, tvs, tfs, nativeDebug) {
+            Effect.prototype.createShader = function (gl, tvs, tfs, nativeDebug) {
                 if (gl == null)
                     return { mSuccess: false, mInfo: "no GL" };
                 var vs = gl.createShader(gl.VERTEX_SHADER);
