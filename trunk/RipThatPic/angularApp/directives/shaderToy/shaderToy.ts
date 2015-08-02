@@ -45,9 +45,9 @@
                     return;
 
                 //-- get info --------------------------------------------------------
-                this.sc.shaderId = '4t23RR';
+                //this.sc.shaderId = '4t23RR';
                 //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                //this.sc.shaderId = 'MlS3Rc';
+                this.sc.shaderId = 'MlS3Rc';
                 if (this.sc.shaderId == null) {
                     this.loadNew();
                 }
@@ -313,6 +313,7 @@
 
             return gGLContext;
         }
+
         createNoWebGLMessage = function(base : any, old) {
             var div = document.createElement("div");
             div.style.left = "0px";
@@ -343,8 +344,7 @@
             divText.innerHTML = 'Shadertoy needs a WebGL-enabled browser. Minimum Requirements: <ul><li>Firefox 17</li><li>Chrome 23</li><li>Internet Explorer 11</li><li>Safari 8</li></ul>';
             div.appendChild(divText);
         }
-
-       
+        
         newScriptJSON(jsn) {
             try {
                 var res = this.mEffect.newScriptJSON(jsn);
@@ -388,6 +388,7 @@
             }
 
         }
+
         refreshTexturThumbail(myself, slot, img, forceFrame, gui, guiID, time, passID) {
             if (passID != myself.mActiveDoc) return;
 
@@ -568,12 +569,14 @@
 
             myself.mForceFrame = forceFrame;
         }
+
         getSourceElement(e) {
             var ele = null;
             if (e.target) ele = e.target;
             if (e.srcElement) ele = e.srcElement;
             return ele;
         }
+
         startRendering() {
             var me = this;
 
@@ -630,8 +633,7 @@
                 this.mEffect.ResumeOutputs();
             }
         }
-
-  
+        
         resetTime() {
             this.mTOffset = 0;
             this.mTo = performance.now();
@@ -663,8 +665,7 @@
             //var eleVR = document.getElementById("myVR");
             //eleVR.style.visibility = (flags.mFlagVR == true) ? "visible" : "hidden";
         }
-
-
+        
         showChars() {
             var str = this.mCodeEditor.getValue();
 
@@ -674,12 +675,11 @@
             var ve = document.getElementById("centerScreen");
             //doAlert(getCoords(ve), { mX: 480, mY: 400 }, "Minimal Shader Code, (" + str.length + " chars)", "<pre>" + str + "</pre>", false, null);
         }
-
-
-
+        
         isSpace(str, i) {
             return (str[i] === ' ') || (str[i] === '\t');
         }
+
         isLine(str, i) {
             return (str[i] === '\n');
         }
@@ -695,8 +695,7 @@
             }
             return dst;
         }
-
-
+        
         removeEmptyLines(str) {
             var dst = "";
             var num = str.length;
@@ -725,6 +724,7 @@
             }
             return dst;
         }
+
         removeSingleSpaces(str) {
             var dst = "";
             var num = str.length;
@@ -835,7 +835,7 @@
             return str;
         }
 
-        SetErrors = function (result, fromScript) {
+        SetErrors(result, fromScript) {
             //var eleWrapper = document.getElementById('editorWrapper');
 
             //while (this.mErrors.length > 0) {
@@ -888,7 +888,7 @@
             //}
         }
 
-        SetPasses = function (passes) {
+        SetPasses(passes) {
             //for (var i = 0; i < passes.length; i++)
             //    this.AddTab(passes[i].mType, i, i == 0);
             //this.AddPlusTab();
@@ -972,8 +972,7 @@
                 this.mPasses[i] = new EffectPass(gl, precision, supportsDerivatives, callback, obj, forceMuted, forcePaused, this.mQuadVBO, this.mGainNode, i);
             }
         }
-
-
+        
         DetermineShaderPrecission(gl) {
             var h1 = "#ifdef GL_ES\n" +
                 "precision highp float;\n" +
@@ -1068,8 +1067,7 @@
 
             return vbo;
         }
-
-
+        
         newScriptJSON(jobj): any {
             if (jobj.ver != "0.1") {
                 return { mFailed: true };
@@ -1264,6 +1262,19 @@
         mData: any;
         mPlayNode: any;
 
+        mImagePassFooter: string;
+        mImagePassFooterVR: string;
+        mHeader: string;
+        mHeaderLength: number;
+        mProgram: any;
+        mProgramVR: any;
+        mSupportsVR: boolean;
+
+        mSoundPassFooter: string;
+        mPlayTime: number;
+        mRenderTexture: any;
+
+
         constructor(gl, precission, supportDerivatives, callback, obj, forceMuted, forcePaused, quadVBO, outputGainNode, id) {
 
             this.mID = id;
@@ -1290,6 +1301,7 @@
 
 
         }
+
         NewShader(gl, shaderCode) {
             if (gl == null) return "No GL";
 
@@ -1532,15 +1544,7 @@
 
             //this.MakeHeader();
         }
-
-        mImagePassFooter: string;
-        mImagePassFooterVR: string;
-        mHeader: string;
-        mHeaderLength: number;
-        mProgram: any;
-        mProgramVR: any;
-        mSupportsVR: boolean;
-
+        
         NewShader_Image(gl, shaderCode) {
             //--------------
             {
@@ -1731,12 +1735,10 @@
             this.mProgram = null;
             this.mProgramVR = null;
         }
+
         Destroy_Image (wa, gl) {
         }
 
-        mSoundPassFooter: string;
-        mPlayTime: number;
-        mRenderTexture: any;
         Create_Sound(wa, gl) {
             this.MakeHeader(null, null);
 
@@ -1788,7 +1790,7 @@
             else this.MakeHeader_Sound(precission, supportDerivatives);
         }
 
-        MakeHeader_Image = function (precission, supportDerivatives) {
+        MakeHeader_Image(precission, supportDerivatives) {
             var header = this.mPrecision;
             var headerlength = 3;
 
@@ -1843,7 +1845,7 @@
             this.mHeaderLength = headerlength;
         }
 
-        MakeHeader_Sound = function (precission, supportDerivatives) {
+        MakeHeader_Sound(precission, supportDerivatives) {
             var header = this.mPrecision;
             var headerlength = 3;
 
@@ -1869,8 +1871,7 @@
             this.mHeader = header;
             this.mHeaderLength = headerlength;
         }
-
-
+        
         createEmptyTextureNearest(gl, xres, yres) {
             var tex = gl.createTexture();
             gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -1916,8 +1917,7 @@
             }
 
         }
-
-
+        
         Paint_Sound(wa, gl, d) {
             var dates = [d.getFullYear(), // the year (four digits)
                 d.getMonth(),	   // the month (from 0-11)
@@ -2279,7 +2279,6 @@
             }
 
         }
-
         
         invertFast(m) {
             var inv = [

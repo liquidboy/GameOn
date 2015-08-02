@@ -23,9 +23,9 @@ var Application;
                     if (!_this.sc.shaderToy.mCreated)
                         return;
                     //-- get info --------------------------------------------------------
-                    _this.sc.shaderId = '4t23RR';
+                    //this.sc.shaderId = '4t23RR';
                     //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                    //this.sc.shaderId = 'MlS3Rc';
+                    _this.sc.shaderId = 'MlS3Rc';
                     if (_this.sc.shaderId == null) {
                         _this.loadNew();
                     }
@@ -219,55 +219,6 @@ var Application;
                     divText.style.font = "italic bold " + fontSize + "px arial,serif";
                     divText.innerHTML = 'Shadertoy needs a WebGL-enabled browser. Minimum Requirements: <ul><li>Firefox 17</li><li>Chrome 23</li><li>Internet Explorer 11</li><li>Safari 8</li></ul>';
                     div.appendChild(divText);
-                };
-                this.SetErrors = function (result, fromScript) {
-                    //var eleWrapper = document.getElementById('editorWrapper');
-                    //while (this.mErrors.length > 0) {
-                    //    var mark = this.mErrors.pop();
-                    //    this.mCodeEditor.removeLineWidget(mark);
-                    //}
-                    //var eleWrapper = document.getElementById('editorWrapper');
-                    //if (result == null) {
-                    //    this.mForceFrame = true;
-                    //    if (fromScript == false) {
-                    //        eleWrapper.className = "errorNo";
-                    //        setTimeout(function () { eleWrapper.className = ""; }, 500);
-                    //    }
-                    //}
-                    //else {
-                    //    eleWrapper.className = "errorYes";
-                    //    var lineOffset = this.mEffect.GetHeaderSize(this.mActiveDoc);
-                    //    var lines = result.match(/^.*((\r\n|\n|\r)|$)/gm);
-                    //    for (var i = 0; i < lines.length; i++) {
-                    //        var parts = lines[i].split(":");
-                    //        if (parts.length === 5 || parts.length === 6) {
-                    //            var lineNumber = parseInt(parts[2]) - lineOffset;
-                    //            var msg = document.createElement("div");
-                    //            msg.appendChild(document.createTextNode(parts[3] + " : " + parts[4]));
-                    //            msg.className = "errorMessage";
-                    //            var mark = this.mCodeEditor.addLineWidget(lineNumber - 1, msg, { coverGutter: false, noHScroll: true });
-                    //            this.mErrors.push(mark);
-                    //        }
-                    //        else if (lines[i] != null && lines[i] != "" && lines[i].length > 1 && parts[0] != "Warning") {
-                    //            console.log(parts.length + " **" + lines[i]);
-                    //            var txt = "";
-                    //            if (parts.length == 4)
-                    //                txt = parts[2] + " : " + parts[3];
-                    //            else
-                    //                txt = "Unknown error";
-                    //            var msg = document.createElement("div");
-                    //            msg.appendChild(document.createTextNode(txt));
-                    //            msg.className = "errorMessage";
-                    //            var mark = this.mCodeEditor.addLineWidget(0, msg, { coverGutter: false, noHScroll: true, above: true });
-                    //            this.mErrors.push(mark);
-                    //        }
-                    //    }
-                    //}
-                };
-                this.SetPasses = function (passes) {
-                    //for (var i = 0; i < passes.length; i++)
-                    //    this.AddTab(passes[i].mType, i, i == 0);
-                    //this.AddPlusTab();
                 };
                 var canvas = $(playerElement).find('#demogl')[0];
                 this.mCharCounter = $('#shaderCharCounter');
@@ -718,6 +669,55 @@ var Application;
                 str = this.removeEmptyLines(str);
                 return str;
             };
+            ShaderToy.prototype.SetErrors = function (result, fromScript) {
+                //var eleWrapper = document.getElementById('editorWrapper');
+                //while (this.mErrors.length > 0) {
+                //    var mark = this.mErrors.pop();
+                //    this.mCodeEditor.removeLineWidget(mark);
+                //}
+                //var eleWrapper = document.getElementById('editorWrapper');
+                //if (result == null) {
+                //    this.mForceFrame = true;
+                //    if (fromScript == false) {
+                //        eleWrapper.className = "errorNo";
+                //        setTimeout(function () { eleWrapper.className = ""; }, 500);
+                //    }
+                //}
+                //else {
+                //    eleWrapper.className = "errorYes";
+                //    var lineOffset = this.mEffect.GetHeaderSize(this.mActiveDoc);
+                //    var lines = result.match(/^.*((\r\n|\n|\r)|$)/gm);
+                //    for (var i = 0; i < lines.length; i++) {
+                //        var parts = lines[i].split(":");
+                //        if (parts.length === 5 || parts.length === 6) {
+                //            var lineNumber = parseInt(parts[2]) - lineOffset;
+                //            var msg = document.createElement("div");
+                //            msg.appendChild(document.createTextNode(parts[3] + " : " + parts[4]));
+                //            msg.className = "errorMessage";
+                //            var mark = this.mCodeEditor.addLineWidget(lineNumber - 1, msg, { coverGutter: false, noHScroll: true });
+                //            this.mErrors.push(mark);
+                //        }
+                //        else if (lines[i] != null && lines[i] != "" && lines[i].length > 1 && parts[0] != "Warning") {
+                //            console.log(parts.length + " **" + lines[i]);
+                //            var txt = "";
+                //            if (parts.length == 4)
+                //                txt = parts[2] + " : " + parts[3];
+                //            else
+                //                txt = "Unknown error";
+                //            var msg = document.createElement("div");
+                //            msg.appendChild(document.createTextNode(txt));
+                //            msg.className = "errorMessage";
+                //            var mark = this.mCodeEditor.addLineWidget(0, msg, { coverGutter: false, noHScroll: true, above: true });
+                //            this.mErrors.push(mark);
+                //        }
+                //    }
+                //}
+            };
+            ShaderToy.prototype.SetPasses = function (passes) {
+                //for (var i = 0; i < passes.length; i++)
+                //    this.AddTab(passes[i].mType, i, i == 0);
+                //this.AddPlusTab();
+            };
             ShaderToy.prototype.SetShaderFromEditor = function () {
                 var shaderCode = this.mCodeEditor.getValue();
                 var result = this.mEffect.NewShader(shaderCode, this.mActiveDoc);
@@ -999,77 +999,6 @@ var Application;
         })();
         var EffectPass = (function () {
             function EffectPass(gl, precission, supportDerivatives, callback, obj, forceMuted, forcePaused, quadVBO, outputGainNode, id) {
-                this.MakeHeader_Image = function (precission, supportDerivatives) {
-                    var header = this.mPrecision;
-                    var headerlength = 3;
-                    if (this.mSupportsDerivatives) {
-                        header += "#extension GL_OES_standard_derivatives : enable\n";
-                        headerlength++;
-                    }
-                    header += "uniform vec3      iResolution;\n" +
-                        "uniform float     iGlobalTime;\n" +
-                        "uniform float     iChannelTime[4];\n" +
-                        "uniform vec4      iMouse;\n" +
-                        "uniform vec4      iDate;\n" +
-                        "uniform float     iSampleRate;\n" +
-                        "uniform vec3      iChannelResolution[4];\n";
-                    headerlength += 7;
-                    for (var i = 0; i < this.mInputs.length; i++) {
-                        var inp = this.mInputs[i];
-                        if (inp != null && inp.mInfo.mType == "cubemap")
-                            header += "uniform samplerCube iChannel" + i + ";\n";
-                        else
-                            header += "uniform sampler2D iChannel" + i + ";\n";
-                        headerlength++;
-                    }
-                    this.mImagePassFooter = "\nvoid main( void )" +
-                        "{" +
-                        "vec4 color = vec4(0.0,0.0,0.0,1.0);" +
-                        "mainImage( color, gl_FragCoord.xy );" +
-                        "color.w = 1.0;" +
-                        "gl_FragColor = color;" +
-                        "}";
-                    this.mImagePassFooterVR = "\n" +
-                        "uniform vec4 unViewport;\n" +
-                        "uniform vec3 unCorners[5];\n" +
-                        "void main( void )" +
-                        "{" +
-                        "vec4 color = vec4(0.0,0.0,0.0,1.0);" +
-                        "vec3 ro = unCorners[4];" +
-                        "vec2 uv = (gl_FragCoord.xy - unViewport.xy)/unViewport.zw;" +
-                        "vec3 rd = normalize( mix( mix( unCorners[0], unCorners[1], uv.x )," +
-                        "mix( unCorners[3], unCorners[2], uv.x ), uv.y ) - ro);" +
-                        "mainVR( color, gl_FragCoord.xy-unViewport.xy, ro, rd );" +
-                        "color.w = 1.0;" +
-                        "gl_FragColor = color;" +
-                        "}";
-                    this.mHeader = header;
-                    this.mHeaderLength = headerlength;
-                };
-                this.MakeHeader_Sound = function (precission, supportDerivatives) {
-                    var header = this.mPrecision;
-                    var headerlength = 3;
-                    if (this.mSupportsDerivatives) {
-                        header += "#extension GL_OES_standard_derivatives : enable\n";
-                        headerlength++;
-                    }
-                    header += "uniform float     iChannelTime[4];\n" +
-                        "uniform float     iBlockOffset;\n" +
-                        "uniform vec4      iDate;\n" +
-                        "uniform float     iSampleRate;\n" +
-                        "uniform vec3      iChannelResolution[4];\n";
-                    headerlength += 5;
-                    for (var i = 0; i < this.mInputs.length; i++) {
-                        var inp = this.mInputs[i];
-                        if (inp != null && inp.mInfo.mType == "cubemap")
-                            header += "uniform samplerCube iChannel" + i + ";\n";
-                        else
-                            header += "uniform sampler2D iChannel" + i + ";\n";
-                        headerlength++;
-                    }
-                    this.mHeader = header;
-                    this.mHeaderLength = headerlength;
-                };
                 this.mID = id;
                 this.mInputs = new Array(4);
                 this.mInputs[0] = null;
@@ -1500,6 +1429,77 @@ var Application;
                     this.MakeHeader_Image(precission, supportDerivatives);
                 else
                     this.MakeHeader_Sound(precission, supportDerivatives);
+            };
+            EffectPass.prototype.MakeHeader_Image = function (precission, supportDerivatives) {
+                var header = this.mPrecision;
+                var headerlength = 3;
+                if (this.mSupportsDerivatives) {
+                    header += "#extension GL_OES_standard_derivatives : enable\n";
+                    headerlength++;
+                }
+                header += "uniform vec3      iResolution;\n" +
+                    "uniform float     iGlobalTime;\n" +
+                    "uniform float     iChannelTime[4];\n" +
+                    "uniform vec4      iMouse;\n" +
+                    "uniform vec4      iDate;\n" +
+                    "uniform float     iSampleRate;\n" +
+                    "uniform vec3      iChannelResolution[4];\n";
+                headerlength += 7;
+                for (var i = 0; i < this.mInputs.length; i++) {
+                    var inp = this.mInputs[i];
+                    if (inp != null && inp.mInfo.mType == "cubemap")
+                        header += "uniform samplerCube iChannel" + i + ";\n";
+                    else
+                        header += "uniform sampler2D iChannel" + i + ";\n";
+                    headerlength++;
+                }
+                this.mImagePassFooter = "\nvoid main( void )" +
+                    "{" +
+                    "vec4 color = vec4(0.0,0.0,0.0,1.0);" +
+                    "mainImage( color, gl_FragCoord.xy );" +
+                    "color.w = 1.0;" +
+                    "gl_FragColor = color;" +
+                    "}";
+                this.mImagePassFooterVR = "\n" +
+                    "uniform vec4 unViewport;\n" +
+                    "uniform vec3 unCorners[5];\n" +
+                    "void main( void )" +
+                    "{" +
+                    "vec4 color = vec4(0.0,0.0,0.0,1.0);" +
+                    "vec3 ro = unCorners[4];" +
+                    "vec2 uv = (gl_FragCoord.xy - unViewport.xy)/unViewport.zw;" +
+                    "vec3 rd = normalize( mix( mix( unCorners[0], unCorners[1], uv.x )," +
+                    "mix( unCorners[3], unCorners[2], uv.x ), uv.y ) - ro);" +
+                    "mainVR( color, gl_FragCoord.xy-unViewport.xy, ro, rd );" +
+                    "color.w = 1.0;" +
+                    "gl_FragColor = color;" +
+                    "}";
+                this.mHeader = header;
+                this.mHeaderLength = headerlength;
+            };
+            EffectPass.prototype.MakeHeader_Sound = function (precission, supportDerivatives) {
+                var header = this.mPrecision;
+                var headerlength = 3;
+                if (this.mSupportsDerivatives) {
+                    header += "#extension GL_OES_standard_derivatives : enable\n";
+                    headerlength++;
+                }
+                header += "uniform float     iChannelTime[4];\n" +
+                    "uniform float     iBlockOffset;\n" +
+                    "uniform vec4      iDate;\n" +
+                    "uniform float     iSampleRate;\n" +
+                    "uniform vec3      iChannelResolution[4];\n";
+                headerlength += 5;
+                for (var i = 0; i < this.mInputs.length; i++) {
+                    var inp = this.mInputs[i];
+                    if (inp != null && inp.mInfo.mType == "cubemap")
+                        header += "uniform samplerCube iChannel" + i + ";\n";
+                    else
+                        header += "uniform sampler2D iChannel" + i + ";\n";
+                    headerlength++;
+                }
+                this.mHeader = header;
+                this.mHeaderLength = headerlength;
             };
             EffectPass.prototype.createEmptyTextureNearest = function (gl, xres, yres) {
                 var tex = gl.createTexture();
