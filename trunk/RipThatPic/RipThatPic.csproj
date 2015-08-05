@@ -358,6 +358,12 @@
     <Content Include="angularApp\directives\publicFooter.js">
       <DependentUpon>publicFooter.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\shaderToy\effect.js">
+      <DependentUpon>effect.ts</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\shaderToy\effectPass.js">
+      <DependentUpon>effectPass.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\directives\shaderToy\shaderToy.js">
       <DependentUpon>shaderToy.ts</DependentUpon>
     </Content>
@@ -768,6 +774,12 @@
     </Content>
     <Content Include="angularApp\directives\shaderToy\shaderToy.js.map">
       <DependentUpon>shaderToy.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\shaderToy\effect.js.map">
+      <DependentUpon>effect.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\directives\shaderToy\effectPass.js.map">
+      <DependentUpon>effectPass.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1912,6 +1924,8 @@
     <TypeScriptCompile Include="angularApp\directives\configMenu.ts" />
     <TypeScriptCompile Include="angularApp\directives\postLite.ts" />
     <TypeScriptCompile Include="angularApp\directives\pageLite.ts" />
+    <TypeScriptCompile Include="angularApp\directives\shaderToy\effect.ts" />
+    <TypeScriptCompile Include="angularApp\directives\shaderToy\effectPass.ts" />
     <TypeScriptCompile Include="angularApp\directives\shaderToy\shaderToy.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />

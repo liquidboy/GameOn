@@ -73,6 +73,8 @@ namespace RipThatPic
                     "~/angularApp/directives/LinksList.js",
                     "~/angularApp/directives/publicFooter.js",
                     "~/angularApp/directives/flow/flowGL.js",
+                    "~/angularApp/directives/shaderToy/effect.js",
+                    "~/angularApp/directives/shaderToy/effectPass.js",
                     "~/angularApp/directives/shaderToy/shaderToy.js"
                 ));
 
