@@ -18,6 +18,7 @@
             .when('/config', { controller: 'ConfigCtrl', templateUrl: '/angularApp/views/config/config.html', controllerAs: 'config' })
             .when('/explorer', { controller: 'ExplorerCtrl', templateUrl: '/angularApp/views/explorer/explorer.html', controllerAs: 'explorer' })
             .when('/flow', { controller: 'FlowCtrl', templateUrl: '/angularApp/views/flow/flow.html', controllerAs: 'flow' })
+            .when('/shader', { controller: 'ShaderCtrl', templateUrl: '/angularApp/views/shader/shader.html', controllerAs: 'shader' })
             .when('/imageexplorer', { controller: 'ImageExplorerCtrl', templateUrl: '/angularApp/views/explorer/imageexplorer.html', controllerAs: 'explorer' })
             .when('/page', { controller: 'PageCtrl', templateUrl: '/angularApp/views/page/page.html', controllerAs: 'page' })
             .when('/post', { controller: 'PostCtrl', templateUrl: '/angularApp/views/post/post.html', controllerAs: 'post' })

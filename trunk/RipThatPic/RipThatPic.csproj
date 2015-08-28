@@ -298,6 +298,9 @@
     <Content Include="angularApp\controllers\post.js">
       <DependentUpon>post.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\controllers\shader.js">
+      <DependentUpon>shader.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\controllers\splash.js">
       <DependentUpon>splash.ts</DependentUpon>
     </Content>
@@ -439,6 +442,7 @@
     <Content Include="angularApp\views\config\config.html" />
     <Content Include="angularApp\views\explorer\imageExplorer.html" />
     <Content Include="angularApp\views\explorer\explorer.html" />
+    <Content Include="angularApp\views\shader\shader.html" />
     <Content Include="angularApp\views\flow\flow.html" />
     <Content Include="angularApp\views\home\home.html" />
     <Content Include="angularApp\views\login\login.html" />
@@ -780,6 +784,9 @@
     </Content>
     <Content Include="angularApp\directives\shaderToy\effectPass.js.map">
       <DependentUpon>effectPass.js</DependentUpon>
+    </Content>
+    <Content Include="angularApp\controllers\shader.js.map">
+      <DependentUpon>shader.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
@@ -1873,6 +1880,7 @@
     <TypeScriptCompile Include="angularApp\controllers\Config\configAudio.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Config\configFont.ts" />
     <TypeScriptCompile Include="angularApp\controllers\Config\configFileStorage.ts" />
+    <TypeScriptCompile Include="angularApp\controllers\shader.ts" />
     <TypeScriptCompile Include="angularApp\controllers\imageexplorer.ts" />
     <TypeScriptCompile Include="angularApp\controllers\explorer.ts" />
     <TypeScriptCompile Include="angularApp\controllers\login.ts" />

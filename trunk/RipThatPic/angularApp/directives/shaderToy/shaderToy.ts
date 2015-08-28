@@ -215,6 +215,9 @@
         shaderToy: ShaderToy;
         shaderId: string;
         res: any;
+
+        
+
     }
 
     class ShaderToy {
