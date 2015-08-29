@@ -19,6 +19,8 @@ var Application;
                     var player = element.find('#player')[0];
                     var passManager = element.find('#passManager');
                     _this.sc.uiData = new UIData();
+                    _this.sc.uiData.eFrameRate = element.find('#divFrameRate')[0];
+                    _this.sc.uiData.eMyTime = element.find('#divMyTime')[0];
                     _this.sc.uiData.UpdateUI = function () { _this.sc.$apply(); };
                     $(element.find('#butUpdateShader')[0]).on('click', _this.updateShader.bind(_this));
                     _this.sc.shaderToy = new ShaderToy(player, editor, passManager, _this.sc.uiData);
@@ -26,9 +28,9 @@ var Application;
                     if (!_this.sc.shaderToy.mCreated)
                         return;
                     //-- get info --------------------------------------------------------
-                    _this.sc.shaderId = '4t23RR';
+                    //this.sc.shaderId = '4t23RR';
                     //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                    //this.sc.shaderId = 'MlS3Rc';
+                    _this.sc.shaderId = 'MlS3Rc';
                     if (_this.sc.shaderId == null) {
                         _this.loadNew();
                     }
@@ -89,7 +91,8 @@ var Application;
                 this.dataLoadShader([kk]);
             };
             ShaderToyDirective.prototype.dataLoadShader = function (jsnShader) {
-                this.sc.res = this.sc.shaderToy.NewScriptJSON(jsnShader[0]);
+                //this.sc.res = this.sc.shaderToy.NewScriptJSON(jsnShader[0])
+                this.sc.res = this.sc.shaderToy.NewScriptJSON(jsnShader);
                 if (this.sc.res.mSuccess == false)
                     return;
                 document.title = this.sc.res.mName;
@@ -100,28 +103,31 @@ var Application;
             };
             ShaderToyDirective.prototype.loadShader = function (gShaderID) {
                 try {
-                    var res;
-                    var code;
-                    if (gShaderID == '4t23RR') {
-                        res = [{ ver: "0.1", info: { id: "4t23RR", date: "1426631078", viewed: 1101, name: "Toon Cloud", username: "AntoineC", description: "Simple 2D layered animation. Better in full screen (could become a screen saver?) ", likes: 43, published: 1, flags: 0, tags: ["2d", "minimalist"], hasliked: 0 }, renderpass: [{ inputs: [], outputs: [], code: "", name: "", description: "", type: "image" }] }];
-                        code = '\/\/ ----------------------------------------------------------------------------------------\n\/\/\t\"Toon Cloud\" by Antoine Clappier - March 2015\n\/\/\n\/\/\tLicensed under:\n\/\/  A Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.\n\/\/\thttp:\/\/creativecommons.org\/licenses\/by-nc-sa\/4.0\/\n\/\/ ----------------------------------------------------------------------------------------\n\n#define TAU 6.28318530718\n\n\nconst vec3 BackColor\t= vec3(0.0, 0.4, 0.58);\nconst vec3 CloudColor\t= vec3(0.18,0.70,0.87);\n\n\nfloat Func(float pX)\n{\n\treturn 0.6*(0.5*sin(0.1*pX) + 0.5*sin(0.553*pX) + 0.7*sin(1.2*pX));\n}\n\n\nfloat FuncR(float pX)\n{\n\treturn 0.5 + 0.25*(1.0 + sin(mod(40.0*pX, TAU)));\n}\n\n\nfloat Layer(vec2 pQ, float pT)\n{\n\tvec2 Qt = 3.5*pQ;\n\tpT *= 0.5;\n\tQt.x += pT;\n\n\tfloat Xi = floor(Qt.x);\n\tfloat Xf = Qt.x - Xi -0.5;\n\n\tvec2 C;\n\tfloat Yi;\n\tfloat D = 1.0 - step(Qt.y,  Func(Qt.x));\n\n\t\/\/ Disk:\n\tYi = Func(Xi + 0.5);\n\tC = vec2(Xf, Qt.y - Yi ); \n\tD =  min(D, length(C) - FuncR(Xi+ pT\/80.0));\n\n\t\/\/ Previous disk:\n\tYi = Func(Xi+1.0 + 0.5);\n\tC = vec2(Xf-1.0, Qt.y - Yi ); \n\tD =  min(D, length(C) - FuncR(Xi+1.0+ pT\/80.0));\n\n\t\/\/ Next Disk:\n\tYi = Func(Xi-1.0 + 0.5);\n\tC = vec2(Xf+1.0, Qt.y - Yi ); \n\tD =  min(D, length(C) - FuncR(Xi-1.0+ pT\/80.0));\n\n\treturn min(1.0, D);\n}\n\n\n\nvoid mainImage( out vec4 fragColor, in vec2 fragCoord )\n{\n\t\/\/ Setup:\n\tvec2 UV = 2.0*(fragCoord.xy - iResolution.xy\/2.0) \/ min(iResolution.x, iResolution.y);\t\n\t\n\t\/\/ Render:\n\tvec3 Color= BackColor;\n\n\tfor(float J=0.0; J<=1.0; J+=0.2)\n\t{\n\t\t\/\/ Cloud Layer: \n\t\tfloat Lt =  iGlobalTime*(0.5  + 2.0*J)*(1.0 + 0.1*sin(226.0*J)) + 17.0*J;\n\t\tvec2 Lp = vec2(0.0, 0.3+1.5*( J - 0.5));\n\t\tfloat L = Layer(UV + Lp, Lt);\n\n\t\t\/\/ Blur and color:\n\t\tfloat Blur = 4.0*(0.5*abs(2.0 - 5.0*J))\/(11.0 - 5.0*J);\n\n\t\tfloat V = mix( 0.0, 1.0, 1.0 - smoothstep( 0.0, 0.01 +0.2*Blur, L ) );\n\t\tvec3 Lc=  mix( CloudColor, vec3(1.0), J);\n\n\t\tColor =mix(Color, Lc,  V);\n\t}\n\n\tfragColor = vec4(Color, 1.0);\n}\n\n\n';
-                    }
-                    else if (gShaderID == 'll23Rd') {
-                        res = [{ ver: "0.1", info: { id: "ll23Rd", date: "1431588925", viewed: 2056, name: "Companion Cube Remix", username: "ChristinaCoffin", description: "Remixed a couple existing shadertoys that had nothing to do with a companion cube to make a [Companion Cube]  <br/>See the tex() + heartMapping() func for my main experiment of mixing procedural heart shape in raymarching object", likes: 42, published: 1, flags: 0, tags: ["procedural", "raymarching"], hasliked: 0 }, renderpass: [{ inputs: [], outputs: [], code: "", name: "", description: "", type: "image" }] }];
-                        code = '\/\/ Companion Cube Remix - @christinacoffin\n\/\/\t- heart shape mapping doesnt completely play nice with the parallax mapping, something to improve upon.\n\/\/ \t\n\/\/ modified version of Parallax mapping demo by nimitz (twitter: @stormoid)  : https:\/\/www.shadertoy.com\/view\/4lSGRh\n\/\/ modified procedural heartshape by Iq : https:\/\/www.shadertoy.com\/view\/XsfGRn\n\n\/\/Show only the raymarched geometry (for comparison)\n\/\/#define RAYMARCHED_ONLY\n\n\/\/The amount of parallax\n#define PARALLAX_SCALE .2\n\n\/\/Scale the texture offset as a function of incidence (much better results)\n#define USE_OFFSET_SCALING\n#define OFFSET_SCALE 4.\n\n\/\/Bump mapping intensity\n#define BUMP_STRENGTH .21\n#define BUMP_WIDTH 0.004\n\n\/\/Main texture scale\nconst float texscl = 2.5;\n\n#define ITR 70\n#define FAR 15.\n#define time iGlobalTime\n\nmat2 mm2(in float a){float c = cos(a), s = sin(a);return mat2(c,-s,s,c);}\nfloat hash(vec2 x){\treturn fract(cos(dot(x.xy,vec2(2.31,53.21))*124.123)*412.0); }\n\nfloat sdfsw = 0.; \/\/Global mouse control\n\nfloat length4(in vec3 p ){\n\tp = p*p; p = p*p;\n\treturn pow( p.x + p.y + p.z, 1.0\/4.0 );\n}\n\nfloat map(vec3 p)\n{\n    float d = mix(length(p)-1.1,length4(p)-1.,sdfsw-0.3);\n    d = min(d, -(length4(p)-4.));\n    return d*.95;\n}\n\nfloat march(in vec3 ro, in vec3 rd)\n{\n\tfloat precis = 0.001;\n    float h=precis*2.0;\n    float d = 0.;\n    for( int i=0; i<ITR; i++ )\n    {\n        if( abs(h)<precis || d>FAR ) break;\n        d += h;\n\t    float res = map(ro+rd*d);\n        h = res;\n    }\n\treturn d;\n}\n\nvec3 normal(in vec3 p)\n{  \n    vec2 e = vec2(-1., 1.)*0.005;   \n\treturn normalize(e.yxx*map(p + e.yxx) + e.xxy*map(p + e.xxy) + \n\t\t\t\t\t e.xyx*map(p + e.xyx) + e.yyy*map(p + e.yyy) );   \n}\n\n\/\/From TekF (https:\/\/www.shadertoy.com\/view\/ltXGWS)\nfloat cells(in vec3 p)\n{\n    p = fract(p\/2.0)*2.0;\n    p = min(p, 2.0-p);\n    return 1.-min(length(p),length(p-1.0));\n}\n\nvec4 heartMapping( in vec2 p )\n{\t\n\tp.y -= 0.25;\n\n    \/\/ background color\n    \/\/ make this black for now since we use the heart shape to displace things and dont want the other parts affected (keep it black colored)\n    vec3 bcol = vec3(0,0,0);\/\/1.0,0.8,0.7-0.07*p.y)*(1.0-0.25*length(p));\n\n    float tt = mod(iGlobalTime,1.5)\/1.5;\n    float ss = pow(tt,.2)*0.5 + 0.5;\n    ss = 1.0 + ss*0.5*sin(tt*6.2831*3.0 + p.y*0.5)*exp(-tt*4.0);\n    p *= vec2(0.5,1.5) + ss*vec2(0.5,-0.5);\n\n    \/\/ shape\n    float a = atan(p.x,p.y)\/3.141593;\n    float r = length(p);\n    float h = abs(a);\n    float d = (13.0*h - 22.0*h*h + 10.0*h*h*h)\/(6.0-5.0*h);\n\n\t\/\/ color\n\tfloat s = d;\/\/1.0-0.5*clamp(r\/d,0.0,1.0);\n    \n\ts = 0.5;\/\/ + 0.5*p.x;\n\ts *= 1.0;\/\/-0.25*r;\n\ts = 0.5 + 0.6*s;\n\n\ts *= 0.5+0.5*pow( 1.0-clamp(r\/d, 0.0, 1.0 ), 0.1 );\n\n\tvec3 hcol = vec3(1.0,0.0,0.3)*s;\n\t\n    vec3 col = mix( bcol, hcol, smoothstep( -0.01, 0.01, d-r) );\n\n    col.x *= ss;\/\/fluctate color based on the beating animation\n    col.y = ss;\/\/\n\n    \/\/todo: we could encode other shapes in other color channels and mix them in tex() differently\n    \n    return vec4(col,1.0);\n}\n\nfloat tex( vec3 p )\n{\n    p *= texscl;\n    float rz= 0.0;\/\/-0.5;\n    float z= 1.;\n    \n    \/\/ do the Heart shape mapping before the parallax loop warps the position data\n    \/\/ triplanar map it so we get it on all 6 sides\n    float heartScaleFactor = 1.1;\n    vec4 heart0 = heartMapping( p.xy * heartScaleFactor );\n    vec4 heart1 = heartMapping( p.zy * heartScaleFactor );\n    vec4 heart2 = heartMapping( p.xz * heartScaleFactor );\n    \n    heart0 = max( heart0, heart1 );\n    heart0 = max( heart0, heart2 );\n    float heartMask = (heart0.x + heart1.x + heart2.x *0.333);\n    heartMask = clamp(heartMask, 0.0, 1.0);\n    \n    for ( int i=0; i<2; i++ )\n    { \n        #ifndef RAYMARCHED_ONLY\n        rz += cells(p)\/z;\n        #endif\n        \n        p *= 2.5*0.15;\n        z *= -1.1*0.15;\n    }\n \n    return clamp(heartMask+(rz*rz)*4.95,0.,1.)*2.73 - 1.0-heartMask;\n}\n\n\/*\n\tThe idea is to displace the shaded position along the surface normal towards\n\tthe viewer,\tthe tgt vector is the displacement vector, then\tI apply a scaling\n\tfactor to the displacement and also have an incidence based\toffset scaling set up.\n*\/\nvec3 prlpos(in vec3 p, in vec3 n, in vec3 rd)\n{\n    \/\/vec3 tgt = cross(cross(rd,n), n); \/\/Naive method (easier to grasp?)\n    vec3 tgt = n*dot(rd, n) - rd; \/\/Optimized\n\n#ifdef USE_OFFSET_SCALING\n    tgt \/= (abs(dot(tgt,rd)))+OFFSET_SCALE;\n    \n#endif\n    \n    p += tgt*tex(p)*PARALLAX_SCALE;\n    return p;\n}\n\nfloat btex(in vec3 p)\n{\n    float rz=  tex(p);\n    rz += tex(p*20.)*0.01; \/\/Extra (non-parallaxed) bump mapping can be added\n    \n \/\/   rz += tex(p);\n    \n    return rz;\n}\n\nvec3 bump(in vec3 p, in vec3 n, in float ds)\n{\n    vec2 e = vec2(BUMP_WIDTH*sqrt(ds)*0.5, 0);\n    float n0 = btex(p);\n    vec3 d = vec3(btex(p+e.xyy)-n0, btex(p+e.yxy)-n0, btex(p+e.yyx)-n0)\/e.x;\n    vec3 tgd = d - n*dot(n ,d);\n    n = normalize(n-tgd*BUMP_STRENGTH*2.\/(ds));\n    return n;\n}\n\nvoid mainImage( out vec4 fragColor, in vec2 fragCoord )\n{\t\n\tvec2 bp = fragCoord.xy\/iResolution.xy*2.-1.; \n    vec2 p = bp;\n\tp.x*=iResolution.x\/iResolution.y;\n\tvec2 mo = iMouse.xy \/ iResolution.xy-.5;\n    mo = (mo==vec2(-.5))?mo=vec2(0.4,-0.25):mo;\n\tmo.x *= iResolution.x\/iResolution.y;\n\t\n    \n    mo.y = 0.425;\/\/ lock the shape to be companion cube-ish in appearance\n    mo.y += (0.5 * abs(sin(iGlobalTime)))-0.15; \n    \n    p.x += mo.x*1.;\n    sdfsw = mo.y*4.;\n    \n\tvec3 ro = vec3(0.,0.,4.);\n    vec3 rd = normalize(vec3(p,-3.+sin(time*0.9+sin(time))));\n    mat2 mx = mm2(time*.1+sin(time*0.4)-0.2);\n    mat2 my = mm2(time*0.07+cos(time*0.33)-0.1);\n    ro.xz *= mx;rd.xz *= mx;\n    ro.xy *= my;rd.xy *= my;\n\t\n\tfloat rz = march(ro,rd);\n\t\n    vec3 col = vec3(0);\n    \n    if ( rz < FAR )\n    {\n        vec3 pos = ro+rz*rd;\n        vec3 nor= normal( pos );\n        pos = prlpos(pos,nor,rd);\n        float d = distance(ro,pos);\n        nor = bump(pos, nor, d);\n\n        vec3 ligt = normalize( vec3(-.5, 0.5, -0.3) );\n        float dif = clamp( dot( nor, ligt ), 0.0, 1.0 );\n        float bac = clamp( dot( nor, normalize(vec3(-ligt))), 0.0, 1.0 );\n        float spe = pow(clamp( dot( reflect(rd,nor), ligt ), 0.0, 1.0 ),10.);\n        float fre = pow( clamp(1.0+dot(nor,rd),0.0,1.0), 2.0 );\n        vec3 brdf = vec3(0.3);\n        brdf += bac*vec3(0.3);\n        brdf += dif*0.5;\n        \n        float tx=  tex(pos);\n        col = sin(vec3(1.5+mo.x*0.4,2.2+mo.x*0.25,2.7)+tx*1.2+4.2)*0.6+0.55;\n        col = col*brdf + spe*.5\/sqrt(rz) +.25*fre;\n        \n        col = mix(col,vec3(.0),clamp(exp(rz*0.43-4.),0.,1.));\n    }\n \n    col.x *= col.z;\/\/colorize\n    col.xyz = col.zxy;\/\/color channel flip!   \n    \n    \n    col = clamp(col*1.05,0.,1.);\n    col *= pow(smoothstep(0.,.2,(bp.x + 1.)*(bp.y + 1.)*(bp.x - 1.)*(bp.y - 1.)),.3);\n    col *= smoothstep(3.9,.5,sin(p.y*.5*iResolution.y+time*10.))+0.1;\n    col -= hash(col.xy+p.xy)*.025;\n\t\n\n    \n\tfragColor = vec4( col, 1.0 );\n}';
-                    }
-                    else if (gShaderID == 'MlS3Rc') {
-                        res = [{ "ver": "0.1", "info": { "id": "MlS3Rc", "date": "1430940904", "viewed": 395, "name": "Echoplex", "username": "dila", "description": "Rusty beams inside some structure.<br\/>Simulated motion blur by blending in some of the previous frames.", "likes": 21, "published": 1, "flags": 0, "tags": ["sphere", "scene", "world"], "hasliked": 0 }, "renderpass": [{ "inputs": [{ "id": 1, "src": "\/Assets\/Textures\/tex00.jpg", "ctype": "texture", "channel": 0 }], "outputs": [{ "channel": "0", "dst": "-1" }], "code": "", "name": "", "description": "", "type": "image" }] }];
-                        code = 'const float pi = 3.14159;\n\nmat3 xrot(float t)\n{\n    return mat3(1.0, 0.0, 0.0,\n                0.0, cos(t), -sin(t),\n                0.0, sin(t), cos(t));\n}\n\nmat3 yrot(float t)\n{\n    return mat3(cos(t), 0.0, -sin(t),\n                0.0, 1.0, 0.0,\n                sin(t), 0.0, cos(t));\n}\n\nmat3 zrot(float t)\n{\n    return mat3(cos(t), -sin(t), 0.0,\n                sin(t), cos(t), 0.0,\n                0.0, 0.0, 1.0);\n}\n\nfloat pshade(vec3 p)\n{\n\tfloat ac = texture2D(iChannel0, vec2(p.y,p.z)).x;\n    float bc = texture2D(iChannel0, vec2(p.x,p.z)).x;\n    float cc = texture2D(iChannel0, vec2(p.x,p.y)).x;\n    float s = ((ac + bc + cc) \/ 3.0) * 2.0 - 1.0;\n    return s;\n}\n\nfloat sphere(vec3 p)\n{\n    vec3 q = fract(p+0.5) * 2.0 - 1.0;\n\treturn 1.3 - length(q);  \n}\n\nfloat map(vec3 p)\n{\n\treturn min(sphere(p), sphere(p+0.5));\n}\n\nfloat trace(vec3 o, vec3 r)\n{\n    float t = 0.0;\n    for (int i = 0; i < 32; ++i) {\n        vec3 p = o + r * t;\n        float d = map(p);\n        t += d * 0.5;\n    }\n    return t;\n}\n\nvec3 normal(vec3 p)\n{\n    vec3 o = vec3(0.01, 0.0, 0.0);\n    return normalize(vec3(map(p+o.xyy) - map(p-o.xyy),\n                          map(p+o.yxy) - map(p-o.yxy),\n                          map(p+o.yyx) - map(p-o.yyx)));\n}\n\nvec3 campos(float time)\n{\n    vec3 f = vec3(0.25);\n    f.z += time;\n\treturn f;\n}\n\nfloat occlusion(vec3 origin, vec3 ray) {\n    float delta = 0.1;\n    const int samples = 16;\n    float r = 0.0;\n    for (int i = 1; i <= samples; ++i) {\n        float t = delta * float(i);\n     \tvec3 pos = origin + ray * t;\n        float dist = map(pos);\n        float len = abs(t - dist);\n        r += len * pow(2.0, -float(i));\n    }\n    return r;\n}\n\nvec4 surf(vec3 r, vec3 w, vec3 sn, float t)\n{\n    float prod = max(dot(sn,-r), 0.0);\n    float off = 0.5 + 0.5 * sin(pshade(w)*pi*5.0);\n    float fog = prod \/ (1.0 + t * t + off);\n    return vec4(vec3(fog),off);\n}\n\nvec3 shade(vec3 o, vec3 r)\n{\n    float t = trace(o, r);\n    vec3 w = o + r * t;\n    vec3 sn = normal(w);\n    \n\tfloat lit = occlusion(o, r) * 5.0;\n    \n    vec4 ac = surf(r, w, sn, t);\n    \n    vec3 from = vec3(0.8, 0.2, 0.1);\n    vec3 to = vec3(1.0, 1.0, 1.0);\n    \n    float fx = 1.0 - ac.w;\n    \n    vec3 mixed = ac.xyz * mix(from, to, fx);\n    \n    vec3 fc = lit * mixed;\n    \n    return fc;\n}\n\nvec3 raydir(vec3 r, float t)\n{\n    return r * yrot(t) * xrot(t*2.0);\n}\n\nvoid mainImage( out vec4 fragColor, in vec2 fragCoord )\n{\n\tvec2 uv = fragCoord.xy \/ iResolution.xy;\n    uv = uv * 2.0 - 1.0;\n    uv.x *= iResolution.x \/ iResolution.y;\n    \n    vec3 r = normalize(vec3(uv, 1.0 - dot(uv,uv) * 0.333));\n    float ms = iGlobalTime * 0.25;\n    float of = 0.01;\n    \n    vec3 ao = campos(ms);\n    vec3 ar = raydir(r, ms);\n    vec3 ac = shade(ao, ar);\n    \n    vec3 bo = campos(ms-of);\n    vec3 br = raydir(r, ms-of);\n    vec3 bc = shade(bo, br);\n    \n    vec3 co = campos(ms-of*2.0);\n    vec3 cr = raydir(r, ms-of*2.0);\n    vec3 cc = shade(co, cr);\n    \n    ac = ac * 0.5 + bc * 0.25 + cc * 0.25;\n    \n\tfragColor = vec4(ac, 1.0);\n}';
-                    }
-                    res[0].renderpass[0].code = code;
-                    this.dataLoadShader(res);
+                    var __this = this;
+                    var httpReq = this.createHttpRequest();
+                    httpReq.open("GET", "/data/" + gShaderID + ".json", true);
+                    httpReq.onload = function () {
+                        var res = httpReq.responseText;
+                        var jsnShader = null;
+                        try {
+                            jsnShader = JSON.parse(res);
+                        }
+                        catch (e) {
+                            alert("ERROR in JSON: " + res);
+                            return;
+                        }
+                        __this.dataLoadShader(jsnShader);
+                    };
+                    httpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    var str = "{ \"shaders\" : [\"" + gShaderID + "\"] }";
+                    str = "s=" + encodeURIComponent(str);
+                    httpReq.send(str);
                 }
                 catch (e) {
-                    var ttt = e;
+                    return;
                 }
             };
-            ShaderToyDirective.prototype.loadShaderOld = function (gShaderID) {
+            ShaderToyDirective.prototype.loadShaderToyShader = function (gShaderID) {
                 try {
                     var httpReq = this.createHttpRequest();
                     httpReq.open("POST", "https://www.shadertoy.com/shadertoy", true);
@@ -469,11 +475,12 @@ var Application;
                     //if (me.mSendFrame) me.mLiveCreator.SendUpdate();
                     me.mSendFrame = false;
                     me.mFpsFrame++;
-                    //document.getElementById("myTime").innerHTML = (ltime / 1000.0).toFixed(2);
+                    me.uiData.MyTime = (ltime / 1000.0).toFixed(2);
+                    me.uiData.eMyTime.innerHTML = me.uiData.MyTime + " seconds";
                     if ((time - me.mFpsTo) > 1000) {
                         var ffps = 1000.0 * me.mFpsFrame / (time - me.mFpsTo);
-                        //document.getElementById("myFramerate").innerHTML = ffps.toFixed(1) + " fps";
                         me.uiData.FrameRate = ffps.toFixed(1) + " fps";
+                        me.uiData.eFrameRate.innerHTML = me.uiData.FrameRate;
                         if (me.uiData.UpdateUI)
                             me.uiData.UpdateUI.call(this);
                         me.mFpsFrame = 0;
@@ -527,7 +534,7 @@ var Application;
                 var str = this.mCodeEditor.getValue();
                 str = this.minify(str);
                 //alert( str );
-                var ve = document.getElementById("centerScreen");
+                //var ve = document.getElementById("centerScreen");
                 //doAlert(getCoords(ve), { mX: 480, mY: 400 }, "Minimal Shader Code, (" + str.length + " chars)", "<pre>" + str + "</pre>", false, null);
             };
             ShaderToy.prototype.isSpace = function (str, i) {
