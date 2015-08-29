@@ -1,0 +1,22 @@
+﻿.shader-toy {}
+    .shader-toy #player {
+        width:100%;
+    }
+    .shader-toy #demogl {
+        width:100%;
+    }
+
+    .shader-toy .actions {
+        padding:5px;
+        height:26px;
+        width:100%;
+        background-color:#e6e6e6;
+    }
+
+
+    .shader-toy .float-left {
+        float:left;
+    }
+    .shader-toy .float-right {
+        float:right;
+    }

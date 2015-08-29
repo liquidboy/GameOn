@@ -32,6 +32,7 @@
             this.templateUrl = '/angularApp/partials/shader-toy.html';
             this.link = ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => {
                 this.sc = $scope;
+                this.sc.uiData = new UIData();
 
                 var editor = element.find('#editor')[0];
                 var player = element.find('#player')[0];
@@ -39,7 +40,8 @@
 
                 $(element.find('#butUpdateShader')[0]).on('click', this.updateShader.bind(this));
 
-                this.sc.shaderToy = new ShaderToy(player, editor, passManager);
+                this.sc.shaderToy = new ShaderToy(player, editor, passManager, this.sc.uiData);
+                //this.sc.shaderToy.UpdateCounter = (data) => { this.sc.uiData.ShaderCharCounter = data;};
 
                 if (!this.sc.shaderToy.mCreated)
                     return;
@@ -215,9 +217,12 @@
         shaderToy: ShaderToy;
         shaderId: string;
         res: any;
+        uiData: UIData;
+    }
 
-        
 
+    class UIData {
+        ShaderCharCounter: string;
     }
 
     class ShaderToy {
@@ -236,7 +241,8 @@
 
         mDocs: any;
 
-        mCharCounter: any;
+
+        //mCharCounter: any;
         mActiveDoc: any;
         mInfo: any;
         mTOffset: number;
@@ -253,13 +259,16 @@
         mMousePosX: number;
         mMousePosY: number;
 
+        UpdateCounter: Function;
+
         constructor(
             public playerElement: any,
             public editorElement: any,
-            public passElement: ng.IAugmentedJQuery) {
+            public passElement: ng.IAugmentedJQuery,
+            public uiData: UIData) {
 
             var canvas: any = $(playerElement).find('#demogl')[0];
-            this.mCharCounter = $('#shaderCharCounter');
+            //this.mCharCounter = $('#shaderCharCounter');
             this.mCanvas = canvas;
             this.mDocs = {};
 
@@ -660,7 +669,9 @@
             str = this.removeSingleSpaces(str);
             str = this.removeEmptyLines(str);
 
-            this.mCharCounter.html(str.length + " chars");
+            //this.mCharCounter.html(str.length + " chars");
+            this.uiData.ShaderCharCounter = str.length + " chars";
+            //if (this.UpdateCounter)this.UpdateCounter.call(this, str.length + " chars");
         }
 
         private setFlags() {

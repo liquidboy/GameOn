@@ -140,8 +140,10 @@ namespace RipThatPic
                    "~/Themes/PagesList.css",
                    "~/Themes/LinksList.css",
                    "~/Themes/PublicFooter.css",
+                   "~/Themes/ShaderToy.css",
                    "~/Scripts/justified/justifiedGallery.min.css",
                    "~/Scripts/codemirror/codemirror.css"
+
                ));
 
 

@@ -15,11 +15,13 @@ var Application;
                 this.templateUrl = '/angularApp/partials/shader-toy.html';
                 this.link = function ($scope, element, attributes) {
                     _this.sc = $scope;
+                    _this.sc.uiData = new UIData();
                     var editor = element.find('#editor')[0];
                     var player = element.find('#player')[0];
                     var passManager = element.find('#passManager');
                     $(element.find('#butUpdateShader')[0]).on('click', _this.updateShader.bind(_this));
-                    _this.sc.shaderToy = new ShaderToy(player, editor, passManager);
+                    _this.sc.shaderToy = new ShaderToy(player, editor, passManager, _this.sc.uiData);
+                    //this.sc.shaderToy.UpdateCounter = (data) => { this.sc.uiData.ShaderCharCounter = data;};
                     if (!_this.sc.shaderToy.mCreated)
                         return;
                     //-- get info --------------------------------------------------------
@@ -169,11 +171,17 @@ var Application;
             return ShaderToyDirective;
         })();
         Directives.ShaderToyDirective = ShaderToyDirective;
+        var UIData = (function () {
+            function UIData() {
+            }
+            return UIData;
+        })();
         var ShaderToy = (function () {
-            function ShaderToy(playerElement, editorElement, passElement) {
+            function ShaderToy(playerElement, editorElement, passElement, uiData) {
                 this.playerElement = playerElement;
                 this.editorElement = editorElement;
                 this.passElement = passElement;
+                this.uiData = uiData;
                 this.createGlContext = function (cv, useAlpha, usePreserveBuffer) {
                     var gGLContext = null;
                     var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
@@ -221,7 +229,7 @@ var Application;
                     div.appendChild(divText);
                 };
                 var canvas = $(playerElement).find('#demogl')[0];
-                this.mCharCounter = $('#shaderCharCounter');
+                //this.mCharCounter = $('#shaderCharCounter');
                 this.mCanvas = canvas;
                 this.mDocs = {};
                 this.mGLContext = this.createGlContext(this.mCanvas, false, true);
@@ -503,7 +511,9 @@ var Application;
                 str = this.removeMultiSpaces(str);
                 str = this.removeSingleSpaces(str);
                 str = this.removeEmptyLines(str);
-                this.mCharCounter.html(str.length + " chars");
+                //this.mCharCounter.html(str.length + " chars");
+                this.uiData.ShaderCharCounter = str.length + " chars";
+                //if (this.UpdateCounter)this.UpdateCounter.call(this, str.length + " chars");
             };
             ShaderToy.prototype.setFlags = function () {
                 if (this.mEffect == null)

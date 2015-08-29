@@ -1759,6 +1759,7 @@
     <Content Include="Themes\BannerSquare.css" />
     <Content Include="Themes\ImageBillboard.css" />
     <Content Include="Themes\LinksList.css" />
+    <Content Include="Themes\ShaderToy.css" />
     <Content Include="Themes\PagesList.css" />
     <Content Include="Themes\PublicFooter.css" />
     <Content Include="Themes\FileStorageBillboard.css" />
