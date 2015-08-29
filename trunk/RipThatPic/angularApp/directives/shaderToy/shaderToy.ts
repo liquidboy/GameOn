@@ -32,11 +32,13 @@
             this.templateUrl = '/angularApp/partials/shader-toy.html';
             this.link = ($scope: any, element: ng.IAugmentedJQuery, attributes: ng.IAttributes) => {
                 this.sc = $scope;
-                this.sc.uiData = new UIData();
-
+                
                 var editor = element.find('#editor')[0];
                 var player = element.find('#player')[0];
                 var passManager = element.find('#passManager');
+
+                this.sc.uiData = new UIData();
+                this.sc.uiData.UpdateUI = () => { this.sc.$apply(); };
 
                 $(element.find('#butUpdateShader')[0]).on('click', this.updateShader.bind(this));
 
@@ -223,6 +225,8 @@
 
     class UIData {
         ShaderCharCounter: string;
+        FrameRate: string;
+        UpdateUI: Function;
     }
 
     class ShaderToy {
@@ -241,8 +245,7 @@
 
         mDocs: any;
 
-
-        //mCharCounter: any;
+        
         mActiveDoc: any;
         mInfo: any;
         mTOffset: number;
@@ -268,7 +271,6 @@
             public uiData: UIData) {
 
             var canvas: any = $(playerElement).find('#demogl')[0];
-            //this.mCharCounter = $('#shaderCharCounter');
             this.mCanvas = canvas;
             this.mDocs = {};
 
@@ -624,6 +626,8 @@
                 if ((time - me.mFpsTo) > 1000) {
                     var ffps = 1000.0 * me.mFpsFrame / (time - me.mFpsTo);
                     //document.getElementById("myFramerate").innerHTML = ffps.toFixed(1) + " fps";
+                    me.uiData.FrameRate = ffps.toFixed(1) + " fps";
+                    if (me.uiData.UpdateUI) me.uiData.UpdateUI.call(this);
                     me.mFpsFrame = 0;
                     me.mFpsTo = time;
                 }
@@ -669,9 +673,9 @@
             str = this.removeSingleSpaces(str);
             str = this.removeEmptyLines(str);
 
-            //this.mCharCounter.html(str.length + " chars");
+
             this.uiData.ShaderCharCounter = str.length + " chars";
-            //if (this.UpdateCounter)this.UpdateCounter.call(this, str.length + " chars");
+
         }
 
         private setFlags() {

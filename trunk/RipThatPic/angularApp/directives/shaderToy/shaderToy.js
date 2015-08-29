@@ -15,10 +15,11 @@ var Application;
                 this.templateUrl = '/angularApp/partials/shader-toy.html';
                 this.link = function ($scope, element, attributes) {
                     _this.sc = $scope;
-                    _this.sc.uiData = new UIData();
                     var editor = element.find('#editor')[0];
                     var player = element.find('#player')[0];
                     var passManager = element.find('#passManager');
+                    _this.sc.uiData = new UIData();
+                    _this.sc.uiData.UpdateUI = function () { _this.sc.$apply(); };
                     $(element.find('#butUpdateShader')[0]).on('click', _this.updateShader.bind(_this));
                     _this.sc.shaderToy = new ShaderToy(player, editor, passManager, _this.sc.uiData);
                     //this.sc.shaderToy.UpdateCounter = (data) => { this.sc.uiData.ShaderCharCounter = data;};
@@ -229,7 +230,6 @@ var Application;
                     div.appendChild(divText);
                 };
                 var canvas = $(playerElement).find('#demogl')[0];
-                //this.mCharCounter = $('#shaderCharCounter');
                 this.mCanvas = canvas;
                 this.mDocs = {};
                 this.mGLContext = this.createGlContext(this.mCanvas, false, true);
@@ -473,6 +473,9 @@ var Application;
                     if ((time - me.mFpsTo) > 1000) {
                         var ffps = 1000.0 * me.mFpsFrame / (time - me.mFpsTo);
                         //document.getElementById("myFramerate").innerHTML = ffps.toFixed(1) + " fps";
+                        me.uiData.FrameRate = ffps.toFixed(1) + " fps";
+                        if (me.uiData.UpdateUI)
+                            me.uiData.UpdateUI.call(this);
                         me.mFpsFrame = 0;
                         me.mFpsTo = time;
                     }
@@ -511,9 +514,7 @@ var Application;
                 str = this.removeMultiSpaces(str);
                 str = this.removeSingleSpaces(str);
                 str = this.removeEmptyLines(str);
-                //this.mCharCounter.html(str.length + " chars");
                 this.uiData.ShaderCharCounter = str.length + " chars";
-                //if (this.UpdateCounter)this.UpdateCounter.call(this, str.length + " chars");
             };
             ShaderToy.prototype.setFlags = function () {
                 if (this.mEffect == null)

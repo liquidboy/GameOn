@@ -13,10 +13,17 @@
         background-color:#e6e6e6;
     }
 
-
     .shader-toy .float-left {
         float:left;
     }
     .shader-toy .float-right {
         float:right;
+    }
+
+    .shader-toy .marl-10 {
+        margin-left:10px;
+    }
+
+    .shader-toy .marr-20 {
+        margin-right:20px;
     }
