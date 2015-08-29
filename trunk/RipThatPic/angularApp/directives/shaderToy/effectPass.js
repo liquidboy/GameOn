@@ -4,6 +4,9 @@ var Application;
     (function (Directives) {
         var EffectPass = (function () {
             function EffectPass(gl, precission, supportDerivatives, callback, obj, forceMuted, forcePaused, quadVBO, outputGainNode, id) {
+                this.StopOutput = function (wa, gl) {
+                    //this.stopOutput_Image(wa, gl);
+                };
                 this.mID = id;
                 this.mInputs = new Array(4);
                 this.mInputs[0] = null;
@@ -727,7 +730,7 @@ var Application;
             EffectPass.prototype.deleteTexture = function (gl, tex) {
                 gl.deleteTexture(tex);
             };
-            EffectPass.prototype.updateInputs = function (wa, forceUpdate) {
+            EffectPass.prototype.UpdateInputs = function (wa, forceUpdate) {
                 for (var i = 0; i < this.mInputs.length; i++) {
                     var inp = this.mInputs[i];
                     if (inp == null) {
@@ -752,26 +755,6 @@ var Application;
                         if (inp.video.readyState === inp.video.HAVE_ENOUGH_DATA) {
                             if (this.mTextureCallbackFun != null)
                                 this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.video, false, false, 0, -1, this.mID);
-                        }
-                    }
-                    else if (inp.mInfo.mType == "music") {
-                        if (inp.audio.mPaused == false && inp.audio.mForceMuted == false) {
-                            if (wa != null) {
-                                inp.audio.mSound.mAnalyser.getByteFrequencyData(inp.audio.mSound.mFreqData);
-                                inp.audio.mSound.mAnalyser.getByteTimeDomainData(inp.audio.mSound.mWaveData);
-                            }
-                            if (this.mTextureCallbackFun != null)
-                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.audio.mSound.mFreqData, false, false, 2, inp.audio.currentTime, this.mID);
-                        }
-                    }
-                    else if (inp.mInfo.mType == "mic") {
-                        if (inp.mForceMuted == false) {
-                            if (wa != null) {
-                                inp.mAnalyser.getByteFrequencyData(inp.mFreqData);
-                                inp.mAnalyser.getByteTimeDomainData(inp.mWaveData);
-                            }
-                            if (this.mTextureCallbackFun != null)
-                                this.mTextureCallbackFun(this.mTextureCallbackObj, i, (wa == null) ? null : inp.mFreqData, false, false, 2, 0, this.mID);
                         }
                     }
                 }

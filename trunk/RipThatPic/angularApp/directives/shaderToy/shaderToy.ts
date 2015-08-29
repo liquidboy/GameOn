@@ -41,6 +41,7 @@
                 this.sc.uiData.eFrameRate = element.find('#divFrameRate')[0]; 
                 this.sc.uiData.eMyTime = element.find('#divMyTime')[0]; 
                 this.sc.uiData.UpdateUI = () => { this.sc.$apply(); };
+                this.sc.uiData.Pause = () => { this.sc.shaderToy.PauseTime(); };
 
                 $(element.find('#butUpdateShader')[0]).on('click', this.updateShader.bind(this));
 
@@ -118,9 +119,9 @@
             this.dataLoadShader([kk]);
         }
 
-        private dataLoadShader(jsnShader) {
-            //this.sc.res = this.sc.shaderToy.NewScriptJSON(jsnShader[0])
-            this.sc.res = this.sc.shaderToy.NewScriptJSON(jsnShader)
+        private dataLoadShader(jsonShader) {
+            //this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader[0])
+            this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader)
             if (this.sc.res.mSuccess == false)
                 return;
 
@@ -131,7 +132,7 @@
             this.sc.shaderToy.ResetTime();
 
             if (!this.sc.res.mFailed) {
-                //gShaderToy.pauseTime();
+                this.sc.shaderToy.PauseTime();
             }
 
         }
@@ -226,6 +227,7 @@
 
 
         UpdateUI: Function;
+        Pause: Function;
     }
 
     class ShaderToy {
@@ -640,12 +642,12 @@
         PauseTime() {
             var time = performance.now();
             if (!this.mIsPaused) {
-                document.getElementById("myPauseButton").style.background = "url('/img/play.png')";
+                $("#butPauseShader").attr('value', 'play');
                 this.mIsPaused = true;
                 this.mEffect.StopOutputs();
             }
             else {
-                document.getElementById("myPauseButton").style.background = "url('/img/pause.png')";
+                $("#butPauseShader").attr('value', 'pause');
                 this.mTOffset = this.mTf;
                 this.mTo = time;
                 this.mIsPaused = false;

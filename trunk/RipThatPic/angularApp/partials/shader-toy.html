@@ -7,11 +7,14 @@
         <div class="float-left">{{uiData.ShaderCharCounter}}</div>
         <div class="float-left marl-10" id="divFrameRate"></div>
         <div class="float-left marl-10" id="divMyTime"></div>
-        <div class="float-right marr-20"><input id="butUpdateShader" type="button" value="Update Shader" /></div>
+        <div class="float-right marr-20">
+            <input id="butPauseShader" type="button" value="Pause" ng-click="uiData.Pause()" />
+            <input id="butUpdateShader" type="button" value="Update Shader" />
+        </div>
     </div>
 
     <div id="editor"></div>
-    
+
     <div class="actions">
         <div class="float-left">{{uiData.ShaderCharCounter}}</div>
         <div class="float-left marl-10">{{uiData.FrameRate}}</div>

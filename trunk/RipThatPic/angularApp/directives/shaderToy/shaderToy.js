@@ -22,6 +22,7 @@ var Application;
                     _this.sc.uiData.eFrameRate = element.find('#divFrameRate')[0];
                     _this.sc.uiData.eMyTime = element.find('#divMyTime')[0];
                     _this.sc.uiData.UpdateUI = function () { _this.sc.$apply(); };
+                    _this.sc.uiData.Pause = function () { _this.sc.shaderToy.PauseTime(); };
                     $(element.find('#butUpdateShader')[0]).on('click', _this.updateShader.bind(_this));
                     _this.sc.shaderToy = new ShaderToy(player, editor, passManager, _this.sc.uiData);
                     //this.sc.shaderToy.UpdateCounter = (data) => { this.sc.uiData.ShaderCharCounter = data;};
@@ -90,15 +91,16 @@ var Application;
                 };
                 this.dataLoadShader([kk]);
             };
-            ShaderToyDirective.prototype.dataLoadShader = function (jsnShader) {
-                //this.sc.res = this.sc.shaderToy.NewScriptJSON(jsnShader[0])
-                this.sc.res = this.sc.shaderToy.NewScriptJSON(jsnShader);
+            ShaderToyDirective.prototype.dataLoadShader = function (jsonShader) {
+                //this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader[0])
+                this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader);
                 if (this.sc.res.mSuccess == false)
                     return;
                 document.title = this.sc.res.mName;
                 this.sc.shaderToy.StartRendering();
                 this.sc.shaderToy.ResetTime();
                 if (!this.sc.res.mFailed) {
+                    this.sc.shaderToy.PauseTime();
                 }
             };
             ShaderToyDirective.prototype.loadShader = function (gShaderID) {
@@ -492,12 +494,12 @@ var Application;
             ShaderToy.prototype.PauseTime = function () {
                 var time = performance.now();
                 if (!this.mIsPaused) {
-                    document.getElementById("myPauseButton").style.background = "url('/img/play.png')";
+                    $("#butPauseShader").attr('value', 'play');
                     this.mIsPaused = true;
                     this.mEffect.StopOutputs();
                 }
                 else {
-                    document.getElementById("myPauseButton").style.background = "url('/img/pause.png')";
+                    $("#butPauseShader").attr('value', 'pause');
                     this.mTOffset = this.mTf;
                     this.mTo = time;
                     this.mIsPaused = false;
