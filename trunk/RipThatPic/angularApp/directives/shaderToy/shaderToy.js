@@ -49,8 +49,11 @@ var Application;
                     _this.sc.uiData.UpdateUI = function () { _this.sc.$apply(); };
                     _this.sc.uiData.Pause = function () { _this.sc.shaderToy.PlayPauseTime(); };
                     _this.sc.ChangeShader = function () {
-                        _this.loadShader($scope.shaderId);
                         _this.sc.shaderToy.PauseShader();
+                        _this.loadShader($scope.shaderId);
+                        setTimeout(function () {
+                            _this.sc.shaderToy.PlayShader();
+                        }, 100);
                     };
                     $(element.find('#butUpdateShader')[0]).on('click', _this.updateShader.bind(_this));
                     _this.sc.shaderToy = new ShaderToy(player, editor, passManager, _this.sc.uiData);
@@ -62,7 +65,7 @@ var Application;
                     ////this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
                     _this.sc.shaderId = 'MlS3Rc';
                     _this.loadShader(_this.sc.shaderId);
-                    _this.sc.shaderToy.PauseShader();
+                    _this.sc.shaderToy.PlayShader();
                     //if (this.sc.shaderId == null) {
                     //    this.loadNew();
                     //}
@@ -86,6 +89,14 @@ var Application;
                 if (this.sc.res.mSuccess == false)
                     return;
                 document.title = this.sc.res.mName;
+                //inputs
+                this.sc.uiData.ShowInputs = false;
+                this.sc.uiData.Inputs = [];
+                if (jsonShader.renderpass[0] && jsonShader.renderpass[0].inputs.length > 0) {
+                    this.sc.uiData.ShowInputs = true;
+                    this.sc.uiData.Inputs = jsonShader.renderpass[0].inputs;
+                }
+                //render
                 this.sc.shaderToy.StartRendering();
                 this.sc.shaderToy.ResetTime();
                 if (!this.sc.res.mFailed) {

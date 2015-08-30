@@ -14,12 +14,19 @@
                 <option value="2443k2">Changing Gradient Background</option>
                 <option value="MlS3Rc" selected>Echoplex</option>
                 <option value="4t23RR">Toon Cloud</option>
-
             </select>
         </div>
         <div class="float-right marr-20">
             <input id="butUpdateShader" type="button" value="Update Shader" />
         </div>
+    </div>
+
+    <div class="inputs" ng-show="uiData.ShowInputs">
+        <div ng-repeat="input in uiData.Inputs" ng-include="'inputitemlist.html'" ></div>
+
+        <script type="text/ng-template" id="inputitemlist.html">
+            {{input.channel}} :  <img src="{{input.src}}" style="width:50px;height:30px" />
+        </script>
     </div>
 
     <div id="editor"></div>
@@ -33,4 +40,6 @@
 
     <div id="passManager"></div>
 </div>
+
+
 

@@ -44,8 +44,13 @@
                 this.sc.uiData.Pause = () => { this.sc.shaderToy.PlayPauseTime(); };
 
                 this.sc.ChangeShader = () => {
-                    this.loadShader($scope.shaderId);
                     this.sc.shaderToy.PauseShader();
+                    this.loadShader($scope.shaderId);
+
+                    setTimeout(() => {
+                        this.sc.shaderToy.PlayShader();
+                    }, 100);
+                    
                 }
 
                 $(element.find('#butUpdateShader')[0]).on('click', this.updateShader.bind(this));
@@ -61,7 +66,7 @@
                 ////this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
                 this.sc.shaderId = 'MlS3Rc';
                 this.loadShader(this.sc.shaderId);
-                this.sc.shaderToy.PauseShader();
+                this.sc.shaderToy.PlayShader();
 
                 //if (this.sc.shaderId == null) {
                 //    this.loadNew();
@@ -86,7 +91,16 @@
 
             document.title = this.sc.res.mName;
 
+            //inputs
+            this.sc.uiData.ShowInputs = false;
+            this.sc.uiData.Inputs = [];
+
+            if (jsonShader.renderpass[0] && jsonShader.renderpass[0].inputs.length > 0) {
+                this.sc.uiData.ShowInputs = true;
+                this.sc.uiData.Inputs = jsonShader.renderpass[0].inputs;
+            }
            
+            //render
             this.sc.shaderToy.StartRendering();
             this.sc.shaderToy.ResetTime();
 
@@ -183,10 +197,13 @@
 
         eFrameRate: HTMLElement;
         eMyTime: HTMLElement;
+        Pause: Function;
 
+        Inputs: any;
+        ShowInputs: boolean;
 
         UpdateUI: Function;
-        Pause: Function;
+        
     }
 
     class ShaderToy {
