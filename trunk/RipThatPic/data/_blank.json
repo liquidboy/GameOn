@@ -1,0 +1,43 @@
+﻿{
+    "ver": "0.1",
+    "info": {
+        "id": "-1",
+        "date": "1358124981",
+        "viewed": 0,
+        "name": "",
+        "username": "None",
+        "description": "",
+        "likes": 0,
+        "hasliked": 0,
+        "tags": [],
+        "published": 0
+    },
+
+    "flags": {
+        "mFlagVR": "false",
+        "mFlagWebcam": "false",
+        "mFlagSoundInput": "false",
+        "mFlagSoundOutput": "false",
+        "mFlagKeyboard": "false"
+    },
+
+    "renderpass": [
+        {
+            "inputs":
+            {
+                "id": "3",
+                "src": ["/presets/tex03.jpg"],
+                "ctype": ["texture"],
+                "channel": [0]
+            },
+            "outputs":
+            {
+                "channel": [],
+                "dst": []
+            },
+            "type": "image",
+            "code": "void mainImage( out vec4 fragColor, in vec2 fragCoord )\n{\n\tvec2 uv = fragCoord.xy / iResolution.xy;\n\tfragColor = vec4(uv,0.5+0.5*sin(iGlobalTime),1.0);\n}",
+            "name": "",
+            "description": ""
+        }]
+}

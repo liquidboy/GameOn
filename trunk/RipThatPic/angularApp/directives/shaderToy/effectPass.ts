@@ -926,11 +926,11 @@
             }
         }
         
-        StopOutput = function (wa, gl) {
+        StopOutput = (wa, gl) => {
 
                 //this.stopOutput_Image(wa, gl);
         }
 
-
+        ResumeOutput = (wa, gl) => { }
     }
 }

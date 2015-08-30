@@ -7,6 +7,7 @@ var Application;
                 this.StopOutput = function (wa, gl) {
                     //this.stopOutput_Image(wa, gl);
                 };
+                this.ResumeOutput = function (wa, gl) { };
                 this.mID = id;
                 this.mInputs = new Array(4);
                 this.mInputs[0] = null;

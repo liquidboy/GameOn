@@ -4,6 +4,29 @@ var Application;
     (function (Directives) {
         var Effect = (function () {
             function Effect(vr, ac, gl, xres, yres, callback, obj, forceMuted, forcePaused) {
+                var _this = this;
+                this.StopOutputs = function () {
+                    var gl = _this.mGLContext;
+                    var wa = _this.mAudioContext;
+                    var num = _this.mPasses.length;
+                    for (var i = 0; i < num; i++) {
+                        if (!_this.mPasses[i].mUsed)
+                            continue;
+                        _this.mPasses[i].StopOutput(wa, gl);
+                    }
+                };
+                this.ResumeOutputs = function () {
+                    var gl = _this.mGLContext;
+                    var wa = _this.mAudioContext;
+                    if (gl == null)
+                        return;
+                    var num = _this.mPasses.length;
+                    for (var i = 0; i < num; i++) {
+                        if (!_this.mPasses[i].mUsed)
+                            continue;
+                        _this.mPasses[i].ResumeOutput(wa, gl);
+                    }
+                };
                 this.mAudioContext = ac;
                 this.mGLContext = gl;
                 this.mWebVR = vr;
@@ -239,28 +262,6 @@ var Application;
             };
             Effect.prototype.UpdateInputs = function (passid, forceUpdate) {
                 this.mPasses[passid].UpdateInputs(this.mAudioContext, forceUpdate);
-            };
-            Effect.prototype.StopOutputs = function () {
-                var gl = this.mGLContext;
-                var wa = this.mAudioContext;
-                var num = this.mPasses.length;
-                for (var i = 0; i < num; i++) {
-                    if (!this.mPasses[i].mUsed)
-                        continue;
-                    this.mPasses[i].StopOutput(wa, gl);
-                }
-            };
-            Effect.prototype.ResumeOutputs = function () {
-                var gl = this.mGLContext;
-                var wa = this.mAudioContext;
-                if (gl == null)
-                    return;
-                var num = this.mPasses.length;
-                for (var i = 0; i < num; i++) {
-                    if (!this.mPasses[i].mUsed)
-                        continue;
-                    this.mPasses[i].ResumeOutput(wa, gl);
-                }
             };
             return Effect;
         })();

@@ -41,7 +41,12 @@
                 this.sc.uiData.eFrameRate = element.find('#divFrameRate')[0]; 
                 this.sc.uiData.eMyTime = element.find('#divMyTime')[0]; 
                 this.sc.uiData.UpdateUI = () => { this.sc.$apply(); };
-                this.sc.uiData.Pause = () => { this.sc.shaderToy.PauseTime(); };
+                this.sc.uiData.Pause = () => { this.sc.shaderToy.PlayPauseTime(); };
+
+                this.sc.ChangeShader = () => {
+                    this.loadShader($scope.shaderId);
+                    this.sc.shaderToy.PauseShader();
+                }
 
                 $(element.find('#butUpdateShader')[0]).on('click', this.updateShader.bind(this));
 
@@ -51,16 +56,19 @@
                 if (!this.sc.shaderToy.mCreated)
                     return;
 
-                //-- get info --------------------------------------------------------
-                //this.sc.shaderId = '4t23RR';
-                //this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
+                ////-- get info --------------------------------------------------------
+                ////this.sc.shaderId = '4t23RR';
+                ////this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
                 this.sc.shaderId = 'MlS3Rc';
-                if (this.sc.shaderId == null) {
-                    this.loadNew();
-                }
-                else {
-                    this.loadShader(this.sc.shaderId);
-                }
+                this.loadShader(this.sc.shaderId);
+                this.sc.shaderToy.PauseShader();
+
+                //if (this.sc.shaderId == null) {
+                //    this.loadNew();
+                //}
+                //else {
+                //    this.loadShader(this.sc.shaderId);
+                //}
             }
 
 
@@ -69,56 +77,7 @@
         private updateShader(){
             this.sc.shaderToy.SetShaderFromEditor();
         }
-
-        private loadNew() {
-
-            var kk = {
-                "ver": "0.1",
-                "info": {
-                    "id": "-1",
-                    "date": "1358124981",
-                    "viewed": 0,
-                    "name": "",
-                    "username": "None",
-                    "description": "",
-                    "likes": 0,
-                    "hasliked": 0,
-                    "tags": [],
-                    "published": 0
-                },
-
-                "flags": {
-                    "mFlagVR": "false",
-                    "mFlagWebcam": "false",
-                    "mFlagSoundInput": "false",
-                    "mFlagSoundOutput": "false",
-                    "mFlagKeyboard": "false"
-                },
-
-                "renderpass": [
-                    {
-                        "inputs":
-                        {
-                            "id": "3",
-                            "src": ["/presets/tex03.jpg"],
-                            "ctype": ["texture"],
-                            "channel": [0]
-                        },
-                        "outputs":
-                        {
-                            "channel": [],
-                            "dst": []
-                        },
-                        "type": "image",
-                        "code": "void mainImage( out vec4 fragColor, in vec2 fragCoord )\n{\n\tvec2 uv = fragCoord.xy / iResolution.xy;\n\tfragColor = vec4(uv,0.5+0.5*sin(iGlobalTime),1.0);\n}",
-                        "name": "",
-                        "description": ""
-                    }]
-            };
-
-            this.dataLoadShader([kk]);
-        }
-
+        
         private dataLoadShader(jsonShader) {
             //this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader[0])
             this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader)
@@ -132,21 +91,20 @@
             this.sc.shaderToy.ResetTime();
 
             if (!this.sc.res.mFailed) {
-                this.sc.shaderToy.PauseTime();
+                this.sc.shaderToy.PauseShader();
             }
 
         }
         
-        private loadShader(gShaderID: string) {
+        loadShader = (gShaderID: string) => {
             try {
-                var __this = this;
                 var httpReq = this.createHttpRequest();
                 httpReq.open("GET", "/data/" + gShaderID + ".json", true);
-                httpReq.onload = function () {
+                httpReq.onload = () => {
                     var res = httpReq.responseText;
                     var jsnShader = null;
                     try { jsnShader = JSON.parse(res); } catch (e) { alert("ERROR in JSON: " + res); return; }
-                    __this.dataLoadShader(jsnShader);
+                    this.dataLoadShader(jsnShader);
                 }
 
                 httpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -159,7 +117,7 @@
             }
         }
 
-        private loadShaderToyShader(gShaderID: string) {
+        private loadShaderFromToyShaderUri(gShaderID: string) {
             try {
                 var httpReq = this.createHttpRequest();
                 httpReq.open("POST", "https://www.shadertoy.com/shadertoy", true);
@@ -214,6 +172,7 @@
         shaderId: string;
         res: any;
         uiData: UIData;
+        ChangeShader: Function;
     }
 
 
@@ -639,21 +598,36 @@
             renderLoop2();
         }
 
-        PauseTime() {
-            var time = performance.now();
+        PlayPauseTime() {
+
             if (!this.mIsPaused) {
-                $("#butPauseShader").attr('value', 'play');
-                this.mIsPaused = true;
-                this.mEffect.StopOutputs();
+                this.PauseShader();
             }
             else {
-                $("#butPauseShader").attr('value', 'pause');
-                this.mTOffset = this.mTf;
-                this.mTo = time;
-                this.mIsPaused = false;
-                this.mEffect.ResumeOutputs();
+                this.PlayShader();
             }
         }
+
+        PauseShader() {
+            var time = performance.now();
+
+            $("#butPauseShader").attr('value', 'play');
+            this.mIsPaused = true;
+            this.mEffect.StopOutputs();
+            
+        }
+
+        PlayShader() {
+            var time = performance.now();
+            
+            $("#butPauseShader").attr('value', 'pause');
+            this.mTOffset = this.mTf;
+            this.mTo = time;
+            this.mIsPaused = false;
+            this.mEffect.ResumeOutputs();
+            
+        }
+
         
         ResetTime() {
             this.mTOffset = 0;

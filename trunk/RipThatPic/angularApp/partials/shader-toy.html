@@ -7,8 +7,17 @@
         <div class="float-left">{{uiData.ShaderCharCounter}}</div>
         <div class="float-left marl-10" id="divFrameRate"></div>
         <div class="float-left marl-10" id="divMyTime"></div>
-        <div class="float-right marr-20">
+        <div class="float-left marl-10">
             <input id="butPauseShader" type="button" value="Pause" ng-click="uiData.Pause()" />
+            <select ng-change="ChangeShader()" ng-model="shaderId">
+                <option value="_blank">[New]</option>
+                <option value="2443k2">Changing Gradient Background</option>
+                <option value="MlS3Rc" selected>Echoplex</option>
+                <option value="4t23RR">Toon Cloud</option>
+
+            </select>
+        </div>
+        <div class="float-right marr-20">
             <input id="butUpdateShader" type="button" value="Update Shader" />
         </div>
     </div>

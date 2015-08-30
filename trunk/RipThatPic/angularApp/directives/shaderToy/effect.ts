@@ -293,7 +293,7 @@
             this.mPasses[passid].UpdateInputs(this.mAudioContext, forceUpdate);
         }
 
-        StopOutputs() {
+        StopOutputs = () => {
             var gl = this.mGLContext;
             var wa = this.mAudioContext;
 
@@ -304,7 +304,7 @@
             }
         }
 
-        ResumeOutputs() {
+        ResumeOutputs = () => {
             var gl = this.mGLContext;
             var wa = this.mAudioContext;
             if (gl == null) return;
