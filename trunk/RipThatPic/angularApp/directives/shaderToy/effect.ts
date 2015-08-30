@@ -151,7 +151,7 @@
             return vbo;
         }
 
-        NewScriptJSON(jobj): any {
+        ParseJSON(jobj): any {
             if (jobj.ver != "0.1") {
                 return { mFailed: true };
             }
@@ -159,7 +159,7 @@
             var numPasses = jobj.renderpass.length;
 
             if (numPasses == 0 || numPasses > 2) {
-                return { mFailed: true, mError: "Incorrect number of passes, Shadertoy supports up to two-pass shaders at this moment.", mShader: null };
+                return { mFailed: true, mError: "Incorrect number of passes, we only support up to two-pass shaders at this moment.", mShader: null };
             }
 
             var res: any = [];// = new Array( numPasses );

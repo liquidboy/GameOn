@@ -11,6 +11,7 @@ var Application;
                 this.authService = authService;
                 this.radioPubSubSvc = radioPubSubSvc;
                 this.loadShader = function (gShaderID) {
+                    _this.sc.uiData.IsLoading = true;
                     try {
                         var httpReq = _this.createHttpRequest();
                         httpReq.open("GET", "/data/" + gShaderID + ".json", true);
@@ -33,6 +34,9 @@ var Application;
                     }
                     catch (e) {
                         return;
+                    }
+                    finally {
+                        _this.sc.uiData.IsLoading = false;
                     }
                 };
                 this.restrict = 'E';
@@ -61,9 +65,9 @@ var Application;
                     if (!_this.sc.shaderToy.mCreated)
                         return;
                     ////-- get info --------------------------------------------------------
-                    ////this.sc.shaderId = '4t23RR';
+                    _this.sc.shaderId = '4t23RR';
                     ////this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                    _this.sc.shaderId = 'MlS3Rc';
+                    //this.sc.shaderId = 'MlS3Rc';
                     _this.loadShader(_this.sc.shaderId);
                     _this.sc.shaderToy.PlayShader();
                     //if (this.sc.shaderId == null) {
@@ -84,8 +88,7 @@ var Application;
                 this.sc.shaderToy.SetShaderFromEditor();
             };
             ShaderToyDirective.prototype.dataLoadShader = function (jsonShader) {
-                //this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader[0])
-                this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader);
+                this.sc.res = this.sc.shaderToy.ParseJSON(jsonShader);
                 if (this.sc.res.mSuccess == false)
                     return;
                 document.title = this.sc.res.mName;
@@ -238,9 +241,9 @@ var Application;
                 this.mEffect = new Directives.Effect(null, null, this.mGLContext, this.mCanvas.width, this.mCanvas.height, this.refreshTexturThumbail, this, false, false);
                 this.mCreated = true;
             }
-            ShaderToy.prototype.NewScriptJSON = function (jsn) {
+            ShaderToy.prototype.ParseJSON = function (jsn) {
                 try {
-                    var res = this.mEffect.NewScriptJSON(jsn);
+                    var res = this.mEffect.ParseJSON(jsn);
                     var num = res.length;
                     for (var i = 0; i < num; i++) {
                         this.mDocs[i] = window['CodeMirror'].Doc(res[i].mShader, "text/x-glsl");
@@ -745,3 +748,4 @@ var Application;
         myapp.directive("dShaderToy", ShaderToyDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=shaderToy.js.map

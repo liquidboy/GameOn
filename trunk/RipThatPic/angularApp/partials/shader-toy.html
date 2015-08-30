@@ -12,17 +12,23 @@
             <select ng-change="ChangeShader()" ng-model="shaderId">
                 <option value="_blank">[New]</option>
                 <option value="2443k2">Changing Gradient Background</option>
-                <option value="MlS3Rc" selected>Echoplex</option>
-                <option value="4t23RR">Toon Cloud</option>
+                <option value="XslGRr" >Clouds</option>  
+                <!--<option value="Msl3Rr">Cubescape</option>-->  
+                <option value="MlS3Rc" >Echoplex</option>
+                <option value="XlsGRs">Jetstream</option>
+                <option value="4t23RR" selected>Toon Cloud</option>
+                <option value="XsX3RB">Volcanic</option>  
+                
             </select>
         </div>
+        <div ng-show="uiData.IsLoading" class="loading">Loading</div>
         <div class="float-right marr-20">
             <input id="butUpdateShader" type="button" value="Update Shader" />
         </div>
     </div>
 
     <div class="inputs" ng-show="uiData.ShowInputs">
-        <div ng-repeat="input in uiData.Inputs" ng-include="'inputitemlist.html'" ></div>
+        <div ng-repeat="input in uiData.Inputs" ng-include="'inputitemlist.html'" class="float-left marl-10"></div>
 
         <script type="text/ng-template" id="inputitemlist.html">
             {{input.channel}} :  <img src="{{input.src}}" style="width:50px;height:30px" />

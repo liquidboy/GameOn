@@ -52,3 +52,4 @@ var Application;
         myapp.directive("dLinksList", LinksListDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=linksList.js.map

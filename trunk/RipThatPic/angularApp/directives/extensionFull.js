@@ -61,3 +61,4 @@ var Application;
         myapp.directive("dExtensionFull", ExtensionFullDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=extensionFull.js.map

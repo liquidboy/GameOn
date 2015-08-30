@@ -25,3 +25,4 @@ var Application;
         myapp.controller("ImageExplorerCtrl", ["$scope", "$rootScope", "authSvc", ImageExplorerCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=imageexplorer.js.map

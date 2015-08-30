@@ -26,7 +26,7 @@
             "inputs":
             {
                 "id": "3",
-                "src": ["/presets/tex03.jpg"],
+                "src": ["\/Assets\/Textures\/tex03.jpg"],
                 "ctype": ["texture"],
                 "channel": [0]
             },

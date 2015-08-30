@@ -62,9 +62,9 @@
                     return;
 
                 ////-- get info --------------------------------------------------------
-                ////this.sc.shaderId = '4t23RR';
+                this.sc.shaderId = '4t23RR';
                 ////this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
-                this.sc.shaderId = 'MlS3Rc';
+                //this.sc.shaderId = 'MlS3Rc';
                 this.loadShader(this.sc.shaderId);
                 this.sc.shaderToy.PlayShader();
 
@@ -84,8 +84,8 @@
         }
         
         private dataLoadShader(jsonShader) {
-            //this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader[0])
-            this.sc.res = this.sc.shaderToy.NewScriptJSON(jsonShader)
+
+            this.sc.res = this.sc.shaderToy.ParseJSON(jsonShader)
             if (this.sc.res.mSuccess == false)
                 return;
 
@@ -111,6 +111,7 @@
         }
         
         loadShader = (gShaderID: string) => {
+            this.sc.uiData.IsLoading = true;
             try {
                 var httpReq = this.createHttpRequest();
                 httpReq.open("GET", "/data/" + gShaderID + ".json", true);
@@ -128,6 +129,9 @@
             }
             catch (e) {
                 return;
+            }
+            finally {
+                this.sc.uiData.IsLoading = false;
             }
         }
 
@@ -201,6 +205,8 @@
 
         Inputs: any;
         ShowInputs: boolean;
+
+        IsLoading: boolean;
 
         UpdateUI: Function;
         
@@ -340,9 +346,9 @@
             div.appendChild(divText);
         }
         
-        NewScriptJSON(jsn) {
+        ParseJSON(jsn) {
             try {
-                var res = this.mEffect.NewScriptJSON(jsn);
+                var res = this.mEffect.ParseJSON(jsn);
 
                 var num = res.length;
                 for (var i = 0; i < num; i++) {

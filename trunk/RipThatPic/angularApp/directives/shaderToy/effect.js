@@ -138,13 +138,13 @@ var Application;
                 gl.bindBuffer(gl.ARRAY_BUFFER, null);
                 return vbo;
             };
-            Effect.prototype.NewScriptJSON = function (jobj) {
+            Effect.prototype.ParseJSON = function (jobj) {
                 if (jobj.ver != "0.1") {
                     return { mFailed: true };
                 }
                 var numPasses = jobj.renderpass.length;
                 if (numPasses == 0 || numPasses > 2) {
-                    return { mFailed: true, mError: "Incorrect number of passes, Shadertoy supports up to two-pass shaders at this moment.", mShader: null };
+                    return { mFailed: true, mError: "Incorrect number of passes, we only support up to two-pass shaders at this moment.", mShader: null };
                 }
                 var res = []; // = new Array( numPasses );
                 res.mFailed = false;
@@ -268,3 +268,4 @@ var Application;
         Directives.Effect = Effect;
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=effect.js.map

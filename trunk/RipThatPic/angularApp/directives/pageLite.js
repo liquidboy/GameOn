@@ -49,3 +49,4 @@ var Application;
         myapp.directive("dPageLite", PageLiteDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=pageLite.js.map

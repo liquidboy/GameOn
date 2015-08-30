@@ -250,3 +250,4 @@ var Application;
 // config.attachCustomPropertiesToFile(file, customProperties) - function called when a file is added to the queue
 // config.timeout - milliseconds without response from server before failing the upload. 0 = inifinate
 // config.canRetryFiles(files) - return false to cancel automatic retry of files
+//# sourceMappingURL=fileUpload.js.map

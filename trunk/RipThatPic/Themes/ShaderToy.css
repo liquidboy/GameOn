@@ -33,3 +33,9 @@
         width:100%;
         height:40px;
     }
+
+    .shader-toy .loading {
+        background-color:red;
+        color:white;
+        padding:3px;
+    }

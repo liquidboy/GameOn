@@ -53,3 +53,4 @@ var Application;
         myapp.directive("dBillboard", BillboardDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
+//# sourceMappingURL=billboard.js.map

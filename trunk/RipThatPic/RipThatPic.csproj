@@ -450,7 +450,13 @@
     <Content Include="angularApp\views\page\page.html" />
     <Content Include="angularApp\views\splash\splash.html" />
     <Content Include="Assets\Spaceship\0.png" />
+    <Content Include="Assets\Textures\mzk01.mp3" />
     <Content Include="Assets\Textures\tex00.jpg" />
+    <Content Include="Assets\Textures\tex03.jpg" />
+    <Content Include="Assets\Textures\tex05.jpg" />
+    <Content Include="Assets\Textures\tex06.jpg" />
+    <Content Include="Assets\Textures\tex09.jpg" />
+    <Content Include="Assets\Textures\tex16.png" />
     <Content Include="Content\CommingSoon\Headphone-01.png" />
     <Content Include="Content\icons\All-black.png" />
     <Content Include="Content\icons\All-white.png" />
@@ -793,6 +799,10 @@
     <Content Include="data\ll23Rd.json" />
     <Content Include="data\_blank.json" />
     <Content Include="data\2443k2.json" />
+    <Content Include="data\XlsGRs.json" />
+    <Content Include="data\XsX3RB.json" />
+    <Content Include="data\Msl3Rr.json" />
+    <Content Include="data\XslGRr.json" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
