@@ -211,6 +211,7 @@
         mCanvas: webgl.HTMLCanvasElement;
         mGLContext: any;
         mIsPaused: boolean;
+        mIsRendering: boolean;
         mForceFrame: boolean;
         mCreated: boolean;
         mNeedsSave: boolean;
@@ -571,7 +572,11 @@
             return ele;
         }
 
+
         StartRendering() {
+            if (this.mIsRendering) return;
+            else this.mIsRendering = true;
+
             var me = this;
 
             function renderLoop2() {
@@ -601,6 +606,7 @@
 
                 me.uiData.MyTime = (ltime / 1000.0).toFixed(2);
                 me.uiData.eMyTime.innerHTML = me.uiData.MyTime + " seconds";
+
                 if ((time - me.mFpsTo) > 1000) {
                     var ffps = 1000.0 * me.mFpsFrame / (time - me.mFpsTo);
                     me.uiData.FrameRate = ffps.toFixed(1) + " fps";

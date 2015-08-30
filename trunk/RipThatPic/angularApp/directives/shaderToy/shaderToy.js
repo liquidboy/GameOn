@@ -431,6 +431,10 @@ var Application;
                 return ele;
             };
             ShaderToy.prototype.StartRendering = function () {
+                if (this.mIsRendering)
+                    return;
+                else
+                    this.mIsRendering = true;
                 var me = this;
                 function renderLoop2() {
                     if (me.mGLContext == null)
