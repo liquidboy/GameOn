@@ -64,4 +64,3 @@ var Application;
         myapp.controller("ConfigMapCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigMapCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=configMap.js.map

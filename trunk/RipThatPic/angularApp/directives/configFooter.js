@@ -31,4 +31,3 @@ var Application;
         myapp.directive("dConfigFooter", ConfigFooterDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=configFooter.js.map

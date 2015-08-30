@@ -94,4 +94,3 @@ var Application;
         myapp.controller("ConfigPostCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigPostCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=configPost.js.map

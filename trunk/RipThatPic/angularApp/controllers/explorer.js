@@ -25,4 +25,3 @@ var Application;
         myapp.controller("ExplorerCtrl", ["$scope", "$rootScope", "authSvc", ExplorerCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=explorer.js.map

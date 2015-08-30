@@ -23,4 +23,3 @@ var Application;
         myapp.controller("ShaderCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "$location", ShaderCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=shader.js.map

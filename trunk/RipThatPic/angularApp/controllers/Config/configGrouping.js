@@ -64,4 +64,3 @@ var Application;
         myapp.controller("ConfigGroupingCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigGroupingCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=configGrouping.js.map

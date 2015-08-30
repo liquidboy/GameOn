@@ -431,43 +431,44 @@ var Application;
                 return ele;
             };
             ShaderToy.prototype.StartRendering = function () {
+                var _this = this;
                 if (this.mIsRendering)
                     return;
                 else
                     this.mIsRendering = true;
-                var me = this;
-                function renderLoop2() {
-                    if (me.mGLContext == null)
+                //var me = this;
+                var renderLoop = function () {
+                    if (_this.mGLContext == null)
                         return;
-                    requestAnimationFrame(renderLoop2);
-                    if (me.mIsPaused && !me.mForceFrame) {
-                        me.mEffect.UpdateInputs(me.mActiveDoc, false);
+                    requestAnimationFrame(renderLoop);
+                    if (_this.mIsPaused && !_this.mForceFrame) {
+                        _this.mEffect.UpdateInputs(_this.mActiveDoc, false);
                         return;
                     }
-                    me.mForceFrame = false;
+                    _this.mForceFrame = false;
                     var time = performance.now();
-                    var ltime = me.mTOffset + time - me.mTo;
-                    if (me.mIsPaused)
-                        ltime = me.mTf;
+                    var ltime = _this.mTOffset + time - _this.mTo;
+                    if (_this.mIsPaused)
+                        ltime = _this.mTf;
                     else
-                        me.mTf = ltime;
-                    me.mEffect.Paint(ltime / 1000.0, me.mMouseOriX, me.mMouseOriY, me.mMousePosX, me.mMousePosY, me.mIsPaused);
+                        _this.mTf = ltime;
+                    _this.mEffect.Paint(ltime / 1000.0, _this.mMouseOriX, _this.mMouseOriY, _this.mMousePosX, _this.mMousePosY, _this.mIsPaused);
                     //if (me.mSendFrame) me.mLiveCreator.SendUpdate();
-                    me.mSendFrame = false;
-                    me.mFpsFrame++;
-                    me.uiData.MyTime = (ltime / 1000.0).toFixed(2);
-                    me.uiData.eMyTime.innerHTML = me.uiData.MyTime + " seconds";
-                    if ((time - me.mFpsTo) > 1000) {
-                        var ffps = 1000.0 * me.mFpsFrame / (time - me.mFpsTo);
-                        me.uiData.FrameRate = ffps.toFixed(1) + " fps";
-                        me.uiData.eFrameRate.innerHTML = me.uiData.FrameRate;
-                        if (me.uiData.UpdateUI)
-                            me.uiData.UpdateUI.call(this);
-                        me.mFpsFrame = 0;
-                        me.mFpsTo = time;
+                    _this.mSendFrame = false;
+                    _this.mFpsFrame++;
+                    _this.uiData.MyTime = (ltime / 1000.0).toFixed(2);
+                    _this.uiData.eMyTime.innerHTML = _this.uiData.MyTime + " seconds";
+                    if ((time - _this.mFpsTo) > 1000) {
+                        var ffps = 1000.0 * _this.mFpsFrame / (time - _this.mFpsTo);
+                        _this.uiData.FrameRate = ffps.toFixed(1) + " fps";
+                        _this.uiData.eFrameRate.innerHTML = _this.uiData.FrameRate;
+                        if (_this.uiData.UpdateUI)
+                            _this.uiData.UpdateUI.call(_this);
+                        _this.mFpsFrame = 0;
+                        _this.mFpsTo = time;
                     }
-                }
-                renderLoop2();
+                };
+                renderLoop();
             };
             ShaderToy.prototype.PlayPauseTime = function () {
                 if (!this.mIsPaused) {
@@ -744,4 +745,3 @@ var Application;
         myapp.directive("dShaderToy", ShaderToyDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=shaderToy.js.map

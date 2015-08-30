@@ -34,4 +34,3 @@ var Application;
         myapp.service("realtimeDataService", ["$http", "$location", "radioPubSubSvc", "pubSubConstants", "authSvc", function ($http, $location, radioPubSubSvc, pubSubConstants, authSvc) { return new RealtimeDataService($http, $location, radioPubSubSvc, pubSubConstants, authSvc); }]);
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=realtimeDataService.js.map

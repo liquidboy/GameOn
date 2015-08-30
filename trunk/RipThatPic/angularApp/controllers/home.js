@@ -43,4 +43,3 @@ var Application;
         myapp.controller("HomeCtrl", ["$scope", "$rootScope", "realtimeDataService", "radioPubSubSvc", "pubSubConstants", "authSvc", HomeCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=home.js.map

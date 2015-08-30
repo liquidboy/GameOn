@@ -85,4 +85,3 @@ var Application;
         myapp.controller("ConfigFileStorageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigFileStorageCtrl]);
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=configFileStorage.js.map

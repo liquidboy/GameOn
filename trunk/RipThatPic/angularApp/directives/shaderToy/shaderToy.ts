@@ -577,48 +577,49 @@
             if (this.mIsRendering) return;
             else this.mIsRendering = true;
 
-            var me = this;
+            //var me = this;
 
-            function renderLoop2() {
-                if (me.mGLContext == null) return;
+            let renderLoop = () => {
+
+                if (this.mGLContext == null) return;
 
                 
-                requestAnimationFrame(renderLoop2);
+                requestAnimationFrame(renderLoop);
 
-                if (me.mIsPaused && !me.mForceFrame) {
-                    me.mEffect.UpdateInputs(me.mActiveDoc, false);
+                if (this.mIsPaused && !this.mForceFrame) {
+                    this.mEffect.UpdateInputs(this.mActiveDoc, false);
                     return;
                 }
 
-                me.mForceFrame = false;
+                this.mForceFrame = false;
                 var time = performance.now();
-                var ltime = me.mTOffset + time - me.mTo;
+                var ltime = this.mTOffset + time - this.mTo;
 
-                if (me.mIsPaused) ltime = me.mTf; else me.mTf = ltime;
+                if (this.mIsPaused) ltime = this.mTf; else this.mTf = ltime;
 
-                me.mEffect.Paint(ltime / 1000.0, me.mMouseOriX, me.mMouseOriY, me.mMousePosX, me.mMousePosY, me.mIsPaused);
+                this.mEffect.Paint(ltime / 1000.0, this.mMouseOriX, this.mMouseOriY, this.mMousePosX, this.mMousePosY, this.mIsPaused);
 
                 //if (me.mSendFrame) me.mLiveCreator.SendUpdate();
-                me.mSendFrame = false;
+                this.mSendFrame = false;
 
 
-                me.mFpsFrame++;
+                this.mFpsFrame++;
 
-                me.uiData.MyTime = (ltime / 1000.0).toFixed(2);
-                me.uiData.eMyTime.innerHTML = me.uiData.MyTime + " seconds";
+                this.uiData.MyTime = (ltime / 1000.0).toFixed(2);
+                this.uiData.eMyTime.innerHTML = this.uiData.MyTime + " seconds";
 
-                if ((time - me.mFpsTo) > 1000) {
-                    var ffps = 1000.0 * me.mFpsFrame / (time - me.mFpsTo);
-                    me.uiData.FrameRate = ffps.toFixed(1) + " fps";
-                    me.uiData.eFrameRate.innerHTML = me.uiData.FrameRate;
-                    if (me.uiData.UpdateUI) me.uiData.UpdateUI.call(this);
-                    me.mFpsFrame = 0;
-                    me.mFpsTo = time;
+                if ((time - this.mFpsTo) > 1000) {
+                    var ffps = 1000.0 * this.mFpsFrame / (time - this.mFpsTo);
+                    this.uiData.FrameRate = ffps.toFixed(1) + " fps";
+                    this.uiData.eFrameRate.innerHTML = this.uiData.FrameRate;
+                    if (this.uiData.UpdateUI) this.uiData.UpdateUI.call(this);
+                    this.mFpsFrame = 0;
+                    this.mFpsTo = time;
                 }
 
             }
 
-            renderLoop2();
+            renderLoop();
         }
 
         PlayPauseTime() {

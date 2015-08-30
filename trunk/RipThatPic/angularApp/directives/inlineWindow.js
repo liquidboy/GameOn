@@ -43,4 +43,3 @@ var Application;
         myapp.directive("dInlineWindow", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new InlineWindowDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=inlineWindow.js.map

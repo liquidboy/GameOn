@@ -40,4 +40,3 @@ var Application;
         myapp.directive("dWorkarea", WorkareaDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=workarea.js.map

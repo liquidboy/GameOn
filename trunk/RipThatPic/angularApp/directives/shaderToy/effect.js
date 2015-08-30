@@ -268,4 +268,3 @@ var Application;
         Directives.Effect = Effect;
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=effect.js.map

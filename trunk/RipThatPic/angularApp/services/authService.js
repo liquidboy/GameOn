@@ -56,4 +56,3 @@ var Application;
         myapp.service("authSvc", ["$location", "dataSvc", "radioPubSubSvc", "pubSubConstants", AuthService]);
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));
-//# sourceMappingURL=authService.js.map
