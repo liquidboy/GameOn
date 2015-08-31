@@ -68,7 +68,7 @@
 
         }
 
-        private NewShader(gl, shaderCode) {
+        public NewShader(gl, shaderCode) {
             if (gl == null) return "No GL";
 
             var res = null;
@@ -80,7 +80,7 @@
             return res;
         }
 
-        private NewTexture(wa, gl, slot, url) {
+        public NewTexture(wa, gl, slot, url) {
             var me = this;
 
             var texture = null;
@@ -304,10 +304,10 @@
                 return;
             }
 
-            //this.DestroyInput(gl, slot);
+            this.DestroyInput(gl, slot);
             this.mInputs[slot] = texture;
 
-            //this.MakeHeader();
+            this.MakeHeader(null, null);
         }
 
         private NewShader_Image(gl, shaderCode) {
@@ -423,7 +423,7 @@
             ctx.bindTexture(ctx.TEXTURE_2D, null);
         }
 
-        private Create(passType, wa, gl) {
+        public Create(passType, wa, gl) {
             this.mType = passType;
             this.mUsed = true;
             this.mSource = null;
@@ -481,6 +481,41 @@
             this.mSupportsVR = false;
             this.mProgram = null;
             this.mProgramVR = null;
+        }
+
+        private DestroyInput = function (gl, id) {
+            if (gl == null) return;
+
+            if (this.mInputs[id] == null) return;
+
+            if (this.mInputs[id].mInfo.mType == "texture") {
+                gl.deleteTexture(this.mInputs[id].globject);
+            }
+            else if (this.mInputs[id].mInfo.mType == "webcam") {
+                gl.deleteTexture(this.mInputs[id].globject);
+            }
+            else if (this.mInputs[id].mInfo.mType == "video") {
+                this.mInputs[id].video.pause();
+                this.mInputs[id].video = null;
+                gl.deleteTexture(this.mInputs[id].globject);
+            }
+            else if (this.mInputs[id].mInfo.mType == "music") {
+                this.mInputs[id].audio.pause();
+                this.mInputs[id].audio = null;
+                gl.deleteTexture(this.mInputs[id].globject);
+            }
+            else if (this.mInputs[id].mInfo.mType == "cubemap") {
+                gl.deleteTexture(this.mInputs[id].globject);
+            }
+            else if (this.mInputs[id].mInfo.mType == "keyboard") {
+                gl.deleteTexture(this.mInputs[id].globject);
+            }
+            else if (this.mInputs[id].mInfo.mType == "mic") {
+                this.mInputs[id].mic = null;
+                gl.deleteTexture(this.mInputs[id].globject);
+            }
+
+            this.mInputs[id] = null;
         }
 
         private Destroy_Image(wa, gl) {
@@ -568,7 +603,7 @@
             gl.deleteFramebuffer(fbo);
         }
 
-        private Paint(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused) {
+        public Paint(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused) {
             if (this.mType == "image") {
                 this.Paint_Image(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres);
                 this.mFrame++;

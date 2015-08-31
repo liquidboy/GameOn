@@ -11,7 +11,7 @@
         mYres: any;
         mForceMuted: any;
         mGainNode: any;
-        mPasses: any;
+        mPasses: Array<EffectPass>;
         mSupportTextureFloat: boolean;
 
         constructor(vr, ac, gl, xres, yres, callback, obj, forceMuted, forcePaused) {

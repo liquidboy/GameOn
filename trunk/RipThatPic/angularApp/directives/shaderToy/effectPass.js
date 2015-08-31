@@ -4,6 +4,39 @@ var Application;
     (function (Directives) {
         var EffectPass = (function () {
             function EffectPass(gl, precission, supportDerivatives, callback, obj, forceMuted, forcePaused, quadVBO, outputGainNode, id) {
+                this.DestroyInput = function (gl, id) {
+                    if (gl == null)
+                        return;
+                    if (this.mInputs[id] == null)
+                        return;
+                    if (this.mInputs[id].mInfo.mType == "texture") {
+                        gl.deleteTexture(this.mInputs[id].globject);
+                    }
+                    else if (this.mInputs[id].mInfo.mType == "webcam") {
+                        gl.deleteTexture(this.mInputs[id].globject);
+                    }
+                    else if (this.mInputs[id].mInfo.mType == "video") {
+                        this.mInputs[id].video.pause();
+                        this.mInputs[id].video = null;
+                        gl.deleteTexture(this.mInputs[id].globject);
+                    }
+                    else if (this.mInputs[id].mInfo.mType == "music") {
+                        this.mInputs[id].audio.pause();
+                        this.mInputs[id].audio = null;
+                        gl.deleteTexture(this.mInputs[id].globject);
+                    }
+                    else if (this.mInputs[id].mInfo.mType == "cubemap") {
+                        gl.deleteTexture(this.mInputs[id].globject);
+                    }
+                    else if (this.mInputs[id].mInfo.mType == "keyboard") {
+                        gl.deleteTexture(this.mInputs[id].globject);
+                    }
+                    else if (this.mInputs[id].mInfo.mType == "mic") {
+                        this.mInputs[id].mic = null;
+                        gl.deleteTexture(this.mInputs[id].globject);
+                    }
+                    this.mInputs[id] = null;
+                };
                 this.StopOutput = function (wa, gl) {
                     //this.stopOutput_Image(wa, gl);
                 };
@@ -229,9 +262,9 @@ var Application;
                     alert("texture type error");
                     return;
                 }
-                //this.DestroyInput(gl, slot);
+                this.DestroyInput(gl, slot);
                 this.mInputs[slot] = texture;
-                //this.MakeHeader();
+                this.MakeHeader(null, null);
             };
             EffectPass.prototype.NewShader_Image = function (gl, shaderCode) {
                 //--------------
