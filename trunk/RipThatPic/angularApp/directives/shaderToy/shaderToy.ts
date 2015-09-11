@@ -65,7 +65,8 @@
                 //this.sc.shaderId = '4t23RR';
                 ////this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
                 //this.sc.shaderId = 'MlS3Rc';
-                this.sc.shaderId = 'XslGRr';
+                //this.sc.shaderId = 'XslGRr';
+                this.sc.shaderId = '4t23RR';
                 this.loadShader(this.sc.shaderId);
                 this.sc.shaderToy.PlayShader();
 

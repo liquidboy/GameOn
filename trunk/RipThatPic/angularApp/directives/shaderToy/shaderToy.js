@@ -68,7 +68,8 @@ var Application;
                     //this.sc.shaderId = '4t23RR';
                     ////this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
                     //this.sc.shaderId = 'MlS3Rc';
-                    _this.sc.shaderId = 'XslGRr';
+                    //this.sc.shaderId = 'XslGRr';
+                    _this.sc.shaderId = '4t23RR';
                     _this.loadShader(_this.sc.shaderId);
                     _this.sc.shaderToy.PlayShader();
                     //if (this.sc.shaderId == null) {

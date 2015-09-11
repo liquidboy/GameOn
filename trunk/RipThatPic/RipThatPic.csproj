@@ -373,9 +373,13 @@
     <Content Include="angularApp\directives\workarea.js">
       <DependentUpon>workarea.ts</DependentUpon>
     </Content>
+    <Content Include="angularApp\directives\xaml\xaml.js">
+      <DependentUpon>xaml.ts</DependentUpon>
+    </Content>
     <Content Include="angularApp\partials\extension-full.html" />
     <Content Include="angularApp\partials\extension-lite.html" />
     <Content Include="angularApp\partials\banner-square.html" />
+    <Content Include="angularApp\partials\xaml.html" />
     <Content Include="angularApp\partials\shader-toy.html" />
     <Content Include="angularApp\partials\image-billboard.html" />
     <Content Include="angularApp\partials\links-list.html" />
@@ -803,6 +807,9 @@
     <Content Include="data\XsX3RB.json" />
     <Content Include="data\Msl3Rr.json" />
     <Content Include="data\XslGRr.json" />
+    <Content Include="angularApp\directives\xaml\xaml.js.map">
+      <DependentUpon>xaml.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\hand.minified-1.2.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1953,6 +1960,7 @@
     <TypeScriptCompile Include="angularApp\directives\shaderToy\shaderToy.ts" />
     <TypeScriptCompile Include="angularApp\directives\workarea.ts" />
     <TypeScriptCompile Include="angularApp\directives\billboard.ts" />
+    <TypeScriptCompile Include="angularApp\directives\xaml\xaml.ts" />
     <TypeScriptCompile Include="angularApp\services\dataService.ts" />
     <TypeScriptCompile Include="angularApp\services\authService.ts" />
     <TypeScriptCompile Include="angularApp\services\instanceFactory.ts" />
