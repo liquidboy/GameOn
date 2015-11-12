@@ -113,7 +113,7 @@
             opacity: 0;
             position:absolute;
             
-            width:350px;
+            width:390px;
             left:0;
             right:0;
             margin-left:auto;
@@ -341,49 +341,71 @@
 
     <div id="divMusicList" class="jf-musiclist">
 
-        <div>
-            Nameless
-            <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Nameless.mp3');">play (30 sec)</div>
-                <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
-                <div class="jf-pause-button">buy</div>
-            </div>
-        </div>
+        <form id="formSong" target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
 
-        <div>
-            Scar
-            <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Scar.mp3');">play (30 sec)</div>
-                <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
-                <div class="jf-pause-button">buy</div>
-            </div>
-        </div>
-        <div>
-            One Night
-            <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/One Night.mp3');">play (30 sec)</div>
-                <div class="jf-stop-button jf-hidden " onclick="jsStopSong();">Stop</div>
-                <div class="jf-pause-button">buy</div>
-            </div>
-        </div>
-      
-        <div>
-            Stolen
-            <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Stolen.mp3');">play (30 sec)</div>
-                <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
-                <div class="jf-pause-button">buy</div>
-            </div>
-        </div>
+            <input type="hidden" name="cmd" value="_s-xclick">
 
-        <div>
-            Blotting Out the Frames
-            <div class="jf-actions">
-                <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Blotting Out The Frames.mp3');">play (30 sec)</div>
-                <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
-                <div class="jf-pause-button">buy</div>
+            <input type="hidden" name="hosted_button_id" value="STR3VWD4T2VVW">
+
+            
+            <div>
+                Nameless
+                <div class="jf-actions">
+                    <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Nameless.mp3');">play (30 sec)</div>
+                    <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
+                    <div class="jf-pause-button" onclick="javascript: $('#formSong').submit();">Add to cart</div>
+                </div>
             </div>
-        </div>
+
+            <div>
+                Scar
+                <div class="jf-actions">
+                    <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Scar.mp3');">play (30 sec)</div>
+                    <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
+                    <div class="jf-pause-button" onclick="javascript: $('#formSong').submit();">Add to cart</div>
+                </div>
+            </div>
+            <div>
+                One Night
+                <div class="jf-actions">
+                    <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/One Night.mp3');">play (30 sec)</div>
+                    <div class="jf-stop-button jf-hidden " onclick="jsStopSong();">Stop</div>
+                    <div class="jf-pause-button" onclick="javascript: $('#formSong').submit();">Add to cart</div>
+                </div>
+            </div>
+
+            <div>
+                Stolen
+                <div class="jf-actions">
+                    <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Stolen.mp3');">play (30 sec)</div>
+                    <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
+                    <div class="jf-pause-button" onclick="javascript: $('#formSong').submit();">Add to cart</div>
+                </div>
+            </div>
+
+            <div>
+                Blotting Out the Frames
+                <div class="jf-actions">
+                    <div class="jf-play-button" onclick="jsPlaySong(this, '/Content/MusicSample/Blotting Out The Frames.mp3');">play (30 sec)</div>
+                    <div class="jf-stop-button jf-hidden" onclick="jsStopSong();">Stop</div>
+                    <div class="jf-pause-button" onclick="javascript: $('#formSong').submit();">Add to cart</div>
+                </div>
+            </div>
+
+        </form>
+
+        <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+
+            <input type="hidden" name="cmd" value="_s-xclick">
+
+            <input type="hidden" name="hosted_button_id" value="MEVPYLZSJX3B8">
+
+
+            <div class="jf-actions">
+                <div class="jf-pause-button" onclick="javascript: $('#formSong').submit();">&nbsp;&nbsp;Add Entire Album to cart&nbsp;&nbsp;&nbsp;</div>
+            </div>
+        </form>
+
     </div>
 
     <div id="divMainTitle" class="jf-main-title jf-hidden">
