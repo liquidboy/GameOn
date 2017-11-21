@@ -40,7 +40,7 @@ var Application;
                     .error(function () { });
             };
             return BannerSquareDirective;
-        })();
+        }());
         Directives.BannerSquareDirective = BannerSquareDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dBannerSquare", BannerSquareDirective.prototype.injection());

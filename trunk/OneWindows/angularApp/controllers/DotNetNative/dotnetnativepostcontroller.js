@@ -16,7 +16,7 @@ var Application;
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return DotNetNativePostCtrl;
-        })();
+        }());
         Controllers.DotNetNativePostCtrl = DotNetNativePostCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));

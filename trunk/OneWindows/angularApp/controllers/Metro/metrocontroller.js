@@ -16,7 +16,7 @@ var Application;
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return MetroCtrl;
-        })();
+        }());
         Controllers.MetroCtrl = MetroCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));

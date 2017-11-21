@@ -157,13 +157,13 @@ var Application;
                 return xmlHttp;
             };
             return ShaderToyDirective;
-        })();
+        }());
         Directives.ShaderToyDirective = ShaderToyDirective;
         var UIData = (function () {
             function UIData() {
             }
             return UIData;
-        })();
+        }());
         var ShaderToy = (function () {
             function ShaderToy(playerElement, editorElement, passElement, uiData) {
                 this.playerElement = playerElement;
@@ -745,7 +745,7 @@ var Application;
                 this.mEffect.NewTexture(this.mActiveDoc, slot, url);
             };
             return ShaderToy;
-        })();
+        }());
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dShaderToy", ShaderToyDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));

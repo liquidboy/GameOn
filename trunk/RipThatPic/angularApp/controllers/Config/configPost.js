@@ -88,7 +88,7 @@ var Application;
                 catch (e) { }
             };
             return ConfigPostCtrl;
-        })();
+        }());
         Controllers.ConfigPostCtrl = ConfigPostCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigPostCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigPostCtrl]);

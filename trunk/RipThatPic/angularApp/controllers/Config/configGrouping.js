@@ -58,7 +58,7 @@ var Application;
             ConfigGroupingCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigGroupingCtrl;
-        })();
+        }());
         Controllers.ConfigGroupingCtrl = ConfigGroupingCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigGroupingCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigGroupingCtrl]);

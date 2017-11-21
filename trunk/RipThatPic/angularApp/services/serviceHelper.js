@@ -23,7 +23,7 @@ var Application;
                 alert('servicehelpersvc test call');
             };
             return ServiceHelperSvc;
-        })();
+        }());
         Services.ServiceHelperSvc = ServiceHelperSvc;
         var myapp = angular.module('bootstrapApp');
         myapp.service("serviceHelperSvc", ["$http", "$location", function ($http, $location) { return new ServiceHelperSvc($http, $location); }]);

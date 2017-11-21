@@ -19,7 +19,7 @@ var Application;
                 __this.authSvc.ping('explorer');
             };
             return ExplorerCtrl;
-        })();
+        }());
         Controllers.ExplorerCtrl = ExplorerCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ExplorerCtrl", ["$scope", "$rootScope", "authSvc", ExplorerCtrl]);

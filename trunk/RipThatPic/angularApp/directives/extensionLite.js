@@ -55,7 +55,7 @@ var Application;
                     .error(function () { });
             };
             return ExtensionLiteDirective;
-        })();
+        }());
         Directives.ExtensionLiteDirective = ExtensionLiteDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dExtensionLite", ExtensionLiteDirective.prototype.injection());

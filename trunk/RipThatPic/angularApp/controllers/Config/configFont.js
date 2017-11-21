@@ -58,7 +58,7 @@ var Application;
             ConfigFontCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigFontCtrl;
-        })();
+        }());
         Controllers.ConfigFontCtrl = ConfigFontCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigFontCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigFontCtrl]);

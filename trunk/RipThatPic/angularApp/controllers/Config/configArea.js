@@ -58,7 +58,7 @@ var Application;
             ConfigAreaCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigAreaCtrl;
-        })();
+        }());
         Controllers.ConfigAreaCtrl = ConfigAreaCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigAreaCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigAreaCtrl]);

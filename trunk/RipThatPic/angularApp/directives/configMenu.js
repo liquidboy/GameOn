@@ -35,9 +35,9 @@ var Application;
                     function (pubSubConstants, radioPubSubSvc) { return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc); }
                 ];
             };
-            ConfigMenuDirective.$inject = [function (pubSubConstants, radioPubSubSvc) { return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc); }];
             return ConfigMenuDirective;
-        })();
+        }());
+        ConfigMenuDirective.$inject = [function (pubSubConstants, radioPubSubSvc) { return new ConfigMenuDirective(pubSubConstants, radioPubSubSvc); }];
         Directives.ConfigMenuDirective = ConfigMenuDirective;
         var ConfigMenuController = (function () {
             function ConfigMenuController($scope, $routeParams, $rootScope, $injector) {
@@ -47,7 +47,7 @@ var Application;
                 this.$injector = $injector;
             }
             return ConfigMenuController;
-        })();
+        }());
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dConfigMenu", ConfigMenuDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));

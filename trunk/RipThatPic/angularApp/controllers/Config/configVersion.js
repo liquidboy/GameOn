@@ -58,7 +58,7 @@ var Application;
             ConfigVersionCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigVersionCtrl;
-        })();
+        }());
         Controllers.ConfigVersionCtrl = ConfigVersionCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigVersionCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigVersionCtrl]);

@@ -69,7 +69,7 @@ var Application;
             ConfigDocumentCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigDocumentCtrl;
-        })();
+        }());
         Controllers.ConfigDocumentCtrl = ConfigDocumentCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigDocumentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigDocumentCtrl]);

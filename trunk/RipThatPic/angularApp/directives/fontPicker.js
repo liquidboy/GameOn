@@ -89,7 +89,7 @@ var Application;
                     .error(function (err) { });
             };
             return FontPickerDirective;
-        })();
+        }());
         Directives.FontPickerDirective = FontPickerDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dFontPicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new FontPickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);

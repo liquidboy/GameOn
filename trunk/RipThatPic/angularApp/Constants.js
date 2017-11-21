@@ -23,7 +23,7 @@ var Application;
                 this.InitFontsSelected = "InitFontsSelected";
             }
             return PubSubConstants;
-        })();
+        }());
         Constants.PubSubConstants = PubSubConstants;
         var myapp = angular.module('bootstrapApp');
         myapp.constant("pubSubConstants", new PubSubConstants());

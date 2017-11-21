@@ -58,7 +58,7 @@ var Application;
             ConfigPermissionCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigPermissionCtrl;
-        })();
+        }());
         Controllers.ConfigPermissionCtrl = ConfigPermissionCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigPermissionCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigPermissionCtrl]);

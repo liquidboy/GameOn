@@ -237,7 +237,7 @@ var Application;
                 }
             };
             return ImageBillboardDirective;
-        })();
+        }());
         Directives.ImageBillboardDirective = ImageBillboardDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dImageBillboard", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new ImageBillboardDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);

@@ -37,7 +37,7 @@ var Application;
                 this._radio = localWindow['radio'];
             }
             return RadioPubSubSvc;
-        })();
+        }());
         Services.RadioPubSubSvc = RadioPubSubSvc;
         var myapp = angular.module('bootstrapApp');
         myapp.service("radioPubSubSvc", ["$http", "$location", RadioPubSubSvc]); //($http, $location) => new RadioPubSubSvc($http, $location)]);

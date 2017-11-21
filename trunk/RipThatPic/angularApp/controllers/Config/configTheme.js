@@ -58,7 +58,7 @@ var Application;
             ConfigThemeCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigThemeCtrl;
-        })();
+        }());
         Controllers.ConfigThemeCtrl = ConfigThemeCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigThemeCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigThemeCtrl]);

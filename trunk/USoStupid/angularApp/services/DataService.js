@@ -19,7 +19,7 @@ var Application;
                 successCallback({ result: "data returned from data service of size " + batchSize });
             };
             return DataSvc;
-        })();
+        }());
         Services.DataSvc = DataSvc;
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));

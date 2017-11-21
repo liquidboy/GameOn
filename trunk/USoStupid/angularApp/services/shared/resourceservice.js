@@ -17,7 +17,7 @@ var Application;
                 successCallback({ result: "data returned from resource service" });
             };
             return ResourceSvc;
-        })();
+        }());
         Services.ResourceSvc = ResourceSvc;
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));

@@ -77,7 +77,7 @@ var Application;
             ConfigDatacenterCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigDatacenterCtrl;
-        })();
+        }());
         Controllers.ConfigDatacenterCtrl = ConfigDatacenterCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigDatacenterCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigDatacenterCtrl]);

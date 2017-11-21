@@ -66,7 +66,7 @@ var Application;
             ConfigSessionCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigSessionCtrl;
-        })();
+        }());
         Controllers.ConfigSessionCtrl = ConfigSessionCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigSessionCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigSessionCtrl]);

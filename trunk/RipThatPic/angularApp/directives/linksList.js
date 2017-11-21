@@ -46,7 +46,7 @@ var Application;
                     .error(function () { });
             };
             return LinksListDirective;
-        })();
+        }());
         Directives.LinksListDirective = LinksListDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dLinksList", LinksListDirective.prototype.injection());

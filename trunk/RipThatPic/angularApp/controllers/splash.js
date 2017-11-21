@@ -35,7 +35,7 @@ var Application;
                 radioPubSubSvc.subscribe(pubSubConstants.NotificationHubConnected, this.connectedToNotificationHub, null);
             }
             return SplashCtrl;
-        })();
+        }());
         Controllers.SplashCtrl = SplashCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("SplashCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "$location", "radioPubSubSvc", "pubSubConstants", SplashCtrl]);

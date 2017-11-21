@@ -33,7 +33,7 @@ var Application;
                 }
             };
             return ConfigEditorCtrl;
-        })();
+        }());
         Controllers.ConfigEditorCtrl = ConfigEditorCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigEditorCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigEditorCtrl]);

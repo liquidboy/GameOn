@@ -28,7 +28,7 @@ var Application;
                 alert('DataSvc test call');
             };
             return DataSvc;
-        })();
+        }());
         Services.DataSvc = DataSvc;
         var myapp = angular.module('bootstrapApp');
         myapp.service("dataSvc", ["$http", "serviceHelperSvc", function ($http, serviceHelperSvc) { return new DataSvc($http, serviceHelperSvc); }]);

@@ -16,7 +16,7 @@ var Application;
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return DirectX12Ctrl;
-        })();
+        }());
         Controllers.DirectX12Ctrl = DirectX12Ctrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));

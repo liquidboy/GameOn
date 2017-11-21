@@ -18,7 +18,7 @@ var Application;
                 var menuItems = element.find("div");
             };
             return HeaderStripDirective;
-        })();
+        }());
         Directives.HeaderStripDirective = HeaderStripDirective;
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));

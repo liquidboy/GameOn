@@ -55,7 +55,7 @@ var Application;
                     .error(function () { });
             };
             return ExtensionFullDirective;
-        })();
+        }());
         Directives.ExtensionFullDirective = ExtensionFullDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dExtensionFull", ExtensionFullDirective.prototype.injection());

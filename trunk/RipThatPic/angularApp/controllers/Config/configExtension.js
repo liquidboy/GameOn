@@ -58,7 +58,7 @@ var Application;
             ConfigExtensionCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigExtensionCtrl;
-        })();
+        }());
         Controllers.ConfigExtensionCtrl = ConfigExtensionCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigExtensionCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigExtensionCtrl]);

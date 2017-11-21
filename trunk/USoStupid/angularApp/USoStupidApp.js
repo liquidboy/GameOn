@@ -45,5 +45,8 @@ var USoStupidApp;
     });
     localWindow.app = myapp;
     localWindow.utilities = angular.module("custom-utilities", []);
+    ////myapp.run(() => {
+    ////    alert('started');
+    ////});
 })(USoStupidApp || (USoStupidApp = {}));
 //# sourceMappingURL=USoStupidApp.js.map

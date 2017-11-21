@@ -17,7 +17,7 @@ var Application;
                 this.authService.ping('flow');
             };
             return FlowCtrl;
-        })();
+        }());
         Controllers.FlowCtrl = FlowCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("FlowCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "$location", FlowCtrl]);

@@ -21,7 +21,7 @@ var Application;
                 this.authService.ping('page');
             };
             return PageCtrl;
-        })();
+        }());
         Controllers.PageCtrl = PageCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("PageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "$location", PageCtrl]);

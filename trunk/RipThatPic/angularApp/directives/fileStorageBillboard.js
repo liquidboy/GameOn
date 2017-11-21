@@ -237,7 +237,7 @@ var Application;
                 }
             };
             return FileStorageBillboardDirective;
-        })();
+        }());
         Directives.FileStorageBillboardDirective = FileStorageBillboardDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dFileStorageBillboard", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new FileStorageBillboardDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);

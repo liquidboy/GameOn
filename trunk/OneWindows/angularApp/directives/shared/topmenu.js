@@ -30,7 +30,7 @@ var Application;
                 });
             };
             return TopMenuDirective;
-        })();
+        }());
         Directives.TopMenuDirective = TopMenuDirective;
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));

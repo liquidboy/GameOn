@@ -58,7 +58,7 @@ var Application;
             ConfigCommentCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigCommentCtrl;
-        })();
+        }());
         Controllers.ConfigCommentCtrl = ConfigCommentCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigCommentCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigCommentCtrl]);

@@ -28,7 +28,7 @@ var Application;
                 return obj;
             };
             return InstanceFactory;
-        })();
+        }());
         Services.InstanceFactory = InstanceFactory;
         var myapp = angular.module('bootstrapApp');
         myapp.service("instanceFactory", ["$location", function ($location) { return new InstanceFactory($location); }]);

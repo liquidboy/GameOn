@@ -51,5 +51,8 @@ var GameOnApp;
     });
     localWindow.app = myapp;
     localWindow.utilities = angular.module("custom-utilities", []);
+    ////myapp.run(() => {
+    ////    alert('started');
+    ////});
 })(GameOnApp || (GameOnApp = {}));
 //# sourceMappingURL=GameOnApp.js.map

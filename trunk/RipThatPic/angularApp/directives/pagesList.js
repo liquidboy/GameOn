@@ -42,7 +42,7 @@ var Application;
                     .error(function () { });
             };
             return PagesListDirective;
-        })();
+        }());
         Directives.PagesListDirective = PagesListDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dPagesList", PagesListDirective.prototype.injection());

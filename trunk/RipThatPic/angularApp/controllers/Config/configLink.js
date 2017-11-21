@@ -58,7 +58,7 @@ var Application;
             ConfigLinkCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigLinkCtrl;
-        })();
+        }());
         Controllers.ConfigLinkCtrl = ConfigLinkCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigLinkCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigLinkCtrl]);

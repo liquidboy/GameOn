@@ -189,7 +189,7 @@ var Application;
                 }
             };
             return FileStorageListDirective;
-        })();
+        }());
         Directives.FileStorageListDirective = FileStorageListDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dFileStorageList", FileStorageListDirective.prototype.injection());

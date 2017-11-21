@@ -18,9 +18,9 @@ var Application;
                     function () { return new BillboardDirective(); }
                 ];
             };
-            BillboardDirective.$inject = [function () { return new BillboardDirective(); }];
             return BillboardDirective;
-        })();
+        }());
+        BillboardDirective.$inject = [function () { return new BillboardDirective(); }];
         Directives.BillboardDirective = BillboardDirective;
         var BillboardController = (function () {
             function BillboardController($scope, $routeParams, $rootScope, $injector) {
@@ -48,7 +48,7 @@ var Application;
                 });
             }
             return BillboardController;
-        })();
+        }());
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dBillboard", BillboardDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));

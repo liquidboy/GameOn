@@ -43,7 +43,7 @@ var Application;
                 __this.authService.ping('login');
             };
             return LoginCtrl;
-        })();
+        }());
         Controllers.LoginCtrl = LoginCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("LoginCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "$location", "radioPubSubSvc", "pubSubConstants", LoginCtrl]);

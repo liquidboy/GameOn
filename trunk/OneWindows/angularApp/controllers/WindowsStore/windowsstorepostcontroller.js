@@ -16,7 +16,7 @@ var Application;
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return WindowsStorePostCtrl;
-        })();
+        }());
         Controllers.WindowsStorePostCtrl = WindowsStorePostCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));

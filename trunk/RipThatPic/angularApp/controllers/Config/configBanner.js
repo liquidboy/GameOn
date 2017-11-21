@@ -77,7 +77,7 @@ var Application;
             ConfigBannerCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigBannerCtrl;
-        })();
+        }());
         Controllers.ConfigBannerCtrl = ConfigBannerCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigBannerCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigBannerCtrl]);

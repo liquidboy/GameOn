@@ -69,7 +69,7 @@ var Application;
             ConfigAudioCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigAudioCtrl;
-        })();
+        }());
         Controllers.ConfigAudioCtrl = ConfigAudioCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigAudioCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigAudioCtrl]);

@@ -58,7 +58,7 @@ var Application;
             ConfigMapCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigMapCtrl;
-        })();
+        }());
         Controllers.ConfigMapCtrl = ConfigMapCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigMapCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigMapCtrl]);

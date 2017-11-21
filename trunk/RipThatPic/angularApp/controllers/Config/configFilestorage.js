@@ -79,7 +79,7 @@ var Application;
             ConfigFileStorageCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigFileStorageCtrl;
-        })();
+        }());
         Controllers.ConfigFileStorageCtrl = ConfigFileStorageCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigFileStorageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigFileStorageCtrl]);

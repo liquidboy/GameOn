@@ -24,7 +24,7 @@ var Application;
                 ];
             };
             return XamlDirective;
-        })();
+        }());
         Directives.XamlDirective = XamlDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dXaml", XamlDirective.prototype.injection());

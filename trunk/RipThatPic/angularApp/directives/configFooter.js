@@ -25,7 +25,7 @@ var Application;
                 ];
             };
             return ConfigFooterDirective;
-        })();
+        }());
         Directives.ConfigFooterDirective = ConfigFooterDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dConfigFooter", ConfigFooterDirective.prototype.injection());

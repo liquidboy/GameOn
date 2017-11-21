@@ -69,7 +69,7 @@ var Application;
             ConfigVideoCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigVideoCtrl;
-        })();
+        }());
         Controllers.ConfigVideoCtrl = ConfigVideoCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigVideoCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigVideoCtrl]);

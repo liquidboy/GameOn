@@ -25,7 +25,7 @@ var Application;
                 ];
             };
             return PublicFooterDirective;
-        })();
+        }());
         Directives.PublicFooterDirective = PublicFooterDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dPublicFooter", PublicFooterDirective.prototype.injection());

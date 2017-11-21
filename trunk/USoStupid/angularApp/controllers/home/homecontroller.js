@@ -20,7 +20,7 @@ var Application;
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return HomeCtrl;
-        })();
+        }());
         Controllers.HomeCtrl = HomeCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));

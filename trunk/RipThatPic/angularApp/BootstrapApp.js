@@ -2,7 +2,6 @@ var BootstrapApp;
 (function (BootstrapApp) {
     var localWindow = window;
     var myapp = angular.module('bootstrapApp', ['ngRoute', 'ngResource', 'ngAnimate', 'ngSanitize']);
-    BootstrapApp.radio;
     myapp.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', function ($routeProvider, $locationProvider, $httpProvider, $provide) {
             delete $httpProvider.defaults.headers.common['X-Requested-With'];
             //$locationProvider.html5Mode(true);
@@ -47,6 +46,10 @@ var BootstrapApp;
                 .when('/error', { controller: 'ErrorCtrl', templateUrl: '/angularApp/views/shared/error.html' })
                 .otherwise({ redirectTo: '/splash' });
         }]).run(['$rootScope', 'radioPubSubSvc', 'realtimeDataService', function ($rootScope, radioPubSubSvc, realtimeDataService) { }]);
+    //localWindow.app = myapp;
+    //localWindow['app'] = myapp;
+    //myapp['radio'] = radio;
+    //localWindow.utilities = angular.module("custom-utilities", []);
 })(BootstrapApp || (BootstrapApp = {}));
 //weird way to pass thru the js library "radio" into the module ... find a better approach!!!
 eval('BootstrapApp.radio = radio');

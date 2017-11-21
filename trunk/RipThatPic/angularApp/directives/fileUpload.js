@@ -169,6 +169,7 @@ var Application;
                 this.EnableDisableStartButton = function () {
                     var __this = _this;
                     if (__this.scope.FUFileUploadRefCounter > 0) {
+                        //$('#' + __this.scope.StartButtonId).removeAttr('disabled');
                     }
                     else {
                         //$('#' + __this.scope.StartButtonId).attr('disabled', '');
@@ -215,7 +216,7 @@ var Application;
                     this.scope.FURootElement.show();
             };
             return FileUploadDirective;
-        })();
+        }());
         Directives.FileUploadDirective = FileUploadDirective;
         var FileUploadController = (function () {
             function FileUploadController($scope, $routeParams, $rootScope, $injector) {
@@ -225,7 +226,7 @@ var Application;
                 this.$injector = $injector;
             }
             return FileUploadController;
-        })();
+        }());
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dFileUpload", FileUploadDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));

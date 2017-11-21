@@ -16,7 +16,7 @@ var Application;
                 //this.$scope["resources"] = this.resourceSvc.getTopFiveResources();
             };
             return ModernDesktopPostCtrl;
-        })();
+        }());
         Controllers.ModernDesktopPostCtrl = ModernDesktopPostCtrl;
     })(Controllers = Application.Controllers || (Application.Controllers = {}));
 })(Application || (Application = {}));

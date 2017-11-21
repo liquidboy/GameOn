@@ -1122,8 +1122,9 @@ module Application.Directives {
 
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleVertexBuffers[i]);
                 this.gl.bufferData(this.gl.ARRAY_BUFFER, particleTextureCoordinates, this.gl.STATIC_DRAW);
-
-                particleTextureCoordinates.length = 0; //delete particleTextureCoordinates;
+                // particleTextureCoordinates.set(null);
+                // particleTextureCoordinates.length = 0; //delete particleTextureCoordinates;
+                particleTextureCoordinates = null;
 
                 var spawnData = new Float32Array(count * 4);
                 for (var j = 0; j < count; ++j) {
@@ -1142,7 +1143,8 @@ module Application.Directives {
 
                 this.spawnTextures[i] = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, width, height, spawnData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
 
-                spawnData.length = 0; //delete spawnData;
+                // spawnData.length = 0; //delete spawnData;
+                spawnData = null;
             }
 
             //offset texture
@@ -1165,7 +1167,8 @@ module Application.Directives {
 
             randomNumbers.length = 0; //delete randomNumbers;
             randomSpherePoints.length = 0; //delete randomSpherePoints;
-            offsetData.length = 0; //delete offsetData;
+            // offsetData.length = 0; //delete offsetData;
+            offsetData = null;
 
         }
         
@@ -1321,7 +1324,8 @@ module Application.Directives {
                     this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
                     this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, particleData);
 
-                    particleData.length = 0; //delete particleData;
+                    // particleData.length = 0; //delete particleData;
+                    particleData = null;
 
                     this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureB);
                     this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, null);

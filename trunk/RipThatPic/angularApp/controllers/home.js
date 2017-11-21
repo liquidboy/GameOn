@@ -37,7 +37,7 @@ var Application;
                 __this.authSvc.ping('home');
             };
             return HomeCtrl;
-        })();
+        }());
         Controllers.HomeCtrl = HomeCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("HomeCtrl", ["$scope", "$rootScope", "realtimeDataService", "radioPubSubSvc", "pubSubConstants", "authSvc", HomeCtrl]);

@@ -79,7 +79,7 @@ var Application;
                 }
             };
             return ConfigPageCtrl;
-        })();
+        }());
         Controllers.ConfigPageCtrl = ConfigPageCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigPageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigPageCtrl]);

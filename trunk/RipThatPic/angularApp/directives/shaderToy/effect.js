@@ -264,7 +264,7 @@ var Application;
                 this.mPasses[passid].UpdateInputs(this.mAudioContext, forceUpdate);
             };
             return Effect;
-        })();
+        }());
         Directives.Effect = Effect;
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));

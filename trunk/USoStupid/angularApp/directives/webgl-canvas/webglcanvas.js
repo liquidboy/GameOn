@@ -36,15 +36,15 @@ var Application;
                     this.currentHue = 0;
                 this.flowController.hue = this.currentHue;
             };
-            WebGLCanvasDirective.$inject = [function () { return new WebGLCanvasDirective(); }];
             return WebGLCanvasDirective;
-        })();
+        }());
+        WebGLCanvasDirective.$inject = [function () { return new WebGLCanvasDirective(); }];
         Directives.WebGLCanvasDirective = WebGLCanvasDirective;
         var PipelineState = (function () {
             function PipelineState() {
             }
             return PipelineState;
-        })();
+        }());
         var ParticleRenderer = (function () {
             function ParticleRenderer() {
             }
@@ -53,7 +53,7 @@ var Application;
                 this.flipped = false;
             };
             return ParticleRenderer;
-        })();
+        }());
         var Camera = (function () {
             function Camera(element) {
                 this.INITIAL_AZIMUTH = -1.6; //-1.6 is directly out of screen .. 0.6 <-- left to right
@@ -155,7 +155,7 @@ var Application;
                 };
             };
             return Camera;
-        })();
+        }());
         var ShaderLib = (function () {
             function ShaderLib(FLOOR_ORIGIN, PARTICLE_SATURATION, PARTICLE_VALUE) {
                 this.FLOOR_ORIGIN = FLOOR_ORIGIN;
@@ -476,7 +476,7 @@ var Application;
                 ].join('\n');
             }
             return ShaderLib;
-        })();
+        }());
         var GraphicsLib = (function () {
             function GraphicsLib() {
             }
@@ -685,7 +685,7 @@ var Application;
                 return 'rgb(' + (color[0] * 255).toFixed(0) + ',' + (color[1] * 255).toFixed(0) + ',' + (color[2] * 255).toFixed(0) + ')';
             };
             return GraphicsLib;
-        })();
+        }());
         var FlowController = (function () {
             function FlowController($scope, $routeParams) {
                 var _this = this;
@@ -806,7 +806,9 @@ var Application;
                     }
                     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleVertexBuffers[i]);
                     this.gl.bufferData(this.gl.ARRAY_BUFFER, particleTextureCoordinates, this.gl.STATIC_DRAW);
-                    particleTextureCoordinates.length = 0; //delete particleTextureCoordinates;
+                    // particleTextureCoordinates.set(null);
+                    // particleTextureCoordinates.length = 0; //delete particleTextureCoordinates;
+                    particleTextureCoordinates = null;
                     var spawnData = new Float32Array(count * 4);
                     for (var j = 0; j < count; ++j) {
                         var position = randomSpherePoints[j];
@@ -820,7 +822,8 @@ var Application;
                         spawnData[j * 4 + 3] = lifetime;
                     }
                     this.spawnTextures[i] = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, width, height, spawnData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-                    spawnData.length = 0; //delete spawnData;
+                    // spawnData.length = 0; //delete spawnData;
+                    spawnData = null;
                 }
                 //offset texture
                 var offsetData = new Float32Array(maxParticleCount * 4);
@@ -837,7 +840,8 @@ var Application;
                 this.pso.offsetTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
                 randomNumbers.length = 0; //delete randomNumbers;
                 randomSpherePoints.length = 0; //delete randomSpherePoints;
-                offsetData.length = 0; //delete offsetData;
+                // offsetData.length = 0; //delete offsetData;
+                offsetData = null;
             };
             FlowController.prototype.loadResources = function () {
                 //TEXTURES
@@ -915,7 +919,8 @@ var Application;
                         }
                         this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
                         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, particleData);
-                        particleData.length = 0; //delete particleData;
+                        // particleData.length = 0; //delete particleData;
+                        particleData = null;
                         this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureB);
                         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, null);
                     }
@@ -1201,7 +1206,10 @@ var Application;
                 return framebuffer;
             };
             return FlowController;
-        })();
+        }());
+        //var myapp: ng.IModule = angular.module('USoStupidApp', ['ngRoute', 'ngResource', 'ngAnimate']);
+        //myapp.directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.prototype.injection());
+        ////angular.module('USoStupidApp').directive("dirWebglCanvas", Application.Directives.WebGLCanvasDirective.$inject);
     })(Directives = Application.Directives || (Application.Directives = {}));
 })(Application || (Application = {}));
 //# sourceMappingURL=webglcanvas.js.map

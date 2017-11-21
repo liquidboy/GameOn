@@ -50,7 +50,7 @@ var Application;
                 });
             };
             return AuthService;
-        })();
+        }());
         Services.AuthService = AuthService;
         var myapp = angular.module('bootstrapApp');
         myapp.service("authSvc", ["$location", "dataSvc", "radioPubSubSvc", "pubSubConstants", AuthService]);

@@ -19,7 +19,7 @@ var Application;
                 __this.authSvc.ping('imageexplorer');
             };
             return ImageExplorerCtrl;
-        })();
+        }());
         Controllers.ImageExplorerCtrl = ImageExplorerCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ImageExplorerCtrl", ["$scope", "$rootScope", "authSvc", ImageExplorerCtrl]);

@@ -28,7 +28,7 @@ var Application;
                 });
             }
             return RealtimeDataService;
-        })();
+        }());
         Services.RealtimeDataService = RealtimeDataService;
         var myapp = angular.module('bootstrapApp');
         myapp.service("realtimeDataService", ["$http", "$location", "radioPubSubSvc", "pubSubConstants", "authSvc", function ($http, $location, radioPubSubSvc, pubSubConstants, authSvc) { return new RealtimeDataService($http, $location, radioPubSubSvc, pubSubConstants, authSvc); }]);

@@ -15,7 +15,7 @@ var Application;
             ConfigInstallCtrl.prototype.init = function () {
             };
             return ConfigInstallCtrl;
-        })();
+        }());
         Controllers.ConfigInstallCtrl = ConfigInstallCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigInstallCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", ConfigInstallCtrl]);

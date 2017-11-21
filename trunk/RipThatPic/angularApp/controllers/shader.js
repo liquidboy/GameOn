@@ -17,7 +17,7 @@ var Application;
                 this.authService.ping('shader');
             };
             return ShaderCtrl;
-        })();
+        }());
         Controllers.ShaderCtrl = ShaderCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ShaderCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "$location", ShaderCtrl]);

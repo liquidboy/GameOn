@@ -18,9 +18,9 @@ var Application;
                     function () { return new WorkareaDirective(); }
                 ];
             };
-            WorkareaDirective.$inject = [function () { return new WorkareaDirective(); }];
             return WorkareaDirective;
-        })();
+        }());
+        WorkareaDirective.$inject = [function () { return new WorkareaDirective(); }];
         Directives.WorkareaDirective = WorkareaDirective;
         var WorkareaController = (function () {
             function WorkareaController($scope, $routeParams, $rootScope, $injector) {
@@ -35,7 +35,7 @@ var Application;
                 });
             }
             return WorkareaController;
-        })();
+        }());
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dWorkarea", WorkareaDirective.prototype.injection());
     })(Directives = Application.Directives || (Application.Directives = {}));

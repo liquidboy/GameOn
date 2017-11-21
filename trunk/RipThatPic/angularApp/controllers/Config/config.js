@@ -31,7 +31,7 @@ var Application;
                 this.authSvc.ping('config');
             }
             return ConfigCtrl;
-        })();
+        }());
         Controllers.ConfigCtrl = ConfigCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigCtrl]);

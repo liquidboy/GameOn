@@ -21,7 +21,7 @@ var Application;
                 this.authService.ping('post');
             };
             return PostCtrl;
-        })();
+        }());
         Controllers.PostCtrl = PostCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("PostCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "$location", PostCtrl]);

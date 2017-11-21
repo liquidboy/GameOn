@@ -69,7 +69,7 @@ var Application;
             ConfigImageCtrl.prototype.UnSelect = function () { if (this.SelectedItem != undefined)
                 this.SelectedItem._Model.IsSelected = false; };
             return ConfigImageCtrl;
-        })();
+        }());
         Controllers.ConfigImageCtrl = ConfigImageCtrl;
         var myapp = angular.module('bootstrapApp');
         myapp.controller("ConfigImageCtrl", ["$scope", "$rootScope", "serviceHelperSvc", "dataSvc", "instanceFactory", "authSvc", "radioPubSubSvc", "pubSubConstants", ConfigImageCtrl]);

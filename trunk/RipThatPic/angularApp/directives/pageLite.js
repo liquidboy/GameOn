@@ -43,7 +43,7 @@ var Application;
                     .error(function () { });
             };
             return PageLiteDirective;
-        })();
+        }());
         Directives.PageLiteDirective = PageLiteDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dPageLite", PageLiteDirective.prototype.injection());

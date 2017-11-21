@@ -49,7 +49,7 @@ var Application;
                 });
             };
             return ServiceHelperSvc;
-        })();
+        }());
         Services.ServiceHelperSvc = ServiceHelperSvc;
     })(Services = Application.Services || (Application.Services = {}));
 })(Application || (Application = {}));

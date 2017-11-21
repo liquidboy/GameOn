@@ -83,7 +83,7 @@ var Application;
                     .error(function (err) { });
             };
             return FileStoragePickerDirective;
-        })();
+        }());
         Directives.FileStoragePickerDirective = FileStoragePickerDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dFileStoragePicker", ["pubSubConstants", "dataSvc", "authSvc", "radioPubSubSvc", function (pubSubConstants, dataSvc, authSvc, radioPubSubSvc) { return new FileStoragePickerDirective(pubSubConstants, dataSvc, authSvc, radioPubSubSvc); }]);

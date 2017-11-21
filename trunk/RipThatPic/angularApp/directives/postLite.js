@@ -42,7 +42,7 @@ var Application;
                     .error(function () { });
             };
             return PostLiteDirective;
-        })();
+        }());
         Directives.PostLiteDirective = PostLiteDirective;
         var myapp = angular.module('bootstrapApp');
         myapp.directive("dPostLite", PostLiteDirective.prototype.injection());
