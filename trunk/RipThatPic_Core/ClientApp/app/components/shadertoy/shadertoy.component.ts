@@ -2,10 +2,10 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 
 @Component({
-    selector: 'flow',
-    templateUrl: './flow.component.html'
+    selector: 'shadertoy',
+    templateUrl: './shadertoy.component.html'
 })
-export class FlowComponent implements AfterViewInit, IFlowGlScope {
+export class ShaderToyComponent implements AfterViewInit, IFlowGlScope {
 
     currentHue: number;
     hueStep: number;
