@@ -1,1704 +1,2234 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 
+declare var ActiveXObject: (type: string) => void;
+
 @Component({
     selector: 'shadertoy',
     templateUrl: './shadertoy.component.html'
 })
-export class ShaderToyComponent implements AfterViewInit, IFlowGlScope {
+export class ShaderToyComponent implements AfterViewInit, IShaderToyScope {
 
-    currentHue: number;
-    hueStep: number;
-    hueIntervalAnimationPointer: number;
-    scene: Scene;
-    hasWebGLSupportWithExtensions: (extensions: any) => boolean;
-    initCanvas: (canvas: any) => void;
+    shaderToy: ShaderToy;
+    shaderId: string;
+    res: any;
+    uiData: UIData;
+    ChangeShader: Function;
 
-
-    // public sc: Scene;
-    @ViewChild('renderer') renderer: ElementRef;
-
+    @ViewChild('editor') editorEl: ElementRef;
+    @ViewChild('player') playerEl: ElementRef;
+    @ViewChild('passManager') passManagerEl: ElementRef;
+    @ViewChild('divFrameRate') divFrameRateEl: ElementRef;
+    @ViewChild('divMyTime') divMyTimeEl: ElementRef;
+    @ViewChild('butUpdateShader') butUpdateShaderEl: ElementRef;
+    @ViewChild('demogl') demoglEl: ElementRef;
+    @ViewChild('butPauseShader') butPauseShaderEl: ElementRef;
+    
     constructor() {
-
+        this.uiData = new UIData();
     }
 
     ngAfterViewInit(): void {
-        console.log(this.renderer);
-        this.scene = new Scene(this);  //inits webgl bits for use in next few lines        
-        if (this.hasWebGLSupportWithExtensions(['OES_texture_float'])) {
-            this.initCanvas(this.renderer.nativeElement);
+        // console.log(this.renderer);
 
-            this.currentHue = 0;
-            this.hueStep = 0.01;
+        var editor = this.editorEl.nativeElement;
+        var player = this.playerEl.nativeElement;
+        var passManager = this.passManagerEl.nativeElement;
+        var demogl = this.demoglEl.nativeElement;
+        var butPauseShader = this.butPauseShaderEl.nativeElement;
 
-            this.scene.hue = this.currentHue;
-            this.scene.timeScale = this.scene.INITIAL_SPEED;
-            this.scene.persistence = this.scene.INITIAL_TURBULENCE;
+        
+        this.uiData.eFrameRate = this.divFrameRateEl.nativeElement;
+        this.uiData.eMyTime = this.divMyTimeEl.nativeElement;
+        this.uiData.UpdateUI = () => {
+            // this.sc.$apply();
+        };
+        this.uiData.Pause = () => { this.shaderToy.PlayPauseTime(); };
 
-            this.hueIntervalAnimationPointer = setInterval(this.updateHueOverTime.bind(this), 100);
+        this.ChangeShader = () => {
+            this.shaderToy.PauseShader();
+            this.loadShader(this.shaderId);
 
+            setTimeout(() => {
+                this.shaderToy.PlayShader();
+            }, 100);
+
+        }
+
+        // $(this.butUpdateShaderEl.nativeElement).on('click', this.updateShader.bind(this));
+
+        this.shaderToy = new ShaderToy(player, editor, passManager, this.uiData, demogl, butPauseShader);
+        //this.sc.shaderToy.UpdateCounter = (data) => { this.sc.uiData.ShaderCharCounter = data;};
+
+        if (!this.shaderToy.mCreated)
+            return;
+
+        ////-- get info --------------------------------------------------------
+        //this.sc.shaderId = '4t23RR';
+        ////this.sc.shaderId = 'll23Rd';  //<-- ???? doesn't work :(
+        //this.sc.shaderId = 'MlS3Rc';
+        //this.sc.shaderId = 'XslGRr';
+        this.shaderId = '4t23RR';
+        this.loadShader(this.shaderId);
+        this.shaderToy.PlayShader();
+
+        //if (this.sc.shaderId == null) {
+        //    this.loadNew();
+        //}
+        //else {
+        //    this.loadShader(this.sc.shaderId);
+        //}
+    }
+
+
+    private updateShader() {
+        this.shaderToy.SetShaderFromEditor();
+    }
+
+    private dataLoadShader(jsonShader: any) {
+
+        this.res = this.shaderToy.ParseJSON(jsonShader)
+        if (this.res.mSuccess == false)
+            return;
+
+        document.title = this.res.mName;
+
+        //inputs
+        this.uiData.ShowInputs = false;
+        this.uiData.Inputs = [];
+
+        if (jsonShader.renderpass[0] && jsonShader.renderpass[0].inputs.length > 0) {
+            this.uiData.ShowInputs = true;
+            this.uiData.Inputs = jsonShader.renderpass[0].inputs;
+        }
+
+        //render
+        this.shaderToy.StartRendering();
+        this.shaderToy.ResetTime();
+
+        if (!this.res.mFailed) {
+            this.shaderToy.PauseShader();
+        }
+
+    }
+
+    loadShader(gShaderID: string){
+        this.uiData.IsLoading = true;
+        try {
+            var httpReq = this.createHttpRequest();
+            httpReq.open("GET", "/data/" + gShaderID + ".json", true);
+            httpReq.onload = () => {
+                var res = httpReq.responseText;
+                var jsnShader = null;
+                try { jsnShader = JSON.parse(res); } catch (e) { alert("ERROR in JSON: " + res); return; }
+                this.dataLoadShader(jsnShader);
+            }
+
+            httpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            var str = "{ \"shaders\" : [\"" + gShaderID + "\"] }";
+            str = "s=" + encodeURIComponent(str);
+            httpReq.send(str);
+        }
+        catch (e) {
+            return;
+        }
+        finally {
+            this.uiData.IsLoading = false;
         }
     }
 
-    updateHueOverTime() {
-        this.currentHue += this.hueStep;
-        if (this.currentHue > 1) this.currentHue = 0;
-        this.scene.hue = this.currentHue;
+    private loadShaderFromToyShaderUri(gShaderID: string) {
+        try {
+            var httpReq = this.createHttpRequest();
+            httpReq.open("POST", "https://www.shadertoy.com/shadertoy", true);
+            httpReq.onload = function () {
+                var res = httpReq.responseText;
+                var jsnShader = null;
+                try { jsnShader = JSON.parse(res); } catch (e) { alert("ERROR in JSON: " + res); return; }
+                this.dataLoadShader(jsnShader);
+            }
+
+            httpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            var str = "{ \"shaders\" : [\"" + gShaderID + "\"] }";
+            str = "s=" + encodeURIComponent(str);
+            httpReq.send(str);
+        }
+        catch (e) {
+            return;
+        }
+    }
+
+    private createHttpRequest(): any {
+
+        let xmlHttp: any = null;
+        try {
+            // Opera 8.0+, Firefox, Safari
+            xmlHttp = new XMLHttpRequest();
+        }
+        catch (e) {
+            //// Internet Explorer Browsers
+            //try {
+            //    xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+            //}
+            //catch (e) {
+            //    try {
+            //        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+            //    }
+            //    catch (e) {
+            //        // Something went wrong
+            //        alert("Your browser broke!");
+            //    }
+            //}
+            alert("failed to load XMLHttpRequest");
+        }
+
+        return xmlHttp;
     }
 }
 
-interface IFlowGlScope {
+interface IShaderToyScope {
 
-    currentHue: number;
-    hueStep: number;
-    hueIntervalAnimationPointer: number;
-
-    scene: Scene;
-
-    hasWebGLSupportWithExtensions: (extensions: any) => boolean;
-    initCanvas: (canvas: any) => void;
+    shaderToy: ShaderToy;
+    shaderId: string;
+    res: any;
+    uiData: UIData;
+    ChangeShader: Function;
 }
 
-class PipelineState {
-    simulationProgramWrapper: any;
-    renderingProgramWrapper: any;
-    opacityProgramWrapper: any;
-    sortProgramWrapper: any;
-    resampleProgramWrapper: any;
-    floorProgramWrapper: any;
-    backgroundProgramWrapper: any;
+class UIData {
+    ShaderCharCounter: string;
+    FrameRate: string;
+    MyTime: string;
 
+    eFrameRate: HTMLElement;
+    eMyTime: HTMLElement;
+    Pause: Function;
 
-    //variables used for sorting
-    totalSortSteps: number;
-    sortStepsLeft: number;
-    sortPass: number;
-    sortStage: number;
+    Inputs: any;
+    ShowInputs: boolean;
 
+    IsLoading: boolean;
 
-    opacityTexture: webgl.WebGLTexture;
-    particleTextureA: webgl.WebGLTexture;
-    particleTextureB: webgl.WebGLTexture;
-    offsetTexture: webgl.WebGLTexture;
-
-
-    fullscreenVertexBuffer: webgl.WebGLBuffer;
-    particleVertexBuffer: webgl.WebGLBuffer;
-    floorVertexBuffer: webgl.WebGLBuffer;
-
-
-    simulationFramebuffer: webgl.WebGLFramebuffer;
-    sortFramebuffer: webgl.WebGLFramebuffer;
-    resampleFramebuffer: webgl.WebGLFramebuffer;
-    opacityFramebuffer: webgl.WebGLFramebuffer;
-
-
-
-    projectionMatrix: Float32Array;
-
-    lightViewMatrix: Float32Array;
-    lightProjectionMatrix: Float32Array;
-    lightViewProjectionMatrix: Float32Array;
-
-    lastTime: number;
+    UpdateUI: Function;
 
 }
 
-class ParticleRenderer {
 
-    firstFrame: boolean;
-    flipped: boolean;
+class ShaderToy {
 
-    public Render() {
-        this.firstFrame = false;
-        this.flipped = false;
-    }
-}
+    mCanvas: webgl.HTMLCanvasElement;
+    mGLContext: any;
+    mIsPaused: boolean;
+    mIsRendering: boolean;
+    mForceFrame: boolean;
+    mCreated: boolean;
+    mNeedsSave: boolean;
 
-class Camera {
-    private INITIAL_AZIMUTH: number = -1.6;  //-1.6 is directly out of screen .. 0.6 <-- left to right
-    private INITIAL_ELEVATION: number = 0.4; //0.4 default
-    private CAMERA_ORBIT_POINT = [1.2, -0.3, 0.0];
-    private CAMERA_DISTANCE: number = 2.2;
-    private CAMERA_SENSITIVITY: number = 0.005;
+    mCodeEditor: any;
+    mEditorState: any;
 
+    mEffect: Effect;
 
-    private viewMatrix = new Float32Array(16);
-    private azimuth: number = this.INITIAL_AZIMUTH;
-    private elevation: number = this.INITIAL_ELEVATION;
-    private MIN_ELEVATION: number = -0.1;
-    private MAX_ELEVATION: number = Math.PI / 2.0;
-
-    private currentX: number = 0;
-    private recomputeViewMatrix: Function;
+    mDocs: any;
 
 
-    constructor(element: any) {
+    mActiveDoc: any;
+    mInfo: any;
+    mTOffset: number;
+    mTo: any;
+    mTf: number;
+    mFpsTo: any;
+    mFpsFrame: any;
 
+    mSendFrame: boolean;
 
-        var lastMouseX: number = 0,
-            lastMouseY: number = 0;
+    mMouseIsDown: boolean;
+    mMouseOriX: number;
+    mMouseOriY: number;
+    mMousePosX: number;
+    mMousePosY: number;
 
-        var mouseDown: boolean = false;
+    UpdateCounter: Function;
+
+    constructor(
+        public playerElement: any,
+        public editorElement: any,
+        public passElement: any, // ng.IAugmentedJQuery,
+        public uiData: UIData,
+        canvas: any,
+        public butPauseShader: any
+    ) {
+
+        // var canvas: any = $(playerElement).find('#demogl')[0];
+        this.mCanvas = canvas;
+        this.mDocs = {};
+
+        this.mGLContext = this.createGlContext(this.mCanvas, false, true);
+        if (this.mGLContext == null) {
+            this.createNoWebGLMessage(this.playerElement, this.mCanvas);
+            this.mIsPaused = true;
+            this.mForceFrame = false;
+        }
+
+        this.mEditorState = { mCursorChange: false, mViewportChange: false, mCodeChange: false };
+
+        this.mCodeEditor = (<any>window)['CodeMirror'](editorElement,
+            {
+                lineNumbers: true,
+                matchBrackets: true,
+                indentWithTabs: false,
+                tabSize: 4,
+                indentUnit: 4,
+                mode: "text/x-glsl",
+                foldGutter: true,
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                //extraKeys: {
+                //    "Ctrl-S": function (instance) { doSaveShader(); me.mNeedsSave = false; },
+                //    "Alt-Enter": function (instance) { me.SetShaderFromEditor(); },
+                //    "Alt--": function (instance) { me.decreaseFontSize(); },
+                //    "Alt-=": function (instance) { me.increaseFontSize(); },
+                //    "Alt-F": function (instance) { me.changeEditorFullScreen(); }
+                //}
+            });
         var __this = this;
+        this.mCodeEditor.on("change", (instance: any, ev: any) => { __this.mEditorState.mCodeChange = true; __this.mNeedsSave = true; });
+        this.mCodeEditor.on("cursorActivity", (instance: any) => { __this.mEditorState.mCursorChange = true; });
+        this.mCodeEditor.on("viewportChange", (instance: any, eFrom: any, eTo: any) => { __this.mEditorState.mViewportChange = true; });
 
 
-        this.recomputeViewMatrix = function () {
-            var xRotationMatrix: Float32Array = new Float32Array(16),
-                yRotationMatrix: Float32Array = new Float32Array(16),
-                distanceTranslationMatrix = GraphicsLib.makeIdentityMatrix(new Float32Array(16)),
-                orbitTranslationMatrix = GraphicsLib.makeIdentityMatrix(new Float32Array(16));
+        this.mEffect = new Effect(null, null, this.mGLContext, this.mCanvas.width, this.mCanvas.height, this.refreshTexturThumbail, this, false, false);
 
-            GraphicsLib.makeIdentityMatrix(__this.viewMatrix);
+        this.mCreated = true;
 
-            GraphicsLib.makeXRotationMatrix(xRotationMatrix, __this.elevation);
-            GraphicsLib.makeYRotationMatrix(yRotationMatrix, __this.azimuth);
-            distanceTranslationMatrix[14] = -__this.CAMERA_DISTANCE;
-            orbitTranslationMatrix[12] = -__this.CAMERA_ORBIT_POINT[0];
-            orbitTranslationMatrix[13] = -__this.CAMERA_ORBIT_POINT[1];
-            orbitTranslationMatrix[14] = -__this.CAMERA_ORBIT_POINT[2];
-
-            GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, orbitTranslationMatrix);
-            GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, yRotationMatrix);
-            GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, xRotationMatrix);
-            GraphicsLib.premultiplyMatrix(__this.viewMatrix, __this.viewMatrix, distanceTranslationMatrix);
-        };
+    }
 
 
-        element.addEventListener('mousedown', function (event: any) {
-            mouseDown = true;
-            lastMouseX = __this.getMousePosition(event, element).x;
-            lastMouseY = __this.getMousePosition(event, element).y;
-        });
-
-        document.addEventListener('mouseup', function (event) {
-            mouseDown = false;
-        });
-
-        element.addEventListener('mousemove', function (event: any) {
-            if (mouseDown) {
-                var mouseX = __this.getMousePosition(event, element).x;
-                var mouseY = __this.getMousePosition(event, element).y;
-
-                var deltaAzimuth = (mouseX - lastMouseX) * __this.CAMERA_SENSITIVITY;
-                var deltaElevation = (mouseY - lastMouseY) * __this.CAMERA_SENSITIVITY;
-
-                __this.azimuth += deltaAzimuth;
-                __this.elevation += deltaElevation;
-
-                if (__this.elevation < __this.MIN_ELEVATION) {
-                    __this.elevation = __this.MIN_ELEVATION;
-                } else if (__this.elevation > __this.MAX_ELEVATION) {
-                    __this.elevation = __this.MAX_ELEVATION;
-                }
-
-                __this.recomputeViewMatrix();
-
-                lastMouseX = mouseX;
-                lastMouseY = mouseY;
-
-                element.style.cursor = '-webkit-grabbing';
-                element.style.cursor = '-moz-grabbing';
-                element.style.cursor = 'grabbing';
-            } else {
-                element.style.cursor = '-webkit-grab';
-                element.style.cursor = '-moz-grab';
-                element.style.cursor = 'grab';
+    private createGlContext(cv: any, useAlpha: any, usePreserveBuffer: any) {
+        var gGLContext = null;
+        var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
+        for (var i = 0; i < names.length; i++) {
+            try {
+                gGLContext = cv.getContext(names[i], { alpha: useAlpha, depth: false, antialias: false, stencil: true, premultipliedAlpha: false, preserveDrawingBuffer: usePreserveBuffer });
             }
-        });
-
-        //setInterval(this.AutoMoveCamera.bind(this), 10);
-        //this.azimuth = -300 * this.CAMERA_SENSITIVITY; //coming out of the screen to user
-
-        this.recomputeViewMatrix();
-    }
-
-    private AutoMoveCamera() {
-        this.currentX += 0.1;
-        if (this.currentX > 600) this.currentX = 0;
-
-        this.azimuth = -this.currentX * this.CAMERA_SENSITIVITY;
-
-        this.recomputeViewMatrix();
-    }
-
-    public getViewMatrix(): Float32Array {
-        return this.viewMatrix;
-    }
-
-    public getPosition(): Float32Array {
-        var cameraPosition: Float32Array = new Float32Array(3);
-        cameraPosition[0] = this.CAMERA_DISTANCE * Math.sin(Math.PI / 2 - this.elevation) * Math.sin(-this.azimuth) + this.CAMERA_ORBIT_POINT[0];
-        cameraPosition[1] = this.CAMERA_DISTANCE * Math.cos(Math.PI / 2 - this.elevation) + this.CAMERA_ORBIT_POINT[1];
-        cameraPosition[2] = this.CAMERA_DISTANCE * Math.sin(Math.PI / 2 - this.elevation) * Math.cos(-this.azimuth) + this.CAMERA_ORBIT_POINT[2];
-
-        return cameraPosition;
-    }
-
-    public getViewDirection(): Float32Array {
-        var viewDirection: Float32Array = new Float32Array(3);
-        viewDirection[0] = -Math.sin(Math.PI / 2 - this.elevation) * Math.sin(-this.azimuth);
-        viewDirection[1] = -Math.cos(Math.PI / 2 - this.elevation);
-        viewDirection[2] = -Math.sin(Math.PI / 2 - this.elevation) * Math.cos(-this.azimuth);
-
-        return viewDirection;
-    }
-
-    public getMousePosition(event: any, element: any): any {
-        var boundingRect = element.getBoundingClientRect();
-        return {
-            x: event.clientX - boundingRect.left,
-            y: event.clientY - boundingRect.top
-        };
-    }
-
-}
-
-class ShaderLib {
-
-    private NOISE_OCTAVES: number = 3;
-    private NOISE_POSITION_SCALE: number = 1.5;
-    private NOISE_SCALE: number = 0.075;
-    private NOISE_TIME_SCALE: number = 1 / 4000;
-
-    private BASE_SPEED: number = 0.2;
-
-    private PARTICLE_OPACITY_SCALE: number = 0.75;
-
-    private BACKGROUND_DISTANCE_SCALE: number = 0.1;
-
-
-    public constructor(public FLOOR_ORIGIN: any, public PARTICLE_SATURATION: number, public PARTICLE_VALUE: number) {
-
-    }
-
-
-    public SIMULATION_VERTEX_SHADER_SOURCE: string = [
-        'precision highp float;',
-        'attribute vec2 a_position;',
-
-        'void main () {',
-        '   gl_Position = vec4(a_position, 0.0, 1.0);',
-        '}'
-    ].join('\n');
-
-    public SIMULATION_FRAGMENT_SHADER_SOURCE: string = [
-        'precision highp float;',
-        'uniform sampler2D u_particleTexture;',
-        'uniform sampler2D u_spawnTexture;',
-        'uniform vec2 u_resolution;',
-        'uniform float u_deltaTime;',
-        'uniform float u_time;',
-        'uniform float u_persistence;',
-        'const int OCTAVES = ' + this.NOISE_OCTAVES.toFixed(0) + ';',
-        'vec4 mod289(vec4 x) {',
-        '   return x - floor(x * (1.0 / 289.0)) * 289.0;',
-        '}',
-        'float mod289(float x) {',
-        '   return x - floor(x * (1.0 / 289.0)) * 289.0;',
-        '}',
-        'vec4 permute(vec4 x) {',
-        '   return mod289(((x*34.0)+1.0)*x);',
-        '}',
-        'float permute(float x) {',
-        '   return mod289(((x*34.0)+1.0)*x);',
-        '}',
-        'vec4 taylorInvSqrt(vec4 r) {',
-        '   return 1.79284291400159 - 0.85373472095314 * r;',
-        '}',
-        'float taylorInvSqrt(float r) {',
-        '   return 1.79284291400159 - 0.85373472095314 * r;',
-        '}',
-        'vec4 grad4(float j, vec4 ip) {',
-        '   const vec4 ones = vec4(1.0, 1.0, 1.0, -1.0);',
-        '   vec4 p,s;',
-        '   p.xyz = floor( fract (vec3(j) * ip.xyz) * 7.0) * ip.z - 1.0;',
-        '   p.w = 1.5 - dot(abs(p.xyz), ones.xyz);',
-        '   s = vec4(lessThan(p, vec4(0.0)));',
-        '   p.xyz = p.xyz + (s.xyz*2.0 - 1.0) * s.www; ',
-        '   return p;',
-        '}',
-        '#define F4 0.309016994374947451',
-        'vec4 simplexNoiseDerivatives (vec4 v) {',
-        '   const vec4  C = vec4( 0.138196601125011,0.276393202250021,0.414589803375032,-0.447213595499958);',
-        '   vec4 i  = floor(v + dot(v, vec4(F4)) );',
-        '   vec4 x0 = v -   i + dot(i, C.xxxx);',
-        '   vec4 i0;',
-        '   vec3 isX = step( x0.yzw, x0.xxx );',
-        '   vec3 isYZ = step( x0.zww, x0.yyz );',
-        '   i0.x = isX.x + isX.y + isX.z;',
-        '   i0.yzw = 1.0 - isX;',
-        '   i0.y += isYZ.x + isYZ.y;',
-        '   i0.zw += 1.0 - isYZ.xy;',
-        '   i0.z += isYZ.z;',
-        '   i0.w += 1.0 - isYZ.z;',
-        '   vec4 i3 = clamp( i0, 0.0, 1.0 );',
-        '   vec4 i2 = clamp( i0-1.0, 0.0, 1.0 );',
-        '   vec4 i1 = clamp( i0-2.0, 0.0, 1.0 );',
-        '   vec4 x1 = x0 - i1 + C.xxxx;',
-        '   vec4 x2 = x0 - i2 + C.yyyy;',
-        '   vec4 x3 = x0 - i3 + C.zzzz;',
-        '   vec4 x4 = x0 + C.wwww;',
-        '   i = mod289(i); ',
-        '   float j0 = permute( permute( permute( permute(i.w) + i.z) + i.y) + i.x);',
-        '   vec4 j1 = permute( permute( permute( permute (',
-        '       i.w + vec4(i1.w, i2.w, i3.w, 1.0 ))',
-        '       + i.z + vec4(i1.z, i2.z, i3.z, 1.0 ))',
-        '       + i.y + vec4(i1.y, i2.y, i3.y, 1.0 ))',
-        '       + i.x + vec4(i1.x, i2.x, i3.x, 1.0 ));',
-        '   vec4 ip = vec4(1.0/294.0, 1.0/49.0, 1.0/7.0, 0.0) ;',
-        '   vec4 p0 = grad4(j0,   ip);',
-        '   vec4 p1 = grad4(j1.x, ip);',
-        '   vec4 p2 = grad4(j1.y, ip);',
-        '   vec4 p3 = grad4(j1.z, ip);',
-        '   vec4 p4 = grad4(j1.w, ip);',
-        '   vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));',
-        '   p0 *= norm.x;',
-        '   p1 *= norm.y;',
-        '   p2 *= norm.z;',
-        '   p3 *= norm.w;',
-        '   p4 *= taylorInvSqrt(dot(p4,p4));',
-        '   vec3 values0 = vec3(dot(p0, x0), dot(p1, x1), dot(p2, x2));', //value of contributions from each corner at point
-        '   vec2 values1 = vec2(dot(p3, x3), dot(p4, x4));',
-        '   vec3 m0 = max(0.5 - vec3(dot(x0,x0), dot(x1,x1), dot(x2,x2)), 0.0);', //(0.5 - x^2) where x is the distance
-        '   vec2 m1 = max(0.5 - vec2(dot(x3,x3), dot(x4,x4)), 0.0);',
-        '   vec3 temp0 = -6.0 * m0 * m0 * values0;',
-        '   vec2 temp1 = -6.0 * m1 * m1 * values1;',
-        '   vec3 mmm0 = m0 * m0 * m0;',
-        '   vec2 mmm1 = m1 * m1 * m1;',
-        '   float dx = temp0[0] * x0.x + temp0[1] * x1.x + temp0[2] * x2.x + temp1[0] * x3.x + temp1[1] * x4.x + mmm0[0] * p0.x + mmm0[1] * p1.x + mmm0[2] * p2.x + mmm1[0] * p3.x + mmm1[1] * p4.x;',
-        '   float dy = temp0[0] * x0.y + temp0[1] * x1.y + temp0[2] * x2.y + temp1[0] * x3.y + temp1[1] * x4.y + mmm0[0] * p0.y + mmm0[1] * p1.y + mmm0[2] * p2.y + mmm1[0] * p3.y + mmm1[1] * p4.y;',
-        '   float dz = temp0[0] * x0.z + temp0[1] * x1.z + temp0[2] * x2.z + temp1[0] * x3.z + temp1[1] * x4.z + mmm0[0] * p0.z + mmm0[1] * p1.z + mmm0[2] * p2.z + mmm1[0] * p3.z + mmm1[1] * p4.z;',
-        '   float dw = temp0[0] * x0.w + temp0[1] * x1.w + temp0[2] * x2.w + temp1[0] * x3.w + temp1[1] * x4.w + mmm0[0] * p0.w + mmm0[1] * p1.w + mmm0[2] * p2.w + mmm1[0] * p3.w + mmm1[1] * p4.w;',
-        '   return vec4(dx, dy, dz, dw) * 49.0;',
-        '}',
-
-        'void main () {',
-        '   vec2 textureCoordinates = gl_FragCoord.xy / u_resolution;',
-        '   vec4 data = texture2D(u_particleTexture, textureCoordinates);',
-        '   vec3 oldPosition = data.rgb;',
-        '   vec3 noisePosition = oldPosition * ' + this.NOISE_POSITION_SCALE.toFixed(8) + ';',
-        '   float noiseTime = u_time * ' + this.NOISE_TIME_SCALE.toFixed(8) + ';',
-        '   vec4 xNoisePotentialDerivatives = vec4(0.0);',
-        '   vec4 yNoisePotentialDerivatives = vec4(0.0);',
-        '   vec4 zNoisePotentialDerivatives = vec4(0.0);',
-        '   float persistence = u_persistence;',
-        '   for (int i = 0; i < OCTAVES; ++i) {',
-        '       float scale = (1.0 / 2.0) * pow(2.0, float(i));',
-        '       float noiseScale = pow(persistence, float(i));',
-        '       if (persistence == 0.0 && i == 0) {', //fix undefined behaviour
-        '           noiseScale = 1.0;',
-        '       }',
-        '       xNoisePotentialDerivatives += simplexNoiseDerivatives(vec4(noisePosition * pow(2.0, float(i)), noiseTime)) * noiseScale * scale;',
-        '       yNoisePotentialDerivatives += simplexNoiseDerivatives(vec4((noisePosition + vec3(123.4, 129845.6, -1239.1)) * pow(2.0, float(i)), noiseTime)) * noiseScale * scale;',
-        '       zNoisePotentialDerivatives += simplexNoiseDerivatives(vec4((noisePosition + vec3(-9519.0, 9051.0, -123.0)) * pow(2.0, float(i)), noiseTime)) * noiseScale * scale;',
-        '   }',
-        //compute curl
-        '   vec3 noiseVelocity = vec3(',
-        '      zNoisePotentialDerivatives[1] - yNoisePotentialDerivatives[2],',
-        '      xNoisePotentialDerivatives[2] - zNoisePotentialDerivatives[0],',
-        '      yNoisePotentialDerivatives[0] - xNoisePotentialDerivatives[1]',
-        '   ) * ' + this.NOISE_SCALE.toFixed(8) + ';',
-        '   vec3 velocity = vec3(' + this.BASE_SPEED.toFixed(8) + ', 0.0, 0.0);',
-        '   vec3 totalVelocity = velocity + noiseVelocity;',
-        '   vec3 newPosition = oldPosition + totalVelocity * u_deltaTime;',
-        '   float oldLifetime = data.a;',
-        '   float newLifetime = oldLifetime - u_deltaTime;',
-        '   vec4 spawnData = texture2D(u_spawnTexture, textureCoordinates);',
-        '   if (newLifetime < 0.0) {',
-        '      newPosition = spawnData.rgb;',
-        '      newLifetime = spawnData.a + newLifetime;',
-        '   }',
-        '   gl_FragColor = vec4(newPosition, newLifetime);',
-        '}'
-    ].join('\n');
-
-    public RENDERING_VERTEX_SHADER_SOURCE: string = [
-        'precision highp float;',
-        'attribute vec2 a_textureCoordinates;',
-        'varying vec3 v_position;',
-        'varying float v_opacity;',
-        'uniform sampler2D u_particleTexture;',
-        'uniform sampler2D u_opacityTexture;',
-        'uniform mat4 u_viewMatrix;',
-        'uniform mat4 u_projectionMatrix;',
-        'uniform mat4 u_lightViewProjectionMatrix;',
-        'uniform float u_particleDiameter;',
-        'uniform float u_screenWidth;',
-
-        'void main () {',
-        '   vec3 position = texture2D(u_particleTexture, a_textureCoordinates).rgb;',
-        '   v_position = position;',
-
-        '   vec2 lightTextureCoordinates = vec2(u_lightViewProjectionMatrix * vec4(position, 1.0)) * 0.5 + 0.5;',
-        '   v_opacity = texture2D(u_opacityTexture, lightTextureCoordinates).a;',
-
-        '   vec3 viewSpacePosition = vec3(u_viewMatrix * vec4(position, 1.0));',
-        '   vec4 corner = vec4(u_particleDiameter * 0.5, u_particleDiameter * 0.5, viewSpacePosition.z, 1.0);',
-        '   float projectedCornerX = dot(vec4(u_projectionMatrix[0][0], u_projectionMatrix[1][0], u_projectionMatrix[2][0], u_projectionMatrix[3][0]), corner);',
-        '   float projectedCornerW = dot(vec4(u_projectionMatrix[0][3], u_projectionMatrix[1][3], u_projectionMatrix[2][3], u_projectionMatrix[3][3]), corner);',
-        '   gl_PointSize = u_screenWidth * 0.5 * projectedCornerX * 2.0 / projectedCornerW;',
-
-        '   gl_Position = u_projectionMatrix * vec4(viewSpacePosition, 1.0);',
-
-        '   if (position.y < ' + this.FLOOR_ORIGIN[1].toFixed(8) + ') gl_Position = vec4(9999999.0, 9999999.0, 9999999.0, 1.0);',
-        '}'
-    ].join('\n');
-
-    public RENDERING_FRAGMENT_SHADER_SOURCE: string = [
-        'precision highp float;',
-        'varying vec3 v_position;',
-        'varying float v_opacity;',
-        'uniform float u_particleAlpha;',
-        'uniform vec3 u_particleColor;',
-        'uniform bool u_flipped;', //non-flipped is front-to-back, flipped is back-to-front
-
-        'void main () {',
-        '   float distanceFromCenter = distance(gl_PointCoord.xy, vec2(0.5, 0.5));',
-        '   if (distanceFromCenter > 0.5) discard;',
-        '   float alpha = clamp(1.0 - distanceFromCenter * 2.0, 0.0, 1.0) * u_particleAlpha;',
-
-        '   vec3 color = (1.0 - v_opacity * ' + this.PARTICLE_OPACITY_SCALE.toFixed(8) + ') * u_particleColor;',
-
-        '   gl_FragColor = vec4(color * alpha, alpha);',
-        '}'
-    ].join('\n');
-
-    public OPACITY_VERTEX_SHADER_SOURCE: string = [
-        'precision highp float;',
-
-        'attribute vec2 a_textureCoordinates;',
-
-        'uniform sampler2D u_particleTexture;',
-
-        'uniform mat4 u_lightViewMatrix;',
-        'uniform mat4 u_lightProjectionMatrix;',
-
-        'uniform float u_particleDiameter;',
-        'uniform float u_screenWidth;',
-
-        'void main () {',
-        'vec3 position = texture2D(u_particleTexture, a_textureCoordinates).rgb;',
-
-        'vec3 viewSpacePosition = vec3(u_lightViewMatrix * vec4(position, 1.0));',
-
-        'vec4 corner = vec4(u_particleDiameter * 0.5, u_particleDiameter * 0.5, viewSpacePosition.z, 1.0);',
-
-        'float projectedCornerX = dot(vec4(u_lightProjectionMatrix[0][0], u_lightProjectionMatrix[1][0], u_lightProjectionMatrix[2][0], u_lightProjectionMatrix[3][0]), corner);',
-        'float projectedCornerW = dot(vec4(u_lightProjectionMatrix[0][3], u_lightProjectionMatrix[1][3], u_lightProjectionMatrix[2][3], u_lightProjectionMatrix[3][3]), corner);',
-
-        'gl_PointSize = u_screenWidth * 0.5 * projectedCornerX * 2.0 / projectedCornerW;',
-
-        'gl_Position = u_lightProjectionMatrix * vec4(viewSpacePosition, 1.0);',
-        '}'
-    ].join('\n');
-
-    public OPACITY_FRAGMENT_SHADER_SOURCE: string = [
-        'precision highp float;',
-
-        'uniform float u_particleAlpha;',
-
-        'void main () {',
-        'float distanceFromCenter = distance(gl_PointCoord.xy, vec2(0.5, 0.5));',
-        'if (distanceFromCenter > 0.5) discard;',
-        'float alpha = clamp(1.0 - distanceFromCenter * 2.0, 0.0, 1.0) * u_particleAlpha;',
-
-        'gl_FragColor = vec4(1.0, 1.0, 1.0, alpha);', //under operator requires this premultiplication
-        '}'
-    ].join('\n');
-
-    public SORT_VERTEX_SHADER_SOURCE: string = [
-        'precision highp float;',
-
-        'attribute vec2 a_position;',
-
-        'void main () {',
-        'gl_Position = vec4(a_position, 0.0, 1.0);',
-        '}'
-    ].join('\n');
-
-    public SORT_FRAGMENT_SHADER_SOURCE: string = [
-        'precision highp float;',
-
-        'uniform sampler2D u_dataTexture;',
-
-        'uniform vec2 u_resolution;',
-
-        'uniform float pass;',
-        'uniform float stage;',
-
-        'uniform vec3 u_cameraPosition;',
-
-        'uniform vec3 u_halfVector;',
-
-        'void main () {',
-        'vec2 normalizedCoordinates = gl_FragCoord.xy / u_resolution;',
-
-        'vec4 self = texture2D(u_dataTexture, normalizedCoordinates);',
-
-        'float i = floor(normalizedCoordinates.x * u_resolution.x) + floor(normalizedCoordinates.y * u_resolution.y) * u_resolution.x;',
-
-        'float j = floor(mod(i, 2.0 * stage));',
-
-        'float compare = 0.0;',
-
-        'if ((j < mod(pass, stage)) || (j > (2.0 * stage - mod(pass, stage) - 1.0))) {',
-        'compare = 0.0;',
-        '} else {',
-        'if (mod((j + mod(pass, stage)) / pass, 2.0) < 1.0) {',
-        'compare = 1.0;',
-        '} else {',
-        'compare = -1.0;',
-        '}',
-        '}',
-
-        'float adr = i + compare * pass;',
-
-        'vec4 partner = texture2D(u_dataTexture, vec2(floor(mod(adr, u_resolution.x)) / u_resolution.x, floor(adr / u_resolution.x) / u_resolution.y));',
-
-        'float selfProjectedLength = dot(u_halfVector, self.xyz);',
-        'float partnerProjectedLength = dot(u_halfVector, partner.xyz);',
-
-        'gl_FragColor = (selfProjectedLength * compare < partnerProjectedLength * compare) ? self : partner;',
-        '}'
-    ].join('\n');
-
-    public RESAMPLE_VERTEX_SHADER_SOURCE: string = [
-        'precision highp float;',
-
-        'attribute vec2 a_position;',
-        'varying vec2 v_coordinates;',
-
-        'void main () {',
-        'v_coordinates = a_position.xy * 0.5 + 0.5;',
-        'gl_Position = vec4(a_position, 0.0, 1.0);',
-        '}'
-    ].join('\n');
-
-    public RESAMPLE_FRAGMENT_SHADER_SOURCE: string = [
-        'precision highp float;',
-        'varying vec2 v_coordinates;',
-        'uniform sampler2D u_particleTexture;',
-        'uniform sampler2D u_offsetTexture;',
-        'uniform float u_offsetScale;',
-
-        'void main () {',
-        '   vec4 data = texture2D(u_particleTexture, v_coordinates);',
-        '   vec4 offset = texture2D(u_offsetTexture, v_coordinates);',
-        '   vec3 position = data.rgb + offset.rgb * u_offsetScale;',
-        '   gl_FragColor = vec4(position, data.a);',
-        '}'
-    ].join('\n');
-
-    public FLOOR_VERTEX_SHADER_SOURCE: string = [
-        'precision highp float;',
-        'attribute vec3 a_vertexPosition;',
-        'varying vec3 v_position;',
-        'uniform mat4 u_viewMatrix;',
-        'uniform mat4 u_projectionMatrix;',
-
-        'void main () {',
-        '   v_position = a_vertexPosition;',
-        '   gl_Position = u_projectionMatrix * u_viewMatrix * vec4(a_vertexPosition, 1.0);',
-        '}'
-    ].join('\n');
-
-    public FLOOR_FRAGMENT_SHADER_SOURCE: string = [
-        'precision highp float;',
-        'varying vec3 v_position;',
-        'uniform sampler2D u_opacityTexture;',
-        'uniform mat4 u_lightViewProjectionMatrix;',
-
-        'void main () {',
-        '   vec2 lightTextureCoordinates = vec2(u_lightViewProjectionMatrix * vec4(v_position, 1.0)) * 0.5 + 0.5;',
-        '   float opacity = texture2D(u_opacityTexture, lightTextureCoordinates).a;',
-
-        '   if (lightTextureCoordinates.x < 0.0 || lightTextureCoordinates.x > 1.0 || lightTextureCoordinates.y < 0.0 || lightTextureCoordinates.y > 1.0) {',
-        '       opacity = 0.0;',
-        '   }',
-
-        '   gl_FragColor = vec4(0.0, 0.0, 0.0, opacity * 0.5);',
-        '}'
-    ].join('\n');
-
-    public BACKGROUND_VERTEX_SHADER_SOURCE: string = [
-        'precision highp float;',
-        'attribute vec2 a_position;',
-        'varying vec2 v_position;',
-
-        'void main () {',
-        '   v_position = a_position;',
-        '   gl_Position = vec4(a_position, 0.0, 1.0);',
-        '}'
-    ].join('\n');
-
-    public BACKGROUND_FRAGMENT_SHADER_SOURCE: string = [
-        'precision highp float;',
-        'varying vec2 v_position;',
-
-        'void main () {',
-        '   float dist = length(v_position);',
-        '   gl_FragColor = vec4(vec3(1.0) - dist * ' + this.BACKGROUND_DISTANCE_SCALE.toFixed(8) + ', 1.0);',
-        '}'
-    ].join('\n');
-
-
-}
-
-class GraphicsLib {
-
-    public static makeIdentityMatrix(matrix: Float32Array): Float32Array {
-        matrix[0] = 1.0;
-        matrix[1] = 0.0;
-        matrix[2] = 0.0;
-        matrix[3] = 0.0;
-        matrix[4] = 0.0;
-        matrix[5] = 1.0;
-        matrix[6] = 0.0;
-        matrix[7] = 0.0;
-        matrix[8] = 0.0;
-        matrix[9] = 0.0;
-        matrix[10] = 1.0;
-        matrix[11] = 0.0;
-        matrix[12] = 0.0;
-        matrix[13] = 0.0;
-        matrix[14] = 0.0;
-        matrix[15] = 1.0;
-        return matrix;
-    }
-
-    public static makeXRotationMatrix(matrix: Float32Array, angle: number): Float32Array {
-        matrix[0] = 1.0;
-        matrix[1] = 0.0;
-        matrix[2] = 0.0;
-        matrix[3] = 0.0;
-        matrix[4] = 0.0;
-        matrix[5] = Math.cos(angle);
-        matrix[6] = Math.sin(angle);
-        matrix[7] = 0.0;
-        matrix[8] = 0.0;
-        matrix[9] = -Math.sin(angle);
-        matrix[10] = Math.cos(angle);
-        matrix[11] = 0.0;
-        matrix[12] = 0.0;
-        matrix[13] = 0.0;
-        matrix[14] = 0.0;
-        matrix[15] = 1.0;
-        return matrix;
-    }
-
-    public static makeYRotationMatrix(matrix: Float32Array, angle: number): Float32Array {
-        matrix[0] = Math.cos(angle);
-        matrix[1] = 0.0;
-        matrix[2] = -Math.sin(angle);
-        matrix[3] = 0.0;
-        matrix[4] = 0.0;
-        matrix[5] = 1.0;
-        matrix[6] = 0.0;
-        matrix[7] = 0.0;
-        matrix[8] = Math.sin(angle);
-        matrix[9] = 0.0;
-        matrix[10] = Math.cos(angle);
-        matrix[11] = 0.0;
-        matrix[12] = 0.0;
-        matrix[13] = 0.0;
-        matrix[14] = 0.0;
-        matrix[15] = 1.0;
-        return matrix;
-    }
-
-    public static makePerspectiveMatrix(matrix: Float32Array, fov: number, aspect: number, near: number, far: number): Float32Array {
-        var f: number = Math.tan(0.5 * (Math.PI - fov)),
-            range = near - far;
-
-        matrix[0] = f / aspect;
-        matrix[1] = 0;
-        matrix[2] = 0;
-        matrix[3] = 0;
-        matrix[4] = 0;
-        matrix[5] = f;
-        matrix[6] = 0;
-        matrix[7] = 0;
-        matrix[8] = 0;
-        matrix[9] = 0;
-        matrix[10] = far / range;
-        matrix[11] = -1;
-        matrix[12] = 0;
-        matrix[13] = 0;
-        matrix[14] = (near * far) / range;
-        matrix[15] = 0.0;
-
-        return matrix;
-    }
-
-    public static premultiplyMatrix(out: Float32Array, matrixA: Float32Array, matrixB: Float32Array): Float32Array { //out = matrixB * matrixA
-        var b0 = matrixB[0], b4 = matrixB[4], b8 = matrixB[8], b12 = matrixB[12],
-            b1 = matrixB[1], b5 = matrixB[5], b9 = matrixB[9], b13 = matrixB[13],
-            b2 = matrixB[2], b6 = matrixB[6], b10 = matrixB[10], b14 = matrixB[14],
-            b3 = matrixB[3], b7 = matrixB[7], b11 = matrixB[11], b15 = matrixB[15],
-
-            aX = matrixA[0], aY = matrixA[1], aZ = matrixA[2], aW = matrixA[3];
-        out[0] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
-        out[1] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
-        out[2] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
-        out[3] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
-
-        aX = matrixA[4];
-        aY = matrixA[5];
-        aZ = matrixA[6];
-        aW = matrixA[7];
-
-        out[4] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
-        out[5] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
-        out[6] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
-        out[7] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
-
-        aX = matrixA[8];
-        aY = matrixA[9];
-        aZ = matrixA[10];
-        aW = matrixA[11];
-
-        out[8] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
-        out[9] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
-        out[10] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
-        out[11] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
-
-        aX = matrixA[12];
-        aY = matrixA[13];
-        aZ = matrixA[14];
-        aW = matrixA[15];
-
-        out[12] = b0 * aX + b4 * aY + b8 * aZ + b12 * aW;
-        out[13] = b1 * aX + b5 * aY + b9 * aZ + b13 * aW;
-        out[14] = b2 * aX + b6 * aY + b10 * aZ + b14 * aW;
-        out[15] = b3 * aX + b7 * aY + b11 * aZ + b15 * aW;
-
-        return out;
-    }
-
-    public static normalizeVector(out: Float32Array, v: Float32Array) {
-        var inverseMagnitude = 1.0 / Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-        out[0] = v[0] * inverseMagnitude;
-        out[1] = v[1] * inverseMagnitude;
-        out[2] = v[2] * inverseMagnitude;
-    }
-
-    public static dotVectors(a: any, b: any): any {
-        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-    }
-
-    public static makeOrthographicMatrix(matrix: any, left: any, right: any, bottom: any, top: any, near: any, far: any): void {
-        matrix[0] = 2 / (right - left);
-        matrix[1] = 0;
-        matrix[2] = 0;
-        matrix[3] = 0;
-        matrix[4] = 0;
-        matrix[5] = 2 / (top - bottom);
-        matrix[6] = 0;
-        matrix[7] = 0;
-        matrix[8] = 0;
-        matrix[9] = 0;
-        matrix[10] = -2 / (far - near);
-        matrix[11] = 0;
-        matrix[12] = -(right + left) / (right - left);
-        matrix[13] = -(top + bottom) / (top - bottom);
-        matrix[14] = -(far + near) / (far - near);
-        matrix[15] = 1;
-    }
-
-    public static makeLookAtMatrix(matrix: any, eye: any, target: any, up: any) { //up is assumed to be normalized
-        var forwardX = eye[0] - target[0],
-            forwardY = eye[1] - target[1],
-            forwardZ = eye[2] - target[2];
-        var forwardMagnitude = Math.sqrt(forwardX * forwardX + forwardY * forwardY + forwardZ * forwardZ);
-        forwardX /= forwardMagnitude;
-        forwardY /= forwardMagnitude;
-        forwardZ /= forwardMagnitude;
-
-        var rightX = up[2] * forwardY - up[1] * forwardZ;
-        var rightY = up[0] * forwardZ - up[2] * forwardX;
-        var rightZ = up[1] * forwardX - up[0] * forwardY;
-
-        var rightMagnitude = Math.sqrt(rightX * rightX + rightY * rightY + rightZ * rightZ);
-        rightX /= rightMagnitude;
-        rightY /= rightMagnitude;
-        rightZ /= rightMagnitude;
-
-        var newUpX = forwardY * rightZ - forwardZ * rightY;
-        var newUpY = forwardZ * rightX - forwardX * rightZ;
-        var newUpZ = forwardX * rightY - forwardY * rightX;
-
-        var newUpMagnitude = Math.sqrt(newUpX * newUpX + newUpY * newUpY + newUpZ * newUpZ);
-        newUpX /= newUpMagnitude;
-        newUpY /= newUpMagnitude;
-        newUpZ /= newUpMagnitude;
-
-        matrix[0] = rightX;
-        matrix[1] = newUpX;
-        matrix[2] = forwardX;
-        matrix[3] = 0;
-        matrix[4] = rightY;
-        matrix[5] = newUpY;
-        matrix[6] = forwardY;
-        matrix[7] = 0;
-        matrix[8] = rightZ;
-        matrix[9] = newUpZ;
-        matrix[10] = forwardZ;
-        matrix[11] = 0;
-        matrix[12] = -(rightX * eye[0] + rightY * eye[1] + rightZ * eye[2]);
-        matrix[13] = -(newUpX * eye[0] + newUpY * eye[1] + newUpZ * eye[2]);
-        matrix[14] = -(forwardX * eye[0] + forwardY * eye[1] + forwardZ * eye[2]);
-        matrix[15] = 1;
-    }
-
-    public static randomPointInSphere() {
-        var lambda = Math.random();
-        var u = Math.random() * 2.0 - 1.0;
-        var phi = Math.random() * 2.0 * Math.PI;
-
-        return [
-            Math.pow(lambda, 1 / 3) * Math.sqrt(1.0 - u * u) * Math.cos(phi),
-            Math.pow(lambda, 1 / 3) * Math.sqrt(1.0 - u * u) * Math.sin(phi),
-            Math.pow(lambda, 1 / 3) * u
-        ];
-    }
-
-    public static log2(x: number): any {
-        return Math.log(x) / Math.log(2);
-    }
-
-    public static hsvToRGB(h: number, s: number, v: number): any {
-        h = h % 1;
-
-        var c = v * s;
-
-        var hDash = h * 6;
-
-        var x = c * (1 - Math.abs(hDash % 2 - 1));
-
-        var mod = Math.floor(hDash);
-
-        var r = [c, x, 0, 0, x, c][mod];
-        var g = [x, c, c, x, 0, 0][mod];
-        var b = [0, 0, x, c, c, x][mod];
-
-        var m = v - c;
-
-        r += m;
-        g += m;
-        b += m;
-
-        return [r, g, b];
-    }
-
-    public static rgbToString(color: any): any {
-        return 'rgb(' + (color[0] * 255).toFixed(0) + ',' + (color[1] * 255).toFixed(0) + ',' + (color[2] * 255).toFixed(0) + ')';
-    }
-}
-
-class Scene {
-
-
-    private MAX_DELTA_TIME: number = 0.2;
-
-    private PRESIMULATION_DELTA_TIME: number = 0.1;
-
-    private QUALITY_LEVELS = [
-        {
-            resolution: [256, 256],
-            diameter: 0.03,
-            alpha: 0.5
-        },
-        //{
-        //    resolution: [512, 256],
-        //    diameter: 0.025,
-        //    alpha: 0.4
-        //},
-        //{
-        //    resolution: [512, 512],
-        //    diameter: 0.02,
-        //    alpha: 0.3
-        //},
-        //{
-        //    resolution: [1024, 512],
-        //    diameter: 0.015,
-        //    alpha: 0.25
-        //},
-        //{
-        //    resolution: [1024, 1024],
-        //    diameter: 0.0125,
-        //    alpha: 0.2
-        //},
-        //{
-        //    resolution: [2048, 1024],
-        //    diameter: 0.01,
-        //    alpha: 0.2
-        //},
-    ];
-
-    private OPACITY_TEXTURE_RESOLUTION: number = 1024;
-
-    private LIGHT_DIRECTION = [0.0, -1.0, 0.0]; //points away from the light source
-    private LIGHT_UP_VECTOR = [0.0, 0.0, 1.0];
-
-    private SLICES: number = 128; //128;
-
-    private SORT_PASSES_PER_FRAME: number = 100; //50;
-
-    private ASPECT_RATIO: number = 16 / 9;
-
-    private PROJECTION_NEAR: number = 0.01;
-    private PROJECTION_FAR: number = 10.0;
-    private PROJECTION_FOV: number = (60 / 180) * Math.PI;
-
-    public PARTICLE_SATURATION: number = 0.75;
-    public PARTICLE_VALUE: number = 1.0;
-
-    private FLOOR_ORIGIN: any = [-2.0, -0.75, -5.0];
-    private FLOOR_WIDTH: number = 100.0;
-    private FLOOR_HEIGHT: number = 100.0;
-
-    private LIGHT_PROJECTION_LEFT: number = -5.0;
-    private LIGHT_PROJECTION_RIGHT: number = 5.0;
-    private LIGHT_PROJECTION_BOTTOM: number = -5.0;
-    private LIGHT_PROJECTION_TOP: number = 5.0;
-    private LIGHT_PROJECTION_NEAR: number = -50.0;
-    private LIGHT_PROJECTION_FAR: number = 50.0;
-
-    private SPAWN_RADIUS: number = 0.6;
-    private BASE_LIFETIME: number = 10;
-    private MAX_ADDITIONAL_LIFETIME: number = 5;
-    private OFFSET_RADIUS: number = 0.5;
-
-    public INITIAL_SPEED: number = 2;
-    public INITIAL_TURBULENCE: number = 0.2;
-
-    private options: any = {
-        premultipliedAlpha: false,
-        alpha: true
-    };
-
-    public hue: number = 0;
-    public timeScale: number = this.INITIAL_SPEED;
-    public persistence: number = this.INITIAL_TURBULENCE;
-    private qualityLevel: any = -1;
-
-    private particleCountWidth: number = 0;
-    private particleCountHeight: number = 0;
-    private particleCount: number = this.particleCountWidth * this.particleCountHeight;
-
-    private particleDiameter: number = 0.0;
-    private particleAlpha: number = 0.0;
-
-    private changingParticleCount: boolean = false;
-    private oldParticleDiameter: number;
-    private oldParticleCountWidth: number;
-    private oldParticleCountHeight: number;
-
-    private spawnTexture: any;
-
-
-
-    private shaderLib: ShaderLib;
-
-
-    private canvas: webgl.HTMLCanvasElement;
-    private camera: Camera;
-    private gl: webgl.WebGLRenderingContext;
-    private pso: PipelineState;
-    private renderer: ParticleRenderer;
-
-    private particleVertexBuffers: any; //one for each quality level
-    private spawnTextures: any; //one for each quality level
-
-    constructor(private sc: IFlowGlScope) {
-
-        this.renderer = new ParticleRenderer();
-        this.pso = new PipelineState();
-        this.shaderLib = new ShaderLib(this.FLOOR_ORIGIN, this.PARTICLE_SATURATION, this.PARTICLE_VALUE);
-
-        sc.hasWebGLSupportWithExtensions = (extensions: any) => this.hasWebGLSupportWithExtensions(extensions);
-        sc.initCanvas = (canvas: any) => this.initCanvas(canvas);
-
-
-    }
-
-    private changeQualityLevel(newLevel: number): void {
-        this.qualityLevel = newLevel;
-
-        this.particleAlpha = this.QUALITY_LEVELS[this.qualityLevel].alpha;
-        this.changingParticleCount = true;
-
-        this.oldParticleDiameter = this.particleDiameter;
-        this.particleDiameter = this.QUALITY_LEVELS[this.qualityLevel].diameter;
-
-        this.oldParticleCountWidth = this.particleCountWidth;
-        this.oldParticleCountHeight = this.particleCountHeight;
-        this.particleCountWidth = this.QUALITY_LEVELS[this.qualityLevel].resolution[0];
-        this.particleCountHeight = this.QUALITY_LEVELS[this.qualityLevel].resolution[1];
-
-        this.particleCount = this.particleCountWidth * this.particleCountHeight;
-    }
-
-
-
-    private initCanvas(canvas: webgl.HTMLCanvasElement): void {
-        this.canvas = canvas;
-        this.gl = canvas.getContext('webgl', this.options) || canvas.getContext('experimental-webgl', this.options);
-
-        this.gl.getExtension('OES_texture_float');
-        this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
-
-        this.camera = new Camera(this.canvas);
-
-        this.renderer.firstFrame = true;
-        this.renderer.flipped = false;
-        this.pso.lastTime = 0.0;
-
-        this.loadParticleResources();
-
-        this.loadResources();
-
-        $(window).on("resize", this.onresize.bind(this));
-        this.onresize();
-        this.render(this.pso.lastTime);
-
-
-    }
-
-    private onresize(): void {
-        var aspectRatio = window.innerWidth / window.innerHeight;
-        GraphicsLib.makePerspectiveMatrix(this.pso.projectionMatrix, this.PROJECTION_FOV, aspectRatio, this.PROJECTION_NEAR, this.PROJECTION_FAR);
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-    };
-
-    private loadParticleResources(): void {
-
-        var maxParticleCount = this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0] * this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1];
-
-        var randomNumbers = [];
-        var randomSpherePoints = [];
-
-        for (var i = 0; i < maxParticleCount; ++i) {
-            randomNumbers[i] = Math.random();
-
-            var point = GraphicsLib.randomPointInSphere();
-            randomSpherePoints.push(point);
+            catch (e) {
+                gGLContext = null;
+            }
+            if (gGLContext)
+                break;
         }
 
+        return gGLContext;
+    }
 
+    private createNoWebGLMessage(base: any, old: any) {
+        var div = document.createElement("div");
+        div.style.left = "0px";
+        div.style.top = "0px";
+        div.style.width = "100%";
+        div.style.height = "100%";
+        div.style.padding = "0px";
+        div.style.margin = "0px";
+        div.style.position = "absolute";
+        div.style.backgroundColor = "#202020";
+        div.style.borderRadius = "8px";
+        div.style.cursor = "pointer";
+        //div.style.visibilty = "hidden";
+        base.replaceChild(div, old);
 
-        this.particleVertexBuffers = []; //one for each quality level
-        this.spawnTextures = []; //one for each quality level
+        var divText = document.createElement("div");
+        divText.style.width = "86%";
+        divText.style.height = "90%";
+        divText.style.paddingLeft = "7%";
+        divText.style.paddingRight = "7%";
+        divText.style.paddingTop = "10%";
+        divText.style.paddingBottom = "0px";
+        divText.style.color = "#ffffff";
+        var fontSize = (base.offsetWidth / 32) | 0;
+        if (fontSize < 6) fontSize = 6;
+        if (fontSize > 16) fontSize = 16;
+        divText.style.font = "italic bold " + fontSize + "px arial,serif";
+        divText.innerHTML = 'Shadertoy needs a WebGL-enabled browser. Minimum Requirements: <ul><li>Firefox 17</li><li>Chrome 23</li><li>Internet Explorer 11</li><li>Safari 8</li></ul>';
+        div.appendChild(divText);
+    }
 
-        //spawn texture
-        for (var i = 0; i < this.QUALITY_LEVELS.length; ++i) {
-            var width = this.QUALITY_LEVELS[i].resolution[0];
-            var height = this.QUALITY_LEVELS[i].resolution[1];
+    ParseJSON(jsn: any) {
+        try {
+            var res = this.mEffect.ParseJSON(jsn);
 
-            var count = width * height;
-
-            this.particleVertexBuffers[i] = this.gl.createBuffer();
-
-            var particleTextureCoordinates = new Float32Array(width * height * 2);
-            for (var y = 0; y < height; ++y) {
-                for (var x = 0; x < width; ++x) {
-                    particleTextureCoordinates[(y * width + x) * 2] = (x + 0.5) / width;
-                    particleTextureCoordinates[(y * width + x) * 2 + 1] = (y + 0.5) / height;
-                }
+            var num = res.length;
+            for (var i = 0; i < num; i++) {
+                this.mDocs[i] = (<any>window)['CodeMirror'].Doc(res[i].mShader, "text/x-glsl");
             }
 
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleVertexBuffers[i]);
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, particleTextureCoordinates, this.gl.STATIC_DRAW);
+            this.mActiveDoc = 0;
 
-            // particleTextureCoordinates.length = 0; //delete particleTextureCoordinates;
+            this.mCodeEditor.swapDoc(this.mDocs[this.mActiveDoc]);
+            this.setChars();
+            this.setFlags();
+            this.mCodeEditor.clearHistory()
+            this.setErrors(res[this.mActiveDoc].mError, true);
 
-            var spawnData = new Float32Array(count * 4);
-            for (var j = 0; j < count; ++j) {
-                var position = randomSpherePoints[j];
+            this.setPasses(res);
+            this.ResetTime();
 
-                var positionX = position[0] * this.SPAWN_RADIUS;
-                var positionY = position[1] * this.SPAWN_RADIUS;
-                var positionZ = position[2] * this.SPAWN_RADIUS;
-                var lifetime = this.BASE_LIFETIME + randomNumbers[j] * this.MAX_ADDITIONAL_LIFETIME;
+            this.mInfo = jsn.info;
 
-                spawnData[j * 4] = positionX;
-                spawnData[j * 4 + 1] = positionY;
-                spawnData[j * 4 + 2] = positionZ;
-                spawnData[j * 4 + 3] = lifetime;
-            }
+            return {
+                mSuccess: true,
+                mFailed: res.mFailed,
+                mDate: jsn.info.date,
+                mViewed: jsn.info.viewed,
+                mName: jsn.info.name,
+                mUserName: jsn.info.username,
+                mDescription: jsn.info.description,
+                mLikes: jsn.info.likes,
+                mPublished: jsn.info.published,
+                mHasLiked: jsn.info.hasliked,
+                mTags: jsn.info.tags
+            };
 
-            this.spawnTextures[i] = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, width, height, spawnData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-
-            // spawnData.length = 0; //delete spawnData;
         }
-
-        //offset texture
-        var offsetData = new Float32Array(maxParticleCount * 4);
-        for (var i = 0; i < maxParticleCount; ++i) {
-            var position = randomSpherePoints[i];
-
-            var positionX = position[0] * this.OFFSET_RADIUS;
-            var positionY = position[1] * this.OFFSET_RADIUS;
-            var positionZ = position[2] * this.OFFSET_RADIUS;
-
-            offsetData[i * 4] = positionX;
-            offsetData[i * 4 + 1] = positionY;
-            offsetData[i * 4 + 2] = positionZ;
-            offsetData[i * 4 + 3] = 0.0;
+        catch (e) {
+            console.log(e);
+            return { mSuccess: false };
         }
-
-        this.pso.offsetTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[0], this.QUALITY_LEVELS[this.QUALITY_LEVELS.length - 1].resolution[1], offsetData, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-
-
-        randomNumbers.length = 0; //delete randomNumbers;
-        randomSpherePoints.length = 0; //delete randomSpherePoints;
-        // offsetData.length = 0; //delete offsetData;
 
     }
 
-    private loadResources(): void {
+    private refreshTexturThumbail(myself: any, slot: any, img: any, forceFrame: any, gui: any, guiID: any, time: any, passID: any) {
+        if (passID != myself.mActiveDoc) return;
+
+        //var canvas: any = document.getElementById('myUnitCanvas' + slot);
+
+        //var w = canvas.width;
+        //var h = canvas.height;
+
+        //var ctx = canvas.getContext('2d');
+        //if (img == null) {
+        //    ctx.fillStyle = "#000000";
+        //    ctx.fillRect(0, 0, w, h);
+
+        //    if (guiID == 2) {
+        //        ctx.strokeStyle = "#808080";
+        //        ctx.lineWidth = 1;
+        //        ctx.beginPath();
+        //        var num = w / 2;
+        //        for (var i = 0; i < num; i++) {
+        //            var y = Math.sin(64.0 * 6.2831 * i / num + time) * Math.sin(2.0 * 6.2831 * i / num + time);
+        //            var ix = w * i / num;
+        //            var iy = h * (0.5 + 0.4 * y);
+        //            if (i == 0) ctx.moveTo(ix, iy);
+        //            else ctx.lineTo(ix, iy);
+        //        }
+        //        ctx.stroke();
+
+        //        var str = "Audio error";
+        //        ctx.font = "normal bold 20px Arial";
+        //        ctx.lineWidth = 4;
+        //        ctx.strokeStyle = "#000000";
+        //        ctx.strokeText(str, 14, h / 2);
+        //        ctx.fillStyle = "#ff0000";
+        //        ctx.fillText(str, 14, h / 2);
+
+        //        var pb: any = document.getElementById("myPauseButton" + slot);
+        //        pb.src = "/img/pause.png";
+        //    }
+        //}
+        //else {
+        //    if (guiID == 0 || guiID == 1 || guiID == 3) {
+        //        ctx.fillStyle = "#000000";
+        //        ctx.fillRect(0, 0, w, h);
+        //        ctx.drawImage(img, 0, 0, w, h);
+        //    }
+        //    else if (guiID == 2) {
+        //        ctx.fillStyle = "#000000";
+        //        ctx.fillRect(0, 0, w - 24, h);
+
+        //        ctx.fillStyle = "#ffffff";
+
+        //        var numfft = img.length; numfft /= 2; if (numfft > 512) numfft = 512;
+        //        var num = 32;
+        //        var numb = (numfft / num) | 0;
+        //        var s = ((w - 24 - 8 * 2) / num);
+        //        var k = 0;
+        //        for (var i = 0; i < num; i++) {
+        //            var f = 0.0;
+        //            for (var j = 0; j < numb; j++) {
+        //                f += img[k++];
+        //            }
+        //            f /= numb;
+        //            f /= 255.0;
+
+        //            var fr = f;
+        //            var fg = 4.0 * f * (1.0 - f);
+        //            var fb = 1.0 - f;
+
+        //            var rr = (255.0 * fr) | 0;
+        //            var gg = (255.0 * fg) | 0;
+        //            var bb = (255.0 * fb) | 0;
+        //            //             ctx.fillStyle = "rgb(" + rr + "," + gg + "," + bb + ");"
+
+        //            var decColor = 0x1000000 + bb + 0x100 * gg + 0x10000 * rr;
+        //            ctx.fillStyle = '#' + decColor.toString(16).substr(1);
 
 
-
-        //TEXTURES
-        this.pso.particleTextureA = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, undefined, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-        this.pso.particleTextureB = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.FLOAT, 1, 1, undefined, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.NEAREST, this.gl.NEAREST);
-        this.pso.opacityTexture = this.buildTexture(this.gl, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION, undefined, this.gl.CLAMP_TO_EDGE, this.gl.CLAMP_TO_EDGE, this.gl.LINEAR, this.gl.LINEAR); //opacity from the light's point of view
-
-
-
-        //FRAMEBUFFERS
-        this.pso.resampleFramebuffer = this.gl.createFramebuffer();
-        this.pso.simulationFramebuffer = this.gl.createFramebuffer();
-        this.pso.sortFramebuffer = this.gl.createFramebuffer();
-        this.pso.opacityFramebuffer = this.buildFramebuffer(this.gl, this.pso.opacityTexture);
-
-
-
-        //BUFFERS
-        this.pso.fullscreenVertexBuffer = this.gl.createBuffer();
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), this.gl.STATIC_DRAW);
-
-        this.pso.floorVertexBuffer = this.gl.createBuffer();
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.floorVertexBuffer);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([
-            this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
-            this.shaderLib.FLOOR_ORIGIN[0], this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT,
-            this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2],
-            this.shaderLib.FLOOR_ORIGIN[0] + this.FLOOR_WIDTH, this.shaderLib.FLOOR_ORIGIN[1], this.shaderLib.FLOOR_ORIGIN[2] + this.FLOOR_HEIGHT
-        ]), this.gl.STATIC_DRAW);
-
-
-
-
-        //MATRIX'S
-        this.pso.projectionMatrix = GraphicsLib.makePerspectiveMatrix(new Float32Array(16), this.PROJECTION_FOV, this.ASPECT_RATIO, this.PROJECTION_NEAR, this.PROJECTION_FAR);
-
-        this.pso.lightViewMatrix = new Float32Array(16);
-        GraphicsLib.makeLookAtMatrix(this.pso.lightViewMatrix, [0.0, 0.0, 0.0], this.LIGHT_DIRECTION, this.LIGHT_UP_VECTOR);
-
-        this.pso.lightProjectionMatrix = new Float32Array(16);
-        GraphicsLib.makeOrthographicMatrix(this.pso.lightProjectionMatrix, this.LIGHT_PROJECTION_LEFT, this.LIGHT_PROJECTION_RIGHT, this.LIGHT_PROJECTION_BOTTOM, this.LIGHT_PROJECTION_TOP, this.LIGHT_PROJECTION_NEAR, this.LIGHT_PROJECTION_FAR);
-
-        this.pso.lightViewProjectionMatrix = new Float32Array(16);
-        GraphicsLib.premultiplyMatrix(this.pso.lightViewProjectionMatrix, this.pso.lightViewMatrix, this.pso.lightProjectionMatrix);
+        //            var a = Math.max(2, f * (h - 2 * 20));
+        //            ctx.fillRect(8 + i * s, h - 20 - a, 3 * s / 4, a);
+        //        }
+        //    }
+        //    else if (guiID == 4) {
+        //        /*
+        //                 ctx.fillStyle = "#404040";
+        //                 ctx.fillRect(0,0,w,h);
+        //                 ctx.lineWidth = 2;
+        //                 ctx.strokeStyle = "#ffffff";
+        //                 ctx.strokeRect(w/10,3*h/10,8*w/10,5*h/10);
+        //                 ctx.fillStyle = "#ffffff";
+        //                 var s = (7*w/10)/(2*12);
+        //                 for( var i=0; i<48; i++ )
+        //                 {
+        //                     var u = (i%12) | 0;
+        //                     var v = (i/12) | 0;
+        //                     ctx.fillRect( w/10+s+s*2*u, 3*h/10 + s + s*2*v, s, s );
+        //                 }
+        //          */
+        //        var thereskey = false;
+        //        ctx.fillStyle = "#ffffff";
+        //        for (var i = 0; i < 256; i++) {
+        //            var x = (w * i / 256) | 0;
+        //            if (img.mData[i] > 0) {
+        //                thereskey = true;
+        //                //ctx.fillRect( x, 0+h/4, 1, h/2 );
+        //                break;
+        //            }
+        //        }
 
 
+        //        ctx.fillStyle = "#000000";
+        //        ctx.fillRect(0, 0, w, h);
+
+        //        ctx.drawImage(img.mImage, 0, 20, w, h - 20);
+
+        //        if (thereskey) {
+        //            ctx.fillStyle = "#ff8040";
+        //            ctx.globalAlpha = 0.4;
+        //            ctx.fillRect(0, 0, w, h);
+        //            ctx.globalAlpha = 1.0;
+        //        }
+
+        //    }
+
+        //}
+
+        //ctx.font = "normal normal 12px Arial";
+        //ctx.strokeStyle = "#000000";
+        //ctx.fillStyle = "#000000";
+        //ctx.lineWidth = 4;
+        //ctx.strokeText("iChannel" + slot, 4, 14);
+        //ctx.fillStyle = "#ffffff";
+        //ctx.strokeStyle = "#ffffff";
+        //ctx.fillText("iChannel" + slot, 4, 14);
+
+        //if (time > 0.0) {
+        //    var str = time.toFixed(2) + "s";
+        //    ctx.font = "normal normal 10px Arial";
+        //    ctx.strokeStyle = "#000000";
+        //    ctx.lineWidth = 4;
+        //    ctx.strokeText(str, 4, 96);
+        //    ctx.fillStyle = "#ffffff";
+        //    ctx.fillText(str, 4, 96);
+        //}
+
+        ////--------------
+
+        //if (gui == true) {
+        //    var ele: any = document.getElementById("inputSelectorControls" + slot);
+
+        //    if (guiID == 0) ele.style.visibility = "hidden";
+        //    if (guiID == 1) ele.style.visibility = "visible";
+        //    if (guiID == 2) ele.style.visibility = "visible";
+        //    if (guiID == 3) ele.style.visibility = "visible";
+
+        //    if (guiID == 3) {
+        //        var me = this;
+
+        //        var ele1: any = document.getElementById("myPauseButton" + slot);
+        //        ele1.src = "/img/next.png";
+        //        ele1.title = "next";
+        //        ele1.onclick = function (ev) { var ele = this.getSourceElement(ev); var r = me.PauseInput(ele.mId); }
 
 
-        //SORTING
-        this.pso.totalSortSteps = (GraphicsLib.log2(this.particleCount) * (GraphicsLib.log2(this.particleCount) + 1)) / 2;
-        this.pso.sortStepsLeft = this.pso.totalSortSteps;
-        this.pso.sortPass = -1;
-        this.pso.sortStage = -1;
+        //        var ele2: any = document.getElementById("myRewindButton" + slot);
+        //        ele2.src = "/img/previous.png";
+        //        ele2.title = "previous";
+        //        ele2.onclick = function (ev) { var ele = this.getSourceElement(ev); var r = me.RewindInput(ele.mId); }
 
+        //        var ele3: any = document.getElementById("myMuteButton" + slot);
+        //        ele3.src = "/img/rewind.png";
+        //        ele3.title = "rewind";
+        //        ele3.onclick = function (ev) { var ele = this.getSourceElement(ev); var r = me.MuteInput(ele.mId); }
+        //    }
 
+        //}
 
+        //--------------
 
-        //PROGRAMS
-        this.pso.simulationProgramWrapper = this.buildProgramWrapper(this.gl,
-            this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SIMULATION_VERTEX_SHADER_SOURCE),
-            this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SIMULATION_FRAGMENT_SHADER_SOURCE),
-            { 'a_position': 0 }
-        );
-
-        this.pso.renderingProgramWrapper = this.buildProgramWrapper(this.gl,
-            this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.RENDERING_VERTEX_SHADER_SOURCE),
-            this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.RENDERING_FRAGMENT_SHADER_SOURCE),
-            { 'a_textureCoordinates': 0 }
-        );
-
-        this.pso.opacityProgramWrapper = this.buildProgramWrapper(this.gl,
-            this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.OPACITY_VERTEX_SHADER_SOURCE),
-            this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.OPACITY_FRAGMENT_SHADER_SOURCE),
-            { 'a_textureCoordinates': 0 }
-        );
-
-        this.pso.sortProgramWrapper = this.buildProgramWrapper(this.gl,
-            this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.SORT_VERTEX_SHADER_SOURCE),
-            this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.SORT_FRAGMENT_SHADER_SOURCE),
-            { 'a_position': 0 }
-        );
-
-        this.pso.resampleProgramWrapper = this.buildProgramWrapper(this.gl,
-            this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.RESAMPLE_VERTEX_SHADER_SOURCE),
-            this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.RESAMPLE_FRAGMENT_SHADER_SOURCE),
-            { 'a_position': 0 }
-        );
-
-        this.pso.floorProgramWrapper = this.buildProgramWrapper(this.gl,
-            this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.FLOOR_VERTEX_SHADER_SOURCE),
-            this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.FLOOR_FRAGMENT_SHADER_SOURCE),
-            { 'a_vertexPosition': 0 }
-        );
-
-        this.pso.backgroundProgramWrapper = this.buildProgramWrapper(this.gl,
-            this.buildShader(this.gl, this.gl.VERTEX_SHADER, this.shaderLib.BACKGROUND_VERTEX_SHADER_SOURCE),
-            this.buildShader(this.gl, this.gl.FRAGMENT_SHADER, this.shaderLib.BACKGROUND_FRAGMENT_SHADER_SOURCE),
-            { 'a_position': 0 }
-        );
-
-
-
-        this.changeQualityLevel(0);
-
+        myself.mForceFrame = forceFrame;
     }
 
-    private render(currentTime: number): void {
-        var deltaTime = (currentTime - this.pso.lastTime) / 1000 || 0.0;
-        this.pso.lastTime = currentTime;
-
-        if (deltaTime > this.MAX_DELTA_TIME) {
-            deltaTime = 0;
-        }
-
-
-        if (this.changingParticleCount) {
-            deltaTime = 0;
-            this.changingParticleCount = false;
-
-            this.pso.particleVertexBuffer = this.particleVertexBuffers[this.qualityLevel];
-            this.spawnTexture = this.spawnTextures[this.qualityLevel];
-
-            //reset sort
-            this.pso.totalSortSteps = (GraphicsLib.log2(this.particleCount) * (GraphicsLib.log2(this.particleCount) + 1)) / 2;
-            this.pso.sortStepsLeft = this.pso.totalSortSteps;
-            this.pso.sortPass = -1;
-            this.pso.sortStage = -1;
+    private getSourceElement(e: any) {
+        var ele = null;
+        if (e.target) ele = e.target;
+        if (e.srcElement) ele = e.srcElement;
+        return ele;
+    }
 
 
-            //Fill Particle Textures A/B
-            if (this.oldParticleCountHeight === 0 && this.oldParticleCountWidth === 0) { //initial generation
-                var particleData = new Float32Array(this.particleCount * 4);
+    StartRendering() {
+        if (this.mIsRendering) return;
+        else this.mIsRendering = true;
 
-                for (var i = 0; i < this.particleCount; ++i) {
-                    var position = GraphicsLib.randomPointInSphere();
+        //var me = this;
 
-                    var positionX = position[0] * this.SPAWN_RADIUS;
-                    var positionY = position[1] * this.SPAWN_RADIUS;
-                    var positionZ = position[2] * this.SPAWN_RADIUS;
+        let renderLoop = () => {
 
-                    particleData[i * 4] = positionX;
-                    particleData[i * 4 + 1] = positionY;
-                    particleData[i * 4 + 2] = positionZ;
-                    particleData[i * 4 + 3] = Math.random() * this.BASE_LIFETIME;
-                }
-
-                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
-                this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, particleData);
-
-                // particleData.length = 0; //delete particleData;
-
-                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureB);
-                this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, undefined);
-            } else {
-                //resample from A into B
-                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureB);
-                this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, undefined);
-
-                this.gl.enableVertexAttribArray(0);
-                this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
-                this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
-
-                this.gl.enableVertexAttribArray(0);
-
-                this.gl.useProgram(this.pso.resampleProgramWrapper.program);
-                this.gl.uniform1i(this.pso.resampleProgramWrapper.uniformLocations['u_particleTexture'], 0);
-                this.gl.uniform1i(this.pso.resampleProgramWrapper.uniformLocations['u_offsetTexture'], 1);
-
-                if (this.particleCount > this.oldParticleCountWidth * this.oldParticleCountHeight) { //if we are upsampling we need to add random sphere offsets
-                    this.gl.uniform1f(this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], this.oldParticleDiameter);
-                } else { //if downsampling we can just leave positions as they are
-                    this.gl.uniform1f(this.pso.resampleProgramWrapper.uniformLocations['u_offsetScale'], 0);
-                }
-
-                this.gl.activeTexture(this.gl.TEXTURE0);
-                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
-
-                this.gl.activeTexture(this.gl.TEXTURE1);
-                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.offsetTexture);
-
-                this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.resampleFramebuffer);
-                this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.pso.particleTextureB, 0);
-
-                this.gl.viewport(0, 0, this.particleCountWidth, this.particleCountHeight);
-
-                this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-
-                this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
-                this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.particleCountWidth, this.particleCountHeight, 0, this.gl.RGBA, this.gl.FLOAT, undefined);
-
-                var temp = this.pso.particleTextureA;
-                this.pso.particleTextureA = this.pso.particleTextureB;
-                this.pso.particleTextureB = temp;
-            }
-        }
+            if (this.mGLContext == null) return;
 
 
-        var flippedThisFrame = false; //if the order reversed this frame
+            requestAnimationFrame(renderLoop);
 
-        var viewDirection = this.camera.getViewDirection();
-
-        var halfVector: Float32Array;
-
-        if (GraphicsLib.dotVectors(viewDirection, this.LIGHT_DIRECTION) > 0.0) {
-            halfVector = new Float32Array([
-                this.LIGHT_DIRECTION[0] + viewDirection[0],
-                this.LIGHT_DIRECTION[1] + viewDirection[1],
-                this.LIGHT_DIRECTION[2] + viewDirection[2],
-            ]);
-            GraphicsLib.normalizeVector(halfVector, halfVector);
-
-            if (this.renderer.flipped) {
-                flippedThisFrame = true;
+            if (this.mIsPaused && !this.mForceFrame) {
+                this.mEffect.UpdateInputs(this.mActiveDoc, false);
+                return;
             }
 
-            this.renderer.flipped = false;
+            this.mForceFrame = false;
+            var time = performance.now();
+            var ltime = this.mTOffset + time - this.mTo;
+
+            if (this.mIsPaused) ltime = this.mTf; else this.mTf = ltime;
+
+            this.mEffect.Paint(ltime / 1000.0, this.mMouseOriX, this.mMouseOriY, this.mMousePosX, this.mMousePosY, this.mIsPaused);
+
+            //if (me.mSendFrame) me.mLiveCreator.SendUpdate();
+            this.mSendFrame = false;
+
+
+            this.mFpsFrame++;
+
+            this.uiData.MyTime = (ltime / 1000.0).toFixed(2);
+            this.uiData.eMyTime.innerHTML = this.uiData.MyTime + " seconds";
+
+            if ((time - this.mFpsTo) > 1000) {
+                var ffps = 1000.0 * this.mFpsFrame / (time - this.mFpsTo);
+                this.uiData.FrameRate = ffps.toFixed(1) + " fps";
+                this.uiData.eFrameRate.innerHTML = this.uiData.FrameRate;
+                if (this.uiData.UpdateUI) this.uiData.UpdateUI.call(this);
+                this.mFpsFrame = 0;
+                this.mFpsTo = time;
+            }
+
+        }
+
+        renderLoop();
+    }
+
+    PlayPauseTime() {
+
+        if (!this.mIsPaused) {
+            this.PauseShader();
         }
         else {
-            halfVector = new Float32Array([
-                this.LIGHT_DIRECTION[0] - viewDirection[0],
-                this.LIGHT_DIRECTION[1] - viewDirection[1],
-                this.LIGHT_DIRECTION[2] - viewDirection[2],
-            ]);
-            GraphicsLib.normalizeVector(halfVector, halfVector);
-
-            if (!this.renderer.flipped) {
-                flippedThisFrame = true;
-            }
-
-            this.renderer.flipped = true;
+            this.PlayShader();
         }
+    }
 
-        this.gl.disable(this.gl.DEPTH_TEST);
+    PauseShader() {
+        var time = performance.now();
 
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, undefined);
-        this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-        this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        $(this.butPauseShader).attr('value', 'play');
+        this.mIsPaused = true;
+        this.mEffect.StopOutputs();
 
-        //SIMULATION
-        for (var i = 0; i < (this.renderer.firstFrame ? this.BASE_LIFETIME / this.PRESIMULATION_DELTA_TIME : 1); ++i) {
-            this.gl.enableVertexAttribArray(0);
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
-            this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
+    }
 
-            this.gl.useProgram(this.pso.simulationProgramWrapper.program);
-            this.gl.uniform2f(this.pso.simulationProgramWrapper.uniformLocations['u_resolution'], this.particleCountWidth, this.particleCountHeight);
-            this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_deltaTime'], this.renderer.firstFrame ? this.PRESIMULATION_DELTA_TIME : deltaTime * this.timeScale);
-            this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_time'], this.renderer.firstFrame ? this.PRESIMULATION_DELTA_TIME : currentTime);
-            this.gl.uniform1i(this.pso.simulationProgramWrapper.uniformLocations['u_particleTexture'], 0);
-            this.gl.uniform1f(this.pso.simulationProgramWrapper.uniformLocations['u_persistence'], this.persistence);
-            this.gl.uniform1i(this.pso.simulationProgramWrapper.uniformLocations['u_spawnTexture'], 1);
+    PlayShader() {
+        var time = performance.now();
 
-            this.gl.disable(this.gl.BLEND);
+        $(this.butPauseShader).attr('value', 'pause');
+        this.mTOffset = this.mTf;
+        this.mTo = time;
+        this.mIsPaused = false;
+        this.mEffect.ResumeOutputs();
 
-            this.gl.activeTexture(this.gl.TEXTURE1);
-            this.gl.bindTexture(this.gl.TEXTURE_2D, this.spawnTexture);
-
-            //render from A -> B
-            this.gl.activeTexture(this.gl.TEXTURE0);
-            this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
-
-            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.simulationFramebuffer);
-            this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.pso.particleTextureB, 0);
-
-            //swap A and B
-            var temp = this.pso.particleTextureA;
-            this.pso.particleTextureA = this.pso.particleTextureB;
-            this.pso.particleTextureB = temp;
-
-            this.gl.viewport(0, 0, this.particleCountWidth, this.particleCountHeight);
-
-            this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-
-            if (this.renderer.firstFrame) this.gl.flush();
-        }
-
-        this.renderer.firstFrame = false;
-
-        this.gl.disable(this.gl.BLEND);
-
-        this.gl.enableVertexAttribArray(0);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
-        this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
-
-        if (flippedThisFrame) { //if the order reversed this frame sort everything
-            this.pso.sortPass = -1;
-            this.pso.sortStage = -1;
-            this.pso.sortStepsLeft = this.pso.totalSortSteps;
-        }
-
-        for (var i = 0; i < (flippedThisFrame ? this.pso.totalSortSteps : this.SORT_PASSES_PER_FRAME); ++i) {
-            this.pso.sortPass--;
-            if (this.pso.sortPass < 0) {
-                this.pso.sortStage++;
-                this.pso.sortPass = this.pso.sortStage;
-            }
-
-            this.gl.useProgram(this.pso.sortProgramWrapper.program);
-
-            this.gl.uniform1i(this.pso.sortProgramWrapper.uniformLocations['u_dataTexture'], 0);
-            this.gl.uniform2f(this.pso.sortProgramWrapper.uniformLocations['u_resolution'], this.particleCountWidth, this.particleCountHeight);
-            this.gl.uniform1f(this.pso.sortProgramWrapper.uniformLocations['pass'], 1 << this.pso.sortPass);
-            this.gl.uniform1f(this.pso.sortProgramWrapper.uniformLocations['stage'], 1 << this.pso.sortStage);
-            this.gl.uniform3fv(this.pso.sortProgramWrapper.uniformLocations['u_halfVector'], halfVector);
-
-            this.gl.activeTexture(this.gl.TEXTURE0);
-            this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
-
-            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.sortFramebuffer);
-            this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.pso.particleTextureB, 0);
-
-            this.gl.viewport(0, 0, this.particleCountWidth, this.particleCountHeight);
-
-            this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-
-            var temp = this.pso.particleTextureA;
-            this.pso.particleTextureA = this.pso.particleTextureB;
-            this.pso.particleTextureB = temp;
-
-            this.pso.sortStepsLeft--;
-
-            if (this.pso.sortStepsLeft === 0) {
-                this.pso.sortStepsLeft = this.pso.totalSortSteps;
-                this.pso.sortPass = -1;
-                this.pso.sortStage = -1;
-            }
-        }
-
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.opacityFramebuffer);
-        this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-
-
-        //RENDERING
-        for (var i = 0; i < this.SLICES; ++i) {
-
-            //particle
-            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, undefined);
-            this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-
-            this.gl.useProgram(this.pso.renderingProgramWrapper.program);
-
-            this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_particleTexture'], 0);
-            this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_opacityTexture'], 1);
-            this.gl.uniformMatrix4fv(this.pso.renderingProgramWrapper.uniformLocations['u_viewMatrix'], false, this.camera.getViewMatrix());
-            this.gl.uniformMatrix4fv(this.pso.renderingProgramWrapper.uniformLocations['u_projectionMatrix'], false, this.pso.projectionMatrix);
-            this.gl.uniformMatrix4fv(this.pso.renderingProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, this.pso.lightViewProjectionMatrix);
-            this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleDiameter'], this.particleDiameter);
-            this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_screenWidth'], this.canvas.width);
-            this.gl.uniform1f(this.pso.renderingProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
-            this.gl.uniform1i(this.pso.renderingProgramWrapper.uniformLocations['u_flipped'], this.renderer.flipped ? 1 : 0);
-
-            var colorRGB = GraphicsLib.hsvToRGB(this.hue, this.shaderLib.PARTICLE_SATURATION, this.shaderLib.PARTICLE_VALUE);
-            this.gl.uniform3f(this.pso.renderingProgramWrapper.uniformLocations['u_particleColor'], colorRGB[0], colorRGB[1], colorRGB[2]);
-
-
-            this.gl.activeTexture(this.gl.TEXTURE0);
-            this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
-
-            this.gl.activeTexture(this.gl.TEXTURE1);
-            this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.opacityTexture);
-
-            this.gl.enableVertexAttribArray(0);
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.particleVertexBuffer);
-            this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
-
-
-            if (!this.renderer.flipped) {
-                this.gl.enable(this.gl.BLEND);
-                //this.gl.blendEquation(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
-                this.gl.blendEquation(this.gl.FUNC_ADD);
-                this.gl.blendFunc(this.gl.ONE_MINUS_DST_ALPHA, this.gl.ONE);
-            } else {
-                this.gl.enable(this.gl.BLEND);
-                //this.gl.blendEquation(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
-                this.gl.blendEquation(this.gl.FUNC_ADD);
-                this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-            }
-
-            this.gl.drawArrays(this.gl.POINTS, i * (this.particleCount / this.SLICES), this.particleCount / this.SLICES);
-
-
-
-
-
-            //particle opacity
-            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pso.opacityFramebuffer);
-
-            this.gl.viewport(0, 0, this.OPACITY_TEXTURE_RESOLUTION, this.OPACITY_TEXTURE_RESOLUTION);
-
-            this.gl.useProgram(this.pso.opacityProgramWrapper.program);
-
-            this.gl.uniform1i(this.pso.opacityProgramWrapper.uniformLocations['u_particleTexture'], 0);
-            this.gl.uniformMatrix4fv(this.pso.opacityProgramWrapper.uniformLocations['u_lightViewMatrix'], false, this.pso.lightViewMatrix);
-            this.gl.uniformMatrix4fv(this.pso.opacityProgramWrapper.uniformLocations['u_lightProjectionMatrix'], false, this.pso.lightProjectionMatrix);
-            this.gl.uniform1f(this.pso.opacityProgramWrapper.uniformLocations['u_particleDiameter'], this.particleDiameter);
-            this.gl.uniform1f(this.pso.opacityProgramWrapper.uniformLocations['u_screenWidth'], this.OPACITY_TEXTURE_RESOLUTION);
-            this.gl.uniform1f(this.pso.opacityProgramWrapper.uniformLocations['u_particleAlpha'], this.particleAlpha);
-
-            this.gl.activeTexture(this.gl.TEXTURE0);
-            this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.particleTextureA);
-
-            this.gl.enableVertexAttribArray(0);
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.particleVertexBuffer);
-            this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
-
-            this.gl.enable(this.gl.BLEND);
-            //this.gl.blendEquation(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
-            this.gl.blendEquation(this.gl.FUNC_ADD);
-            this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-
-            this.gl.drawArrays(this.gl.POINTS, i * (this.particleCount / this.SLICES), this.particleCount / this.SLICES);
-        }
-
-
-
-        //FLOOR (SHADOW) & BACKGROUND
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, undefined);
-        this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-
-        this.gl.useProgram(this.pso.floorProgramWrapper.program);
-
-        this.gl.enableVertexAttribArray(0);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.floorVertexBuffer);
-        this.gl.vertexAttribPointer(0, 3, this.gl.FLOAT, false, 0, 0);
-
-        this.gl.uniformMatrix4fv(this.pso.floorProgramWrapper.uniformLocations['u_viewMatrix'], false, this.camera.getViewMatrix());
-        this.gl.uniformMatrix4fv(this.pso.floorProgramWrapper.uniformLocations['u_projectionMatrix'], false, this.pso.projectionMatrix);
-        this.gl.uniformMatrix4fv(this.pso.floorProgramWrapper.uniformLocations['u_lightViewProjectionMatrix'], false, this.pso.lightViewProjectionMatrix);
-        this.gl.uniform1i(this.pso.floorProgramWrapper.uniformLocations['u_opacityTexture'], 0);
-
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.pso.opacityTexture);
-
-        this.gl.enable(this.gl.BLEND);
-        //this.gl.blendEquation(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
-        this.gl.blendEquation(this.gl.FUNC_ADD);
-        this.gl.blendFunc(this.gl.ONE_MINUS_DST_ALPHA, this.gl.ONE);
-
-        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-
-        this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-
-        this.gl.enableVertexAttribArray(0);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pso.fullscreenVertexBuffer);
-        this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
-
-
-
-        this.gl.useProgram(this.pso.backgroundProgramWrapper.program);
-        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-
-
-
-
-        //NEXT FRAME
-        requestAnimationFrame(this.render.bind(this));
     }
 
 
+    ResetTime() {
+        this.mTOffset = 0;
+        this.mTo = performance.now();
+        this.mTf = 0;
+        this.mFpsTo = this.mTo;
+        this.mFpsFrame = 0;
+        this.mForceFrame = true;
+        this.mEffect.ResetTime();
+    }
+
+    private setChars() {
+        var str = this.mCodeEditor.getValue();
+
+        str = this.replaceChars(str);
+        str = this.removeSingleComments(str);
+        str = this.removeMultiComments(str);
+        str = this.removeMultiSpaces(str);
+        str = this.removeSingleSpaces(str);
+        str = this.removeEmptyLines(str);
 
 
+        this.uiData.ShaderCharCounter = str.length + " chars";
+
+    }
+
+    private setFlags() {
+        if (this.mEffect == null) return;
+
+        var flags = this.mEffect.CalcFlags();
+
+        //var eleVR = document.getElementById("myVR");
+        //eleVR.style.visibility = (flags.mFlagVR == true) ? "visible" : "hidden";
+    }
+
+    private showChars() {
+        var str = this.mCodeEditor.getValue();
+
+        str = this.minify(str);
+
+        //alert( str );
+        //var ve = document.getElementById("centerScreen");
+        //doAlert(getCoords(ve), { mX: 480, mY: 400 }, "Minimal Shader Code, (" + str.length + " chars)", "<pre>" + str + "</pre>", false, null);
+    }
+
+    private isSpace(str: any, i: number) {
+        return (str[i] === ' ') || (str[i] === '\t');
+    }
+
+    private isLine(str: any, i: number) {
+        return (str[i] === '\n');
+    }
+
+    private replaceChars(str: any) {
+        var dst = "";
+        var num = str.length;
+        for (var i = 0; i < num; i++) {
+            if (str[i] === '\r') continue;
+            if (str[i] === '\t') { dst = dst + " "; continue; }
+
+            dst = dst + str[i];
+        }
+        return dst;
+    }
+
+    private removeEmptyLines(str: any) {
+        var dst = "";
+        var num = str.length;
+        var isPreprocessor = false;
+        for (var i = 0; i < num; i++) {
+            if (str[i] === '#') isPreprocessor = true;
+            var isDestroyableChar = this.isLine(str, i);
+
+            if (isDestroyableChar && !isPreprocessor) continue;
+            if (isDestroyableChar && isPreprocessor) isPreprocessor = false;
+
+            dst = dst + str[i];
+        }
+        return dst;
+    }
+
+    private removeMultiSpaces(str: any) {
+        var dst = "";
+        var num = str.length;
+        for (var i = 0; i < num; i++) {
+            if (this.isSpace(str, i) && (i === (num - 1))) continue;
+            if (this.isSpace(str, i) && this.isLine(str, i - 1)) continue;
+            if (this.isSpace(str, i) && this.isLine(str, i + 1)) continue;
+            if (this.isSpace(str, i) && this.isSpace(str, i + 1)) continue;
+            dst = dst + str[i];
+        }
+        return dst;
+    }
+
+    private removeSingleSpaces(str: any) {
+        var dst = "";
+        var num = str.length;
+        for (var i = 0; i < num; i++) {
+            if (i > 0) {
+                if (this.isSpace(str, i) && ((str[i - 1] === ';') ||
+                    (str[i - 1] === ',') ||
+                    (str[i - 1] === '}') ||
+                    (str[i - 1] === '{') ||
+                    (str[i - 1] === '(') ||
+                    (str[i - 1] === ')') ||
+                    (str[i - 1] === '+') ||
+                    (str[i - 1] === '-') ||
+                    (str[i - 1] === '*') ||
+                    (str[i - 1] === '/') ||
+                    (str[i - 1] === '?') ||
+                    (str[i - 1] === '<') ||
+                    (str[i - 1] === '>') ||
+                    (str[i - 1] === '[') ||
+                    (str[i - 1] === ']') ||
+                    (str[i - 1] === ':') ||
+                    (str[i - 1] === '=') ||
+                    (str[i - 1] === '^') ||
+                    (str[i - 1] === '\n') ||
+                    (str[i - 1] === '\r')
+
+                )) continue;
+            }
+
+            if (this.isSpace(str, i) && ((str[i + 1] === ';') ||
+                (str[i + 1] === ',') ||
+                (str[i + 1] === '}') ||
+                (str[i + 1] === '{') ||
+                (str[i + 1] === '(') ||
+                (str[i + 1] === ')') ||
+                (str[i + 1] === '+') ||
+                (str[i + 1] === '-') ||
+                (str[i + 1] === '*') ||
+                (str[i + 1] === '/') ||
+                (str[i + 1] === '?') ||
+                (str[i + 1] === '<') ||
+                (str[i + 1] === '>') ||
+                (str[i + 1] === '[') ||
+                (str[i + 1] === ']') ||
+                (str[i + 1] === ':') ||
+                (str[i + 1] === '=') ||
+                (str[i + 1] === '^') ||
+                (str[i + 1] === '\n') ||
+                (str[i + 1] === '\r')
+
+            )) continue;
+
+            dst = dst + str[i];
+        }
+        return dst;
+    }
+
+    private removeSingleComments(str: any) {
+        var dst = "";
+        var num = str.length;
+        var detected = false;
+        for (var i = 0; i < num; i++) {
+            if (i <= (num - 2)) {
+                if (str[i] === '/' && str[i + 1] === '/')
+                    detected = true;
+            }
+
+            if (detected && (str[i] === "\n" || str[i] === "\r"))
+                detected = false;
+
+            if (!detected)
+                dst = dst + str[i];
+        }
+        return dst;
+    }
+
+    private removeMultiComments(str: any) {
+        var dst = "";
+        var num = str.length;
+        var detected = false;
+        for (var i = 0; i < num; i++) {
+            if (i <= (num - 2)) {
+                if (str[i] === '/' && str[i + 1] === '*') {
+                    detected = true;
+                    continue;
+                }
+
+                if (detected && str[i] === "*" && str[i + 1] === "/") {
+                    detected = false;
+                    i += 2;
+                    continue;
+                }
+            }
+
+            if (!detected)
+                dst = dst + str[i];
+        }
+        return dst;
+    }
+
+    private minify(str: any) {
+        str = this.replaceChars(str);
+        str = this.removeSingleComments(str);
+        str = this.removeMultiComments(str);
+        str = this.removeMultiSpaces(str);
+        str = this.removeSingleSpaces(str);
+        str = this.removeEmptyLines(str);
+        return str;
+    }
+
+    private setErrors(result: any, fromScript: any) {
+        //var eleWrapper = document.getElementById('editorWrapper');
+
+        //while (this.mErrors.length > 0) {
+        //    var mark = this.mErrors.pop();
+        //    this.mCodeEditor.removeLineWidget(mark);
+        //}
+
+        //var eleWrapper = document.getElementById('editorWrapper');
+
+        //if (result == null) {
+        //    this.mForceFrame = true;
+        //    if (fromScript == false) {
+        //        eleWrapper.className = "errorNo";
+        //        setTimeout(function () { eleWrapper.className = ""; }, 500);
+        //    }
+        //}
+        //else {
+        //    eleWrapper.className = "errorYes";
+
+        //    var lineOffset = this.mEffect.GetHeaderSize(this.mActiveDoc);
+        //    var lines = result.match(/^.*((\r\n|\n|\r)|$)/gm);
+        //    for (var i = 0; i < lines.length; i++) {
+        //        var parts = lines[i].split(":");
+        //        if (parts.length === 5 || parts.length === 6) {
+        //            var lineNumber = parseInt(parts[2]) - lineOffset;
+        //            var msg = document.createElement("div");
+        //            msg.appendChild(document.createTextNode(parts[3] + " : " + parts[4]));
+        //            msg.className = "errorMessage";
+        //            var mark = this.mCodeEditor.addLineWidget(lineNumber - 1, msg, { coverGutter: false, noHScroll: true });
+
+        //            this.mErrors.push(mark);
+        //        }
+        //        else if (lines[i] != null && lines[i] != "" && lines[i].length > 1 && parts[0] != "Warning") {
+        //            console.log(parts.length + " **" + lines[i]);
+
+        //            var txt = "";
+        //            if (parts.length == 4)
+        //                txt = parts[2] + " : " + parts[3];
+        //            else
+        //                txt = "Unknown error";
+
+        //            var msg = document.createElement("div");
+        //            msg.appendChild(document.createTextNode(txt));
+        //            msg.className = "errorMessage";
+        //            var mark = this.mCodeEditor.addLineWidget(0, msg, { coverGutter: false, noHScroll: true, above: true });
+        //            this.mErrors.push(mark);
+
+        //        }
+        //    }
+        //}
+    }
+
+    private setPasses(passes: any) {
+        //for (var i = 0; i < passes.length; i++)
+        //    this.AddTab(passes[i].mType, i, i == 0);
+        //this.AddPlusTab();
+    }
+
+    SetShaderFromEditor(): any {
+        var shaderCode = this.mCodeEditor.getValue();
+
+        var result = this.mEffect.NewShader(shaderCode, this.mActiveDoc);
+        if (result == null) {
+            this.mForceFrame = true;
+            this.mSendFrame = true;
+        }
+
+        this.setChars();
+        this.setFlags();
+
+        return this.setErrors(result, false);
+    }
+
+    //gShaderToy.SetTexture(gCurrentEditingSlot, {mType:'texture', mID:28, mSrc:'/presets/tex15.png'})
+    SetTexture(slot: any, url: any) {
+        this.mEffect.NewTexture(this.mActiveDoc, slot, url);
+    }
+}
+
+class Effect {
+
+    mAudioContext: any;
+    mGLContext: any;
+    mWebVR: any;
+    mRenderingStereo: any;
+    mQuadVBO: any;
+    mXres: any;
+    mYres: any;
+    mForceMuted: any;
+    mGainNode: any;
+    mPasses: Array<EffectPass>;
+    mSupportTextureFloat: boolean;
+
+    constructor(vr: any, ac: any, gl: any, xres: any, yres: any, callback: any, obj: any, forceMuted: any, forcePaused: any) {
+
+        this.mAudioContext = ac;
+        this.mGLContext = gl;
+        this.mWebVR = vr;
+        this.mRenderingStereo = false;
+        this.mQuadVBO = null;
+        this.mXres = xres;
+        this.mYres = yres;
+        this.mForceMuted = forceMuted; // | (ac == null);
+        this.mGainNode = null;
+        this.mPasses = new Array(2);
 
 
-    private hasWebGLSupportWithExtensions(extensions: any): boolean {
-        let canvas: any = document.createElement('canvas');
-        let gl: any = null;
-        try {
-            gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-        } catch (e) {
+        if (gl == null) return;
+
+        var ext = gl.getExtension('OES_standard_derivatives');
+        var supportsDerivatives = (ext != null);
+
+        if (supportsDerivatives) gl.hint(ext.FRAGMENT_SHADER_DERIVATIVE_HINT_OES, gl.NICEST);
+
+        var ext2 = gl.getExtension('OES_texture_float');
+        this.mSupportTextureFloat = (ext2 != null);
+
+        var precision = this.determineShaderPrecission(gl);
+
+
+        //-------------
+        if (ac != null) {
+            this.mGainNode = ac.createGain();
+            this.mGainNode.connect(ac.destination);
+            this.mGainNode.gain.value = (this.mForceMuted) ? 0.0 : 1.0;
+        }
+
+        //-------------
+        this.mQuadVBO = this.createQuadVBO(gl);
+
+        for (var i = 0; i < 2; i++) {
+            this.mPasses[i] = new EffectPass(gl, precision, supportsDerivatives, callback, obj, forceMuted, forcePaused, this.mQuadVBO, this.mGainNode, i);
+        }
+    }
+
+    private determineShaderPrecission(gl: any) {
+        var h1 = "#ifdef GL_ES\n" +
+            "precision highp float;\n" +
+            "#endif\n";
+
+        var h2 = "#ifdef GL_ES\n" +
+            "precision mediump float;\n" +
+            "#endif\n";
+
+        var h3 = "#ifdef GL_ES\n" +
+            "precision lowp float;\n" +
+            "#endif\n";
+
+        var vstr = "void main() { gl_Position = vec4(1.0); }\n";
+        var fstr = "void main() { gl_FragColor = vec4(1.0); }\n";
+
+        if (this.createShader(gl, vstr, h1 + fstr, false).mSuccess == true) return h1;
+        if (this.createShader(gl, vstr, h2 + fstr, false).mSuccess == true) return h2;
+        if (this.createShader(gl, vstr, h3 + fstr, false).mSuccess == true) return h3;
+
+        return "";
+    }
+
+    private createShader(gl: any, tvs: any, tfs: any, nativeDebug: any): any {
+        if (gl == null) return { mSuccess: false, mInfo: "no GL" };
+
+        var vs = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(vs, tvs); gl.compileShader(vs);
+        var fs = gl.createShader(gl.FRAGMENT_SHADER); gl.shaderSource(fs, tfs); gl.compileShader(fs);
+
+        if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
+            var infoLog = gl.getShaderInfoLog(vs);
+            return { mSuccess: false, mInfo: infoLog };
+        }
+
+        if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
+            var infoLog = gl.getShaderInfoLog(fs);
+            return { mSuccess: false, mInfo: infoLog };
+        }
+
+        if (nativeDebug) {
+            var dbgext = gl.getExtension("WEBGL_debug_shaders");
+            if (dbgext != null) {
+                var hlsl = dbgext.getTranslatedShaderSource(fs);
+                console.log("------------------------\nHLSL code\n------------------------\n" + hlsl + "\n------------------------\n");
+            }
+        }
+
+        var tmpProgram = gl.createProgram();
+
+        gl.attachShader(tmpProgram, vs);
+        gl.attachShader(tmpProgram, fs);
+
+        gl.deleteShader(vs);
+        gl.deleteShader(fs);
+
+        gl.linkProgram(tmpProgram);
+
+        if (!gl.getProgramParameter(tmpProgram, gl.LINK_STATUS)) {
+            var infoLog = gl.getProgramInfoLog(tmpProgram);
+            gl.deleteProgram(tmpProgram);
+            return { mSuccess: false, mInfo: infoLog };
+        }
+
+        return { mSuccess: true, mProgram: tmpProgram };
+    }
+
+    private createQuadVBO(gl: any) {
+        var vertices = new Float32Array([-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0]);
+
+        var vbo = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+        return vbo;
+    }
+
+    private createCubeVBO(gl: any) {
+        var vertices = new Float32Array([-1.0, -1.0, -1.0,
+            1.0, -1.0, -1.0,
+        -1.0, 1.0, -1.0,
+            1.0, 1.0, -1.0,
+        -1.0, -1.0, 1.0,
+            1.0, -1.0, 1.0,
+        -1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0]);
+
+        var vbo = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+        return vbo;
+    }
+
+    ParseJSON(jobj: any): any {
+        if (jobj.ver != "0.1") {
+            return { mFailed: true };
+        }
+
+        var numPasses = jobj.renderpass.length;
+
+        if (numPasses == 0 || numPasses > 2) {
+            return { mFailed: true, mError: "Incorrect number of passes, we only support up to two-pass shaders at this moment.", mShader: null };
+        }
+
+        var res: any = [];// = new Array( numPasses );
+        res.mFailed = false;
+        for (var j = 0; j < numPasses; j++) {
+            var rpass = jobj.renderpass[j];
+
+            // skip sound passes if in thumbnail mode
+            if (this.mForceMuted && rpass.type == "sound") continue;
+            var numInputs = rpass.inputs.length;
+
+            for (var i = 0; i < 4; i++) {
+                this.mPasses[j].NewTexture(this.mAudioContext, this.mGLContext, i, null);
+            }
+            for (var i = 0; i < numInputs; i++) {
+                var lid = rpass.inputs[i].channel;
+                var styp = rpass.inputs[i].ctype;
+                var sid = rpass.inputs[i].id;
+                var ssrc = rpass.inputs[i].src;
+                this.mPasses[j].NewTexture(this.mAudioContext, this.mGLContext, lid, { mType: styp, mID: sid, mSrc: ssrc });
+            }
+
+            //------------------------
+            this.mPasses[j].Create(rpass.type, this.mAudioContext, this.mGLContext);
+
+            var shaderStr = rpass.code;
+
+            var result = this.mPasses[j].NewShader(this.mGLContext, shaderStr);
+
+            if (result != null) {
+                res.mFailed = true;
+                res[j] = {
+                    mFailed: true,
+                    mError: result,
+                    mType: rpass.type,
+                    mShader: shaderStr
+                };
+            }
+            else {
+                res[j] = {
+                    mFailed: false,
+                    mError: null,
+                    mType: rpass.type,
+                    mShader: shaderStr
+                };
+            }
+        }
+
+        return res;
+    }
+
+    NewTexture(passid: number, slot: any, url: any) {
+        this.mPasses[passid].NewTexture(this.mAudioContext, this.mGLContext, slot, url);
+    }
+
+    NewShader(shaderCode: string, passid: number) {
+        return this.mPasses[passid].NewShader(this.mGLContext, shaderCode);
+    }
+
+    CalcFlags() {
+        var flagVR = false;
+        var flagWebcam = false;
+        var flagSoundInput = false;
+        var flagSoundOutput = false;
+        var flagKeyboard = false;
+
+        var numPasses = this.mPasses.length;
+        for (var j = 0; j < numPasses; j++) {
+            var pass = this.mPasses[j];
+            if (!pass.mUsed) continue;
+
+            if (pass.mType == "sound") flagSoundOutput = true;
+
+            for (var i = 0; i < 4; i++) {
+                if (pass.mInputs[i] == null) continue;
+
+                if (pass.mInputs[i].mInfo.mType == "webcam") flagWebcam = true;
+                else if (pass.mInputs[i].mInfo.mType == "keyboard") flagKeyboard = true;
+                else if (pass.mInputs[i].mInfo.mType == "mic") flagSoundInput = true;
+            }
+
+            var n1 = pass.mSource.indexOf("mainVR(");
+            var n2 = pass.mSource.indexOf("mainVR (");
+            if (n1 > 0 || n2 > 0) flagVR = true;
+        }
+
+        return {
+            mFlagVR: flagVR,
+            mFlagWebcam: flagWebcam,
+            mFlagSoundInput: flagSoundInput,
+            mFlagSoundOutput: flagSoundOutput,
+            mFlagKeyboard: flagKeyboard
+        };
+    }
+
+    ResetTime() {
+        var gothere = '';
+        //this.mTOffset = 0;
+        //this.mTo = performance.now();
+        //this.mTf = 0;
+        //this.mFpsTo = this.mTo;
+        //this.mFpsFrame = 0;
+        //this.mForceFrame = true;
+        //this.mEffect.ResetTime();
+    }
+
+    Paint(time: any, mouseOriX: any, mouseOriY: any, mousePosX: any, mousePosY: any, isPaused: any) {
+        var gl = this.mGLContext;
+        var wa = this.mAudioContext;
+
+        if (gl == null) return;
+
+        var da = new Date();
+
+        var vrData = null;
+        if (this.mRenderingStereo) vrData = this.mWebVR.GetData();
+
+        var xres = this.mXres / 1; // iqiq
+        var yres = this.mYres / 1; // iqiq
+
+        var num = this.mPasses.length;
+        for (var i = 0; i < num; i++) {
+            if (!this.mPasses[i].mUsed) continue;
+            if (this.mPasses[i].mProgram == null) continue;
+
+            this.mPasses[i].Paint(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres, isPaused);
+        }
+    }
+
+    UpdateInputs(passid: any, forceUpdate: any) {
+        this.mPasses[passid].UpdateInputs(this.mAudioContext, forceUpdate);
+    }
+
+    StopOutputs = () => {
+        var gl = this.mGLContext;
+        var wa = this.mAudioContext;
+
+        var num = this.mPasses.length;
+        for (var i = 0; i < num; i++) {
+            if (!this.mPasses[i].mUsed) continue;
+            this.mPasses[i].StopOutput(wa, gl);
+        }
+    }
+
+    ResumeOutputs = () => {
+        var gl = this.mGLContext;
+        var wa = this.mAudioContext;
+        if (gl == null) return;
+
+        var num = this.mPasses.length;
+        for (var i = 0; i < num; i++) {
+            if (!this.mPasses[i].mUsed) continue;
+            this.mPasses[i].ResumeOutput(wa, gl);
+        }
+    }
+}
+
+class EffectPass {
+
+    mID: any;
+    mInputs: any;
+    mSource: any;
+    mUsed: any;
+    mGainNode: any;
+
+    mType: any;
+    mFrame: any;
+
+    mPrecision: any;
+    mSupportsDerivatives: any;
+    mTextureCallbackFun: any;
+    mTextureCallbackObj: any;
+    mForceMuted: any;
+    mForcePaused: any;
+
+    mQuadVBO: any;
+    mRenderFBO: any;
+    mTextureDimensions: any;
+    mSampleRate: any;
+    mBuffer: any;
+    mPlaySamples: any;
+    mTmpBufferSamples: any;
+    mData: any;
+    mPlayNode: any;
+
+    mImagePassFooter: string;
+    mImagePassFooterVR: string;
+    mHeader: string;
+    mHeaderLength: number;
+    mProgram: any;
+    mProgramVR: any;
+    mSupportsVR: boolean;
+
+    mSoundPassFooter: string;
+    mPlayTime: number;
+    mRenderTexture: any;
+
+
+    constructor(gl: any, precission: any, supportDerivatives: any, callback: any, obj: any, forceMuted: any, forcePaused: any, quadVBO: any, outputGainNode: any, id: any) {
+
+        this.mID = id;
+        this.mInputs = new Array(4);
+        this.mInputs[0] = null;
+        this.mInputs[1] = null;
+        this.mInputs[2] = null;
+        this.mInputs[3] = null;
+        this.mSource = null;
+        this.mUsed = false;
+        this.mGainNode = outputGainNode;
+
+        this.mQuadVBO = quadVBO;
+
+        this.mType = "image";
+        this.mFrame = 0;
+
+        this.mPrecision = precission;
+        this.mSupportsDerivatives = supportDerivatives;
+        this.mTextureCallbackFun = callback;
+        this.mTextureCallbackObj = obj;
+        this.mForceMuted = forceMuted;
+        this.mForcePaused = forcePaused;
+
+
+    }
+
+    public NewShader(gl: any, shaderCode: any) {
+        if (gl == null) return "No GL";
+
+        var res = null;
+
+        if (this.mType == "image") res = this.NewShader_Image(gl, shaderCode);
+
+        this.mSource = shaderCode;
+
+        return res;
+    }
+
+    public NewTexture(wa: any, gl: any, slot: number, url: any) {
+        let me = this;
+
+        let texture: any = null;
+
+        if (url != null && url.mType == "webcam" && this.mForceMuted) {
+            url.mType = "texture";
+        }
+
+        if (url == null) {
+            if (me.mTextureCallbackFun != null)
+                me.mTextureCallbackFun(this.mTextureCallbackObj, slot, null, false, true, 0, -1.0, me.mID);
             return false;
         }
-        if (gl === null) {
-            return false;
+        else if (url.mType == "texture") {
+            texture = {};
+            texture.mInfo = url;
+            texture.globject = (gl != null) ? gl.createTexture() : null;
+            texture.loaded = false;
+            texture.image = new Image();
+            texture.image.crossOrigin = '';
+            texture.image.onload = function () {
+                var format = gl.RGBA;
+                if (url.mSrc == "/presets/tex15.png" || url.mSrc == "/presets/tex17.png")
+                    format = gl.LUMINANCE;
+
+                if (url.mSrc == "/presets/tex14.png")
+                    me.createGLTextureNearest(gl, texture.image, texture.globject);
+                else if (url.mSrc == "/presets/tex15.png")
+                    me.createGLTextureNearestRepeat(gl, texture.image, texture.globject);
+                else
+                    me.createGLTexture(gl, texture.image, format, texture.globject);
+
+                texture.loaded = true;
+                if (me.mTextureCallbackFun != null)
+                    me.mTextureCallbackFun(me.mTextureCallbackObj, slot, texture.image, true, true, 0, -1.0, me.mID);
+            }
+            texture.image.src = url.mSrc;
+        }
+        else if (url.mType == "cubemap") {
+            texture = {};
+            texture.mInfo = url;
+            texture.globject = (gl != null) ? gl.createTexture() : null;
+            texture.loaded = false;
+            texture.image = [new Image(), new Image(), new Image(), new Image(), new Image(), new Image()];
+
+            gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.globject);
+            gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+
+            texture.loaded = true;
+
+            for (var i = 0; i < 6; i++) {
+                texture.image[i].mId = i;
+                texture.image[i].crossOrigin = '';
+                texture.image[i].onload = function () {
+                    var id = this.mId;
+                    gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.globject);
+                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+                    gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + id, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image[id]);
+                    gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+                    if (me.mTextureCallbackFun != null)
+                        me.mTextureCallbackFun(me.mTextureCallbackObj, slot, texture.image[0], true, true, 0, -1.0, me.mID);
+                }
+
+                texture.image[i].src = url.mSrc.replace("_0.", "_" + i + ".");
+            }
+        }
+        else if (url.mType == "video") {
+            texture = {};
+            texture.mInfo = url;
+            texture.globject = null;
+            texture.loaded = false;
+            texture.video = document.createElement('video');
+            texture.video.width = 256;
+            texture.video.height = 256;
+            texture.video.loop = true;
+            texture.video.paused = true;//this.mForcePaused;
+            texture.video.mPaused = true;//this.mForcePaused;
+            texture.video.mMuted = this.mForceMuted;
+            texture.video.muted = this.mForceMuted;
+            if (this.mForceMuted == true)
+                texture.video.volume = 0;
+            texture.video.autoplay = false;
+            texture.video.hasFalled = false;
+
+            texture.video.addEventListener("canplay", (e: any) => {
+                texture.video.play();
+                texture.video.paused = false;
+                texture.video.mPaused = false;
+
+                texture.globject = gl.createTexture();
+                this.createGLTextureLinear(gl, texture.video, texture.globject);
+                texture.loaded = true;
+
+                if (me.mTextureCallbackFun != null)
+                    me.mTextureCallbackFun(me.mTextureCallbackObj, slot, texture.video, true, true, 1, -1.0, me.mID);
+
+            });
+
+            texture.video.addEventListener("error", (e: any) => {
+                if (texture.video.hasFalled == true) { alert("Error: cannot load video"); return; }
+                var str = texture.video.src;
+                str = str.substr(0, str.lastIndexOf('.')) + ".mp4";
+                texture.video.src = str;
+                texture.video.hasFalled = true;
+            });
+
+
+            texture.video.src = url.mSrc;
+        }
+        else if (url.mType == "music") {
+            texture = {};
+            texture.mInfo = url;
+            texture.globject = null;
+            texture.loaded = false;
+            texture.audio = document.createElement('audio');
+            texture.audio.loop = true;
+            texture.audio.mMuted = this.mForceMuted;
+            texture.audio.mForceMuted = this.mForceMuted;
+
+            texture.audio.muted = this.mForceMuted;
+            if (this.mForceMuted == true)
+                texture.audio.volume = 0;
+            texture.audio.autoplay = true;
+            texture.audio.hasFalled = false;
+            texture.audio.paused = true;
+            texture.audio.mPaused = true;
+            texture.audio.mSound = {};
+
+            if (wa == null && this.mForceMuted == false) {
+                alert("Shadertoy: Web Audio not implement in this browser");
+            }
+
+            if (this.mForceMuted) {
+                texture.globject = gl.createTexture();
+                this.createAudioTexture(gl, texture.globject);
+                var num = 512;
+                texture.audio.mSound.mFreqData = new Uint8Array(num);
+                texture.audio.mSound.mWaveData = new Uint8Array(num);
+                texture.loaded = true;
+                texture.audio.paused = false;
+                texture.audio.mPaused = false;
+            }
+
+            texture.audio.addEventListener("canplay", () => {
+                if (this.mForceMuted) return;
+
+                texture.globject = gl.createTexture();
+                this.createAudioTexture(gl, texture.globject);
+
+                texture.audio.mSound.mSource = wa.createMediaElementSource(texture.audio);
+                texture.audio.mSound.mAnalyser = wa.createAnalyser();
+                texture.audio.mSound.mGain = wa.createGain();
+
+                texture.audio.mSound.mSource.connect(texture.audio.mSound.mAnalyser);
+                texture.audio.mSound.mAnalyser.connect(texture.audio.mSound.mGain);
+                texture.audio.mSound.mGain.connect(wa.destination);
+
+                texture.audio.mSound.mFreqData = new Uint8Array(texture.audio.mSound.mAnalyser.frequencyBinCount);
+                texture.audio.mSound.mWaveData = new Uint8Array(texture.audio.mSound.mAnalyser.frequencyBinCount);
+
+                texture.loaded = true;
+                texture.audio.paused = false;
+                texture.audio.mPaused = false;
+            });
+
+            texture.audio.addEventListener("error", (e: any) => {
+                if (this.mForceMuted) return;
+
+                if (texture.audio.hasFalled == true) { /*alert("Error: cannot load music" ); */return; }
+                var str = texture.audio.src;
+                str = str.substr(0, str.lastIndexOf('.')) + ".ogg";
+                texture.audio.src = str;
+                texture.audio.hasFalled = true;
+            });
+
+            if (!this.mForceMuted) {
+                texture.audio.src = url.mSrc;
+            }
+
+
+            if (me.mTextureCallbackFun != null)
+                me.mTextureCallbackFun(me.mTextureCallbackObj, slot, null, false, true, 2, -1.0, me.mID);
+        }
+        else if (url.mType == "keyboard") {
+            texture = {};
+            texture.mInfo = url;
+            texture.globject = gl.createTexture();
+            texture.loaded = true;
+
+            texture.keyboard = {};
+
+            texture.keyboard.mImage = new Image();
+            texture.keyboard.mImage.onload = function () {
+                texture.loaded = true;
+                if (me.mTextureCallbackFun != null)
+                    me.mTextureCallbackFun(me.mTextureCallbackObj, slot, { mImage: texture.keyboard.mImage, mData: texture.keyboard.mData }, false, false, 4, -1.0, me.mID);
+            }
+            texture.keyboard.mImage.src = "/img/keyboard.png";
+
+
+            texture.keyboard.mNewTextureReady = true;
+            texture.keyboard.mData = new Uint8Array(256 * 2);
+
+            this.createKeyboardTexture(gl, texture.globject);
+
+            for (var j = 0; j < (256 * 2); j++) {
+                texture.keyboard.mData[j] = 0;
+            }
+
+            if (me.mTextureCallbackFun != null)
+                me.mTextureCallbackFun(me.mTextureCallbackObj, slot, { mImage: texture.keyboard.mImage, mData: texture.keyboard.mData }, false, false, 4, -1.0);
+        }
+        else if (url.mType == null) {
+            if (me.mTextureCallbackFun != null)
+                me.mTextureCallbackFun(this.mTextureCallbackObj, slot, null, false, true, 0, -1.0, me.mID);
+        }
+        else {
+            alert("texture type error");
+            return;
         }
 
-        for (var i = 0; i < extensions.length; ++i) {
-            if (gl.getExtension(extensions[i]) === null) {
-                return false;
+        this.DestroyInput(gl, slot);
+        this.mInputs[slot] = texture;
+
+        this.MakeHeader(null, null);
+    }
+
+    private NewShader_Image(gl: any, shaderCode: any) {
+        //--------------
+        {
+            var vsSource = "attribute vec2 pos; void main() { gl_Position = vec4(pos.xy,0.0,1.0); }";
+
+            var res = this.CreateShader(gl, vsSource, this.mHeader + shaderCode + this.mImagePassFooter, false);
+            if (res.mSuccess == false)
+                return res.mInfo;
+
+            if (this.mProgram != null)
+                gl.deleteProgram(this.mProgram);
+
+            this.mProgram = res.mProgram;
+        }
+        //--------------
+
+        this.mSupportsVR = false;
+
+        var n1 = shaderCode.indexOf("mainVR(");
+        var n2 = shaderCode.indexOf("mainVR (");
+        var n3 = shaderCode.indexOf("mainVR  (");
+        if (n1 > 0 || n2 > 0 || n3 > 0) {
+            var vsSourceVR = "attribute vec2 pos; void main() { gl_Position = vec4(pos.xy,0.0,1.0); }";
+
+            var res = this.CreateShader(gl, vsSource, this.mHeader + shaderCode + this.mImagePassFooterVR, false);
+            if (res.mSuccess == false)
+                return res.mInfo;
+
+            if (this.mProgramVR != null)
+                gl.deleteProgram(this.mProgramVR);
+
+            this.mProgramVR = res.mProgram;
+        }
+
+        return null;
+    }
+
+    private createGLTexture(ctx: any, image: any, format: any, texture: any) {
+        if (ctx == null) return;
+
+        ctx.bindTexture(ctx.TEXTURE_2D, texture);
+        ctx.pixelStorei(ctx.UNPACK_FLIP_Y_WEBGL, false);
+        ctx.texImage2D(ctx.TEXTURE_2D, 0, format, ctx.RGBA, ctx.UNSIGNED_BYTE, image);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.LINEAR);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.LINEAR_MIPMAP_LINEAR);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_S, ctx.REPEAT);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_T, ctx.REPEAT);
+        ctx.generateMipmap(ctx.TEXTURE_2D);
+        ctx.bindTexture(ctx.TEXTURE_2D, null);
+    }
+
+    private createGLTextureNearestRepeat(ctx: any, image: any, texture: any) {
+        if (ctx == null) return;
+
+        ctx.bindTexture(ctx.TEXTURE_2D, texture);
+        ctx.pixelStorei(ctx.UNPACK_FLIP_Y_WEBGL, false);
+        ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, image);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.NEAREST);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.NEAREST);
+        ctx.bindTexture(ctx.TEXTURE_2D, null);
+    }
+
+    private createGLTextureNearest(ctx: any, image: any, texture: any) {
+        if (ctx == null) return;
+
+        ctx.bindTexture(ctx.TEXTURE_2D, texture);
+        ctx.pixelStorei(ctx.UNPACK_FLIP_Y_WEBGL, false);
+        ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, image);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.NEAREST);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.NEAREST);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_S, ctx.CLAMP_TO_EDGE);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_T, ctx.CLAMP_TO_EDGE);
+
+        ctx.bindTexture(ctx.TEXTURE_2D, null);
+    }
+
+    private createGLTextureLinear(ctx: any, image: any, texture: any) {
+        if (ctx == null) return;
+
+        ctx.bindTexture(ctx.TEXTURE_2D, texture);
+        ctx.pixelStorei(ctx.UNPACK_FLIP_Y_WEBGL, false);
+        ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, image);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.LINEAR);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.LINEAR);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_S, ctx.CLAMP_TO_EDGE);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_T, ctx.CLAMP_TO_EDGE);
+        ctx.bindTexture(ctx.TEXTURE_2D, null);
+    }
+
+    private createAudioTexture(ctx: any, texture: any) {
+        if (ctx == null) return;
+
+        ctx.bindTexture(ctx.TEXTURE_2D, texture);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.LINEAR);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.LINEAR);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_S, ctx.CLAMP_TO_EDGE);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_T, ctx.CLAMP_TO_EDGE);
+        ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.LUMINANCE, 512, 2, 0, ctx.LUMINANCE, ctx.UNSIGNED_BYTE, null);
+        ctx.bindTexture(ctx.TEXTURE_2D, null);
+    }
+
+    private createKeyboardTexture(ctx: any, texture: any) {
+        if (ctx == null) return;
+
+        ctx.bindTexture(ctx.TEXTURE_2D, texture);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.NEAREST);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.NEAREST);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_S, ctx.CLAMP_TO_EDGE);
+        ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_T, ctx.CLAMP_TO_EDGE);
+        ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.LUMINANCE, 256, 2, 0, ctx.LUMINANCE, ctx.UNSIGNED_BYTE, null);
+        ctx.bindTexture(ctx.TEXTURE_2D, null);
+    }
+
+    public Create(passType: any, wa: any, gl: any) {
+        this.mType = passType;
+        this.mUsed = true;
+        this.mSource = null;
+
+        if (passType == "image") this.Create_Image(wa, gl);
+
+    }
+
+    private CreateShader(gl: any, tvs: any, tfs: any, nativeDebug: any): any {
+        if (gl == null) return { mSuccess: false, mInfo: "no GL" };
+
+        var vs = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(vs, tvs); gl.compileShader(vs);
+        var fs = gl.createShader(gl.FRAGMENT_SHADER); gl.shaderSource(fs, tfs); gl.compileShader(fs);
+
+        if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
+            var infoLog = gl.getShaderInfoLog(vs);
+            return { mSuccess: false, mInfo: infoLog };
+        }
+
+        if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
+            var infoLog = gl.getShaderInfoLog(fs);
+            return { mSuccess: false, mInfo: infoLog };
+        }
+
+        if (nativeDebug) {
+            var dbgext = gl.getExtension("WEBGL_debug_shaders");
+            if (dbgext != null) {
+                var hlsl = dbgext.getTranslatedShaderSource(fs);
+                console.log("------------------------\nHLSL code\n------------------------\n" + hlsl + "\n------------------------\n");
             }
         }
 
-        return true;
-    }
+        var tmpProgram = gl.createProgram();
 
-    private buildProgramWrapper(gl: webgl.WebGLRenderingContext, vertexShader: webgl.WebGLShader, fragmentShader: webgl.WebGLShader, attributeLocations: any): any {
-        let programWrapper : any = { program: null, uniformLocations: null };
+        gl.attachShader(tmpProgram, vs);
+        gl.attachShader(tmpProgram, fs);
 
-        let program: webgl.WebGLProgram = gl.createProgram();
-        gl.attachShader(program, vertexShader);
-        gl.attachShader(program, fragmentShader);
-        for (var attributeName in attributeLocations) {
-            gl.bindAttribLocation(program, attributeLocations[attributeName], attributeName);
-        }
-        gl.linkProgram(program);
-        let uniformLocations: any = {};
-        let numberOfUniforms: any = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
-        for (var i = 0; i < numberOfUniforms; i += 1) {
-            let activeUniform: webgl.WebGLActiveInfo = gl.getActiveUniform(program, i),
-                uniformLocation = gl.getUniformLocation(program, activeUniform.name);
-            uniformLocations[activeUniform.name] = uniformLocation;
+        gl.deleteShader(vs);
+        gl.deleteShader(fs);
+
+        gl.linkProgram(tmpProgram);
+
+        if (!gl.getProgramParameter(tmpProgram, gl.LINK_STATUS)) {
+            var infoLog = gl.getProgramInfoLog(tmpProgram);
+            gl.deleteProgram(tmpProgram);
+            return { mSuccess: false, mInfo: infoLog };
         }
 
-        programWrapper.program = program;
-        programWrapper.uniformLocations = uniformLocations;
-
-        return programWrapper;
+        return { mSuccess: true, mProgram: tmpProgram };
     }
 
-    private buildShader(gl: webgl.WebGLRenderingContext, type: number, source: string): any {
-        let shader: any = gl.createShader(type);
-        gl.shaderSource(shader, source);
-        gl.compileShader(shader);
-        //console.log(gl.getShaderInfoLog(shader));
-        return shader;
+    private Create_Image(wa: any, gl: any) {
+        this.MakeHeader(null, null);
+        this.mSampleRate = 44100;
+        this.mSupportsVR = false;
+        this.mProgram = null;
+        this.mProgramVR = null;
     }
 
-    private buildTexture(gl: webgl.WebGLRenderingContext, unit: number, format: number, type: number, width: number, height: number, data?: ArrayBufferView, wrapS?: number, wrapT?: number, minFilter?: number, magFilter?: number): webgl.WebGLTexture {
-        let texture: webgl.WebGLTexture = gl.createTexture();
-        gl.activeTexture(gl.TEXTURE0 + unit);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, format, width, height, 0, format, type, data);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrapS);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrapT);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, minFilter);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, magFilter);
-        return texture;
+    private DestroyInput(gl: any, id: any) {
+        if (gl == null) return;
+
+        if (this.mInputs[id] == null) return;
+
+        if (this.mInputs[id].mInfo.mType == "texture") {
+            gl.deleteTexture(this.mInputs[id].globject);
+        }
+        else if (this.mInputs[id].mInfo.mType == "webcam") {
+            gl.deleteTexture(this.mInputs[id].globject);
+        }
+        else if (this.mInputs[id].mInfo.mType == "video") {
+            this.mInputs[id].video.pause();
+            this.mInputs[id].video = null;
+            gl.deleteTexture(this.mInputs[id].globject);
+        }
+        else if (this.mInputs[id].mInfo.mType == "music") {
+            this.mInputs[id].audio.pause();
+            this.mInputs[id].audio = null;
+            gl.deleteTexture(this.mInputs[id].globject);
+        }
+        else if (this.mInputs[id].mInfo.mType == "cubemap") {
+            gl.deleteTexture(this.mInputs[id].globject);
+        }
+        else if (this.mInputs[id].mInfo.mType == "keyboard") {
+            gl.deleteTexture(this.mInputs[id].globject);
+        }
+        else if (this.mInputs[id].mInfo.mType == "mic") {
+            this.mInputs[id].mic = null;
+            gl.deleteTexture(this.mInputs[id].globject);
+        }
+
+        this.mInputs[id] = null;
     }
 
-    private buildFramebuffer(gl: webgl.WebGLRenderingContext, attachment: any): webgl.WebGLFramebuffer {
-        let framebuffer: webgl.WebGLFramebuffer = gl.createFramebuffer();
-        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, attachment, 0);
-        return framebuffer;
+    private Destroy_Image(wa: any, gl: any) {
     }
 
+    private MakeHeader(precission: any, supportDerivatives: any) {
+        if (this.mType == "image") this.MakeHeader_Image(precission, supportDerivatives);
+    }
+
+    private MakeHeader_Image(precission: any, supportDerivatives: any) {
+        var header = this.mPrecision;
+        var headerlength = 3;
+
+        if (this.mSupportsDerivatives) { header += "#extension GL_OES_standard_derivatives : enable\n"; headerlength++; }
+
+        header += "uniform vec3      iResolution;\n" +
+            "uniform float     iGlobalTime;\n" +
+            "uniform float     iChannelTime[4];\n" +
+            "uniform vec4      iMouse;\n" +
+            "uniform vec4      iDate;\n" +
+            "uniform float     iSampleRate;\n" +
+            "uniform vec3      iChannelResolution[4];\n";
+        headerlength += 7;
+
+        for (var i = 0; i < this.mInputs.length; i++) {
+            var inp = this.mInputs[i];
+
+            if (inp != null && inp.mInfo.mType == "cubemap")
+                header += "uniform samplerCube iChannel" + i + ";\n";
+            else
+                header += "uniform sampler2D iChannel" + i + ";\n";
+            headerlength++;
+        }
+
+        this.mImagePassFooter = "\nvoid main( void )" +
+            "{" +
+            "vec4 color = vec4(0.0,0.0,0.0,1.0);" +
+            "mainImage( color, gl_FragCoord.xy );" +
+            "color.w = 1.0;" +
+            "gl_FragColor = color;" +
+            "}";
+
+        this.mImagePassFooterVR = "\n" +
+            "uniform vec4 unViewport;\n" +
+            "uniform vec3 unCorners[5];\n" +
+            "void main( void )" +
+            "{" +
+            "vec4 color = vec4(0.0,0.0,0.0,1.0);" +
+
+            "vec3 ro = unCorners[4];" +
+            "vec2 uv = (gl_FragCoord.xy - unViewport.xy)/unViewport.zw;" +
+            "vec3 rd = normalize( mix( mix( unCorners[0], unCorners[1], uv.x )," +
+            "mix( unCorners[3], unCorners[2], uv.x ), uv.y ) - ro);" +
+
+            "mainVR( color, gl_FragCoord.xy-unViewport.xy, ro, rd );" +
+            "color.w = 1.0;" +
+            "gl_FragColor = color;" +
+            "}";
+
+
+        this.mHeader = header;
+        this.mHeaderLength = headerlength;
+    }
+
+    private createEmptyTextureNearest(gl: any, xres: any, yres: any) {
+        var tex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, xres, yres, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+        return tex;
+    }
+
+    private createFBO(gl: any, texture0: any) {
+        var fbo = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture0, 0);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+        return fbo;
+    }
+
+    private deleteFBO(gl: any, fbo: any) {
+        gl.deleteFramebuffer(fbo);
+    }
+
+    public Paint(vrData: any, wa: any, gl: any, da: any, time: any, mouseOriX: any, mouseOriY: any, mousePosX: any, mousePosY: any, xres: any, yres: any, isPaused: any) {
+        if (this.mType == "image") {
+            this.Paint_Image(vrData, wa, gl, da, time, mouseOriX, mouseOriY, mousePosX, mousePosY, xres, yres);
+            this.mFrame++;
+        }
+    }
+
+    private Paint_Image(vrData: any, wa: any, gl: any, d: any, time: any, mouseOriX: any, mouseOriY: any, mousePosX: any, mousePosY: any, xres: any, yres: any) {
+        var times = [0.0, 0.0, 0.0, 0.0];
+
+        var dates = [d.getFullYear(), // the year (four digits)
+        d.getMonth(),	   // the month (from 0-11)
+        d.getDate(),     // the day of the month (from 1-31)
+        d.getHours() * 60.0 * 60 + d.getMinutes() * 60 + d.getSeconds() + d.getMilliseconds() / 1000.0];
+
+        var mouse = [mousePosX, mousePosY, mouseOriX, mouseOriY];
+
+        var resos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
 
 
+        //------------------------
+
+
+        for (var i = 0; i < this.mInputs.length; i++) {
+            var inp = this.mInputs[i];
+
+            gl.activeTexture(gl.TEXTURE0 + i);
+
+            if (inp == null) {
+                gl.bindTexture(gl.TEXTURE_2D, null);
+            }
+            else if (inp.mInfo.mType == "texture") {
+                if (inp.loaded == false)
+                    gl.bindTexture(gl.TEXTURE_2D, null);
+                else {
+                    gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+                    resos[3 * i + 0] = inp.image.width;
+                    resos[3 * i + 1] = inp.image.height;
+                    resos[3 * i + 2] = 1;
+                }
+            }
+            else if (inp.mInfo.mType == "keyboard") {
+                if (inp.loaded == false)
+                    gl.bindTexture(gl.TEXTURE_2D, null);
+                else {
+                    gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+                    if (inp.keyboard.mNewTextureReady == true) {
+
+                        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+                        gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 256, 2, gl.LUMINANCE, gl.UNSIGNED_BYTE, inp.keyboard.mData);
+                        inp.keyboard.mNewTextureReady = false;
+
+                        if (this.mTextureCallbackFun != null)
+                            this.mTextureCallbackFun(this.mTextureCallbackObj, i, { mImage: inp.keyboard.mImage, mData: inp.keyboard.mData }, false, false, 4, -1.0, this.mID);
+                    }
+                }
+            }
+            else if (inp.mInfo.mType == "cubemap") {
+                if (inp.loaded == false)
+                    gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+                else
+                    gl.bindTexture(gl.TEXTURE_CUBE_MAP, inp.globject);
+            }
+            else if (inp.mInfo.mType == "webcam") {
+                if (inp.video.readyState === inp.video.HAVE_ENOUGH_DATA) {
+                    if (this.mTextureCallbackFun != null)
+                        this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.video, false, false, 0, -1, this.mID);
+
+                    if (inp.loaded == false) {
+                        gl.bindTexture(gl.TEXTURE_2D, null);
+                    }
+                    else {
+                        gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+                        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, inp.video);
+                        resos[3 * i + 0] = inp.video.width;
+                        resos[3 * i + 1] = inp.video.height;
+                        resos[3 * i + 2] = 1;
+                    }
+                }
+            }
+            else if (inp.mInfo.mType == "video") {
+                if (inp.video.mPaused == false) {
+                    if (this.mTextureCallbackFun != null)
+                        this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.video, false, false, 0, inp.video.currentTime, this.mID);
+                }
+
+                if (inp.loaded == false) {
+                    gl.bindTexture(gl.TEXTURE_2D, null);
+                }
+                else {
+                    times[i] = inp.video.currentTime;
+
+                    gl.bindTexture(gl.TEXTURE_2D, inp.globject);
+
+                    if (inp.video.mPaused == false) {
+                        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, inp.video);
+                    }
+                    resos[3 * i + 0] = inp.video.width;
+                    resos[3 * i + 1] = inp.video.height;
+                    resos[3 * i + 2] = 1;
+                }
+            }
+
+
+
+        }
+
+        //-----------------------------------
+        var prog = (vrData == null) ? this.mProgram : this.mProgramVR;
+
+        gl.useProgram(prog);
+
+        var l2 = gl.getUniformLocation(prog, "iGlobalTime"); if (l2 != null) gl.uniform1f(l2, time);
+        var l3 = gl.getUniformLocation(prog, "iResolution"); if (l3 != null) gl.uniform3f(l3, xres, yres, 1.0);
+        var l4 = gl.getUniformLocation(prog, "iMouse"); if (l4 != null) gl.uniform4fv(l4, mouse);
+        var l5 = gl.getUniformLocation(prog, "iChannelTime"); if (l5 != null) gl.uniform1fv(l5, times);
+        var l7 = gl.getUniformLocation(prog, "iDate"); if (l7 != null) gl.uniform4fv(l7, dates);
+        var l8 = gl.getUniformLocation(prog, "iChannelResolution"); if (l8 != null) gl.uniform3fv(l8, resos);
+        var l9 = gl.getUniformLocation(prog, "iSampleRate"); if (l9 != null) gl.uniform1f(l9, this.mSampleRate);
+        var ich0 = gl.getUniformLocation(prog, "iChannel0"); if (ich0 != null) gl.uniform1i(ich0, 0);
+        var ich1 = gl.getUniformLocation(prog, "iChannel1"); if (ich1 != null) gl.uniform1i(ich1, 1);
+        var ich2 = gl.getUniformLocation(prog, "iChannel2"); if (ich2 != null) gl.uniform1i(ich2, 2);
+        var ich3 = gl.getUniformLocation(prog, "iChannel3"); if (ich3 != null) gl.uniform1i(ich3, 3);
+
+        var l1 = gl.getAttribLocation(prog, "pos");
+
+
+        if (vrData == null) {
+            gl.viewport(0, 0, xres, yres);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.mQuadVBO);
+            gl.vertexAttribPointer(l1, 2, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(l1);
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+            gl.disableVertexAttribArray(l1);
+        }
+        else {
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.mQuadVBO);
+            gl.vertexAttribPointer(l1, 2, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(l1);
+
+            for (var i = 0; i < 2; i++) {
+                var ei = (i == 0) ? vrData.mLeftEye : vrData.mRightEye;
+
+                var vp = [i * xres / 2, 0, xres / 2, yres];
+                //vp = ei.mVP;
+                gl.viewport(vp[0], vp[1], vp[2], vp[3]);
+
+                var fov = ei.mProjection;
+                var corA = [-fov[2], -fov[1], -1.0];
+                var corB = [fov[3], -fov[1], -1.0];
+                var corC = [fov[3], fov[0], -1.0];
+                var corD = [-fov[2], fov[0], -1.0];
+                var apex = [0.0, 0.0, 0.0];
+
+                var ma = this.invertFast(ei.mCamera);
+                corA = this.matMulpoint(ma, corA);
+                corB = this.matMulpoint(ma, corB);
+                corC = this.matMulpoint(ma, corC);
+                corD = this.matMulpoint(ma, corD);
+                apex = this.matMulpoint(ma, apex);
+
+                var corners = [corA[0], corA[1], corA[2],
+                corB[0], corB[1], corB[2],
+                corC[0], corC[1], corC[2],
+                corD[0], corD[1], corD[2],
+                apex[0], apex[1], apex[2]];
+                gl.uniform3fv(gl.getUniformLocation(prog, "unCorners"), corners);
+                gl.uniform4fv(gl.getUniformLocation(prog, "unViewport"), vp);
+
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+            }
+
+            gl.disableVertexAttribArray(l1);
+
+
+
+        }
+
+    }
+
+    private invertFast(m: any) {
+        var inv = [
+
+            m[5] * m[10] * m[15] -
+            m[5] * m[11] * m[14] -
+            m[9] * m[6] * m[15] +
+            m[9] * m[7] * m[14] +
+            m[13] * m[6] * m[11] -
+            m[13] * m[7] * m[10],
+
+            -m[1] * m[10] * m[15] +
+            m[1] * m[11] * m[14] +
+            m[9] * m[2] * m[15] -
+            m[9] * m[3] * m[14] -
+            m[13] * m[2] * m[11] +
+            m[13] * m[3] * m[10],
+
+            m[1] * m[6] * m[15] -
+            m[1] * m[7] * m[14] -
+            m[5] * m[2] * m[15] +
+            m[5] * m[3] * m[14] +
+            m[13] * m[2] * m[7] -
+            m[13] * m[3] * m[6],
+
+            -m[1] * m[6] * m[11] +
+            m[1] * m[7] * m[10] +
+            m[5] * m[2] * m[11] -
+            m[5] * m[3] * m[10] -
+            m[9] * m[2] * m[7] +
+            m[9] * m[3] * m[6],
+
+            -m[4] * m[10] * m[15] +
+            m[4] * m[11] * m[14] +
+            m[8] * m[6] * m[15] -
+            m[8] * m[7] * m[14] -
+            m[12] * m[6] * m[11] +
+            m[12] * m[7] * m[10],
+
+            m[0] * m[10] * m[15] -
+            m[0] * m[11] * m[14] -
+            m[8] * m[2] * m[15] +
+            m[8] * m[3] * m[14] +
+            m[12] * m[2] * m[11] -
+            m[12] * m[3] * m[10],
+
+            -m[0] * m[6] * m[15] +
+            m[0] * m[7] * m[14] +
+            m[4] * m[2] * m[15] -
+            m[4] * m[3] * m[14] -
+            m[12] * m[2] * m[7] +
+            m[12] * m[3] * m[6],
+
+
+            m[0] * m[6] * m[11] -
+            m[0] * m[7] * m[10] -
+            m[4] * m[2] * m[11] +
+            m[4] * m[3] * m[10] +
+            m[8] * m[2] * m[7] -
+            m[8] * m[3] * m[6],
+
+
+            m[4] * m[9] * m[15] -
+            m[4] * m[11] * m[13] -
+            m[8] * m[5] * m[15] +
+            m[8] * m[7] * m[13] +
+            m[12] * m[5] * m[11] -
+            m[12] * m[7] * m[9],
+
+
+
+            -m[0] * m[9] * m[15] +
+            m[0] * m[11] * m[13] +
+            m[8] * m[1] * m[15] -
+            m[8] * m[3] * m[13] -
+            m[12] * m[1] * m[11] +
+            m[12] * m[3] * m[9],
+
+            m[0] * m[5] * m[15] -
+            m[0] * m[7] * m[13] -
+            m[4] * m[1] * m[15] +
+            m[4] * m[3] * m[13] +
+            m[12] * m[1] * m[7] -
+            m[12] * m[3] * m[5],
+
+            -m[0] * m[5] * m[11] +
+            m[0] * m[7] * m[9] +
+            m[4] * m[1] * m[11] -
+            m[4] * m[3] * m[9] -
+            m[8] * m[1] * m[7] +
+            m[8] * m[3] * m[5],
+
+            -m[4] * m[9] * m[14] +
+            m[4] * m[10] * m[13] +
+            m[8] * m[5] * m[14] -
+            m[8] * m[6] * m[13] -
+            m[12] * m[5] * m[10] +
+            m[12] * m[6] * m[9],
+
+            m[0] * m[9] * m[14] -
+            m[0] * m[10] * m[13] -
+            m[8] * m[1] * m[14] +
+            m[8] * m[2] * m[13] +
+            m[12] * m[1] * m[10] -
+            m[12] * m[2] * m[9],
+
+            -m[0] * m[5] * m[14] +
+            m[0] * m[6] * m[13] +
+            m[4] * m[1] * m[14] -
+            m[4] * m[2] * m[13] -
+            m[12] * m[1] * m[6] +
+            m[12] * m[2] * m[5],
+
+            m[0] * m[5] * m[10] -
+            m[0] * m[6] * m[9] -
+            m[4] * m[1] * m[10] +
+            m[4] * m[2] * m[9] +
+            m[8] * m[1] * m[6] -
+            m[8] * m[2] * m[5]];
+
+        var det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+        det = 1.0 / det;
+
+        for (var i = 0; i < 16; i++) inv[i] = inv[i] * det;
+
+        return inv;
+    }
+
+    private matMulpoint(m: any, v: any) {
+        return [m[0] * v[0] + m[1] * v[1] + m[2] * v[2] + m[3],
+        m[4] * v[0] + m[5] * v[1] + m[6] * v[2] + m[7],
+        m[8] * v[0] + m[9] * v[1] + m[10] * v[2] + m[11]];
+    }
+
+    private deleteTexture(gl: any, tex: any) {
+        gl.deleteTexture(tex);
+    }
+
+    UpdateInputs(wa: any, forceUpdate: any) {
+        for (var i = 0; i < this.mInputs.length; i++) {
+            var inp = this.mInputs[i];
+
+            if (inp == null) {
+                if (forceUpdate) {
+                    if (this.mTextureCallbackFun != null)
+                        this.mTextureCallbackFun(this.mTextureCallbackObj, i, null, false, true, 0, -1.0, this.mID);
+                }
+            }
+            else if (inp.mInfo.mType == "texture") {
+                if (inp.loaded && forceUpdate) {
+                    if (this.mTextureCallbackFun != null)
+                        this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.image, true, true, 0, -1.0, this.mID);
+                }
+
+            }
+            else if (inp.mInfo.mType == "cubemap") {
+                if (inp.loaded && forceUpdate) {
+                    if (this.mTextureCallbackFun != null)
+                        this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.image[0], true, true, 0, -1.0, this.mID);
+                }
+
+            }
+            else if (inp.mInfo.mType == "video") {
+                if (inp.video.readyState === inp.video.HAVE_ENOUGH_DATA) {
+                    if (this.mTextureCallbackFun != null)
+                        this.mTextureCallbackFun(this.mTextureCallbackObj, i, inp.video, false, false, 0, -1, this.mID);
+                }
+            }
+
+        }
+    }
+
+    StopOutput(wa: any, gl: any){
+
+        //this.stopOutput_Image(wa, gl);
+    }
+
+    ResumeOutput(wa: any, gl: any){ }
 }

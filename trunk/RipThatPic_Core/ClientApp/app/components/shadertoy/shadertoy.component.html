@@ -1,3 +1,56 @@
-<div style="overflow:hidden;">
+<!-- <div style="overflow:hidden;">
     <canvas id="renderer" width="1" height="1" style="background: black;" #renderer></canvas>
+</div> -->
+
+<div class="shader-toy" style="overflow:hidden;">
+    <div id="player" #player>
+        <canvas id="demogl" #demogl></canvas>
+    </div>
+
+    <div class="actions">
+        <div class="float-left">{{uiData.ShaderCharCounter}}</div>
+        <div class="float-left marl-10" id="divFrameRate" #divFrameRate></div>
+        <div class="float-left marl-10" id="divMyTime" #divMyTime></div>
+        <div class="float-left marl-10">
+            <input id="butPauseShader" type="button" value="Pause" (click)="uiData.Pause()" #butPauseShader />
+            <select (change)="ChangeShader()" [(ngModel)]="shaderId">
+                <option value="_blank">[New]</option>
+                <option value="2443k2">Changing Gradient Background</option>
+                <option value="XslGRr">Clouds</option>
+                <!--<option value="Msl3Rr">Cubescape</option>-->
+                <option value="MlS3Rc">Echoplex</option>
+                <option value="XlsGRs">Jetstream</option>
+                <option value="4t23RR" selected>Toon Cloud</option>
+                <option value="XsX3RB">Volcanic</option>
+
+            </select>
+        </div>
+        <div *ngIf="uiData.IsLoading" class="loading">Loading</div>
+        <div class="float-right marr-20">
+            <input id="butUpdateShader" type="button" value="Update Shader" #butUpdateShader />
+        </div>
+    </div>
+
+    <div class="inputs" ng-show="uiData.ShowInputs">
+        <div ng-repeat="input in uiData.Inputs" ng-include="'inputitemlist.html'" class="float-left marl-10"></div>
+
+        <script type="text/ng-template" id="inputitemlist.html">
+            {{input.channel}} :
+            <img src="{{input.src}}" style="width:50px;height:30px" />
+        </script>
+    </div>
+
+    <div id="editor" #editor></div>
+
+    <div class="actions">
+        <div class="float-left">{{uiData.ShaderCharCounter}}</div>
+        <div class="float-left marl-10">{{uiData.FrameRate}}</div>
+        <div class="float-left marl-10">{{uiData.MyTime}}</div>
+        <div class="float-right marr-20"><input id="butUpdateShader" type="button" value="Update Shader" /></div>
+    </div>
+
+    <div id="passManager" #passManager></div>
 </div>
+
+
+
