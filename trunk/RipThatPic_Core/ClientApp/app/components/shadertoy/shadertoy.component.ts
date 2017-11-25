@@ -56,7 +56,7 @@ export class ShaderToyComponent implements AfterViewInit, IShaderToyScope {
 
         }
 
-        // $(this.butUpdateShaderEl.nativeElement).on('click', this.updateShader.bind(this));
+        $(this.butUpdateShaderEl.nativeElement).on('click', this.updateShader.bind(this));
 
         this.shaderToy = new ShaderToy(player, editor, passManager, this.uiData, demogl, butPauseShader);
         //this.sc.shaderToy.UpdateCounter = (data) => { this.sc.uiData.ShaderCharCounter = data;};
