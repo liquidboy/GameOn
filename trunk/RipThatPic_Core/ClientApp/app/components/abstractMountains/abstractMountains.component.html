@@ -1,0 +1,77 @@
+
+<style>
+    body {
+        color: #fff;
+        font-family: Monospace;
+        font-size: 13px;
+        text-align: center;
+        font-weight: bold;
+        line-height: 1.5em;
+        background-color: #000;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #info {
+        color: #fff;
+        position: relative;
+        margin: 0 auto -2.1em;
+        top: 0px;
+        padding: 5px;
+        z-index: 100;
+    }
+
+    #help {
+        color: #aaa
+    }
+
+    .key {
+        color: #eee
+    }
+
+    a {
+        color: #f97;
+    }
+
+    #stats {
+        position: absolute;
+        top: 0;
+        left: 0
+    }
+
+        #stats #fps {
+            background: transparent !important
+        }
+
+            #stats #fps #fpsText {
+                color: #aaa !important
+            }
+
+            #stats #fps #fpsGraph {
+                display: none
+            }
+
+    #loading {
+        background: #0af;
+        color: white;
+        padding: 0.25em 1em;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        z-index: 200;
+    }
+</style>
+
+<div class="abstract-mountains" #container>
+
+</div>
+
+<div id="loading" #loading>Loading ...</div>
+
+<div id="info">
+    <a href="http://alteredqualia.com/" target="_blank">xg</a> - abstract mountains - model by <a href="http://www.blendswap.com/blends/view/62374">David Zerba</a><br />
+    <span id="help">
+        click or press <span class="key">space</span> to select random preset, press <span class="key">R</span> to randomize colors<br />
+        press <span class="key">U</span> to toggle ultra mode
+    </span>
+</div>

@@ -6,7 +6,7 @@ declare var ActiveXObject: (type: string) => void;
 @Component({
     selector: 'shadertoy',
     templateUrl: './shadertoy.component.html',
-    styleUrls: ['./shadertoy.component.css']
+    // styleUrls: ['./shadertoy.component.css']
 })
 export class ShaderToyComponent implements AfterViewInit, IShaderToyScope {
 

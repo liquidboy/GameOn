@@ -1,0 +1,10 @@
+﻿
+.grid-rainbow-wave canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.grid-rainbow-wave{
+    background-color: black;
+    height: 500px;
+}

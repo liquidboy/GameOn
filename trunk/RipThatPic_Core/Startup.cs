@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 namespace RipThatPic_Core
 {
@@ -41,7 +45,15 @@ namespace RipThatPic_Core
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            //http://www.c-sharpcorner.com/UploadFile/41e70f/handling-404-error-for-unknown-file-extensions-in-Asp-Net-co/
+            var contentTypeProvider = new FileExtensionContentTypeProvider();
+            contentTypeProvider.Mappings.Add(".utf8", "application/octet-stream");
+            app.UseStaticFiles(new StaticFileOptions() { ContentTypeProvider = contentTypeProvider });
+            //app.UseStaticFiles(new StaticFileOptions() {
+            //    ServeUnknownFileTypes = true,
+            //    DefaultContentType = "text/utf8"
+            //});
+            
 
             app.UseMvc(routes =>
             {
