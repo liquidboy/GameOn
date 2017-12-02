@@ -9,6 +9,7 @@ declare var XG: any;
 })
 export class AbstractMountainsComponent implements AfterViewInit {
     // http://alteredqualia.com/xg/examples/abstract_mountains.html
+    // https://code.google.com/archive/p/webgl-loader/  utf8 is a binary format hence application/octet-stream  
     
     @ViewChild('container') containerEl: ElementRef;
 
