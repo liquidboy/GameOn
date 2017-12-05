@@ -10,7 +10,8 @@ import { HomeComponent } from './components/home/home.component';
 import { FlowComponent } from './components/flow/flow.component';
 import { ShaderToyComponent } from './components/shadertoy/shadertoy.component';
 import { GridRainboWaveComponent } from './components/gridrainbowave/gridrainbowave.component';
-import { AbstractMountainsComponent } from './components/abstractmountains/abstractmountains.component';
+import { AbstractMountainsComponent } from './components/abstractMountains/abstractMountains.component';
+import { MovingBoxesComponent } from './components/movingBoxes/movingBoxes.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 
@@ -24,7 +25,8 @@ import { CounterComponent } from './components/counter/counter.component';
         FlowComponent,
         ShaderToyComponent,
         GridRainboWaveComponent,
-        AbstractMountainsComponent
+        AbstractMountainsComponent,
+        MovingBoxesComponent
     ],
     imports: [
         CommonModule,
@@ -37,6 +39,7 @@ import { CounterComponent } from './components/counter/counter.component';
             { path: 'shadertoy', component: ShaderToyComponent },
             { path: 'gridrainbowave', component: GridRainboWaveComponent },
             { path: 'abstractmountains', component: AbstractMountainsComponent },
+            { path: 'movingboxes', component: MovingBoxesComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: '**', redirectTo: 'home' }

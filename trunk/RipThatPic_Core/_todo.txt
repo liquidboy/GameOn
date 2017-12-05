@@ -1,2 +1,7 @@
 ﻿moving boxes - https://codepen.io/Ivolvy/pen/VvLRmO/
 
+alient - https://alien.js.org/
+	- code https://github.com/pschroen/alien.js
+
+async rendering - https://gist.github.com/morgan3d/1a00b675a3ef9bb6d4b9eeebbfc4b28d
+	- details https://twitter.com/CasualEffects/status/936751389463777281

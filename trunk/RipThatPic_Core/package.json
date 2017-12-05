@@ -48,13 +48,15 @@
     "webpack": "2.5.1",
     "webpack-hot-middleware": "2.18.2",
     "webpack-merge": "4.1.0",
-    "zone.js": "0.8.12"
+    "zone.js": "0.8.12",
+    "three": "0.88.0"
   },
   "devDependencies": {
     "@types/chai": "4.0.1",
     "@types/jasmine": "2.5.53",
     "@types/webgl2": "0.0.2",
     "@types/jquery": "3.2.16",
+    "@types/three": "0.84.33",
     "chai": "4.0.2",
     "jasmine-core": "2.6.4",
     "karma": "1.7.0",
