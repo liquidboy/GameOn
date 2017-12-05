@@ -4,8 +4,9 @@ import {
     FlatShading, Object3D, Mesh, PlaneGeometry, MeshBasicMaterial, DoubleSide, DirectionalLight,
     Material
 } from 'three';
+import { TimelineMax } from 'gsap';
 
-declare var TimelineMax: any;
+//declare var TimelineMax: any;
 declare var Expo: any;
 
 @Component({
@@ -149,7 +150,7 @@ class MovingCubes {
 
     animateBoxes = () => {
 
-        var tl = new TimelineMax({ repeat: -1, repeatDelay: 0.5 });
+        let tl: TimelineMax = new TimelineMax({ repeat: -1, repeatDelay: 0.5 });
         tl.to(this.leftBoxes.position, 0.7, { z: 75, ease: Expo.easeOut });
         tl.to(this.rightBoxes.position, 0.7, { z: -75, ease: Expo.easeOut }, "=-0.7"); //"=-0.7" permit to synchronise the different animations by advancing the timeline execution
 
