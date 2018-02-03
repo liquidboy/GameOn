@@ -5,3 +5,9 @@ alient - https://alien.js.org/
 
 async rendering - https://gist.github.com/morgan3d/1a00b675a3ef9bb6d4b9eeebbfc4b28d
 	- details https://twitter.com/CasualEffects/status/936751389463777281
+
+
+
+rework using new way of doing things with ngc/webpack
+
+https://github.com/angular/angular/issues/20219
