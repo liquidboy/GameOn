@@ -19,7 +19,9 @@
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Content Remove="ClientApp\**" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Content Remove="Elements\**" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="ClientApp\dist\vendor-manifest.json" />
   </ItemGroup>
@@ -28,7 +30,7 @@
     <TypeScriptCompile Include="wwwroot\lib\webgl.d.ts" />
   </ItemGroup>
 
-    <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist\main-client.js')">
+  <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And (!Exists('wwwroot\dist\main-client.js') Or !Exists('wwwroot\dist\main-client-elements.js'))">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
@@ -42,6 +44,7 @@
     
     <Exec Command="node node_modules/webpack/bin/webpack.js" />
     <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.elements.js" />
   </Target>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
