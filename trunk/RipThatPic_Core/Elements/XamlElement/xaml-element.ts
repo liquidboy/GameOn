@@ -1,7 +1,4 @@
-﻿import {
-    Component,
-    ViewEncapsulation,
-} from '@angular/core';
+﻿import { Component, Input, NgModule, ViewEncapsulation } from '@angular/core';
 
 interface IXamlElement {
 
@@ -13,6 +10,7 @@ interface IXamlElement {
     selector: 'xaml-element',
     template: `
         <h1>xamlelement</h1>
+        <h2>where the fuck are you</h2>
     `,
     styles: [`
 
@@ -21,5 +19,8 @@ interface IXamlElement {
 
 })
 export class XamlElement {
-    
+    @Input() name: string = 'World!';
+    constructor() {
+        console.log("XamlElement.constructor");
+    }
 }
