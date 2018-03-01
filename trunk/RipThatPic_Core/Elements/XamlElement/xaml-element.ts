@@ -12,11 +12,6 @@ interface IXamlElement {
         <h1>xamlelement</h1>
         <h2>where the fuck are you</h2>
     `,
-    styles: [`
-
-    `],
-    encapsulation: ViewEncapsulation.Native
-
 })
 export class XamlElement {
     @Input() name: string = 'World!';

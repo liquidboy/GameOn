@@ -45,12 +45,12 @@ import {
     Component, ComponentFactory, NgModuleRef, NgModule, CompilerFactory,
     NgModuleFactory, NgModuleFactoryLoader, Type, destroyPlatform
 } from '@angular/core';
-import { createNgElementConstructor, NgElementDelegateFactory, NgElementConstructor } from '@angular/elements';
+import { createNgElementConstructor, NgElementConfig, NgElementConstructor, getConfigFromComponentFactory,  } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs/Subject';
 import { XamlElement } from './xaml-element';
-import { NgElementDelegateFactoryBase, NgElementDelegateBase, NgElementDelegateEvent } from '@angular/elements/src/element-delegate';
+// import { NgElementDelegateFactoryBase, NgElementDelegateBase, NgElementDelegateEvent } from '@angular/elements/src/element-delegate';
 
 @NgModule({
     //bootstrap: [XamlElement],
@@ -65,7 +65,7 @@ import { NgElementDelegateFactoryBase, NgElementDelegateBase, NgElementDelegateE
 })
 export class AppModule {
     //_delegateFactory: NgElementDelegateFactory<any>;
-    _delegateFactory: XamlElementDelegateFactory;
+    //_delegateFactory: XamlElementDelegateFactory;
 
     _ngElementCtor: NgElementConstructor<any>;
     _componentFactory: ComponentFactory<XamlElement>;
@@ -75,13 +75,14 @@ export class AppModule {
         console.log(moduleRef);
 
         //this._delegateFactory = new NgElementDelegateFactory<any>(this.moduleRef.injector);
-        this._delegateFactory = new XamlElementDelegateFactory();
-        console.log(this._delegateFactory);
+        //this._delegateFactory = new XamlElementDelegateFactory();
+        //console.log(this._delegateFactory);
 
 
         this._componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory<XamlElement>(XamlElement);
         console.log(this._componentFactory);
-        this._ngElementCtor = createNgElementConstructor(this._componentFactory, { delegateFactory: this._delegateFactory });
+        const ngElementConfig = getConfigFromComponentFactory(this._componentFactory, moduleRef.injector);
+        this._ngElementCtor = createNgElementConstructor(ngElementConfig); 
         console.log(this._ngElementCtor);
         
         //let el: any = this._componentFactory.create(this.moduleRef.injector);
@@ -102,34 +103,34 @@ export class AppModule {
 
 
 
-class XamlElementDelegate implements NgElementDelegateBase<any> {
-    connectedElement: HTMLElement | null = null;
-    disconnectCalled = false;
-    inputs = new Map<string, any>();
+//class XamlElementDelegate implements NgElementDelegateBase<any> {
+//    connectedElement: HTMLElement | null = null;
+//    disconnectCalled = false;
+//    inputs = new Map<string, any>();
 
-    events = new Subject<NgElementDelegateEvent>();
+//    events = new Subject<NgElementDelegateEvent>();
 
-    connect(element: HTMLElement): void {
-        console.log("XamlElementDelegate.connect");
-        this.connectedElement = element;
-    }
+//    connect(element: HTMLElement): void {
+//        console.log("XamlElementDelegate.connect");
+//        this.connectedElement = element;
+//    }
 
-    disconnect(): void {
-        this.disconnectCalled = true;
-    }
+//    disconnect(): void {
+//        this.disconnectCalled = true;
+//    }
 
-    getInputValue(propName: string): any {
-        return this.inputs.get(propName);
-    }
+//    getInputValue(propName: string): any {
+//        return this.inputs.get(propName);
+//    }
 
-    setInputValue(propName: string, value: string): void {
-        this.inputs.set(propName, value);
-    }
-}
-class XamlElementDelegateFactory implements NgElementDelegateFactoryBase {
-    xamlElementDelegate = new XamlElementDelegate();
+//    setInputValue(propName: string, value: string): void {
+//        this.inputs.set(propName, value);
+//    }
+//}
+//class XamlElementDelegateFactory implements NgElementDelegateFactoryBase {
+//    xamlElementDelegate = new XamlElementDelegate();
 
-    create(componentFactory: ComponentFactory<any>): NgElementDelegateBase<any> {
-        return this.xamlElementDelegate;
-    }
-}
+//    create(componentFactory: ComponentFactory<any>): NgElementDelegateBase<any> {
+//        return this.xamlElementDelegate;
+//    }
+//}

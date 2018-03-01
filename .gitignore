@@ -191,3 +191,4 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 /trunk/.vs/*
+/trunk/RipThatPic_Core/@angular/*

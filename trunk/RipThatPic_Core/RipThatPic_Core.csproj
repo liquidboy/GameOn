@@ -22,9 +22,26 @@
   <ItemGroup>
     <Content Remove="Elements\**" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="node_modules\@webcomponents\webcomponentsjs\custom-elements-es5-adapter.js" />
+    <Content Include="node_modules\@webcomponents\webcomponentsjs\webcomponents-loader.js" />
+  </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\lib\webgl.d.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="node_modules\%40webcomponents\webcomponentsjs\custom-elements-es5-adapter.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="node_modules\%40webcomponents\webcomponentsjs\webcomponents-loader.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\dist\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And (!Exists('wwwroot\dist\main-client.js') Or !Exists('wwwroot\dist\main-client-elements.js'))">
@@ -40,6 +57,7 @@
 
     <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" />
     <Exec Command="node node_modules/webpack/bin/webpack.js" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendorelements.js" />
     <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.elements.js" />
   </Target>
 
