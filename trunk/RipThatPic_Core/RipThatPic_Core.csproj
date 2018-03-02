@@ -40,10 +40,6 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Elements\Dashboard\" />
-  </ItemGroup>
-
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And (!Exists('wwwroot\dist\main-client.js') Or !Exists('wwwroot\dist\main-client-elements.js'))">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

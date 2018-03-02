@@ -6,7 +6,7 @@ import { createNgElementConstructor, NgElementConfig, NgElementConstructor, getC
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs/Subject';
-import { XamlElement } from './Xaml/xaml-element';
+import { GekoDashboard } from './Dashboard/dashboard';
 
 @NgModule({
     //bootstrap: [XamlElement],
@@ -16,15 +16,14 @@ import { XamlElement } from './Xaml/xaml-element';
     providers: [
         
     ],
-    declarations: [XamlElement],
-    entryComponents: [XamlElement]
+    declarations: [GekoDashboard],
+    entryComponents: [GekoDashboard]
 })
-export class ElementsModule {
+export class DashboardModule {
     constructor(private moduleRef: NgModuleRef<any>) {
-        this.register<XamlElement>(this.moduleRef, XamlElement);
+        this.register<GekoDashboard>(this.moduleRef, GekoDashboard);
     }
     ngDoBootstrap() {
-
     }
     register<T>(moduleRef: NgModuleRef<any>, component: Type<T>) {
         //console.log(moduleRef);
