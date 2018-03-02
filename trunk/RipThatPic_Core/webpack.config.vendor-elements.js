@@ -20,7 +20,7 @@ const nonTreeShakableModules = [
 const allModules = nonTreeShakableModules;
 
 module.exports = (env) => {
-    const extractCSS = new ExtractTextPlugin('vendorelements.css');
+    const extractCSS = new ExtractTextPlugin('vendor_elements.css');
     const isDevBuild = !(env && env.prod);
     const sharedConfig = {
         stats: { modules: false },
@@ -47,7 +47,7 @@ module.exports = (env) => {
         entry: {
             // To keep development builds fast, include all vendor dependencies in the vendor bundle.
             // But for production builds, leave the tree-shakable ones out so the AOT compiler can produce a smaller bundle.
-            'vendorelements':  allModules
+            'vendor_elements':  allModules
         },
         output: { path: path.join(__dirname, 'wwwroot', 'dist') },
         module: {
@@ -69,7 +69,7 @@ module.exports = (env) => {
     const serverBundleConfig = merge(sharedConfig, {
         target: 'node',
         resolve: { mainFields: ['main'] },
-        entry: { 'vendorelements': allModules.concat(['aspnet-prerendering']) },
+        entry: { 'vendor_elements': allModules.concat(['aspnet-prerendering']) },
         output: {
             path: path.join(__dirname, 'ClientApp', 'dist'),
             libraryTarget: 'commonjs2',
