@@ -2,6 +2,6 @@ import 'reflect-metadata';
 import 'zone.js';
 import 'bootstrap';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { XamlElementModule } from './XamlElement/xaml-element.module';
+import { ElementsModule } from './elements.module';
 
-const modulePromise = platformBrowserDynamic().bootstrapModule(XamlElementModule);
+const modulePromise = platformBrowserDynamic().bootstrapModule(ElementsModule);
