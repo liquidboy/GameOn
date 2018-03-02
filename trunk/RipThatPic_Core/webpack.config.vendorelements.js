@@ -11,7 +11,7 @@ const nonTreeShakableModules = [
     'event-source-polyfill',
     'jquery',
     'three',
-    //'@webcomponents/custom-elements/src/native-shim.js',
+    //'@webcomponents/custom-elements/src/native-shim',
     //'@webcomponents/custom-elements/custom-elements.min',
     //'@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js',
     //'@webcomponents/webcomponentsjs/webcomponents-loader.js',

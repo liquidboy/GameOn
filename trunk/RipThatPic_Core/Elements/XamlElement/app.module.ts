@@ -52,6 +52,7 @@ import { Subject } from 'rxjs/Subject';
 import { XamlElement } from './xaml-element';
 // import { NgElementDelegateFactoryBase, NgElementDelegateBase, NgElementDelegateEvent } from '@angular/elements/src/element-delegate';
 
+
 @NgModule({
     //bootstrap: [XamlElement],
     imports: [

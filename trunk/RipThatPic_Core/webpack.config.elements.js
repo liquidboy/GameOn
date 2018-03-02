@@ -30,7 +30,10 @@ module.exports = (env) => {
     // Configuration for client-side bundle suitable for running in browsers
     const clientBundleOutputDir = './wwwroot/dist';
     const clientBundleConfig = merge(sharedConfig, {
-        entry: { 'main-client-elements': './Elements/boot.browser.ts' },
+        entry: {
+            'elements-polyfills': './Elements/polyfills.ts',
+            'xaml-elements': './Elements/boot.browser.ts'
+        },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
         plugins: [
             new webpack.DllReferencePlugin({

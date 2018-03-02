@@ -5,6 +5,7 @@ import 'bootstrap';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './XamlElement/app.module';
 
+
 ////import { ComponentFactory } from '@angular/core';
 ////import { createNgElementConstructor, NgElementDelegateFactory, NgElementConstructor } from '@angular/elements';
 ////import { XamlElement } from './XamlElement/xaml-element';
