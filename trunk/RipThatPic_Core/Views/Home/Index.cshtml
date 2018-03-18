@@ -2,17 +2,19 @@
     ViewData["Title"] = "Xaml Page";
 }
 
+<xaml-canvas>
+    [
+    {"col1": "row 1 column 1", "col2": "row 1 column 2", "col3": "row 1 column 3"},
+    {"col1": "row 2 column 1", "col2": "row 2 column 2", "col3": "row 2 column 3"}
+    ]
+</xaml-canvas>
 <xaml-element></xaml-element>
-<geko-dashboard></geko-dashboard>
+<geko-dashboard>
+    
+</geko-dashboard>
 
 <script src="~/dist/vendor_elements.js" asp-append-version="true"></script>
 <script src="~/dist/elements-polyfills.js" asp-append-version="true"></script>
 @section scripts {
-
-    @*need this for customelements to work*@
-    @*https://github.com/webcomponents/webcomponentsjs/issues/749*@
-    @*<script src="~/lib/webcomponents/webcomponents-loader.js"></script>
-        <script src="~/lib/webcomponents/custom-elements-es5-adapter.js"></script>*@
-
-    <script src="~/dist/xaml-elements.js" asp-append-version="true"></script>
+    <script src="~/dist/elements.js" asp-append-version="true"></script>
 }

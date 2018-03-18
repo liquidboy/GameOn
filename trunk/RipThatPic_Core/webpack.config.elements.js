@@ -32,7 +32,7 @@ module.exports = (env) => {
     const clientBundleConfig = merge(sharedConfig, {
         entry: {
             'elements-polyfills': './Elements/polyfills.ts',
-            'xaml-elements': './Elements/boot.browser.ts'
+            'elements': './Elements/boot.browser.ts'
         },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
         plugins: [
@@ -51,7 +51,7 @@ module.exports = (env) => {
             new webpack.optimize.UglifyJsPlugin(),
             new AotPlugin({
                 tsConfigPath: './tsconfig.json',
-                entryModule: path.join(__dirname, 'Elements/elements.module#ElementsModule'),
+                entryModule: path.join(__dirname, 'Elements/boot.browser#AllModules'),
                 exclude: ['./**/*.server.ts']
             })
         ])

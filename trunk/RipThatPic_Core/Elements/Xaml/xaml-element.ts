@@ -1,7 +1,6 @@
 ﻿import { Component, Input, NgModule, ViewEncapsulation } from '@angular/core';
 
 interface IXamlElement {
-
     text: string;
     checked: boolean;
 }

@@ -6,7 +6,8 @@ import { createCustomElement, NgElementConfig, NgElementConstructor } from '@ang
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs/Subject';
-import { XamlDashboard } from './Dashboard/xaml-dashboard';
+
+import { XamlCanvas } from './Canvas/xaml-canvas';
 
 @NgModule({
     //bootstrap: [XamlElement],
@@ -16,14 +17,15 @@ import { XamlDashboard } from './Dashboard/xaml-dashboard';
     providers: [
         
     ],
-    declarations: [XamlDashboard],
-    entryComponents: [XamlDashboard]
+    declarations: [ XamlCanvas ],
+    entryComponents: [ XamlCanvas ]
 })
-export class DashboardModule {
+export class CanvasModule {
     constructor(private moduleRef: NgModuleRef<any>) {
-        this.register<XamlDashboard>(this.moduleRef, XamlDashboard);
+        this.register<XamlCanvas>(this.moduleRef, XamlCanvas);
     }
     ngDoBootstrap() {
+
     }
     register<T>(moduleRef: NgModuleRef<any>, component: Type<T>) {
         //console.log(moduleRef);

@@ -4,6 +4,31 @@ import 'bootstrap';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ElementsModule } from './elements.module';
 import { DashboardModule } from './dashboard.module';
+import { CanvasModule } from './canvas.module';
+import {
+    Component, ComponentFactory, NgModuleRef, NgModule, CompilerFactory,
+    NgModuleFactory, NgModuleFactoryLoader, Type, destroyPlatform
+} from '@angular/core';
 
-const modulePromise = platformBrowserDynamic().bootstrapModule(ElementsModule);
-const modulePromise2 = platformBrowserDynamic().bootstrapModule(DashboardModule);
+
+
+
+@NgModule({
+    imports: [
+        ElementsModule,
+        DashboardModule,
+        CanvasModule
+    ],
+    providers: [],
+    declarations: [],
+    entryComponents: []
+})
+export class AllModules {
+    constructor() {
+        
+    }
+    ngDoBootstrap() {
+
+    }
+}
+const modulePromise2 = platformBrowserDynamic().bootstrapModule(AllModules);
