@@ -1,0 +1,1 @@
+Powershell.exe -executionpolicy remotesigned -File  E:\Source\gh\liquidboy\GameOn\trunk\CopyAngular.ps1

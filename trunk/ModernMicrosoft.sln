@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_root", "_root", "{B3B9B9D3
 	ProjectSection(SolutionItems) = preProject
 		..\..\.gitattributes = ..\..\.gitattributes
 		..\..\.gitignore = ..\..\.gitignore
+		Copy.bat = Copy.bat
+		CopyAngular.ps1 = CopyAngular.ps1
 		..\..\README.md = ..\..\README.md
 	EndProjectSection
 EndProject
