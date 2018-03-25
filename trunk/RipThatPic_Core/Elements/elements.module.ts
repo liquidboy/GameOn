@@ -37,7 +37,6 @@ import { ToggleSwitch } from './Xaml/Standard/toggle-switch';
 import { UserControl } from './Xaml/Standard/user-control';
 import { WebView } from './Xaml/Standard/web-view';
 import { Binding } from './Xaml/Standard/binding';
-import { style } from '@angular/core/src/animation/dsl';
 
 @NgModule({
     //bootstrap: [XamlElement],
