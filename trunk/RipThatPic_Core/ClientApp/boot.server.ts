@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import 'zone.js';
-import 'rxjs/add/operator/first';
 import { APP_BASE_HREF } from '@angular/common';
 import { enableProdMode, ApplicationRef, NgZone, ValueProvider } from '@angular/core';
 import { platformDynamicServer, PlatformState, INITIAL_CONFIG } from '@angular/platform-server';
@@ -23,7 +22,7 @@ export default createServerRenderer(params => {
 
         return new Promise<RenderResult>((resolve, reject) => {
             zone.onError.subscribe((errorInfo: any) => reject(errorInfo));
-            appRef.isStable.first((isStable: boolean) => isStable).subscribe(() => {
+            appRef.isStable.pipe(isStable => isStable).subscribe(() => {
                 // Because 'onStable' fires before 'onError', we have to delay slightly before
                 // completing the request in case there's an error to report
                 setImmediate(() => {
@@ -33,6 +32,16 @@ export default createServerRenderer(params => {
                     moduleRef.destroy();
                 });
             });
+            //appRef.isStable.first((isStable: boolean) => isStable).subscribe(() => {
+            //    // Because 'onStable' fires before 'onError', we have to delay slightly before
+            //    // completing the request in case there's an error to report
+            //    setImmediate(() => {
+            //        resolve({
+            //            html: state.renderToString()
+            //        });
+            //        moduleRef.destroy();
+            //    });
+            //});
         });
     });
 });

@@ -5,7 +5,6 @@
 import { createCustomElement, NgElementConfig, NgElementConstructor } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from 'rxjs/Subject';
 import { XamlDashboard } from './Dashboard/xaml-dashboard';
 
 @NgModule({

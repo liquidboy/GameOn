@@ -5,7 +5,6 @@
 import { createCustomElement, NgElementConfig, NgElementConstructor, NgElementStrategyFactory  } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from 'rxjs/Subject';
 import { XamlElement } from './Xaml/xaml-element';
 import { BindingBase } from './Xaml/Standard/binding-base';
 import { Border } from './Xaml/Standard/border';
