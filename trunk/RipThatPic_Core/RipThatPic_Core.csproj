@@ -23,11 +23,126 @@
     <Content Remove="Elements\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="wwwroot\lib\webgl.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="ClientApp\app\app.module.browser.ts" />
+    <None Remove="ClientApp\app\app.module.server.ts" />
+    <None Remove="ClientApp\app\app.module.shared.ts" />
+    <None Remove="ClientApp\app\components\abstractMountains\abstractMountains.component.ts" />
+    <None Remove="ClientApp\app\components\app\app.component.ts" />
+    <None Remove="ClientApp\app\components\counter\counter.component.spec.ts" />
+    <None Remove="ClientApp\app\components\counter\counter.component.ts" />
+    <None Remove="ClientApp\app\components\fetchdata\fetchdata.component.ts" />
+    <None Remove="ClientApp\app\components\flow\flow.component.ts" />
+    <None Remove="ClientApp\app\components\gridRainboWave\gridRainboWave.component.ts" />
+    <None Remove="ClientApp\app\components\home\home.component.ts" />
+    <None Remove="ClientApp\app\components\movingBoxes\movingBoxes.component.ts" />
+    <None Remove="ClientApp\app\components\navmenu\navmenu.component.ts" />
+    <None Remove="ClientApp\app\components\shadertoy\shadertoy.component.ts" />
+    <None Remove="ClientApp\boot.browser.ts" />
+    <None Remove="ClientApp\boot.server.ts" />
+    <None Remove="ClientApp\test\boot-tests.ts" />
+    <None Remove="Elements\boot.browser.ts" />
+    <None Remove="Elements\canvas.module.ts" />
+    <None Remove="Elements\Canvas\xaml-canvas.ts" />
+    <None Remove="Elements\dashboard.module.ts" />
+    <None Remove="Elements\Dashboard\xaml-dashboard.ts" />
+    <None Remove="Elements\elements.module.ts" />
+    <None Remove="Elements\polyfills.ts" />
+    <None Remove="Elements\Xaml\Standard\binding-base.ts" />
+    <None Remove="Elements\Xaml\Standard\binding.ts" />
+    <None Remove="Elements\Xaml\Standard\border.ts" />
+    <None Remove="Elements\Xaml\Standard\button.ts" />
+    <None Remove="Elements\Xaml\Standard\column-definition-collection.ts" />
+    <None Remove="Elements\Xaml\Standard\column-definition.ts" />
+    <None Remove="Elements\Xaml\Standard\combo-box.ts" />
+    <None Remove="Elements\Xaml\Standard\content-presenter.ts" />
+    <None Remove="Elements\Xaml\Standard\control-template.ts" />
+    <None Remove="Elements\Xaml\Standard\data-template-selector.ts" />
+    <None Remove="Elements\Xaml\Standard\data-template.ts" />
+    <None Remove="Elements\Xaml\Standard\date-picker.ts" />
+    <None Remove="Elements\Xaml\Standard\grid.ts" />
+    <None Remove="Elements\Xaml\Standard\image.ts" />
+    <None Remove="Elements\Xaml\Standard\list-view.ts" />
+    <None Remove="Elements\Xaml\Standard\progress-bar.ts" />
+    <None Remove="Elements\Xaml\Standard\progress-ring.ts" />
+    <None Remove="Elements\Xaml\Standard\resource-dictionary.ts" />
+    <None Remove="Elements\Xaml\Standard\row-definition-collection.ts" />
+    <None Remove="Elements\Xaml\Standard\row-definition.ts" />
+    <None Remove="Elements\Xaml\Standard\setter.ts" />
+    <None Remove="Elements\Xaml\Standard\slider.ts" />
+    <None Remove="Elements\Xaml\Standard\stack-panel.ts" />
+    <None Remove="Elements\Xaml\Standard\style.ts" />
+    <None Remove="Elements\Xaml\Standard\text-block.ts" />
+    <None Remove="Elements\Xaml\Standard\text-box.ts" />
+    <None Remove="Elements\Xaml\Standard\time-picker.ts" />
+    <None Remove="Elements\Xaml\Standard\toggle-switch.ts" />
+    <None Remove="Elements\Xaml\Standard\user-control.ts" />
+    <None Remove="Elements\Xaml\Standard\web-view.ts" />
+    <None Remove="Elements\Xaml\xaml-element.ts" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="node_modules\@webcomponents\webcomponentsjs\custom-elements-es5-adapter.js" />
     <Content Include="node_modules\@webcomponents\webcomponentsjs\webcomponents-loader.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\app.module.browser.ts" />
+    <TypeScriptCompile Include="ClientApp\app\app.module.server.ts" />
+    <TypeScriptCompile Include="ClientApp\app\app.module.shared.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\abstractMountains\abstractMountains.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\app\app.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\counter\counter.component.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\counter\counter.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\fetchdata\fetchdata.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\flow\flow.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\gridRainboWave\gridRainboWave.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\home\home.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\movingBoxes\movingBoxes.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\navmenu\navmenu.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shadertoy\shadertoy.component.ts" />
+    <TypeScriptCompile Include="ClientApp\boot.browser.ts" />
+    <TypeScriptCompile Include="ClientApp\boot.server.ts" />
+    <TypeScriptCompile Include="ClientApp\test\boot-tests.ts" />
+    <TypeScriptCompile Include="Elements\boot.browser.ts" />
+    <TypeScriptCompile Include="Elements\canvas.module.ts" />
+    <TypeScriptCompile Include="Elements\Canvas\xaml-canvas.ts" />
+    <TypeScriptCompile Include="Elements\dashboard.module.ts" />
+    <TypeScriptCompile Include="Elements\Dashboard\xaml-dashboard.ts" />
+    <TypeScriptCompile Include="Elements\elements.module.ts" />
+    <TypeScriptCompile Include="Elements\polyfills.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\binding-base.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\binding.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\border.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\button.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\column-definition-collection.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\column-definition.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\combo-box.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\content-presenter.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\control-template.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\data-template-selector.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\data-template.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\date-picker.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\grid.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\image.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\list-view.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\progress-bar.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\progress-ring.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\resource-dictionary.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\row-definition-collection.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\row-definition.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\setter.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\slider.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\stack-panel.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\style.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\text-block.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\text-box.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\time-picker.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\toggle-switch.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\user-control.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\Standard\web-view.ts" />
+    <TypeScriptCompile Include="Elements\Xaml\xaml-element.ts" />
     <TypeScriptCompile Include="wwwroot\lib\webgl.d.ts" />
   </ItemGroup>
 

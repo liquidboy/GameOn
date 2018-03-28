@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+//const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('mini-css-extract-plugin');
 const merge = require('webpack-merge');
 const treeShakableModules = [
     '@angular/animations',
@@ -26,8 +27,10 @@ const nonTreeShakableModules = [
 const allModules = treeShakableModules.concat(nonTreeShakableModules);
 
 module.exports = (env) => {
-    const extractCSS = new ExtractTextPlugin('vendor.css');
     const isDevBuild = !(env && env.prod);
+    //const extractCSS = new ExtractTextPlugin('vendor.css');
+    const extractCSS = new ExtractTextPlugin({ filename: '[name].css', chunkFilename: '[id].css' });
+    var extractCSSfile = isDevBuild ? 'css-loader' : 'css-loader?minimize'; 
     const sharedConfig = {
         stats: { modules: false },
         resolve: { extensions: [ '.js' ] },
@@ -59,7 +62,7 @@ module.exports = (env) => {
         output: { path: path.join(__dirname, 'wwwroot', 'dist') },
         module: {
             rules: [
-                { test: /\.css(\?|$)/, use: extractCSS.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) }
+                { test: /\.css(\?|$)/, use: [ExtractTextPlugin.loader, extractCSSfile] }
             ]
         },
         plugins: [
@@ -92,5 +95,6 @@ module.exports = (env) => {
         ]
     });
 
-    return [clientBundleConfig, serverBundleConfig];
+    //return [clientBundleConfig, serverBundleConfig];
+    return [clientBundleConfig];
 }
